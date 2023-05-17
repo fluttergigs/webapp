@@ -14,16 +14,15 @@
         </slot>
 
         <input
+            v-model="value"
             class="custom-input"
             :type="type"
-            :value="modelValue"
-            v-maska
-            :data-maska="mask"
-            :data-maska-tokens="maskToken"
-            @maska="onMaska($event)"
+            :name="name"
             :placeholder="placeholder"
         />
       </div>
+      <p class="text-red-600 text-start text-sm capitalize">{{ errorMessage }}
+      </p>
     </client-only>
   </div>
 </template>
@@ -31,13 +30,16 @@
 <script setup>
 
 const props = defineProps({
+  name: {
+    type: String,
+    required: true,
+  },
   insideText: {
     type: String,
     default: "",
   },
-  mask: {
+  modelValue: {
     type: String,
-    default: "Z",
   },
   placeholder: {
     type: String,
@@ -47,31 +49,30 @@ const props = defineProps({
     type: String,
     default: "text"
   },
-  maskToken: {
-    type: String,
-    default: "Z:[a-zA-ZÀ-ȕ\- ]:repeated"
-  },
   label: {
     type: String,
     default: ""
   },
-  modelValue: {
-    type: String,
-  }
 })
 
 const emits = defineEmits(['update:modelValue', 'insideTextClicked'])
 
 const hasLabel = computed(() => !!props.label)
 const hasIcon = computed(() => !!props.icon)
-const hasMask = computed(() => !!props.mask)
-const hasMaskToken = computed(() => !!props.maskToken ? Object.keys(props.maskToken).length >= 1 : false)
 
-const onMaska = ($event) => {
-  // emits
-  emits('update:modelValue', $event.detail.unmasked)
+import {useField} from 'vee-validate';
+import * as yup from 'yup';
+
+const validators = {
+  email: yup.string().email().required().label('Email'),
+  lastName: yup.string().required().min(2).label('Last name'),
+  firstName: yup.string().required().min(2).label('First name'),
+  password: yup.string().required().min(5).label('Password'),
+  url: yup.string().url(),
+  // url: yup.s
 }
 
+const {errorMessage, value, meta: {valid, dirty}} = useField(() => props.name, validators[props.name]);
 </script>
 
 <style scoped>

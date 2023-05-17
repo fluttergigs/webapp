@@ -4,7 +4,7 @@
       <div class="w-auto">
         <div class="flex flex-wrap items-center">
           <div class="w-auto mr-14">
-            <NuxtLink to="/">
+            <NuxtLink :to="AppRoutes.welcome">
               <img src="@/assets/images/logo.svg" alt=""/>
             </NuxtLink>
           </div>
@@ -22,7 +22,7 @@
           <div class="w-auto hidden mr-5 lg:block">
             <div class="inline-block">
               <NuxtLink
-                  to="/login"
+                  :to="AppRoutes.login"
                   class="primary-button"
                   type="button"
               >
@@ -32,7 +32,7 @@
           </div>
           <div class="w-auto hidden lg:block">
             <div class="inline-block">
-              <NuxtLink to="/jobs/post"
+              <NuxtLink :to="AppRoutes.postJob"
                         class="transparent-button"
                         type="button"
               >
@@ -108,7 +108,7 @@
               <div class="w-full mb-3">
                 <div class="block">
                   <NuxtLink
-                      to="/login"
+                      :to="AppRoutes.login"
                       class="transparent-button"
                       type="button"
                   >
@@ -119,7 +119,7 @@
               <div class="w-full">
                 <div class="block">
                   <NuxtLink
-                      to="/jobs/post"
+                      :to="AppRoutes.postJob"
                       class="primary-button"
                   >
                     Post a job
@@ -136,18 +136,20 @@
 
 <script setup>
 
+import {AppRoutes} from "~/core/routes";
+
 const links = ref([{
-  path: '/jobs',
+  path: AppRoutes.jobs,
   name: 'Jobs',
 }, {
-  path: '/hire-flutter-devs',
+  path: AppRoutes.hireFlutterDevs,
   name: 'Hire Flutter devs',
 }, {
-  path: '/alerts',
+  path: AppRoutes.alerts,
   name: 'Job Alerts',
 },
   {
-    path: '/learn',
+    path: AppRoutes.learn,
     name: 'Learn',
   },
 ])

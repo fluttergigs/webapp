@@ -1,6 +1,4 @@
 import {StrapiAuthenticationData, StrapiAuthProvider} from "@nuxtjs/strapi/dist/runtime/types";
-import {useStrapiAuth} from "@nuxtjs/strapi/dist/runtime/composables/useStrapiAuth";
-
 
 
 const strapiAuth = useStrapiAuth()

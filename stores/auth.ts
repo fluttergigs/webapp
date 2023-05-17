@@ -2,12 +2,15 @@ import {defineStore} from "pinia";
 import {LoginData, RegistrationData, User} from "~/services/auth/auth.types";
 import {useNuxtApp} from "#app";
 import {AppRoutes} from "~/core/routes";
+import {generateUserName} from "~/core/helpers";
 
 export let useAuthStore = defineStore('auth', {
     state: () => ({
         user: <User>{},
+        jwt: '',
         isProcessing: false,
-        returnUrl: ''
+        returnUrl: '',
+        errorMessage: ''
     }),
     actions: {
         setReturnUrl(path: string) {
@@ -19,16 +22,17 @@ export let useAuthStore = defineStore('auth', {
 
                 this.isProcessing = true
                 const response = await $auth.login({identifier: email, password})
-                this.user = response.user.value
-
-                this.isProcessing = false
+                this.user = unref(response.user)
+                this.jwt = unref(response.jwt)
 
                 $toast.info('Login successful')
-
+                this.isProcessing = false
                 useRouter().push({path: AppRoutes.dashboard})
             } catch (error) {
-                console.error(error)
                 this.isProcessing = false
+                console.error(error)
+                throw error
+                // this.errorMessage = error.toString()
             }
         },
 
@@ -36,11 +40,12 @@ export let useAuthStore = defineStore('auth', {
             try {
                 const {$auth} = useNuxtApp()
 
+                const username = generateUserName(email)
                 this.isProcessing = true
-                const response = await $auth.register({email, password, firstName, lastName})
-                this.user = response.user.value
+                const response = await $auth.register({email, password, firstName, lastName, username})
+                this.user = unref(response.user)
+                this.jwt = unref(response.jwt)
                 this.isProcessing = false
-
                 useRouter().push({path: AppRoutes.dashboard})
 
             } catch (error) {

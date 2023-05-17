@@ -6,18 +6,16 @@ export class AuthService extends BaseService {
         return this._authProvider;
     }
 
-
-    private readonly _authProvider: AuthProvider
+    private _authProvider: AuthProvider
 
     constructor(authProvider: AuthProvider) {
-
         super(authProvider);
         this._authProvider = authProvider
-
     }
 
-
-
+    changeProvider(authProvider: AuthProvider) {
+        this._authProvider = authProvider
+    }
 
 
 }
