@@ -17,11 +17,15 @@ export let useAuthStore = defineStore('auth', {
             this.returnUrl = path
         },
         async login({email, password}: LoginData) {
+            const {$auth, $toast} = useNuxtApp()
+
             try {
                 const {$auth, $toast} = useNuxtApp()
 
                 this.isProcessing = true
                 const response = await $auth.login({identifier: email, password})
+
+                //@ts-ignore
                 this.user = unref(response.user)
                 this.jwt = unref(response.jwt)
 
@@ -30,19 +34,22 @@ export let useAuthStore = defineStore('auth', {
                 useRouter().push({path: AppRoutes.dashboard})
             } catch (error) {
                 this.isProcessing = false
-                console.error(error)
+                //@ts-ignore
+                this.errorMessage = error.error.message
+                $toast.error(this.errorMessage)
                 throw error
-                // this.errorMessage = error.toString()
             }
         },
 
         async register({email, password, firstName, lastName}: RegistrationData) {
+            const {$auth, $toast} = useNuxtApp()
             try {
                 const {$auth} = useNuxtApp()
 
                 const username = generateUserName(email)
                 this.isProcessing = true
                 const response = await $auth.register({email, password, firstName, lastName, username})
+                //@ts-ignore
                 this.user = unref(response.user)
                 this.jwt = unref(response.jwt)
                 this.isProcessing = false
@@ -51,6 +58,10 @@ export let useAuthStore = defineStore('auth', {
             } catch (error) {
                 console.error(error)
                 this.isProcessing = false
+                //@ts-ignore
+                this.errorMessage = error.error.message
+                $toast.error(this.errorMessage)
+                throw error
             }
         },
         async logout() {
@@ -63,11 +74,16 @@ export let useAuthStore = defineStore('auth', {
 
             } catch (error) {
                 console.error(error)
+                //@ts-ignore
+                this.errorMessage = error.message
+                throw error
             }
         },
     },
     getters: {
         authUser: state => state.user,
-        isAuthenticated: state => Object.keys(state.user! || {}).length > 0
-    }
+        isAuthenticated: state => Object.keys(state.user || {}).length > 0,
+        userFullName: state => `${state.user?.firstName} ${state.user?.lastName}`
+    },
+    persist: true,
 })

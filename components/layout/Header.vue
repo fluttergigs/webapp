@@ -21,12 +21,18 @@
         <div class="flex flex-wrap items-center">
           <div class="w-auto hidden mr-5 lg:block">
             <div class="inline-block">
-              <NuxtLink
-                  :to="AppRoutes.login"
-                  class="primary-button"
-                  type="button"
+              <NuxtLink v-if="!useAuthStore().isAuthenticated"
+                        :to="AppRoutes.login"
+                        class="primary-button"
+                        type="button"
               >
                 Login
+              </NuxtLink>
+              <NuxtLink v-else
+                        :to="AppRoutes.dashboard"
+                        class="transparent-button"
+              >
+                {{ useAuthStore().userFullName }}
               </NuxtLink>
             </div>
           </div>
@@ -107,12 +113,18 @@
             <div class="flex flex-wrap">
               <div class="w-full mb-3">
                 <div class="block">
-                  <NuxtLink
-                      :to="AppRoutes.login"
-                      class="transparent-button"
-                      type="button"
+                  <NuxtLink v-if="!useAuthStore().isAuthenticated"
+                            :to="AppRoutes.login"
+                            class="transparent-button"
+                            type="button"
                   >
                     Login
+                  </NuxtLink>
+                  <NuxtLink v-else
+                            :to="AppRoutes.dashboard"
+                            class="transparent-button"
+                  >
+                    {{ useAuthStore().userFullName }}
                   </NuxtLink>
                 </div>
               </div>
@@ -137,6 +149,7 @@
 <script setup>
 
 import {AppRoutes} from "~/core/routes";
+import {useAuthStore} from "~/stores/auth";
 
 const links = ref([{
   path: AppRoutes.jobs,

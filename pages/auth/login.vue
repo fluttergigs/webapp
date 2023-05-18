@@ -50,14 +50,18 @@ import {storeToRefs} from "pinia";
 import {loginFormSchema} from "~/core/validations";
 import {Form} from 'vee-validate'
 
+definePageMeta({
+  middleware: ['logged-in']
+})
+
 const authStore = useAuthStore()
 
-const formInput = ref({
+let formInput = ref({
   email: '',
   password: '',
 })
 
-const canSubmit = ref(false)
+let canSubmit = ref(false)
 
 watch(formInput, async (oldVal, newVal) => {
   canSubmit.value = await loginFormSchema.isValid(formInput.value);
@@ -72,6 +76,8 @@ const submit = async () => {
   try {
     await login({email: formInput.value.email, password: formInput.value.password,})
   } catch (e) {
+
+
   }
 }
 

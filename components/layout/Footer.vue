@@ -14,8 +14,8 @@
                 <img src="@/assets/images/logo-light.svg" alt=""/>
               </a>
               <p class="mb-20 text-gray-400 font-medium leading-relaxed md:max-w-xs">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lectus interdum
-                facilisis odio scelerisque vel neque.
+                Looking for a job in Flutter development? Check out FlutterGigs - the first Flutter job board! Find your
+                dream job or post a gig today!
               </p>
               <div class="flex flex-wrap -m-1.5">
                 <div class="w-auto p-1.5">
@@ -85,35 +85,21 @@
             <h3
                 class="mb-8 text-sm text-gray-600 uppercase font-semibold leading-normal tracking-px"
             >
-              Products
+              FIND A JOB
             </h3>
             <ul>
               <li class="mb-5">
                 <a
                     class="text-white hover:text-gray-200 font-medium leading-relaxed"
                     href="#"
-                >Services</a
+                >Latest Flutter Jobs</a
                 >
               </li>
               <li class="mb-5">
                 <a
                     class="text-white hover:text-gray-200 font-medium leading-relaxed"
                     href="#"
-                >About Us</a
-                >
-              </li>
-              <li class="mb-5">
-                <a
-                    class="text-white hover:text-gray-200 font-medium leading-relaxed"
-                    href="#"
-                >News &amp; Stories</a
-                >
-              </li>
-              <li>
-                <a
-                    class="text-white hover:text-gray-200 font-medium leading-relaxed"
-                    href="#"
-                >Roadmap</a
+                >Subscribe to job alerts</a
                 >
               </li>
             </ul>
@@ -122,42 +108,21 @@
             <h3
                 class="mb-8 text-sm text-gray-600 uppercase font-semibold leading-normal tracking-px"
             >
-              Important links
+              HIRE
             </h3>
             <ul>
               <li class="mb-5">
                 <a
                     class="text-white hover:text-gray-200 font-medium leading-relaxed"
                     href="#"
-                >Our Journeys</a
+                >Post a job</a
                 >
               </li>
               <li class="mb-5">
                 <a
                     class="text-white hover:text-gray-200 font-medium leading-relaxed"
                     href="#"
-                >Pricing Plans</a
-                >
-              </li>
-              <li class="mb-5">
-                <a
-                    class="text-white hover:text-gray-200 font-medium leading-relaxed"
-                    href="#"
-                >Roadmap</a
-                >
-              </li>
-              <li class="mb-5">
-                <a
-                    class="text-white hover:text-gray-200 font-medium leading-relaxed"
-                    href="#"
-                >Terms &amp; Conditions</a
-                >
-              </li>
-              <li>
-                <a
-                    class="text-white hover:text-gray-200 font-medium leading-relaxed"
-                    href="#"
-                >Privacy Policy</a
+                >Hire Flutter Consultants</a
                 >
               </li>
             </ul>
@@ -166,36 +131,13 @@
             <h3
                 class="mb-8 text-sm text-gray-600 uppercase font-semibold leading-normal tracking-px"
             >
-              Company
+              Discover
             </h3>
             <ul>
               <li class="mb-5">
                 <a
                     class="text-white hover:text-gray-200 font-medium leading-relaxed"
-                    href="#"
-                >About Us</a
-                >
-              </li>
-              <li class="mb-5">
-                <a
-                    class="text-white hover:text-gray-200 font-medium leading-relaxed"
-                    href="#"
-                >Jobs</a
-                >
-              </li>
-              <li class="mb-5">
-                <a
-                    class="text-white hover:text-gray-200 font-medium leading-relaxed"
-                    href="#"
-                >Press</a
-                >
-              </li>
-              <li>
-                <a
-                    class="text-white hover:text-gray-200 font-medium leading-relaxed"
-                    href="#"
-                >Contact Us</a
-                >
+                    href="#">Learning Flutter Resources</a>
               </li>
             </ul>
           </div>

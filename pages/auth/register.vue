@@ -51,14 +51,18 @@ import {storeToRefs} from "pinia";
 import LoadingSpinnerIcon from "~/components/icons/LoadingSpinnerIcon.vue";
 import {registerFormSchema} from "~/core/validations";
 
-const formInput = ref({
+definePageMeta({
+  middleware: ['logged-in']
+})
+
+let formInput = ref({
   email: 'john@gmail.com',
   password: 'test',
   firstName: 'John',
   lastName: 'Doe'
 })
 
-const canSubmit = ref(false)
+let canSubmit = ref(false)
 
 watch(formInput, async (oldVal, newVal) => {
   canSubmit.value = await registerFormSchema.isValid(formInput.value);

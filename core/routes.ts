@@ -3,7 +3,7 @@ export class AppRoutes {
 
     static register = '/auth/register'
 
-    static postJob = '/post-a-job'
+    static postJob = '/jobs/post'
 
     static jobs = '/jobs/'
 
@@ -12,6 +12,10 @@ export class AppRoutes {
     static learn = '/learn'
 
     static myJobs = '/account/jobs'
+
+    static myAccount = '/account/user'
+
+    static myCompany = '/account/company'
 
     static welcome = '/'
 
