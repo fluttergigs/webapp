@@ -74,7 +74,6 @@ let canSubmit = ref(false)
 
 const {login, errorMessage} = authStore
 
-
 watch(formInput, async (oldVal, newVal) => {
   canSubmit.value = await loginFormSchema.isValid(formInput.value);
 
