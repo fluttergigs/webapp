@@ -14,7 +14,7 @@
           Create an account to get access thousands of Flutter job offers and Consultants
         </p>
         <form class="flex flex-col space-y-4">
-          <div class="flex space-x-4 mb-5">
+          <div class="flex space-x-4 mb-5 w-full">
             <CustomInput name="firstName" placeholder="First name" v-model="formInput.firstName"/>
             <CustomInput name="lastName" placeholder="Last name" v-model="formInput.lastName"/>
           </div>
@@ -49,7 +49,9 @@ import {AppRoutes} from "~/core/routes";
 import {useAuthStore} from "~/stores/auth";
 import {storeToRefs} from "pinia";
 import LoadingSpinnerIcon from "~/components/icons/LoadingSpinnerIcon.vue";
-import {registerFormSchema} from "~/core/validations";
+import {registerFormSchema} from "@/core/validations";
+import {useNuxtApp} from "#app";
+import {AnalyticsEvent} from "~/services/analytics/events";
 
 definePageMeta({
   middleware: ['logged-in']
@@ -57,26 +59,44 @@ definePageMeta({
 
 let formInput = ref({
   email: 'john@gmail.com',
-  password: 'test',
+  password: 'test1234',
   firstName: 'John',
   lastName: 'Doe'
 })
 
-let canSubmit = ref(false)
+const canSubmit = ref(false)
+
+const {$toast, $analytics} = useNuxtApp()
+
+const authStore = useAuthStore()
+
+const {isProcessing, errorMessage, returnUrl} = storeToRefs(authStore)
+
+const {register} = authStore
 
 watch(formInput, async (oldVal, newVal) => {
   canSubmit.value = await registerFormSchema.isValid(formInput.value);
 
-}, {deep: true},)
+  //TODO - remove comment later
+  /*if(canSubmit.value){
+    await submit()
+  }*/
 
-const authStore = useAuthStore()
+}, {deep: true, immediate: true},)
 
-const {isProcessing, errorMessage} = storeToRefs(authStore)
-
-const {register} = authStore
+onMounted(() => {
+  $analytics.capture(AnalyticsEvent.registrationPageEntered);
+})
 
 const submit = async () => {
-  await register(formInput.value)
+  try {
+    $analytics.capture(AnalyticsEvent.registrationButtonClicked, formInput.value);
+    await register(formInput.value)
+    $analytics.capture(AnalyticsEvent.successfulRegistration, formInput.value);
+    await useRouter().push({path: returnUrl.value ?? AppRoutes.dashboard})
+  } catch (e) {
+    $toast.error(errorMessage.value);
+  }
 }
 
 

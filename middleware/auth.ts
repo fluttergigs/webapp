@@ -6,6 +6,6 @@ export default defineNuxtRouteMiddleware((to, from) => {
 
     if (!isAuthenticated) {
         setReturnUrl(to.fullPath);
-        navigateTo(AppRoutes.login);
+        return navigateTo(AppRoutes.login);
     }
 })

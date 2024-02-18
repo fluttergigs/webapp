@@ -1,8 +1,6 @@
 import mitt from 'mitt'
-import {PaymentType} from "~/repository/modules/transaction/transaction.types";
 
 type ApplicationEvents = {
-    'payment:created': { type: PaymentType },
 };
 export default defineNuxtPlugin(() => {
     const emitter = mitt<ApplicationEvents>()

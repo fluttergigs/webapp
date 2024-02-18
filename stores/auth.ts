@@ -2,7 +2,8 @@ import {defineStore} from "pinia";
 import {LoginData, RegistrationData, User} from "~/services/auth/auth.types";
 import {useNuxtApp} from "#app";
 import {AppRoutes} from "~/core/routes";
-import {generateUserName} from "~/core/helpers";
+import {generateUserName} from "~/core/utils";
+import {logDev} from "~/core/helpers/log";
 
 export let useAuthStore = defineStore('auth', {
     state: () => ({
@@ -17,50 +18,46 @@ export let useAuthStore = defineStore('auth', {
             this.returnUrl = path
         },
         async login({email, password}: LoginData) {
-            const {$auth, $toast} = useNuxtApp()
+            const {$auth, $analytics, $toast} = useNuxtApp()
 
             try {
-                const {$auth, $toast} = useNuxtApp()
-
                 this.isProcessing = true
                 const response = await $auth.login({identifier: email, password})
 
                 //@ts-ignore
                 this.user = unref(response.user)
-                this.jwt = unref(response.jwt)
+                this.setToken(unref(response.jwt))
 
-                $toast.info('Login successful')
+                $analytics.identifyUser(this.user?.email, this.user)
+
                 this.isProcessing = false
-                useRouter().push({path: AppRoutes.dashboard})
             } catch (error) {
+                logDev(error)
                 this.isProcessing = false
                 //@ts-ignore
                 this.errorMessage = error.error.message
-                $toast.error(this.errorMessage)
                 throw error
             }
         },
 
         async register({email, password, firstName, lastName}: RegistrationData) {
-            const {$auth, $toast} = useNuxtApp()
+            const {$auth, $analytics, $toast} = useNuxtApp()
             try {
-                const {$auth} = useNuxtApp()
-
-                const username = generateUserName(email)
                 this.isProcessing = true
+                const username = generateUserName(email)
                 const response = await $auth.register({email, password, firstName, lastName, username})
                 //@ts-ignore
                 this.user = unref(response.user)
-                this.jwt = unref(response.jwt)
-                this.isProcessing = false
-                useRouter().push({path: AppRoutes.dashboard})
+                $analytics.identifyUser(this.user?.email, this.user)
 
+                this.setToken(unref(response.jwt))
+                this.isProcessing = false
             } catch (error) {
-                console.error(error)
+                logDev(error)
                 this.isProcessing = false
                 //@ts-ignore
                 this.errorMessage = error.error.message
-                $toast.error(this.errorMessage)
+                // $toast.error(this.errorMessage)
                 throw error
             }
         },
@@ -69,20 +66,33 @@ export let useAuthStore = defineStore('auth', {
                 const {$auth} = useNuxtApp()
                 await $auth.logout()
                 this.user = null
-
-                useRouter().push({path: AppRoutes.login})
-
+                await useRouter().push({path: AppRoutes.login})
             } catch (error) {
-                console.error(error)
+                logDev(error)
                 //@ts-ignore
                 this.errorMessage = error.message
                 throw error
             }
         },
+
+        async fetchUser() {
+            try {
+                const {$auth} = useNuxtApp()
+                const response = await $auth.fetchUser()
+                this.user = unref(response.user)
+                this.setToken(unref(response.jwt))
+            } catch (error) {
+                logDev(error)
+            }
+        },
+
+        setToken(token) {
+            this.jwt = token;
+        }
     },
     getters: {
         authUser: state => state.user,
-        isAuthenticated: state => Object.keys(state.user || {}).length > 0,
+        isAuthenticated: state => state.user && Object.keys(state.user || {}).length > 0,
         userFullName: state => `${state.user?.firstName} ${state.user?.lastName}`
     },
     persist: true,

@@ -54,10 +54,14 @@ export default defineNuxtConfig({
     ],
     runtimeConfig: {
         strapiEndpoint: "",
+        posthogKey:"",
+        posthogProjectId: "",
         apiBaseUrl: "",
         authUrl: "",
         public: {
             strapiEndpoint: "",
+            posthogKey: "",
+            posthogProjectId: "",
         },
     },
     strapi: {

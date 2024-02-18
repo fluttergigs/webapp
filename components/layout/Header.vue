@@ -124,7 +124,7 @@
                             :to="AppRoutes.dashboard"
                             class="transparent-button"
                   >
-                    {{ useAuthStore().userFullName }}
+                   Hello 👋, {{ useAuthStore().userFullName }}
                   </NuxtLink>
                 </div>
               </div>

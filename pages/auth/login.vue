@@ -47,37 +47,57 @@ import {useAuthStore} from "~/stores/auth";
 import {AppRoutes} from "~/core/routes";
 import LoadingSpinnerIcon from "~/components/icons/LoadingSpinnerIcon.vue";
 import {storeToRefs} from "pinia";
-import {loginFormSchema} from "~/core/validations";
+import {loginFormSchema} from "@/core/validations";
 import {Form} from 'vee-validate'
+import {useNuxtApp} from "#app";
+import {AnalyticsEvent} from "~/services/analytics/events";
+import {logDev} from "~/core/helpers/log";
+
+useHead({title: "Flutter Gigs - Authentication"});
 
 definePageMeta({
   middleware: ['logged-in']
 })
 
+const {$toast, $analytics} = useNuxtApp()
+
 const authStore = useAuthStore()
 
-let formInput = ref({
+const {isProcessing, returnUrl} = storeToRefs(authStore)
+
+const formInput = ref({
   email: '',
   password: '',
 })
 
 let canSubmit = ref(false)
 
+const {login, errorMessage} = authStore
+
+
 watch(formInput, async (oldVal, newVal) => {
   canSubmit.value = await loginFormSchema.isValid(formInput.value);
 
+  //TODO - remove comment later
+  /*if(canSubmit.value){
+    await submit()
+  }*/
 }, {deep: true},)
 
-const {login, errorMessage} = authStore
-
-const {isProcessing} = storeToRefs(authStore)
+onMounted(() => {
+  logDev('ANALYTICS:', $analytics)
+  $analytics.capture(AnalyticsEvent.loginPageEntered);
+})
 
 const submit = async () => {
   try {
-    await login({email: formInput.value.email, password: formInput.value.password,})
+    const loginData = {email: formInput.value.email, password: formInput.value.password,}
+    $analytics.capture(AnalyticsEvent.loginButtonClicked, loginData)
+    await login(loginData)
+    $analytics.capture(AnalyticsEvent.successfulLogin)
+    await useRouter().push({path: returnUrl.value ?? AppRoutes.dashboard})
   } catch (e) {
-
-
+    $toast.error(errorMessage);
   }
 }
 

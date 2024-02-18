@@ -1,4 +1,4 @@
-import * as yup from 'yup';
+import * as yup from "yup";
 
 export const registerFormSchema = yup.object({
     email: yup.string().required().email().label('email'),
@@ -10,9 +10,4 @@ export const registerFormSchema = yup.object({
 export const loginFormSchema = yup.object({
     email: yup.string().required().email().label('password'),
     password: yup.string().required().min(5).label('password'),
-});
-
-export const postJobFormSchema = yup.object({
-    email: yup.string().required().email(),
-    password: yup.string().required().min(5),
 });

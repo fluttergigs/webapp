@@ -3,6 +3,11 @@ export interface RegistrationData {
     lastName: string,
     email: string,
     password: string,
+    [name: string]: string,
+}
+
+export interface ResetPasswordData{
+    email: string,
 }
 
 export type LoginData = Omit<RegistrationData, 'firstName' | 'lastName'>
