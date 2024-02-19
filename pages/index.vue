@@ -8,8 +8,10 @@
                 class="inline-block mb-6 px-2 py-1 font-semibold bg-green-100 rounded-full">
               <div class="flex flex-wrap items-center -m-1 p-2" contenteditable="false">
                 <div class="w-auto" contenteditable="false">
-                  <a class="text-sm" href="" contenteditable="false">Find the best Flutter gigs from all around the
-                    world!</a>
+                  <NuxtLink class="text-sm" :to="AppRoutes.jobs" contenteditable="false">Find the best Flutter gigs from
+                    all around the
+                    world!
+                  </NuxtLink>
                 </div>
                 <div class="w-auto p-1">
                   <svg
@@ -31,10 +33,10 @@
               </div>
             </div>
             <h1
-                class="mb-6 text-6xl md:text-8xl lg:text-10xl font-bold font-heading md:max-w-xl leading-none"
-                contenteditable="false"
-            >
-              The #First Flutter job board in the ecosystem<br/>
+                class="mb-6 text-6xl md:text-8xl lg:text-10xl font-bold
+                md:max-w-xl leading-none primary-gradient"
+                contenteditable="false">
+              The #1 Flutter job board in the ecosystem<br/>
             </h1>
             <p class="mb-11 text-lg text-gray-900 font-medium md:max-w-md">
               Get the best-in-class group mentoring plans and professional benefits for
@@ -857,6 +859,8 @@
 </template>
 
 <script setup>
+
+import {AppRoutes} from "~/core/routes";
 
 definePageMeta({
   layout: 'main-layout'

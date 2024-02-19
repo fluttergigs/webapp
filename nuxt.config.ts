@@ -46,16 +46,22 @@ export default defineNuxtConfig({
         '@pinia/nuxt',
         '@pinia-plugin-persistedstate/nuxt',
         '@nuxtjs/i18n',
-        '@nuxtjs/tailwindcss',
+        'nuxt-lodash',
+        // '@nuxtjs/tailwindcss',
         'nuxt-appwrite',
-        '@nuxtjs/strapi'
+        '@nuxtjs/strapi',
+        // '@nuxthq/ui'
     ],
     runtimeConfig: {
         strapiEndpoint: "",
+        posthogKey:"",
+        posthogProjectId: "",
         apiBaseUrl: "",
         authUrl: "",
         public: {
             strapiEndpoint: "",
+            posthogKey: "",
+            posthogProjectId: "",
         },
     },
     strapi: {
