@@ -94,7 +94,7 @@ const submit = async () => {
     $analytics.capture(AnalyticsEvent.loginButtonClicked, loginData)
     await login(loginData)
     $analytics.capture(AnalyticsEvent.successfulLogin)
-    await useRouter().push({path: returnUrl.value ?? AppRoutes.dashboard})
+    await useRouter().push({path: returnUrl.value ?? AppRoutes.welcome})
   } catch (e) {
     $toast.error(errorMessage);
   }

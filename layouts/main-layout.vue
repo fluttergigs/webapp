@@ -8,4 +8,13 @@
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+
+import {useSettingStore} from "~/stores/setting";
+
+onBeforeMount(() => {
+
+  useSettingStore().fetchSetting()
+})
+
+</script>

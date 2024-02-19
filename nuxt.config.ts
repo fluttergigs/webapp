@@ -1,3 +1,5 @@
+import path from "path";
+
 export default defineNuxtConfig({
     app: {
         head: {
@@ -52,6 +54,7 @@ export default defineNuxtConfig({
         '@nuxtjs/strapi',
         // '@nuxthq/ui'
     ],
+
     runtimeConfig: {
         strapiEndpoint: "",
         posthogKey:"",
@@ -62,6 +65,7 @@ export default defineNuxtConfig({
             strapiEndpoint: "",
             posthogKey: "",
             posthogProjectId: "",
+            apiBaseUrl:""
         },
     },
     strapi: {
@@ -98,6 +102,12 @@ export default defineNuxtConfig({
     ],
     vite: {
         optimizeDeps: { include: ["quill"] },
+        /*resolve: {
+            alias: {
+                vue: path.resolve('./node_modules/vue', 'dist', 'vue.runtime.esm-bundler.js')
+            },
+            preserveSymlinks: false
+        },*/
     },
     router: {
         options: { linkExactActiveClass: "active" },

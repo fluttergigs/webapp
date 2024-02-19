@@ -4,6 +4,7 @@ import {useNuxtApp} from "#app";
 import {AppRoutes} from "~/core/routes";
 import {generateUserName} from "~/core/utils";
 import {logDev} from "~/core/helpers/log";
+import {jwtDecode} from "jwt-decode";
 
 export let useAuthStore = defineStore('auth', {
     state: () => ({
@@ -66,6 +67,7 @@ export let useAuthStore = defineStore('auth', {
                 const {$auth} = useNuxtApp()
                 await $auth.logout()
                 this.user = null
+                this.setToken('')
                 await useRouter().push({path: AppRoutes.login})
             } catch (error) {
                 logDev(error)
@@ -91,8 +93,9 @@ export let useAuthStore = defineStore('auth', {
         }
     },
     getters: {
+        hasTokenExpired: state => !!state.jwt && Date.now() > (jwtDecode(state.jwt).exp * 1000),
         authUser: state => state.user,
-        isAuthenticated: state => state.user && Object.keys(state.user || {}).length > 0,
+        isAuthenticated: state => !!state.user && Object.keys(state.user || {}).length > 0,
         userFullName: state => `${state.user?.firstName} ${state.user?.lastName}`
     },
     persist: true,
