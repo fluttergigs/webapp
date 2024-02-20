@@ -11,10 +11,16 @@
 <script setup>
 
 import {useSettingStore} from "~/stores/setting";
+import {useCompanyStore} from "~/stores/company";
+import {useAuthStore} from "~/stores/auth";
 
-onBeforeMount(() => {
+onBeforeMount(async () => {
+  await Promise.all([
+    await useCompanyStore().fetchCompanies(),
+    await useSettingStore().fetchSetting(),
+    await useAuthStore().fetchUser(),
+  ])
 
-  useSettingStore().fetchSetting()
 })
 
 </script>

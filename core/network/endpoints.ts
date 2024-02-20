@@ -1,12 +1,14 @@
-import {logDev} from "~/core/helpers/log";
-
 export class Endpoint {
 
-   static get setting() {
+    static get setting() {
         return `/setting`
     }
 
-   static get getJobs() {
+    static get companies() {
+        return '/companies'
+    }
+
+    static get getJobs() {
         return `/jobs`
     }
 }

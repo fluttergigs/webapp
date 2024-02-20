@@ -53,6 +53,8 @@ import {registerFormSchema} from "@/core/validations";
 import {useNuxtApp} from "#app";
 import {AnalyticsEvent} from "~/services/analytics/events";
 
+useHead({title: "Flutter Gigs - Authentication"});
+
 definePageMeta({
   middleware: ['logged-in']
 })
@@ -93,11 +95,10 @@ const submit = async () => {
     $analytics.capture(AnalyticsEvent.registrationButtonClicked, formInput.value);
     await register(formInput.value)
     $analytics.capture(AnalyticsEvent.successfulRegistration, formInput.value);
-    await useRouter().push({path: returnUrl.value ?? AppRoutes.dashboard})
+    await useRouter().push({path: !!returnUrl.value ? returnUrl.value : AppRoutes.welcome})
   } catch (e) {
     $toast.error(errorMessage.value);
   }
 }
-
 
 </script>

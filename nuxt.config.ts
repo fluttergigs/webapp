@@ -1,6 +1,9 @@
 import path from "path";
 
 export default defineNuxtConfig({
+    experimental: {
+        renderJsonPayloads: true
+    },
     app: {
         head: {
             title: "Flutter Gigs",
@@ -50,7 +53,7 @@ export default defineNuxtConfig({
         '@nuxtjs/i18n',
         'nuxt-lodash',
         // '@nuxtjs/tailwindcss',
-        'nuxt-appwrite',
+        // 'nuxt-appwrite',
         '@nuxtjs/strapi',
         // '@nuxthq/ui'
     ],
@@ -60,7 +63,6 @@ export default defineNuxtConfig({
         posthogKey:"",
         posthogProjectId: "",
         apiBaseUrl: "",
-        authUrl: "",
         public: {
             strapiEndpoint: "",
             posthogKey: "",
@@ -75,10 +77,10 @@ export default defineNuxtConfig({
         cookie: {},
         cookieName: 'strapi_jwt'
     },
-    appwrite: {
+    /*appwrite: {
         endpoint: process.env.NUXT_APPWRITE_ENDPOINT,
         project: process.env.NUXT_APPWRITE_PROJECT_ID,
-    },
+    },*/
     i18n: {
         locales: [
             { code: "en", file: "en.json" },

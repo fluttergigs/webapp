@@ -51,7 +51,6 @@ import {loginFormSchema} from "@/core/validations";
 import {Form} from 'vee-validate'
 import {useNuxtApp} from "#app";
 import {AnalyticsEvent} from "~/services/analytics/events";
-import {logDev} from "~/core/helpers/log";
 
 useHead({title: "Flutter Gigs - Authentication"});
 
@@ -66,11 +65,11 @@ const authStore = useAuthStore()
 const {isProcessing, returnUrl} = storeToRefs(authStore)
 
 const formInput = ref({
-  email: '',
-  password: '',
+  email: 'john@gmail.com',
+  password: 'test1234',
 })
 
-let canSubmit = ref(false)
+const canSubmit = ref(false)
 
 const {login, errorMessage} = authStore
 
@@ -81,10 +80,9 @@ watch(formInput, async (oldVal, newVal) => {
   /*if(canSubmit.value){
     await submit()
   }*/
-}, {deep: true},)
+}, {deep: true, immediate: true},)
 
 onMounted(() => {
-  logDev('ANALYTICS:', $analytics)
   $analytics.capture(AnalyticsEvent.loginPageEntered);
 })
 
@@ -94,7 +92,7 @@ const submit = async () => {
     $analytics.capture(AnalyticsEvent.loginButtonClicked, loginData)
     await login(loginData)
     $analytics.capture(AnalyticsEvent.successfulLogin)
-    await useRouter().push({path: returnUrl.value ?? AppRoutes.welcome})
+    await useRouter().push({path: !!returnUrl.value ? returnUrl.value : AppRoutes.welcome})
   } catch (e) {
     $toast.error(errorMessage);
   }

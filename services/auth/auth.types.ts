@@ -3,15 +3,17 @@ export interface RegistrationData {
     lastName: string,
     email: string,
     password: string,
-    [name: string]: string,
+    [name: string]: unknown,
 }
 
-export interface ResetPasswordData{
+export interface ResetPasswordData {
+    email: string,
+}
+export interface ForgetPasswordData {
     email: string,
 }
 
 export type LoginData = Omit<RegistrationData, 'firstName' | 'lastName'>
-
 
 export type User = {
     id: number
@@ -23,5 +25,6 @@ export type User = {
     createdAt?: string
     updatedAt?: string
     firstName: string
-    lastName: string
+    lastName: string,
+    [key: string]: unknown,
 } | null
