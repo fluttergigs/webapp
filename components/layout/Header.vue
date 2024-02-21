@@ -20,21 +20,24 @@
       <div class="w-auto">
         <div class="flex flex-wrap items-center">
           <div class="w-auto hidden mr-5 lg:block">
-            <div class="inline-block">
-              <NuxtLink v-if="!useAuthStore().isAuthenticated"
-                        :to="AppRoutes.login"
-                        class="primary-button"
-                        type="button"
-              >
-                Login
-              </NuxtLink>
-              <NuxtLink v-else
-                        :to="AppRoutes.dashboard"
-                        class="transparent-button"
-              >
-                Hello 👋, {{ useAuthStore().userFullName }}
-              </NuxtLink>
-            </div>
+
+            <ClientOnly>
+              <div class="inline-block">
+                <NuxtLink v-if="!isAuthenticated"
+                          :to="AppRoutes.login"
+                          class="primary-button"
+                          type="button"
+                >
+                  Login
+                </NuxtLink>
+                <NuxtLink v-else
+                          :to="AppRoutes.dashboard"
+                          class="transparent-button"
+                >
+                  Hello 👋, {{ useAuthStore().userFullName }}
+                </NuxtLink>
+              </div>
+            </ClientOnly>
           </div>
           <div class="w-auto hidden lg:block">
             <div class="inline-block">
@@ -112,21 +115,25 @@
           <div class="flex flex-col justify-end w-full pb-8">
             <div class="flex flex-wrap">
               <div class="w-full mb-3">
-                <div class="block">
-                  <NuxtLink v-if="!useAuthStore().isAuthenticated"
-                            :to="AppRoutes.login"
-                            class="transparent-button"
-                            type="button"
-                  >
-                    Login
-                  </NuxtLink>
-                  <NuxtLink v-else
-                            :to="AppRoutes.dashboard"
-                            class="transparent-button"
-                  >
-                   Hello 👋, {{ useAuthStore().userFullName }}
-                  </NuxtLink>
-                </div>
+
+                <ClientOnly>
+                  <div class="block">
+                    <NuxtLink v-if="!isAuthenticated"
+                              :to="AppRoutes.login"
+                              class="transparent-button"
+                              type="button"
+                    >
+                      Login
+                    </NuxtLink>
+                    <NuxtLink v-else
+                              :to="AppRoutes.dashboard"
+                              class="transparent-button"
+                    >
+                      Hello 👋, {{ useAuthStore().userFullName }}
+                    </NuxtLink>
+                  </div>
+                </ClientOnly>
+
               </div>
               <div class="w-full">
                 <div class="block">
@@ -150,6 +157,7 @@
 
 import {AppRoutes} from "~/core/routes";
 import {useAuthStore} from "~/stores/auth";
+import {storeToRefs} from "pinia";
 
 const links = ref([{
   path: AppRoutes.jobs,
@@ -166,5 +174,7 @@ const links = ref([{
     name: 'Learn',
   },
 ])
+
+const {isAuthenticated} = storeToRefs(useAuthStore())
 
 </script>

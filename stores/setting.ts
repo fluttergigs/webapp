@@ -1,6 +1,7 @@
 import {defineStore} from "pinia";
 import {Endpoint} from "~/core/network/endpoints";
 import {logDev} from "~/core/helpers/log";
+import {SingleApiResponse} from "~/core/shared/types";
 
 export interface Setting {
     [key: string]: any,
@@ -8,7 +9,7 @@ export interface Setting {
 
 export const useSettingStore = defineStore('setting', {
     state: (() => ({
-        setting: <Record<any, any>>{}
+        setting: <SingleApiResponse<Setting>>{}
     })),
     actions: {
         async fetchSetting() {
@@ -19,7 +20,6 @@ export const useSettingStore = defineStore('setting', {
         },
         setSetting(data: any) {
             this.setting = data.data.attributes.extras;
-            logDev('SETTING', data)
         }
     },
     getters: {

@@ -5,14 +5,16 @@ import {AppRoutes} from "~/core/routes";
 import {generateUserName} from "~/core/utils";
 import {logDev} from "~/core/helpers/log";
 import {jwtDecode} from "jwt-decode";
+import {Wrapper} from "~/core/wrapper";
 
 export let useAuthStore = defineStore('auth', {
     state: () => ({
-        user: <User>{},
+        user: Wrapper<User>.getEmpty<User>().toInitial(),
         jwt: '',
         isProcessing: false,
         returnUrl: '',
-        errorMessage: ''
+        errorMessage: '',
+        data: null,
     }),
     actions: {
         setReturnUrl(path: string) {
@@ -22,22 +24,19 @@ export let useAuthStore = defineStore('auth', {
             const {$auth, $analytics, $toast} = useNuxtApp()
 
             try {
-                this.isProcessing = true
+                this.user = new Wrapper(null).toLoading()
                 const response = await $auth.login({identifier: email, password})
 
                 //@ts-ignore
-                this.user = unref(response.user)
+                this.user = this.user.toSuccess(unref(response.user))
                 this.setToken(unref(response.jwt))
 
-                $analytics.identify(this.user?.email, this.user)
-
-                this.isProcessing = false
-                this.errorMessage = ''
+                //@ts-ignore
+                $analytics.identify(this.user.value.email, this.user)
             } catch (error) {
                 logDev('LOGIN ERROR', error)
-                this.isProcessing = false
-                //@ts-ignore
-                this.errorMessage = error.error.message
+
+                this.user = this.user.toFailed(error.error.message)
                 throw error
             }
         },
@@ -45,22 +44,18 @@ export let useAuthStore = defineStore('auth', {
         async register({email, password, firstName, lastName}: RegistrationData) {
             const {$auth, $analytics, $toast} = useNuxtApp()
             try {
-                this.isProcessing = true
+                this.user = new Wrapper(null).toLoading()
                 const username = generateUserName(email)
-                const response = await $auth.register({email, password, firstName, lastName, username})
-                //@ts-ignore
-                this.user = unref(response.user)
-                $analytics.identify(this.user?.email, this.user)
 
+                const response = await $auth.register({email, password, firstName, lastName, username})
+                this.user = this.user.toSuccess(unref(response.user))
+
+                // @ts-ignore
+                $analytics.identify(this.user.value?.email, this.user)
                 this.setToken(unref(response.jwt))
-                this.isProcessing = false
-                this.errorMessage = ''
             } catch (error) {
                 logDev(error)
-                this.isProcessing = false
-                //@ts-ignore
-                this.errorMessage = error.error.message
-                // $toast.error(this.errorMessage)
+                this.user = this.user.toFailed(error.error.message)
                 throw error
             }
         },
@@ -69,7 +64,7 @@ export let useAuthStore = defineStore('auth', {
                 logDev('LOGGING OUT...')
                 const {$auth, $analytics} = useNuxtApp()
                 await $auth.logout()
-                this.user = <User>{}
+                this.user = new Wrapper(null).toInitial()
                 this.setToken('')
                 $analytics.reset()
                 await useRouter().push({path: AppRoutes.login})
@@ -84,10 +79,11 @@ export let useAuthStore = defineStore('auth', {
         async fetchUser() {
             try {
                 if (this.isAuthenticated) {
-                    const {$auth} = useNuxtApp()
-                    const response = await $auth.fetchUser()
-                    this.user = unref(response.user)
-                    this.setToken(unref(response.jwt))
+                    const {$auth, $analytics} = useNuxtApp()
+                    const response: User = await $auth.fetchUser()
+                    $analytics.identify(response!.email, response)
+                    //@ts-ignore
+                    this.user = new Wrapper().toSuccess(response)
                 }
             } catch (error) {
                 logDev(error)
@@ -100,9 +96,12 @@ export let useAuthStore = defineStore('auth', {
     },
     getters: {
         hasTokenExpired: state => !!state.jwt && Date.now() > (jwtDecode(state.jwt).exp * 1000),
-        authUser: state => state.user as User,
-        isAuthenticated: state => !!state.user && Object.keys(state.user || {}).length > 0,
-        userFullName: state => `${state.user?.firstName ?? ''} ${state.user?.lastName ?? ''}`
+        authUser: state => (state.user._value as User),
+        isAuthenticated: state => {
+            return !!useAuthStore().authUser && Object.keys(useAuthStore().authUser).length > 0;
+        },
+        userFullName: state => `${useAuthStore().authUser?.firstName ?? ''} ${useAuthStore().authUser?.lastName ?? ''}`,
+        hasCompanies: (state) => useAuthStore().authUser?.companies?.length > 0
     },
     persist: {
         storage: persistedState.localStorage,

@@ -25,12 +25,12 @@
             <CustomInput name="password" placeholder="Password" v-model="formInput.password" type="password"/>
           </div>
           <button
-              :disabled="!canSubmit ||isProcessing"
+              :disabled="!canSubmit ||user.isLoading"
               class="primary-button flex items-center justify-center space-x-2"
               type="button"
               @click.prevent="submit"
           >
-            <LoadingSpinnerIcon v-if="isProcessing" class="text-primary animate-spin"/>
+            <LoadingSpinnerIcon v-if="user.isLoading" class="text-primary animate-spin"/>
             <span v-else> Create account</span>
 
           </button>
@@ -72,7 +72,7 @@ const {$toast, $analytics} = useNuxtApp()
 
 const authStore = useAuthStore()
 
-const {isProcessing, errorMessage, returnUrl} = storeToRefs(authStore)
+const {user, returnUrl} = storeToRefs(authStore)
 
 const {register} = authStore
 
@@ -97,7 +97,7 @@ const submit = async () => {
     $analytics.capture(AnalyticsEvent.successfulRegistration, formInput.value);
     await useRouter().push({path: !!returnUrl.value ? returnUrl.value : AppRoutes.welcome})
   } catch (e) {
-    $toast.error(errorMessage.value);
+    $toast.error(user.value.error);
   }
 }
 

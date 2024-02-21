@@ -80,8 +80,4 @@ export class Wrapper<Type = unknown> {
     toJSON() {
         return {...this};
     }
-
-    public myself(): Wrapper<Type> {
-        return this;
-    }
 }

@@ -22,12 +22,12 @@
                          inside-text="Forgot Password?"/>
           </div>
           <button
-              :disabled="!canSubmit ||isProcessing"
+              :disabled="!canSubmit ||user.isLoading"
               class="primary-button flex items-center justify-center space-x-2"
               type="button"
               @click.prevent="submit"
           >
-            <LoadingSpinnerIcon v-if="isProcessing" class="text-primary animate-spin"/>
+            <LoadingSpinnerIcon v-if="user.isLoading" class="text-primary animate-spin"/>
             <span v-else> Sign In</span>
 
           </button>
@@ -62,16 +62,15 @@ const {$toast, $analytics} = useNuxtApp()
 
 const authStore = useAuthStore()
 
-const {isProcessing, returnUrl} = storeToRefs(authStore)
+const {user, returnUrl} = storeToRefs(authStore)
+const canSubmit = ref(false)
+const {login} = authStore
 
 const formInput = ref({
   email: 'john@gmail.com',
   password: 'test1234',
 })
 
-const canSubmit = ref(false)
-
-const {login, errorMessage} = authStore
 
 watch(formInput, async (oldVal, newVal) => {
   canSubmit.value = await loginFormSchema.isValid(formInput.value);
@@ -94,7 +93,7 @@ const submit = async () => {
     $analytics.capture(AnalyticsEvent.successfulLogin)
     await useRouter().push({path: !!returnUrl.value ? returnUrl.value : AppRoutes.welcome})
   } catch (e) {
-    $toast.error(errorMessage);
+    $toast.error(user.value.error);
   }
 }
 

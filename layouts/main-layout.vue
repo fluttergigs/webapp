@@ -16,9 +16,9 @@ import {useAuthStore} from "~/stores/auth";
 
 onBeforeMount(async () => {
   await Promise.all([
-    await useCompanyStore().fetchCompanies(),
-    await useSettingStore().fetchSetting(),
-    await useAuthStore().fetchUser(),
+    useCompanyStore().fetchCompanies(),
+    useSettingStore().fetchSetting(),
+    useAuthStore().fetchUser(),
   ])
 
 })

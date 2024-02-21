@@ -2,7 +2,7 @@ import path from "path";
 
 export default defineNuxtConfig({
     experimental: {
-        renderJsonPayloads: true
+        renderJsonPayloads: false
     },
     app: {
         head: {

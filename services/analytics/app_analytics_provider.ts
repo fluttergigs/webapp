@@ -19,7 +19,9 @@ export class AppAnalyticsProvider {
     }
 
     capture(event: AnalyticsEvent, properties?: Object) {
-        this.client.captureEvent(event, properties);
+        if (import.meta.env.MODE === "development") {
+            this.client.captureEvent(event, properties);
+        }
         return this.client;
     }
 

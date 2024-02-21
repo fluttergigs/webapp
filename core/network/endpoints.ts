@@ -11,4 +11,8 @@ export class Endpoint {
     static get getJobs() {
         return `/jobs`
     }
+
+    static get getMe(){
+        return '/users/me'
+    }
 }

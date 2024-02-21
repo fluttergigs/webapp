@@ -16,11 +16,11 @@ export const useCompanyStore = defineStore('company', {
     actions: {
         async fetchCompanies(): PromiseVoid {
             try {
-                this.companyListResponse = new Wrapper(null, Status.loading)
+                //@ts-ignore
+                this.companyListResponse = new Wrapper().toLoading()
                 const {$http} = useNuxtApp()
                 const response = await $http.get(`${Endpoint.companies}?populate=*`)
                 this.companyListResponse = this.companyListResponse.toSuccess(response)
-                logDev('COMPANY RESPONSE', response)
             } catch (e) {
                 logDev('fetching companies error', e)
                 this.companyListResponse = this.companyListResponse.toFailed('Unable to fetch companies')
@@ -29,7 +29,8 @@ export const useCompanyStore = defineStore('company', {
 
         async createCompany(payload: CreateCompanyRequest): PromiseVoid {
             try {
-                this.companyCreation = new Wrapper(null, Status.loading)
+                //@ts-ignore
+                this.companyCreation = new Wrapper().toLoading()
                 const {$http} = useNuxtApp()
                 const response = await $http.post(`${Endpoint.companies}`, payload)
                 this.companyCreation = this.selectedCompany.toSuccess(response)
@@ -41,7 +42,8 @@ export const useCompanyStore = defineStore('company', {
 
         async findCompanyById(id: string): PromiseVoid {
             try {
-                this.selectedCompany = new Wrapper(null, Status.loading)
+                //@ts-ignore
+                this.selectedCompany = new Wrapper().toLoading()
                 const {$http} = useNuxtApp()
                 const response = await $http.get(`${Endpoint.companies}/$id?populate[0]=jobOffers`)
                 this.selectedCompany = this.selectedCompany.toSuccess(response)
@@ -52,7 +54,7 @@ export const useCompanyStore = defineStore('company', {
         }
     },
     getters: {
-        companies: (state) => state['companyListResponse'].value.data.map((item) => ({
+        companies: (state) => state['companyListResponse']._value.data.map((item) => ({
             ...item['attributes'],
             id: item['id']
         })),
@@ -61,7 +63,6 @@ export const useCompanyStore = defineStore('company', {
             const authUser = useAuthStore().authUser
 
             return (store.companies as Company[]).filter((company) => company.user.data.id === authUser?.id ?? '') > 0
-            // state.
         }
     },
     // persist: true,

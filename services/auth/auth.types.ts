@@ -1,14 +1,18 @@
+import {Company} from "~/features/companies/company.types";
+
 export interface RegistrationData {
     firstName: string,
     lastName: string,
     email: string,
     password: string,
+
     [name: string]: unknown,
 }
 
 export interface ResetPasswordData {
     email: string,
 }
+
 export interface ForgetPasswordData {
     email: string,
 }
@@ -26,5 +30,6 @@ export type User = {
     updatedAt?: string
     firstName: string
     lastName: string,
+    companies?: Company[]
     [key: string]: unknown,
 } | null
