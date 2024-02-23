@@ -1,6 +1,5 @@
 <template>
   <div class="flex flex-col w-full">
-
     <section class="py-8 px-2 md:py-16 xl:pb-56 bg-white overflow-hidden">
       <h3
           class="mb-4 text-4xl md:text-5xl font-heading font-bold tracking-px-n leading-tight">
@@ -13,7 +12,7 @@
         <div class="flex space-x-4 mb-5 w-full">
           <CustomInput class="w-1/2" name="name" label="Company name" placeholder="Name"
                        v-model="formInput.name"/>
-          <CustomInput class="w-1/2" name="email" label="Email" :is-disabled="true" v-model="formInput.email"/>
+          <CustomInput class="w-1/2" name="email" label="Email" type="email" :is-disabled="true" v-model="formInput.email"/>
         </div>
         <div class="block mb-5">
           <CustomInput name="url" label="Website" placeholder="Website" v-model="formInput.website" type="email"/>
@@ -38,7 +37,6 @@
         </button>
       </form>
     </section>
-
   </div>
 </template>
 
@@ -50,10 +48,11 @@ import {useAuthStore} from "~/stores/auth";
 import {companyUpdateFormSchema} from "~/core/validations/company.validations";
 import {AnalyticsEvent} from "~/services/analytics/events";
 import {useCompanyStore} from "~/stores/company";
+import {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider";
 
 useHead({title: "Flutter Gigs - Company information update"});
 
-definePageMeta({layout: 'app-layout', middleware: ['auth']})
+definePageMeta({layout: 'app-layout', middleware: ['auth', 'no-company']})
 
 const authStore = useAuthStore()
 const companyStore = useCompanyStore()
@@ -71,7 +70,7 @@ const formInput = ref({
 
 const canSubmit = ref(false)
 
-watch(formInput, async (oldVal, newVal) => {
+watch(formInput, async () => {
   canSubmit.value = await companyUpdateFormSchema.isValid(formInput.value);
 
 }, {deep: true, immediate: true},)
@@ -82,9 +81,9 @@ onMounted(() => {
 
 const submit = async () => {
   try {
-    $analytics.capture(AnalyticsEvent.companyUpdateButtonClicked, formInput.value);
-    await companyStore.updateCompany({data: formInput.value})
-    $analytics.capture(AnalyticsEvent.successfulCompanyUpdate, formInput.value);
+    (<AppAnalyticsProvider>$analytics).capture(AnalyticsEvent.companyUpdateButtonClicked, formInput.value);
+    await companyStore.updateCompany({data: formInput.value});
+    (<AppAnalyticsProvider>$analytics).capture(AnalyticsEvent.successfulCompanyUpdate, formInput.value);
 
     $toast.success(<string>companyStore.companyUpdate!.message);
   } catch (e) {

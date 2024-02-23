@@ -30,6 +30,7 @@ export type User = {
     updatedAt?: string
     firstName: string
     lastName: string,
+    bio: string,
     companies?: Company[]
     [key: string]: unknown,
 } | null

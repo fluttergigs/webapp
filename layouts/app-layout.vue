@@ -18,11 +18,13 @@
             </div>
           </nav>
     -->
-    <div class="navbar-menu max-w-xs  relative z-50 w-full xl:flex xl:flex-col transition-all ease-in">
+    <div class="navbar-menu max-w-xs relative z-50 w-full xl:flex xl:flex-col transition-all ease-in">
       <div class="navbar-backdrop fixed xl:hidden inset-0 bg-blueGray-50 opacity-10"></div>
       <div class="inset-0 max-w-xs bg-blueGray-50 border-r fixed transition-all ease-in">
         <div class="flex flex-wrap items-center justify-between px-7 py-6 pb-0">
-          <div class="w-auto"><a class="inline-block" href="#"><img src="@/assets/images/logo.svg" alt=""></a></div>
+          <div class="w-auto"><a class="inline-block" href="#">
+            <img src="@/assets/images/logo.svg" alt=""></a>
+          </div>
           <div class="w-auto"><a class="text-neutral-400 hover:text-neutral-500" href="#">
             <ArrowBackIcon/>
           </a>
@@ -100,6 +102,9 @@ import {
 } from '@heroicons/vue/24/outline'
 import {AppRoutes} from "~/core/routes";
 import ArrowBackIcon from "~/components/icons/ArrowBackIcon.vue";
+import {useCompanyStore} from "~/stores/company";
+import {useSettingStore} from "~/stores/setting";
+import {useAuthStore} from "~/stores/auth";
 
 
 const links = ref([
@@ -128,6 +133,13 @@ const menuLinks = computed(() => {
 
 })
 
+onBeforeMount(async () => {
+  await Promise.all([
+    useCompanyStore().fetchCompanies(),
+    useSettingStore().fetchSetting(),
+    useAuthStore().fetchUser(),
+  ])
+})
 
 </script>
 

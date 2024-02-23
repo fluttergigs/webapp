@@ -14,32 +14,35 @@
         </slot>
 
 
-
-          <textarea v-if="isTextArea"
-                    v-model="value"
-                    class="custom-input"
-                    :disabled="isDisabled"
-                    :name="name"
-                    :placeholder="placeholder">
+        <textarea
+            v-model="fieldValue"
+            v-if="isTextArea"
+            :class="['custom-input',isDisabled? 'disabled:opacity-50 cursor-not-allowed':'']"
+            :disabled="isDisabled"
+            :name="name"
+            :placeholder="placeholder">
 
           </textarea>
-          <input v-else
-                 v-model="value"
-                 class="custom-input"
-                 :type="type"
-                 :name="name"
-                 :disabled="isDisabled"
-                 :placeholder="placeholder"
-          />
+        <input v-model="fieldValue" v-else
+               :class="['custom-input',isDisabled? 'disabled:opacity-50 cursor-not-allowed':'']"
+               :type="type"
+               :name="name"
+               :disabled="isDisabled"
+               :placeholder="placeholder"
+        />
 
       </div>
-      <p class="text-red-600 text-start text-sm capitalize">{{ errorMessage }}
+      <p v-if="true" class="text-red-600 text-start text-sm capitalize">
+        {{ errorMessage }}
       </p>
     </client-only>
   </div>
 </template>
 
 <script setup>
+import {useField} from 'vee-validate';
+import * as yup from 'yup';
+
 
 const props = defineProps({
   name: {
@@ -76,7 +79,7 @@ const props = defineProps({
   isDisabled: {
     type: Boolean,
     default: false,
-  }
+  },
 })
 
 const emits = defineEmits(['update:modelValue', 'insideTextClicked'])
@@ -84,21 +87,31 @@ const emits = defineEmits(['update:modelValue', 'insideTextClicked'])
 const hasLabel = computed(() => !!props.label)
 const hasIcon = computed(() => !!props.icon)
 
-import {useField} from 'vee-validate';
-import * as yup from 'yup';
+const fieldValue = computed({
+  get: () => props.modelValue,
+  set: (val) => emits('update:modelValue', val)
+})
+
 
 const validators = {
   email: yup.string().email().required().label(hasLabel ? props.label : 'Email'),
   name: yup.string().required().min(2).label(hasLabel ? props.label : 'Name'),
   lastName: yup.string().required().min(2).label(hasLabel ? props.label : 'Last name'),
   firstName: yup.string().required().min(2).label(hasLabel ? props.label : 'First name'),
+  username: yup.string().required().min(2).label(hasLabel ? props.label : 'Username'),
   //TODO - change password min length to 8
   password: yup.string().required().min(5).label(hasLabel ? props.label : 'Password'),
-  description: yup.string().required().min(15).label(hasLabel ? props.label : 'Description'),
+
+  //TODO - check confirm password match
+  confirmPassword: yup.string().label(hasLabel ? props.label : 'Confirm password')
+      .oneOf([yup.ref('password'), null], 'Passwords must match'),
+
+  description: yup.string().required().min(15).max(200).label(hasLabel ? props.label : 'Description'),
+  bio: yup.string().min(15).max(200).label(hasLabel ? props.label : 'Bio'),
   url: yup.string().url().label(hasLabel ? props.label : 'Url'),
 }
 
-const {errorMessage, value, meta: {valid, dirty}} = useField(() => props.name, validators[props.name]);
+const {errorMessage, meta: {valid, dirty, touched}} = useField(() => props.name, validators[props.name], {syncVModel: true});
 </script>
 
 <style scoped>

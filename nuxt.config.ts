@@ -1,8 +1,13 @@
 import path from "path";
 
+
+//@ts-ignore
 export default defineNuxtConfig({
     experimental: {
         renderJsonPayloads: false
+    },
+    colorMode: {
+        preference: 'light',
     },
     app: {
         head: {
@@ -11,7 +16,7 @@ export default defineNuxtConfig({
                 lang: "en",
             },
             meta: [
-                { charset: "utf-8" },
+                { charset: "utf-8"},
                 {
                     name: "viewport",
                     content:
@@ -55,9 +60,8 @@ export default defineNuxtConfig({
         // '@nuxtjs/tailwindcss',
         // 'nuxt-appwrite',
         '@nuxtjs/strapi',
-        // '@nuxthq/ui'
+        '@nuxt/ui'
     ],
-
     runtimeConfig: {
         strapiEndpoint: "",
         posthogKey:"",
@@ -92,10 +96,7 @@ export default defineNuxtConfig({
         langDir: "locales/",
     },
     plugins: [
-        { src: "~/plugins/vue3-popper", mode: "client" },
-        { src: "~/plugins/perfect-scrollbar" },
         { src: "~/plugins/tippy", mode: "client" },
-        { src: "~/plugins/vue3-json-excel", mode: "client" },
         { src: "~/plugins/maska", mode: "client" },
         { src: "~/plugins/vue-easymde", mode: "client" },
         { src: "~/plugins/vue3-apexcharts", mode: "client" },
@@ -103,13 +104,13 @@ export default defineNuxtConfig({
         { src: "~/plugins/toaster", mode: "client" },
     ],
     vite: {
-        optimizeDeps: { include: ["quill"] },
-        /*resolve: {
+        // optimizeDeps: { include: ["quill"] },
+        resolve: {
             alias: {
                 vue: path.resolve('./node_modules/vue', 'dist', 'vue.runtime.esm-bundler.js')
             },
             preserveSymlinks: false
-        },*/
+        },
     },
     router: {
         options: { linkExactActiveClass: "active" },

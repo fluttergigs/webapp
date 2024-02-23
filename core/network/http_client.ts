@@ -1,4 +1,5 @@
-abstract class HttpClient<Response> {
+// @ts-ignore
+abstract class HttpClient<Response = any> {
 
     abstract get(url: String): Promise<Response>;
 

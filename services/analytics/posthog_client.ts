@@ -14,7 +14,7 @@ export class PosthogClient implements AppAnalytics {
                 debug: import.meta.env.MODE === "development",
                 advanced_disable_decide: import.meta.env.MODE === "development",
                 // api_host: "https://app.posthog.com",
-                loaded: (posthog) => {
+                loaded: (posthog: any) => {
                     posthog.debug(import.meta.env.MODE === "development");
                 }
             });

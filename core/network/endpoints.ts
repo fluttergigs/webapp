@@ -8,6 +8,10 @@ export class Endpoint {
         return '/companies'
     }
 
+    static get users() {
+        return '/users'
+    }
+
     static get getJobs() {
         return `/jobs`
     }

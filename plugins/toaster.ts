@@ -4,7 +4,11 @@ import * as toast from 'vue-toast-notification';
 export default defineNuxtPlugin(() => {
     return {
         provide: {
-            toast: toast.useToast()
+            toast: toast.useToast({
+                position: 'top',
+                pauseOnHover: true,
+                dismissible: true,
+            })
         }
     }
 });

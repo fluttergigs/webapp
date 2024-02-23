@@ -10,7 +10,13 @@ export const enum AnalyticsEvent {
     companyCreationPageEntered = "companyCreationPageEntered",
     companyCreationButtonClicked = "companyCreationButtonClicked",
     successfulCompanyCreation = "successfulCompanyCreation",
-    companyUpdatePageEntered ="companyUpdatePageEntered",
-    companyUpdateButtonClicked ="companyUpdateButtonClicked",
-    successfulCompanyUpdate="successfulCompanyUpdate",
+    companyUpdatePageEntered = "companyUpdatePageEntered",
+    companyUpdateButtonClicked = "companyUpdateButtonClicked",
+    successfulCompanyUpdate = "successfulCompanyUpdate",
+    userAccountPageEntered = "userAccountPageEntered",
+    userUpdateButtonClicked = "userUpdateButtonClicked",
+    successfulUserInfoUpdate = "successfulUserInfoUpdate",
+    changePasswordButtonClicked = "changePasswordButtonClicked",
+    successfulPasswordChange = "successfulPasswordChange",
+    error = "error"
 }

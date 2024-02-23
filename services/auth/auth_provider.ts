@@ -6,7 +6,7 @@ export class AuthProvider {
 
     private authService: AuthService<LoginData, RegistrationData>;
 
-    protected constructor(service: AuthService<LoginData, RegistrationData>) {
+     constructor(service: AuthService<LoginData, RegistrationData>) {
         this.authService = service;
     }
 

@@ -26,7 +26,7 @@ export const useCompanyStore = defineStore('company', {
                 // @ts-ignore
                 this.companyListResponse = new Wrapper<ListCompanyApiResponse>().toLoading()
                 const {$http} = useNuxtApp()
-                const response = await $http.get(`${Endpoint.companies}?populate=*`)
+                const response = await (<HttpClient>$http).get(`${Endpoint.companies}?populate=*`)
                 // @ts-ignore
                 this.companyListResponse = this.companyListResponse.toSuccess(response)
             } catch (e) {
@@ -40,7 +40,7 @@ export const useCompanyStore = defineStore('company', {
                 //@ts-ignore
                 this.companyCreation = new Wrapper().toLoading()
                 const {$http} = useNuxtApp()
-                const response = await $http.post(`${Endpoint.companies}`, payload)
+                const response = await (<HttpClient>$http).post(`${Endpoint.companies}`, payload)
                 //@ts-ignore
                 this.companyCreation = this.companyCreation.toSuccess(response, AppStrings.yourCompanyHasBeenCreatedSuccessfully.replaceAll('{{name}}', payload.data.name))
                 // logDev('COMPANY RESPONSE', response)
@@ -56,7 +56,7 @@ export const useCompanyStore = defineStore('company', {
                 //@ts-ignore
                 this.companyUpdate = new Wrapper<SingleApiResponse<Company>>().toLoading()
                 const {$http} = useNuxtApp()
-                const response = await $http.put(`${Endpoint.companies}/${useAuthStore().myCompany.id}`, payload)
+                const response = await (<HttpClient>$http).put(`${Endpoint.companies}/${useAuthStore().myCompany.id}`, payload)
                 //@ts-ignore
                 this.companyUpdate = this.companyUpdate.toSuccess(response, AppStrings.yourCompanyHasBeenUpdatedSuccessfully.replaceAll('{{name}}', payload.data.name))
                 // logDev('COMPANY RESPONSE', response)
@@ -72,7 +72,7 @@ export const useCompanyStore = defineStore('company', {
                 //@ts-ignore
                 this.selectedCompany = new Wrapper().toLoading()
                 const {$http} = useNuxtApp()
-                const response = await $http.get(`${Endpoint.companies}/$id?populate[0]=jobOffers`)
+                const response = await (<HttpClient>$http).get(`${Endpoint.companies}/$id?populate[0]=jobOffers`)
                 //@ts-ignore
                 this.selectedCompany = this.selectedCompany.toSuccess(response)
                 logDev('COMPANY RESPONSE', response)

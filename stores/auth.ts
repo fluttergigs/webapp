@@ -4,13 +4,23 @@ import {AppRoutes} from "~/core/routes";
 import {generateUserName} from "~/core/utils";
 import {logDev} from "~/core/helpers/log";
 import {jwtDecode} from "jwt-decode";
+import {useNuxtApp} from "#imports"
 import {Wrapper} from "~/core/wrapper";
+import {SingleApiResponse} from "~/core/shared/types";
+import {Endpoint} from "~/core/network/endpoints";
+import {AppStrings} from "~/core/strings";
+import {UpdatePasswordRequest, UpdateUserRequest} from "~/features/users/user.types";
+import {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider";
+import type {AuthProvider} from "~/services/auth/auth_provider";
 
 
 //@ts-ignore
 export let useAuthStore = defineStore('auth', {
     state: () => ({
         user: new Wrapper<User>().toInitial(),
+        updateUser: new Wrapper<SingleApiResponse<User>>().toInitial(),
+        changePassword: new Wrapper<SingleApiResponse<User>>().toInitial(),
+        deleteAccount: new Wrapper().toInitial(),
         jwt: '',
         isProcessing: false,
         returnUrl: '',
@@ -25,7 +35,7 @@ export let useAuthStore = defineStore('auth', {
 
             try {
                 this.user = new Wrapper(null).toLoading()
-                const response = await $auth.login({identifier: email, password})
+                const response = await (<AuthProvider>$auth).login({identifier: email, password})
 
                 //@ts-ignore
                 this.user = this.user.toSuccess(unref(response.user))
@@ -36,7 +46,7 @@ export let useAuthStore = defineStore('auth', {
             } catch (error: any) {
                 logDev('LOGIN ERROR', error)
 
-                this.user = this.user.toFailed(error.error.message)
+                this.user = this.user.toFailed(error.error?.message ?? ' AppStrings.errorOccurred')
                 throw error
             }
         },
@@ -47,7 +57,7 @@ export let useAuthStore = defineStore('auth', {
                 this.user = new Wrapper(null).toLoading()
                 const username = generateUserName(email)
 
-                const response = await $auth.register({email, password, firstName, lastName, username})
+                const response = await (<AuthProvider>$auth).register({email, password, firstName, lastName, username});
                 this.user = this.user.toSuccess(unref(response.user))
 
                 // @ts-ignore
@@ -55,7 +65,7 @@ export let useAuthStore = defineStore('auth', {
                 this.setToken(unref(response.jwt))
             } catch (error: any) {
                 logDev(error)
-                this.user = this.user.toFailed(error.error.message)
+                this.user = this.user.toFailed(error.error?.message ?? AppStrings.errorOccurred)
                 throw error
             }
         },
@@ -63,10 +73,10 @@ export let useAuthStore = defineStore('auth', {
             try {
                 logDev('LOGGING OUT...')
                 const {$auth, $analytics} = useNuxtApp()
-                await $auth.logout()
+                await (<AuthProvider>$auth).logout()
                 this.user = new Wrapper(null).toInitial()
                 this.setToken('')
-                $analytics.reset()
+                (<AppAnalyticsProvider>$analytics).reset()
                 await useRouter().push({path: AppRoutes.login})
             } catch (error) {
                 logDev(error)
@@ -76,20 +86,52 @@ export let useAuthStore = defineStore('auth', {
             }
         },
 
-        async fetchUser() {
+        async updateUserInfo(payload: UpdateUserRequest, onDone?: Function) {
             try {
-                if (this.isAuthenticated) {
-                    const {$auth, $analytics} = useNuxtApp()
-                    const response: User = await $auth.fetchUser()
-                    $analytics.identify(response!.email!, response!)
-                    //@ts-ignore
-                    this.user = new Wrapper().toSuccess(response)
-                }
-            } catch (error) {
-                logDev(error)
+                //@ts-ignore
+                this.updateUser = new Wrapper<SingleApiResponse<User>>().toLoading()
+                const {$http} = useNuxtApp()
+                const response = await (<HttpClient>$http).put(`${Endpoint.users}/${useAuthStore().authUser.id}`, payload);
+                //@ts-ignore
+                this.updateUser = this.updateUser.toSuccess(response, AppStrings.yourProfileInfoHasBeenUpdatedSuccessfully)
+                // logDev('COMPANY RESPONSE', response)
+            } catch (e) {
+                //@ts-ignore
+                this.updateUser = this.updateUser.toFailed(AppStrings.unableToUpdateProfileInfo)
+                throw e
             }
         },
 
+        async changeUserPassword(payload: UpdatePasswordRequest, onDone?: Function) {
+            try {
+                //@ts-ignore
+                this.changePassword = new Wrapper<SingleApiResponse<User>>().toLoading()
+                const {$http} = useNuxtApp()
+                const response = await (<HttpClient>$http).put(`${Endpoint.users}/${useAuthStore().authUser.id}`, payload);
+                //@ts-ignore
+                this.changePassword = this.changePassword.toSuccess(response, AppStrings.yourPasswordHasBeenUpdatedSuccessfully)
+                // logDev('COMPANY RESPONSE', response)
+            } catch (e) {
+                //@ts-ignore
+                this.changePassword = this.changePassword.toFailed(AppStrings.unableToUpdateYourPassword)
+                throw e
+            }
+        },
+        async fetchUser() {
+            const {$auth, $analytics} = useNuxtApp()
+            try {
+                if (this.isAuthenticated) {
+                    const response: User = await ($auth as AuthProvider).fetchUser();
+                    //@ts-ignore
+                    (<AppAnalyticsProvider>$analytics).identify(response!.email!, response!);
+                    //@ts-ignore
+                    this.user = new Wrapper().toSuccess(response);
+                }
+            } catch (error) {
+                // $analytics.capture(AnalyticsEvent.error, {user: this.user})
+                logDev(error)
+            }
+        },
         setToken(token: string) {
             this.jwt = token;
         }
