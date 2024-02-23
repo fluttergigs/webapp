@@ -1,6 +1,5 @@
 import {defineStore} from "pinia";
 import {LoginData, RegistrationData, User} from "~/services/auth/auth.types";
-import {useNuxtApp} from "#app";
 import {AppRoutes} from "~/core/routes";
 import {generateUserName} from "~/core/utils";
 import {logDev} from "~/core/helpers/log";
@@ -11,7 +10,7 @@ import {Wrapper} from "~/core/wrapper";
 //@ts-ignore
 export let useAuthStore = defineStore('auth', {
     state: () => ({
-        user: new Wrapper().toInitial(),
+        user: new Wrapper<User>().toInitial(),
         jwt: '',
         isProcessing: false,
         returnUrl: '',

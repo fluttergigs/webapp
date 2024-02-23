@@ -12,10 +12,7 @@ const headers = {
 };
 
 //@ts-ignore
-
-
-type Response = { data, [key: string] }
-
+export type Response<T = any> = { data: T, [key: string] }
 
 export class Fetcher implements HttpClient<Response> {
 

@@ -55,7 +55,7 @@
               </div>
               <div class="w-full md:w-auto p-2.5">
                 <div class="block">
-                  <button @click="handleJobCreation"
+                  <button @click="useCompanyActions().handleJobCreation"
                           class="py-4 px-9 w-full font-semibold border border-gray-300 hover:border-gray-400 rounded-xl focus:ring focus:ring-gray-50 bg-transparent hover:bg-gray-100 transition ease-in-out duration-200"
                           type="button"
                   >
@@ -89,16 +89,8 @@
 <script setup lang="ts">
 
 import {AppRoutes} from "~/core/routes";
-import {useAuthStore} from "~/stores/auth";
-
-const handleJobCreation = () => {
-  if (useAuthStore().hasCompanies) {
-    //TODO - go to job offer creation
-  } else {
-    navigateTo(AppRoutes.createCompany)
-  }
-}
-
+import useCompanyActions from '@/composables/useCompanyActions'
+import PhoneIcon from "~/components/icons/PhoneIcon.vue";
 </script>
 <style scoped>
 

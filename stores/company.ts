@@ -4,7 +4,7 @@ import {Wrapper} from "~/core/wrapper";
 import {logDev} from "~/core/helpers/log";
 import {Company, CreateCompanyRequest, ListCompanyApiResponse} from "~/features/companies/company.types";
 import {SingleApiResponse} from "~/core/shared/types";
-
+import {AppStrings} from "~/core/strings";
 
 // @ts-ignore
 export const useCompanyStore = defineStore('company', {
@@ -24,24 +24,22 @@ export const useCompanyStore = defineStore('company', {
                 this.companyListResponse = this.companyListResponse.toSuccess(response)
             } catch (e) {
                 logDev('fetching companies error', e)
-                this.companyListResponse = this.companyListResponse.toFailed('Unable to fetch companies')
+                this.companyListResponse = this.companyListResponse.toFailed(AppStrings.unableToFetchCompanies)
             }
         },
 
         async createCompany(payload: CreateCompanyRequest): Promise<void> {
             try {
-
-                logDev('CREATE COMPANY REQUEST', payload)
                 //@ts-ignore
                 this.companyCreation = new Wrapper().toLoading()
                 const {$http} = useNuxtApp()
                 const response = await $http.post(`${Endpoint.companies}`, payload)
                 //@ts-ignore
-                this.companyCreation = this.companyCreation.toSuccess(response, `Your company ${payload.data.name} has been created successfully`)
+                this.companyCreation = this.companyCreation.toSuccess(response, AppStrings.yourCompanyHasBeenCreatedSuccessfully.replaceAll('{{name}}', payload.data.name))
                 // logDev('COMPANY RESPONSE', response)
             } catch (e) {
                 //@ts-ignore
-                this.companyCreation = this.companyCreation.toFailed(`Unable to create company with data: ${payload.data.name}`)
+                this.companyCreation = this.companyCreation.toFailed(AppStrings.unableToCreateCompany.replaceAll('{{name}}', payload.data.name))
                 throw e
             }
         },
@@ -56,7 +54,7 @@ export const useCompanyStore = defineStore('company', {
                 this.selectedCompany = this.selectedCompany.toSuccess(response)
                 logDev('COMPANY RESPONSE', response)
             } catch (e) {
-                this.selectedCompany = this.selectedCompany.toFailed(`Unable to fetch company with id: ${id}`)
+                this.selectedCompany = this.selectedCompany.toFailed(AppStrings.unableToFetchCompany)
             }
         }
     },

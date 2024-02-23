@@ -3,7 +3,7 @@
 </template>
 
 <script setup>
-definePageMeta({layout: 'app-layout'})
+definePageMeta({layout: 'app-layout', middleware: ['no-company']})
 
 </script>
 

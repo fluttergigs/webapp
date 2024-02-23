@@ -16,10 +16,9 @@ const props = defineProps({
 <template>
 
   <client-only>
-    <section class="py-16 xl:pb-56 bg-white overflow-hidden">
+    <section class="py-8 md:py-16 xl:pb-56 bg-white overflow-hidden">
       <div class="container px-4 mx-auto">
         <div class="text-center max-w-lg mx-auto">
-
           <slot name="logo">
             <NuxtLink class="mb-36 inline-block" to="/">
               <img src="@/assets/images/logo.svg" alt=""/>
