@@ -20,7 +20,6 @@ onBeforeMount(async () => {
     useSettingStore().fetchSetting(),
     useAuthStore().fetchUser(),
   ])
-
 })
 
 </script>

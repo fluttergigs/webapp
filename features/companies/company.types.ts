@@ -7,12 +7,12 @@ export interface Company {
     email: string,
     logo: string,
     job_offers: [],
-    user: UserApiResponse
-
-    [key: string]: string,
+    description: string,
+    user: UserApiResponse,
+    [key: string]: any,
 }
 
-export type CreateCompanyRequest = Omit<Company, 'user_id' | 'job_offers'>
+export type CreateCompanyRequest = { data: { description: string & Omit<Company, 'job_offers' | 'user'> }, }
 
 export type ListCompanyApiResponse = MultiApiResponse<Company>
 

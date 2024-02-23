@@ -15,8 +15,8 @@
         </p>
         <form class="flex flex-col space-y-4">
           <div class="flex space-x-4 mb-5 w-full">
-            <CustomInput name="firstName" placeholder="First name" v-model="formInput.firstName"/>
-            <CustomInput name="lastName" placeholder="Last name" v-model="formInput.lastName"/>
+            <CustomInput class="w-1/2" name="firstName" placeholder="First name" v-model="formInput.firstName"/>
+            <CustomInput class="w-1/2" name="lastName" placeholder="Last name" v-model="formInput.lastName"/>
           </div>
           <div class="block mb-5">
             <CustomInput name="email" placeholder="Email address" v-model="formInput.email" type="email"/>
@@ -56,7 +56,7 @@ import {AnalyticsEvent} from "~/services/analytics/events";
 useHead({title: "Flutter Gigs - Authentication"});
 
 definePageMeta({
-  middleware: ['logged-in']
+  middleware: ['logged-in'],
 })
 
 let formInput = ref({
@@ -97,7 +97,7 @@ const submit = async () => {
     $analytics.capture(AnalyticsEvent.successfulRegistration, formInput.value);
     await useRouter().push({path: !!returnUrl.value ? returnUrl.value : AppRoutes.welcome})
   } catch (e) {
-    $toast.error(user.value.error);
+    $toast.error(user.value.message);
   }
 }
 

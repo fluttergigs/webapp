@@ -93,7 +93,7 @@ const submit = async () => {
     $analytics.capture(AnalyticsEvent.successfulLogin)
     await useRouter().push({path: !!returnUrl.value ? returnUrl.value : AppRoutes.welcome})
   } catch (e) {
-    $toast.error(user.value.error);
+    $toast.error(user.value.message);
   }
 }
 

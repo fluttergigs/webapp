@@ -6,5 +6,8 @@ export const enum AnalyticsEvent {
     successfulLogin = "successfulLogin",
     successfulRegistration = "successfulRegistration",
     jobOfferClicked = "jobOfferClicked",
-    postJobOfferButtonClicked = "postJobOfferButtonClicked"
+    postJobOfferButtonClicked = "postJobOfferButtonClicked",
+    companyCreationPageEntered = "companyCreationPageEntered",
+    companyCreationButtonClicked = "companyCreationButtonClicked",
+    successfulCompanyCreation = "successfulCompanyCreation"
 }

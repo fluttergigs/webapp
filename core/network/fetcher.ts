@@ -1,4 +1,3 @@
-import {String} from "postcss-selector-parser";
 import {FetchOptions} from "ofetch";
 import {$fetchInterceptor} from "~/core/network/interceptor";
 
@@ -43,7 +42,7 @@ export class Fetcher implements HttpClient<Response> {
         this.instance = $fetch.create(this.fetchOptions);
     }
 
-    async delete(url: String, config?: Record<any, any>) {
+    async delete(url: String, config?: Record<any, any>): Promise<Response> {
 
         return await this.instance(this.baseURL + url, {
             method: 'delete',

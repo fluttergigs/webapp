@@ -22,4 +22,6 @@ export class AppRoutes {
     static alerts = '/alerts'
 
     static dashboard = '/dashboard'
+
+    static createCompany = '/companies/create'
 }

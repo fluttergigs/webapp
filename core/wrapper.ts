@@ -9,38 +9,39 @@ export class Wrapper<Type = unknown> {
     _status = Status.initial;
     _value: Type = <Type>{};
 
-    error?: string;
+    message?: String;
 
     public static getEmpty() {
         return new Wrapper();
     }
 
     constructor(value?: Type, status?: Status, errorMessage?: String) {
-        this._value = value!;
+        this._value = value ?? <Type>{};
         this._status = status!;
-        this.error = errorMessage
+        this.message = errorMessage!
     }
 
     public copyWith(value?: Type, status?: Status, errorMessage?: String): Wrapper<Type> {
         return new Wrapper(
             value ?? this._value,
             status ?? this._status,
-            errorMessage ?? this.error,
+            errorMessage ?? this.message,
         )
     }
 
-    public toSuccess(value: Type) {
+    public toSuccess(value: Type, message?: string) {
         return new Wrapper(
             value,
-            Status.success
+            Status.success,
+            message ?? ''
         );
     }
 
     public toFailed(error: any): Wrapper<Type> {
         return new Wrapper<Type>(
-            {},
+            <Type>{},
             Status.failure,
-            error
+            error ?? 'Error occurred'
         );
     }
 
