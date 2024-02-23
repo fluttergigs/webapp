@@ -2,9 +2,15 @@ import {defineStore} from "pinia";
 import {Endpoint} from "~/core/network/endpoints";
 import {Wrapper} from "~/core/wrapper";
 import {logDev} from "~/core/helpers/log";
-import {Company, CreateCompanyRequest, ListCompanyApiResponse} from "~/features/companies/company.types";
+import {
+    Company,
+    CreateCompanyRequest,
+    ListCompanyApiResponse,
+    UpdateCompanyRequest
+} from "~/features/companies/company.types";
 import {SingleApiResponse} from "~/core/shared/types";
 import {AppStrings} from "~/core/strings";
+import {useAuthStore} from "~/stores/auth";
 
 // @ts-ignore
 export const useCompanyStore = defineStore('company', {
@@ -12,6 +18,7 @@ export const useCompanyStore = defineStore('company', {
         companyListResponse: new Wrapper<ListCompanyApiResponse>().toInitial(),
         selectedCompany: Wrapper.getEmpty().toInitial(),
         companyCreation: new Wrapper<SingleApiResponse<Company>>().toInitial(),
+        companyUpdate: new Wrapper<SingleApiResponse<Company>>().toInitial(),
     }),
     actions: {
         async fetchCompanies(): Promise<void> {
@@ -40,6 +47,22 @@ export const useCompanyStore = defineStore('company', {
             } catch (e) {
                 //@ts-ignore
                 this.companyCreation = this.companyCreation.toFailed(AppStrings.unableToCreateCompany.replaceAll('{{name}}', payload.data.name))
+                throw e
+            }
+        },
+
+        async updateCompany(payload: UpdateCompanyRequest): Promise<void> {
+            try {
+                //@ts-ignore
+                this.companyUpdate = new Wrapper<SingleApiResponse<Company>>().toLoading()
+                const {$http} = useNuxtApp()
+                const response = await $http.put(`${Endpoint.companies}/${useAuthStore().myCompany.id}`, payload)
+                //@ts-ignore
+                this.companyUpdate = this.companyUpdate.toSuccess(response, AppStrings.yourCompanyHasBeenUpdatedSuccessfully.replaceAll('{{name}}', payload.data.name))
+                // logDev('COMPANY RESPONSE', response)
+            } catch (e) {
+                //@ts-ignore
+                this.companyUpdate = this.companyUpdate.toFailed(AppStrings.unableToUpdateCompany.replaceAll('{{name}}', payload.data.name))
                 throw e
             }
         },

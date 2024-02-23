@@ -8,6 +8,7 @@ import {useAuthStore} from "~/stores/auth";
 import {useCompanyStore} from "~/stores/company";
 import {companyCreationFormSchema} from "~/core/validations/company.validations";
 import {AnalyticsEvent} from "~/services/analytics/events";
+import {CreateCompanyRequest} from "~/features/companies/company.types";
 
 
 useHead({title: "Flutter Gigs - Company creation"});
@@ -49,15 +50,16 @@ onMounted(() => {
 const submit = async () => {
   try {
     $analytics.capture(AnalyticsEvent.companyCreationButtonClicked, formInput.value);
+    //@ts-ignore
     await companyStore.createCompany({data: formInput.value})
     $analytics.capture(AnalyticsEvent.successfulCompanyCreation, formInput.value);
 
-    $toast.success(companyStore.companyCreation.message);
+    $toast.success(<string>companyStore.companyCreation.message);
 
     //TODO replace with post jobs or redirect to dashboard
     await useRouter().push({path: AppRoutes.welcome})
   } catch (e) {
-    $toast.error(companyStore.companyCreation.message);
+    $toast.error(<string>companyStore.companyCreation.message);
   }
 }
 </script>

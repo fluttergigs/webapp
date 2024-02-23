@@ -9,10 +9,15 @@ export interface Company {
     job_offers: [],
     description: string,
     user: UserApiResponse,
+
     [key: string]: any,
 }
 
-export type CreateCompanyRequest = { data: { description: string & Omit<Company, 'job_offers' | 'user'> }, }
+export type CreateCompanyRequestProps = { description: string & Omit<Company, 'job_offers' | 'user'> }
+
+export type CreateCompanyRequest = { data: CreateCompanyRequestProps }
+
+export type UpdateCompanyRequest = { data: Partial<CreateCompanyRequestProps> }
 
 export type ListCompanyApiResponse = MultiApiResponse<Company>
 

@@ -9,5 +9,8 @@ export const enum AnalyticsEvent {
     postJobOfferButtonClicked = "postJobOfferButtonClicked",
     companyCreationPageEntered = "companyCreationPageEntered",
     companyCreationButtonClicked = "companyCreationButtonClicked",
-    successfulCompanyCreation = "successfulCompanyCreation"
+    successfulCompanyCreation = "successfulCompanyCreation",
+    companyUpdatePageEntered ="companyUpdatePageEntered",
+    companyUpdateButtonClicked ="companyUpdateButtonClicked",
+    successfulCompanyUpdate="successfulCompanyUpdate",
 }

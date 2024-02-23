@@ -24,18 +24,15 @@
         <div class="flex flex-wrap items-center justify-between px-7 py-6 pb-0">
           <div class="w-auto"><a class="inline-block" href="#"><img src="@/assets/images/logo.svg" alt=""></a></div>
           <div class="w-auto"><a class="text-neutral-400 hover:text-neutral-500" href="#">
-            <svg width="18" height="14" viewBox="0 0 18 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path
-                  d="M6.97927 13.3637C7.27217 13.6566 7.74704 13.6566 8.03993 13.3637C8.33283 13.0708 8.33283 12.5959 8.03993 12.303L6.97927 13.3637ZM1.67627 7.00002L1.14594 6.46969C0.853046 6.76258 0.853046 7.23746 1.14594 7.53035L1.67627 7.00002ZM8.03993 1.69702C8.33283 1.40412 8.33283 0.92925 8.03993 0.636357C7.74704 0.343464 7.27217 0.343464 6.97927 0.636357L8.03993 1.69702ZM16.6763 7.75002C17.0905 7.75002 17.4263 7.41423 17.4263 7.00002C17.4263 6.58581 17.0905 6.25002 16.6763 6.25002V7.75002ZM8.03993 12.303L2.2066 6.46969L1.14594 7.53035L6.97927 13.3637L8.03993 12.303ZM2.2066 7.53035L8.03993 1.69702L6.97927 0.636357L1.14594 6.46969L2.2066 7.53035ZM1.67627 7.75002L16.6763 7.75002V6.25002L1.67627 6.25002L1.67627 7.75002Z"
-                  fill="currentColor"></path>
-            </svg>
-          </a></div>
+            <ArrowBackIcon/>
+          </a>
+          </div>
         </div>
         <div class="flex-1 flex flex-col justify-between py-8 overflow-x-hidden overflow-y-auto">
           <div class="flex flex-col flex-wrap px-7 mb-8 -m-2.5">
             <div class="w-auto p-2.5">
               <a class="flex flex-wrap items-center space-x-3" href="#">
-                <PresentationChartBarIcon class="text-gray-600 w-5 h-5 w-5 h-5"/>
+                <PresentationChartBarIcon class="text-gray-600 w-5 h-5"/>
                 <p class="hover:text-neutral-700 font-medium">Dashboard</p></a>
             </div>
 
@@ -49,7 +46,7 @@
             </div>
             <div class="w-auto p-2.5">
               <a class="flex flex-wrap items-center space-x-3" href="#">
-                <ClipboardDocumentListIcon class="text-gray-600 w-5 h-5 w-5 h-5"/>
+                <ClipboardDocumentListIcon class="text-gray-600 w-5 h-5"/>
                 <p class="hover:text-neutral-700 font-medium">Jobs</p>
               </a>
             </div>
@@ -101,6 +98,8 @@ import {
   PresentationChartBarIcon,
   UserIcon
 } from '@heroicons/vue/24/outline'
+import {AppRoutes} from "~/core/routes";
+import ArrowBackIcon from "~/components/icons/ArrowBackIcon.vue";
 
 
 const links = ref([
@@ -110,22 +109,22 @@ const links = ref([
   },
   {
     icon: BuildingOffice2Icon,
-    path: '/account/company',
+    path: AppRoutes.myCompany,
     section: 'Company',
   },
   {
     icon: ClipboardDocumentListIcon,
-    path: '/account/jobs',
+    path: AppRoutes.myJobs,
     section: 'Company',
   },
   {
     icon: UserIcon,
-    path: '/account/company',
+    path: AppRoutes.myAccount,
     section: 'Account'
   }
 ])
 
-const menuLinks = computed(()=> {
+const menuLinks = computed(() => {
 
 })
 

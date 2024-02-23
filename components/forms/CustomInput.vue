@@ -18,6 +18,7 @@
           <textarea v-if="isTextArea"
                     v-model="value"
                     class="custom-input"
+                    :disabled="isDisabled"
                     :name="name"
                     :placeholder="placeholder">
 
@@ -27,6 +28,7 @@
                  class="custom-input"
                  :type="type"
                  :name="name"
+                 :disabled="isDisabled"
                  :placeholder="placeholder"
           />
 
@@ -70,6 +72,10 @@ const props = defineProps({
   isTextArea: {
     type: Boolean,
     default: false
+  },
+  isDisabled: {
+    type: Boolean,
+    default: false,
   }
 })
 

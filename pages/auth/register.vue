@@ -86,7 +86,7 @@ const submit = async () => {
     $analytics.capture(AnalyticsEvent.registrationButtonClicked, formInput.value);
     await register(formInput.value)
     $analytics.capture(AnalyticsEvent.successfulRegistration, formInput.value);
-    await useRouter().push({path: !!returnUrl.value ? returnUrl.value : AppRoutes.welcome})
+    await useRouter().push({path: !!returnUrl.value ? returnUrl.value : AppRoutes.myAccount})
   } catch (e) {
     $toast.error(user.value.message);
   }

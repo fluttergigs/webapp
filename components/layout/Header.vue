@@ -31,7 +31,7 @@
                   Login
                 </NuxtLink>
                 <NuxtLink v-else
-                          :to="AppRoutes.dashboard"
+                          :to="AppRoutes.myAccount"
                           class="transparent-button"
                 >
                   Hello 👋, {{ useAuthStore().userFullName }}
@@ -126,7 +126,7 @@
                       Login
                     </NuxtLink>
                     <NuxtLink v-else
-                              :to="AppRoutes.dashboard"
+                              :to="AppRoutes.myAccount"
                               class="transparent-button"
                     >
                       Hello 👋, {{ useAuthStore().userFullName }}

@@ -7,3 +7,5 @@ export const companyCreationFormSchema = yup.object({
     logo: yup.string().required().url().min(2).label('logo'),
     description: yup.string().required().min(10).label('description'),
 });
+
+export const companyUpdateFormSchema = companyCreationFormSchema
