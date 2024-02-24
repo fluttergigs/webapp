@@ -23,7 +23,7 @@ const canSubmit = ref(false)
 watch(formInput, async (oldVal: any, newVal: any) => {
   canSubmit.value = await updateUserFormSchema.isValid(formInput.value);
 
-}, {deep: true, immediate: true},)
+}, {deep: true},)
 
 const submit = async () => {
   try {

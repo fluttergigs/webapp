@@ -20,7 +20,7 @@ const canSubmit = ref(false)
 watch(formInput, async () => {
   canSubmit.value = await changePasswordFormSchema.isValid(formInput.value);
 
-}, {deep: true, immediate: true},)
+}, {deep: true},)
 
 const submit = async () => {
   try {
