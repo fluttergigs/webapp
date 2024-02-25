@@ -76,7 +76,7 @@ watch(formInput, async () => {
 }, {deep: true, immediate: true},)
 
 onMounted(() => {
-  $analytics.capture(AnalyticsEvent.companyUpdatePageEntered);
+  (<AppAnalyticsProvider>$analytics).capture(AnalyticsEvent.companyUpdatePageEntered);
 })
 
 const submit = async () => {

@@ -13,7 +13,6 @@
           </div>
         </slot>
 
-
         <textarea
             v-model="fieldValue"
             v-if="isTextArea"
@@ -42,7 +41,6 @@
 <script setup>
 import {useField} from 'vee-validate';
 import * as yup from 'yup';
-
 
 const props = defineProps({
   name: {
@@ -91,7 +89,6 @@ const fieldValue = computed({
   get: () => props.modelValue,
   set: (val) => emits('update:modelValue', val)
 })
-
 
 const validators = {
   email: yup.string().email().required().label(hasLabel ? props.label : 'Email'),

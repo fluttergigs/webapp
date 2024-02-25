@@ -83,7 +83,7 @@ export const useCompanyStore = defineStore('company', {
     },
     getters: {
         //@ts-ignore
-        companies: (state) => state.companyListResponse._value.data.map((item: { [x: string]: any; }) => ({
+        companies: (state) => state.companyListResponse?.value?.data?.map((item: { [x: string]: any; }) => ({
             ...item['attributes'],
             id: item['id']
         })),

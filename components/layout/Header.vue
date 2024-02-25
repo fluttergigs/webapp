@@ -33,8 +33,7 @@
                 <NuxtLink v-else
                           :to="AppRoutes.myAccount"
                           class="transparent-button"
-                >
-                  Hello 👋, {{ useAuthStore().userFullName }}
+                >👋, {{ useAuthStore().userFullName }}
                 </NuxtLink>
               </div>
             </ClientOnly>
@@ -129,7 +128,7 @@
                               :to="AppRoutes.myAccount"
                               class="transparent-button"
                     >
-                      Hello 👋, {{ useAuthStore().userFullName }}
+                      👋, {{ useAuthStore().userFullName }}
                     </NuxtLink>
                   </div>
                 </ClientOnly>

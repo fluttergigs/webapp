@@ -22,8 +22,10 @@
       <div class="navbar-backdrop fixed xl:hidden inset-0 bg-blueGray-50 opacity-10"></div>
       <div class="inset-0 max-w-xs bg-blueGray-50 border-r fixed transition-all ease-in">
         <div class="flex flex-wrap items-center justify-between px-7 py-6 pb-0">
-          <div class="w-auto"><a class="inline-block">
-            <img src="@/assets/images/logo.svg" alt=""></a>
+          <div class="w-auto">
+            <NuxtLink :to="AppRoutes.welcome" class="inline-block">
+              <img src="@/assets/images/logo.svg" alt="">
+            </NuxtLink>
           </div>
           <div class="w-auto">
             <a class="text-neutral-400 hover:text-neutral-500" href="#">
@@ -31,14 +33,13 @@
             </a>
           </div>
         </div>
-        <div class="flex-1 flex flex-col justify-between py-8 overflow-x-hidden overflow-y-auto">
+        <div class="flex-1 flex flex-col justify-between mx-4 py-8 overflow-x-hidden overflow-y-auto">
           <div class="flex flex-col flex-wrap px-7 mb-8 -m-2.5">
 
-            <div v-for="(linkItems,section) in groupedLinks" class="my-2">
-              <p v-if="!!section" class="w-auto text-xs text-neutral-400 font-medium uppercase mb-4">
+            <div v-for="(linkItems,section) in groupedLinks" class="my-3">
+              <p v-if="!!section" class="w-auto text-xs text-neutral-400 font-medium uppercase mb-2">
                 {{ section }}
               </p>
-
 
               <div class="w-auto py-2" v-for="link in linkItems">
                 <NuxtLink :to="link.path"
@@ -74,7 +75,7 @@ import {useCompanyStore} from "~/stores/company";
 import {useSettingStore} from "~/stores/setting";
 import {useAuthStore} from "~/stores/auth";
 import {groupBy} from "lodash"
-
+import {useJobStore} from "~/stores/job";
 
 const links = [
   {
@@ -107,6 +108,7 @@ const groupedLinks = computed(() => groupBy(links, 'section'))
 onBeforeMount(async () => {
   await Promise.all([
     useCompanyStore().fetchCompanies(),
+    useJobStore().fetchJobs(),
     useSettingStore().fetchSetting(),
     useAuthStore().fetchUser(),
   ])

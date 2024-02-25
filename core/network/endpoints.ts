@@ -12,8 +12,8 @@ export class Endpoint {
         return '/users'
     }
 
-    static get getJobs() {
-        return `/jobs`
+    static get jobOffers() {
+        return `/job-offers`
     }
 
     static get getMe(){

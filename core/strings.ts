@@ -2,6 +2,8 @@ export class AppStrings {
 
     static unableToFetchCompanies = "Unable to fetch companies"
 
+    static unableToFetchJobs = "Unable to fetch jobs"
+
     static yourCompanyHasBeenCreatedSuccessfully = "Your company {{name}} has been created successfully"
 
     static yourCompanyHasBeenUpdatedSuccessfully = "Your company {{name}} has been updated successfully"
@@ -11,6 +13,8 @@ export class AppStrings {
     static unableToUpdateCompany ="Unable to update company with name: {{name}}. Please try again!"
 
     static unableToFetchCompany ="Unable to fetch company"
+
+    static unableToFetchJob ="Unable to fetch job"
 
     static yourProfileInfoHasBeenUpdatedSuccessfully = "Your profile info has has been updated successfully"
 

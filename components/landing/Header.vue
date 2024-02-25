@@ -33,8 +33,8 @@
               </div>
             </div>
             <h1
-                class="mb-6 text-6xl md:text-8xl lg:text-10xl font-bold
-                md:max-w-xl leading-none primary-gradient"
+                class="mb-6 text-5xl md:text-7xl lg:text-8xl font-bold
+                leading-none primary-gradient"
                 contenteditable="false">
               The #1 Flutter job board in the ecosystem<br/>
             </h1>
@@ -45,7 +45,7 @@
             <div class="flex flex-wrap -m-2.5 mb-20">
               <div class="w-full md:w-auto p-2.5">
                 <div class="block">
-                  <button
+                  <button @click="navigateTo(AppRoutes.jobs)"
                       class="py-4 px-6 w-full text-white font-semibold border border-indigo-700 rounded-xl focus:ring focus:ring-indigo-300 bg-indigo-600 hover:bg-indigo-700 transition ease-in-out duration-200"
                       type="button"
                   >

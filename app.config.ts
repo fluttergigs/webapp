@@ -1,4 +1,7 @@
 export default defineAppConfig({
+    ui: {
+        ring: 'ring-1 ring-gray-200 dark:ring-gray-700',
+    }
     /*ui: {
         strategy: "override",
         primary: "cool",
