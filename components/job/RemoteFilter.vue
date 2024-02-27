@@ -12,7 +12,6 @@ const selected = ref(remoteOptions[0].id)
       searchable
       v-model="selected"
       size="lg"
-      multiple
       :options="remoteOptions"
       placeholder="Select your remote options"
       value-attribute="id"

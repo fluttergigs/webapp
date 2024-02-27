@@ -25,8 +25,6 @@
               <div class="inline-block">
                 <NuxtLink v-if="!isAuthenticated"
                           :to="AppRoutes.login"
-                          class="primary-button"
-                          type="button"
                 >
                   Login
                 </NuxtLink>
@@ -115,14 +113,11 @@
                   <div class="block">
                     <NuxtLink v-if="!isAuthenticated"
                               :to="AppRoutes.login"
-                              class="transparent-button"
-                              type="button"
                     >
                       Login
                     </NuxtLink>
                     <NuxtLink v-else
                               :to="AppRoutes.myAccount"
-                              class="transparent-button"
                     >
                       👋, {{ useAuthStore().userFullName }} My account
                     </NuxtLink>

@@ -69,4 +69,10 @@ export const useJobStore = defineStore('job', {
         }))
     },
     // persist: true,
+    persist:
+        {
+            paths: ["selectedJob"],
+            storage: persistedState.localStorage,
+            debug: import.meta.env.MODE === "development"
+        }
 })

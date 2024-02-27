@@ -24,18 +24,20 @@ const company = computed(() => ({
   ...extractCompanyFromJob(currentViewedJob.value)
 }));
 
+
+const jobSlug = ref(useRoute().params.slug)
+
 const {
   data,
   error,
   pending
 } = await useFetch(`${useRuntimeConfig().public.apiBaseUrl}${Endpoint.jobOffers}`, {
-  immediate: true,
   //@ts-ignore
   query: {
     populate: '*',
     filter: {
       slug: {
-        $eq: useRoute().params.slug
+        $eq: jobSlug.value,
       }
     },
   },
@@ -51,6 +53,9 @@ const {
 
 onMounted(() => {
   ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.jobOfferDetailEntered, {jobOffer: data})
+})
+
+onBeforeMount(() => {
   useJobStore().setSelectedJob(data)
 })
 </script>
@@ -115,18 +120,18 @@ onMounted(() => {
         </section>
 
         <!--      job details-->
-        <section class="font-normal flex flex-col my-4 gap-x-16 xl:flex-row">
-          <div class="flex flex-col flex-shrink-0 xl:w-[48rem] space-y-10">
+        <section class="font-normal flex flex-col my-4 gap-x-16 md:flex-row">
+          <div class="flex flex-col flex-shrink-0 w-full md:max-w-3xl space-y-10">
             <div class="space-y-10">
               <p class="leading-10">{{ company?.description }}</p>
               <p class="leading-10">{{ currentViewedJob?.description }}</p>
             </div>
 
             <!--          apply section-->
-            <JobApplicationCtaCard :job="data" :company="company"/>
+            <JobApplicationCtaCard class="hidden md:block" :job="data" :company="company"/>
           </div>
 
-          <div class="flex flex-col space-y-8">
+          <div class="flex flex-col space-y-8 mt-4">
             <JobApplicationCtaCard
                 :layout-direction="Direction.vertical"
                 :job="data"

@@ -68,11 +68,13 @@ export default defineNuxtConfig({
         posthogKey:"",
         posthogProjectId: "",
         apiBaseUrl: "",
+        googleGenerativeAiApiKey:"",
         public: {
             strapiEndpoint: "",
             posthogKey: "",
             posthogProjectId: "",
-            apiBaseUrl:""
+            apiBaseUrl:"",
+            googleGenerativeAiApiKey:"",
         },
     },
     strapi: {

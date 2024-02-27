@@ -3,7 +3,7 @@
 import KeywordFilter from "~/components/job/KeywordFilter.vue";
 import WorkTypeFilter from "~/components/job/WorkTypeFilter.vue";
 import SeniorityLevelFilter from "~/components/job/SeniorityLevelFilter.vue";
-import RemoteFilter from "~/components/job/RemoteFilter.vue";
+import RemoteOptionsFilter from "~/components/job/RemoteFilter.vue";
 </script>
 
 <template>
@@ -15,7 +15,7 @@ import RemoteFilter from "~/components/job/RemoteFilter.vue";
       <KeywordFilter/>
       <WorkTypeFilter/>
       <SeniorityLevelFilter/>
-      <RemoteFilter/>
+      <RemoteOptionsFilter/>
     </div>
   </section>
 
