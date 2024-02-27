@@ -11,11 +11,12 @@ const selected = ref(remoteOptions[0].id)
       clear-search-on-close
       searchable
       v-model="selected"
+      size="lg"
       multiple
       :options="remoteOptions"
       placeholder="Select your remote options"
       value-attribute="id"
-      option-attribute="name"
+      option-attribute="label"
   />
 </template>
 

@@ -103,12 +103,15 @@ const validators = {
   confirmPassword: yup.string().label(hasLabel ? props.label : 'Confirm password')
       .oneOf([yup.ref('password'), null], 'Passwords must match'),
 
-  description: yup.string().required().min(15).max(200).label(hasLabel ? props.label : 'Description'),
+  description: yup.string().required().min(30).max(400).label(hasLabel ? props.label : 'Description'),
   bio: yup.string().min(15).max(200).label(hasLabel ? props.label : 'Bio'),
   url: yup.string().url().label(hasLabel ? props.label : 'Url'),
 }
 
-const {errorMessage, meta: {valid, dirty, touched}} = useField(() => props.name, validators[props.name], {syncVModel: true});
+const {
+  errorMessage,
+  meta: {valid, dirty, touched}
+} = useField(() => props.name, validators[props.name], {syncVModel: true});
 </script>
 
 <style scoped>

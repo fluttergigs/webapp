@@ -13,7 +13,7 @@ const selected = ref(workTypeOptions[0].id)
       :options="workTypeOptions"
       placeholder="Select a work type option"
       value-attribute="id"
-      option-attribute="name"
+      option-attribute="label"
   />
 </template>
 

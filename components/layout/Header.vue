@@ -33,20 +33,16 @@
                 <NuxtLink v-else
                           :to="AppRoutes.myAccount"
                           class="transparent-button"
-                >👋, {{ useAuthStore().userFullName }}
+                >👋, {{ useAuthStore().userFullName }} My account
                 </NuxtLink>
               </div>
             </ClientOnly>
           </div>
           <div class="w-auto hidden lg:block">
-            <div class="inline-block">
-              <NuxtLink :to="AppRoutes.postJob"
-                        class="transparent-button"
-                        type="button"
-              >
-                Post a job
-              </NuxtLink>
-            </div>
+            <UButton block :to="AppRoutes.postJob" size="lg"
+                     class="bg-indigo-700"
+                     square label="Post a job" color="primary"
+                     variant="solid"/>
           </div>
           <div class="w-auto lg:hidden">
             <a href="#">
@@ -128,22 +124,16 @@
                               :to="AppRoutes.myAccount"
                               class="transparent-button"
                     >
-                      👋, {{ useAuthStore().userFullName }}
+                      👋, {{ useAuthStore().userFullName }} My account
                     </NuxtLink>
                   </div>
                 </ClientOnly>
 
               </div>
-              <div class="w-full">
-                <div class="block">
-                  <NuxtLink
-                      :to="AppRoutes.postJob"
-                      class="primary-button"
-                  >
-                    Post a job
-                  </NuxtLink>
-                </div>
-              </div>
+              <UButton :to="AppRoutes.postJob" size="lg"
+                       class="bg-indigo-700"
+                       square label="Post a job" color="primary"
+                       variant="solid"/>
             </div>
           </div>
         </div>
@@ -161,13 +151,13 @@ import {storeToRefs} from "pinia";
 const links = ref([{
   path: AppRoutes.jobs,
   name: 'Jobs',
-}, {
+}, /*{
   path: AppRoutes.hireFlutterDevs,
   name: 'Hire Flutter devs',
 }, {
   path: AppRoutes.alerts,
   name: 'Job Alerts',
-},
+},*/
   {
     path: AppRoutes.learn,
     name: 'Learn',

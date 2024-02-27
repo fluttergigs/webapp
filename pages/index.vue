@@ -1,7 +1,7 @@
 <template>
   <LandingHeader/>
 
-  <section class="relative pt-24 pb-36 bg-blueGray-50">
+  <section class="relative pt-6 pb-36 bg-blueGray-50">
     <img
         class="absolute left-1/2 bottom-0 transform -translate-x-1/2"
         src="@/assets/images/gradient2.svg"

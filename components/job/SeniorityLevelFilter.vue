@@ -10,11 +10,12 @@ const selected = ref(seniorityLevelOptions[0].id)
   <USelectMenu
       clear-search-on-close
       searchable
+      size="lg"
       v-model="selected"
       :options="seniorityLevelOptions"
       placeholder="Select a seniority level"
       value-attribute="id"
-      option-attribute="name"
+      option-attribute="label"
   />
 </template>
 

@@ -7,6 +7,10 @@ export class AppRoutes {
 
     static jobs = '/jobs/'
 
+    static jobDetail = (slug: string) => `/jobs/${slug}`;
+
+    static companyPage = (id: number) => `/companies/${id}`;
+
     static hireFlutterDevs = '/hire-flutter-devs'
 
     static learn = '/learn'

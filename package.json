@@ -33,6 +33,7 @@
         "@fullcalendar/timegrid": "^5.11.0",
         "@fullcalendar/vue3": "^5.11.1",
         "@heroicons/vue": "^2.0.18",
+        "@nuxt/image": "^1.3.0",
         "@nuxt/ui": "^2.14.0",
         "@pinia/nuxt": "^0.4.6",
         "@vuelidate/core": "^2.0.0",

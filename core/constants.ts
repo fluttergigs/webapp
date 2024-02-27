@@ -1,43 +1,63 @@
+import {CompanySize} from "~/features/companies/company.types";
+import {userFacingCompanySize} from "~/features/companies/transformers";
+import {RemoteOptions, SeniorityLevel, WorkType} from "~/features/jobs/job.types";
+import {userFacingRemoteOptions, userFacingSeniorityLevel, userFacingWorkType} from "~/features/jobs/transformers";
+
 export const workTypeOptions = [{
-    id: 'full-time',
-    label: 'Full time'
+    id: WorkType.fullTime,
+    label: userFacingWorkType(WorkType.fullTime),
 }, {
-    id: 'part-time',
-    name: 'Part time'
+    id: WorkType.partTime,
+    label: userFacingWorkType(WorkType.partTime),
 }, {
-    id: 'freelance',
-    name: 'Freelance'
+    id: WorkType.freelance,
+    label: userFacingWorkType(WorkType.freelance),
 }, {
-    id: 'contract',
-    name: 'Contract'
+    id: WorkType.contract,
+    label: userFacingWorkType(WorkType.contract),
 }, {
-    id: 'internship',
-    name: 'Internship'
+    id: WorkType.internship,
+    label: userFacingWorkType(WorkType.internship),
 }]
 
 
 export const seniorityLevelOptions = [{
-    id: 'junior',
-    label: 'Junior'
+    id: SeniorityLevel.junior,
+    label: userFacingSeniorityLevel(SeniorityLevel.junior),
 }, {
-    id: 'medium',
-    name: 'Medium'
+    id: SeniorityLevel.medium,
+    label: userFacingSeniorityLevel(SeniorityLevel.medium),
 }, {
-    id: 'senior',
-    name: 'Senior'
+    id: SeniorityLevel.senior,
+    label: userFacingSeniorityLevel(SeniorityLevel.senior),
 }, {
-    id: 'lead',
-    name: 'Lead'
+    id: SeniorityLevel.lead,
+    label: userFacingSeniorityLevel(SeniorityLevel.lead),
+}]
+
+export const companySizeOptions = [{
+    id: CompanySize.micro,
+    label: userFacingCompanySize(CompanySize.micro),
+}, {
+    id: CompanySize.small,
+    label: userFacingCompanySize(CompanySize.small),
+}, {
+    id: CompanySize.medium,
+    label: userFacingCompanySize(CompanySize.medium),
+}, {
+    id: CompanySize.large,
+    label: userFacingCompanySize(CompanySize.large),
 }]
 
 export const remoteOptions = [{
-    id: 'hybrid',
-    label: 'Hybrid'
+    id: RemoteOptions.hybrid,
+    label: userFacingRemoteOptions(RemoteOptions.hybrid),
 }, {
-    id: 'fullRemote',
-    name: 'Full Remote'
+    id: RemoteOptions.fullRemote,
+    label: userFacingRemoteOptions(RemoteOptions.fullRemote)
 }, {
-    id: 'noRemote',
-    name: 'No remote'
+    id: RemoteOptions.noRemote,
+    label: userFacingRemoteOptions(RemoteOptions.noRemote)
 }]
 
+export const defaultShimmerListItemsCount = 5

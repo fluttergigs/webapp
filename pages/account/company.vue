@@ -8,17 +8,32 @@
       <p class="text-xl ">Set your company information</p>
 
 
-      <form class="flex flex-col space-y-4 my-12 mr-8">
+      <form class="flex flex-col space-y-6 my-12 mr-8">
         <div class="flex space-x-4 mb-5 w-full">
           <CustomInput class="w-1/2" name="name" label="Company name" placeholder="Name"
                        v-model="formInput.name"/>
-          <CustomInput class="w-1/2" name="email" label="Email" type="email" :is-disabled="true" v-model="formInput.email"/>
+          <CustomInput class="w-1/2" name="email" label="Email" type="email" :is-disabled="true"
+                       v-model="formInput.email"/>
         </div>
         <div class="block mb-5">
           <CustomInput name="url" label="Website" placeholder="Website" v-model="formInput.website" type="email"/>
         </div>
         <div class="block mb-5">
           <CustomInput name="url" label="Company Logo url" placeholder="Logo" v-model="formInput.logo" type="text"/>
+        </div>
+        <div class="block mb-5">
+          <div class="space-y-2">
+            <p class="text-sm">Size</p>
+            <USelectMenu
+                clear-search-on-close
+                size="xl"
+                searchable
+                v-model="formInput.size"
+                :options="companySizeOptions"
+                placeholder="Select your company size"
+                value-attribute="id"
+                option-attribute="label"/>
+          </div>
         </div>
         <div class="block mb-5">
           <CustomInput :is-text-area="true" name="description" label="Description" placeholder="Description"
@@ -49,6 +64,8 @@ import {companyUpdateFormSchema} from "~/core/validations/company.validations";
 import {AnalyticsEvent} from "~/services/analytics/events";
 import {useCompanyStore} from "~/stores/company";
 import {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider";
+import {companySizeOptions} from "~/core/constants";
+import {CompanySize} from "~/features/companies/company.types";
 
 useHead({title: "Flutter Gigs - Company information update"});
 
@@ -65,7 +82,8 @@ const formInput = ref({
   name: authStore.myCompany.name,
   website: authStore.myCompany.website,
   logo: authStore.myCompany.logo,
-  description: authStore.myCompany.description
+  description: authStore.myCompany.description,
+  size: authStore.myCompany.size ?? CompanySize.small,
 })
 
 const canSubmit = ref(false)

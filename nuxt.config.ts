@@ -60,7 +60,8 @@ export default defineNuxtConfig({
         // '@nuxtjs/tailwindcss',
         // 'nuxt-appwrite',
         '@nuxtjs/strapi',
-        '@nuxt/ui'
+        '@nuxt/ui',
+        "@nuxt/image"
     ],
     runtimeConfig: {
         strapiEndpoint: "",

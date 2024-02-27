@@ -13,3 +13,8 @@ export interface MultiApiResponse<T> {
         attributes: T
     }[]
 }
+
+export enum Direction {
+    vertical ="vertical",
+    horizontal = "horizontal"
+}

@@ -13,9 +13,19 @@ export interface Company {
     description: string,
     user: UserApiResponse,
     createdAt: string,
+    size: CompanySize,
 
     [key: string]: any,
 }
+
+export enum CompanySize {
+    micro = "micro",
+    small = "small",
+    medium = "medium",
+    large = "large"
+}
+
+
 
 
 export type CompanyApiResponse = SingleApiResponse<Company>

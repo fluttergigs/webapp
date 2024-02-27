@@ -34,17 +34,23 @@ export const useJobStore = defineStore('job', {
             this.jobFiltersResponse = new Wrapper<MultiApiResponse<JobOffer>>().toLoading()
         },
 
-        async findJobById(id: string): Promise<void> {
+        async setSelectedJob(job: JobOffer) {
+            logDev('SETTING VIEWED JOB')
+            this.selectedJob = new Wrapper().toSuccess(job)
+            logDev('SETTING VIEWED JOB -- DONE')
+        },
+
+        async findJobById(job: JobOffer): Promise<void> {
             try {
                 //@ts-ignore
-                this.selectedJob = new Wrapper().toLoading()
+                this.selectedJob = new Wrapper().toLoading(job)
                 const {$http} = useNuxtApp()
-                const response = await (<HttpClient>$http).get(`${Endpoint.jobOffers}/$id?populate=*`)
+                const response = await (<HttpClient>$http).get(`${Endpoint.jobOffers}/${job.id}?populate=*`)
                 //@ts-ignore
                 this.selectedJob = this.selectedJob.toSuccess(response)
                 logDev('single Job RESPONSE', response)
             } catch (e) {
-                this.selectedJob = this.selectedJob.toFailed(AppStrings.unableToFetchJob)
+                this.selectedJob = this.selectedJob.toSuccess(job, AppStrings.unableToFetchJob)
             }
         }
     },
@@ -56,7 +62,8 @@ export const useJobStore = defineStore('job', {
                 id: item['id']
             }));
         },
-        filteredJobs: (state)=>   state.jobFiltersResponse?.value?.data?.map((item: { [x: string]: any; }) => ({
+        currentViewedJob: (state) => state.selectedJob.value,
+        filteredJobs: (state) => state.jobFiltersResponse?.value?.data?.map((item: { [x: string]: any; }) => ({
             ...item['attributes'],
             id: item['id']
         }))
