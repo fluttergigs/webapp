@@ -9,8 +9,8 @@ import {AnalyticsEvent} from "~/services/analytics/events";
 import {userFacingCompanySize} from "~/features/companies/transformers";
 import {AppRoutes} from "~/core/routes";
 import useJobActions from '@/composables/useJobActions'
-import JobApplicationCtaCard from "~/components/job/JobApplicationCtaCard.vue";
 import {Direction} from "~/core/shared/types";
+import CompanyInfoCard from "~/components/company/CompanyInfoCard.vue";
 
 definePageMeta({
   layout: 'main-layout'
@@ -21,7 +21,7 @@ const {$analytics} = useNuxtApp()
 const {currentViewedJob} = storeToRefs(useJobStore())
 
 const company = computed(() => ({
-  ...extractCompanyFromJob(currentViewedJob.value)
+  ...extractCompanyFromJob(data.value)
 }));
 
 
@@ -76,15 +76,13 @@ onBeforeMount(() => {
 
     <template v-else>
       <section class="bg-blueGray-50 w-full relative">
-        <div class="container px-14 py-6 md:py-14 mx-auto">
-          <img
-              class="w-24 h-22 shadow-sm rounded-full absolute left-12 top-16"
-              src="@/assets/images/avatar-circle.png"/>
+        <div class="container px-20 py-6 md:py-14 mx-auto">
+          <LazyUiAvatar class="absolute left-16 top-16"/>
         </div>
       </section>
-      <div class="px-14 py-20">
+      <div class="px-20 py-20">
         <section class="bg-white">
-          <div class="flex items-center justify-between">
+          <div class="flex flex-col items-start sm:flex-row sm:items-center sm:justify-between">
             <h2 class="text-xl md:text-5xl lg:text-7xl font-bold">
               {{ data?.title }}
             </h2>
@@ -95,13 +93,12 @@ onBeforeMount(() => {
                        square label="Share job offer" color="white"
                        variant="solid"/>
             </client-only>
-
           </div>
 
           <div class="flex space-x-4">
-            <a :href="AppRoutes.companyPage(company.id)" class="text-lg text-gray-900 font-medium">{{
-                company?.name
-              }}</a>
+            <a :href="AppRoutes.companyPage(company.id)" class="text-lg text-gray-900 font-medium">
+              {{ company?.name }}
+            </a>
 
             <div class="flex items-center space-x-1">
               <UIcon class="text-gray-600" name="i-heroicons-building-office"/>
@@ -122,27 +119,30 @@ onBeforeMount(() => {
         <!--      job details-->
         <section class="font-normal flex flex-col my-4 gap-x-16 md:flex-row">
           <div class="flex flex-col flex-shrink-0 w-full md:max-w-3xl space-y-10">
-            <div class="space-y-10">
+            <div class="space-y-10 text-gray-900 font-medium">
               <p class="leading-10">{{ company?.description }}</p>
               <p class="leading-10">{{ currentViewedJob?.description }}</p>
             </div>
 
             <!--          apply section-->
-            <JobApplicationCtaCard class="hidden md:block" :job="data" :company="company"/>
+            <LazyJobApplicationCtaCard class="hidden md:block" :job="data" :company="company"/>
           </div>
 
-          <div class="flex flex-col space-y-8 mt-4">
-            <JobApplicationCtaCard
-                :layout-direction="Direction.vertical"
+          <div class="flex flex-col space-y-9 w-full">
+            <LazyJobApplicationCtaCard
+                :layout-direction='Direction.vertical'
                 :job="data"
                 :company="company"/>
+
+            <LazyJobDetailsCard :job="data"/>
+
+            <LazyCompanyInfoCard :company="company"/>
           </div>
         </section>
       </div>
     </template>
 
   </client-only>
-
 </template>
 
 <style scoped>

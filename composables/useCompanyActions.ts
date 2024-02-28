@@ -1,5 +1,6 @@
 import {useAuthStore} from "~/stores/auth";
 import {AppRoutes} from "~/core/routes";
+import type {Company} from "~/features/companies/company.types";
 
 export default function useCompanyActions() {
     const handleJobCreation = () => {
@@ -10,5 +11,9 @@ export default function useCompanyActions() {
         }
     }
 
-    return {handleJobCreation};
+    const hasSocialMedia = (company: Company) =>{
+        return !!company.linkedin || !!company.twitter
+    }
+
+    return {handleJobCreation, hasSocialMedia};
 }

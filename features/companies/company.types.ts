@@ -2,7 +2,7 @@ import {UserApiResponse} from "~/features/users/user.types";
 import {MultiApiResponse, SingleApiResponse} from "~/core/shared/types";
 
 
-//TODO - add company size property
+//TODO - add company twitter and linkedin property
 export interface Company {
     id: number,
     name: string,
@@ -14,6 +14,8 @@ export interface Company {
     user: UserApiResponse,
     createdAt: string,
     size: CompanySize,
+    linkedin: string,
+    twitter: string,
 
     [key: string]: any,
 }
@@ -24,9 +26,6 @@ export enum CompanySize {
     medium = "medium",
     large = "large"
 }
-
-
-
 
 export type CompanyApiResponse = SingleApiResponse<Company>
 export type CreateCompanyRequestProps = { description: string & Omit<Company, 'jobOffers' | 'user'> }

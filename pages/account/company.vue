@@ -1,4 +1,8 @@
+<!--TODO - add company twitter and linkedin property-->
+<!--TODO - upload logo for company-->
+
 <template>
+
   <div class="flex flex-col w-full">
     <section class="py-8 px-2 md:py-16 xl:pb-56 bg-white overflow-hidden">
       <h3
@@ -16,7 +20,13 @@
                        v-model="formInput.email"/>
         </div>
         <div class="block mb-5">
-          <CustomInput name="url" label="Website" placeholder="Website" v-model="formInput.website" type="email"/>
+          <CustomInput name="url" label="Website" placeholder="Website" v-model="formInput.website"/>
+        </div>
+        <div class="flex space-x-4 mb-5 w-full">
+          <CustomInput class="w-1/2" name="url" label="Linkedin"
+                       v-model="formInput.linkedin"/>
+          <CustomInput class="w-1/2" name="url" label="Twitter" :is-disabled="true"
+                       v-model="formInput.twitter"/>
         </div>
         <div class="block mb-5">
           <CustomInput name="url" label="Company Logo url" placeholder="Logo" v-model="formInput.logo" type="text"/>
@@ -36,7 +46,9 @@
           </div>
         </div>
         <div class="block mb-5">
-          <CustomInput :is-text-area="true" name="description" label="Description" placeholder="Description"
+          <!--          TODO generate company description using AI-->
+          <CustomInput inside-text="Generate using AI" :is-text-area="true" name="description" label="Description"
+                       placeholder="Description"
                        v-model="formInput.description"
                        type="text"/>
         </div>
@@ -84,6 +96,8 @@ const formInput = ref({
   logo: authStore.myCompany.logo,
   description: authStore.myCompany.description,
   size: authStore.myCompany.size ?? CompanySize.small,
+  linkedin: authStore.myCompany.linkedin,
+  twitter: authStore.myCompany.twitter,
 })
 
 const canSubmit = ref(false)

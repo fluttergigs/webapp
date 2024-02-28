@@ -16,18 +16,18 @@ export default defineNuxtConfig({
                 lang: "en",
             },
             meta: [
-                { charset: "utf-8"},
+                {charset: "utf-8"},
                 {
                     name: "viewport",
                     content:
                         "width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no",
                 },
-                { hid: "description", name: "description", content: "" },
-                { name: "format-detection", content: "telephone=no" },
+                {hid: "description", name: "description", content: ""},
+                {name: "format-detection", content: "telephone=no"},
             ],
             link: [
-                { rel: "icon", type: "image/x-icon", href: "/favicon.png" },
-                { rel: "preconnect", href: "https://fonts.gstatic.com" },
+                {rel: "icon", type: "image/x-icon", href: "/favicon.png"},
+                {rel: "preconnect", href: "https://fonts.gstatic.com"},
                 {
                     rel: "stylesheet",
                     href: "https://fonts.cdnfonts.com/css/general-sans?styles=135312,135310,135313,135303",
@@ -65,16 +65,16 @@ export default defineNuxtConfig({
     ],
     runtimeConfig: {
         strapiEndpoint: "",
-        posthogKey:"",
+        posthogKey: "",
         posthogProjectId: "",
         apiBaseUrl: "",
-        googleGenerativeAiApiKey:"",
+        googleGenerativeAiApiKey: "",
         public: {
             strapiEndpoint: "",
             posthogKey: "",
             posthogProjectId: "",
-            apiBaseUrl:"",
-            googleGenerativeAiApiKey:"",
+            apiBaseUrl: "",
+            googleGenerativeAiApiKey: "",
         },
     },
     strapi: {
@@ -90,8 +90,8 @@ export default defineNuxtConfig({
     },*/
     i18n: {
         locales: [
-            { code: "en", file: "en.json" },
-            { code: "fr", file: "fr.json" },
+            {code: "en", file: "en.json"},
+            {code: "fr", file: "fr.json"},
         ],
         lazy: true,
         defaultLocale: "fr",
@@ -99,12 +99,13 @@ export default defineNuxtConfig({
         langDir: "locales/",
     },
     plugins: [
-        { src: "~/plugins/tippy", mode: "client" },
-        { src: "~/plugins/maska", mode: "client" },
-        { src: "~/plugins/vue-easymde", mode: "client" },
-        { src: "~/plugins/vue3-apexcharts", mode: "client" },
-        { src: "~/plugins/store" },
-        { src: "~/plugins/toaster", mode: "client" },
+        {src: "~/plugins/tippy", mode: "client"},
+        {src: "~/plugins/maska", mode: "client"},
+        {src: "~/plugins/vue-easymde", mode: "client"},
+        {src: "~/plugins/vue3-apexcharts", mode: "client"},
+        {src: "~/plugins/store"},
+        {src: "~/plugins/toaster", mode: "client"},
+        {src: "~/plugins/date-format", mode: "all"},
     ],
     vite: {
         // optimizeDeps: { include: ["quill"] },
@@ -116,9 +117,9 @@ export default defineNuxtConfig({
         },
     },
     router: {
-        options: { linkExactActiveClass: "active" },
+        options: {linkExactActiveClass: "active"},
     },
     routeRules: {
-        "/*": { cors: true },
+        "/*": {cors: true},
     }
 });

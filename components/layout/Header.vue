@@ -1,6 +1,6 @@
 <template>
   <section class="overflow-hidden">
-    <div class="flex items-center justify-between py-5 bg-blueGray-50 px-12">
+    <div class="flex items-center justify-between py-5 bg-blueGray-50 px-18">
       <div class="w-auto">
         <div class="flex flex-wrap items-center">
           <div class="w-auto mr-14">
@@ -10,7 +10,7 @@
           </div>
           <div class="w-auto hidden lg:block">
             <ul class="flex items-center mr-16">
-              <li class="mr-9 font-medium hover:text-gray-700" v-for="link in links">
+              <li class="mr-9 font-medium hover:text-indigo-900" v-for="link in links">
                 <NuxtLink :to="link.path">{{ link.name }}</NuxtLink>
               </li>
             </ul>
@@ -101,7 +101,7 @@
           <div class="flex flex-col justify-center py-16 w-full">
             <ul>
               <li class="mb-12" v-for="link in links">
-                <NuxtLink class="font-medium hover:text-gray-700" :href="link.path">{{ link.name }}</NuxtLink>
+                <NuxtLink class="font-medium hover:text-indigo-900" :href="link.path">{{ link.name }}</NuxtLink>
               </li>
             </ul>
           </div>

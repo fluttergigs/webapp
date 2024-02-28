@@ -87,13 +87,13 @@ const links = [
     icon: BuildingOffice2Icon,
     path: AppRoutes.myCompany,
     section: 'Employer',
-    name: 'Company'
+    name: 'My Company'
   },
   {
     icon: ClipboardDocumentListIcon,
     path: AppRoutes.myJobs,
     section: 'Employer',
-    name: 'Jobs'
+    name: 'My Job offers'
   },
   {
     icon: UserIcon,
