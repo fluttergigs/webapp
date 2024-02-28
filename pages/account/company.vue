@@ -1,4 +1,3 @@
-<!--TODO - add company twitter and linkedin property-->
 <!--TODO - upload logo for company-->
 
 <template>

@@ -4,6 +4,11 @@ import {seniorityLevelOptions} from "~/core/constants";
 
 const selected = ref(seniorityLevelOptions[0].id)
 
+//@ts-ignore
+const emits = defineEmits(['filterBySeniorityLevel'])
+watch(selected, ()=>{
+  emits('filterBySeniorityLevel', selected.value)
+},)
 </script>
 
 <template>

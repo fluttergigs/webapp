@@ -2,6 +2,12 @@
 import {workTypeOptions} from "~/core/constants";
 
 const selected = ref(workTypeOptions[0].id)
+
+//@ts-ignore
+const emits = defineEmits(['filterByWorkType'])
+watch(selected, ()=>{
+  emits('filterByWorkType', selected.value)
+},)
 </script>
 
 

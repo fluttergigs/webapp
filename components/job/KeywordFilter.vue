@@ -1,6 +1,12 @@
 <script setup lang="ts">
 
 const searchKeyword = ref('')
+//@ts-ignore
+const emits = defineEmits(['filterByKeyword'])
+watch(searchKeyword, ()=>{
+  emits('filterByKeyword', searchKeyword.value)
+},)
+
 </script>
 
 <template>

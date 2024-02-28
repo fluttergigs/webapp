@@ -6,6 +6,14 @@ import {defaultShimmerListItemsCount} from "~/core/constants";
 const jobStore = useJobStore()
 
 const {filteredJobs, jobFiltersResponse} = storeToRefs(jobStore)
+
+const {searchFilters} = storeToRefs(jobStore)
+
+
+watch(searchFilters, ()=> {
+
+})
+
 </script>
 
 <template>

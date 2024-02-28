@@ -4,6 +4,7 @@ import KeywordFilter from "~/components/job/KeywordFilter.vue";
 import WorkTypeFilter from "~/components/job/WorkTypeFilter.vue";
 import SeniorityLevelFilter from "~/components/job/SeniorityLevelFilter.vue";
 import RemoteOptionsFilter from "~/components/job/RemoteFilter.vue";
+import {useJobStore} from "~/stores/job";
 </script>
 
 <template>
@@ -12,10 +13,10 @@ import RemoteOptionsFilter from "~/components/job/RemoteFilter.vue";
       Filters
     </p>
     <div class="flex flex-col space-y-6">
-      <KeywordFilter/>
-      <WorkTypeFilter/>
-      <SeniorityLevelFilter/>
-      <RemoteOptionsFilter/>
+      <KeywordFilter @filterByKeyword="(value)=> useJobStore().setJobSearchFilters({keyword: value})"/>
+      <WorkTypeFilter @filterByWorkType="(value)=> useJobStore().setJobSearchFilters({workType: value})"/>
+      <SeniorityLevelFilter @filterBySeniorityLevel="(value)=> useJobStore().setJobSearchFilters({seniorityLevel: value})"/>
+      <RemoteOptionsFilter @filterByRemoteOptions="(value)=> useJobStore().setJobSearchFilters({remoteOption: value})"/>
     </div>
   </section>
 

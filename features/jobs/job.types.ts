@@ -38,3 +38,10 @@ export enum WorkType {
     contract = 'contract',
     internship = 'internship'
 }
+
+export interface JobSearchFilters {
+    keyword?: string,
+    remoteOption?: string,
+    workType?: string
+    seniorityLevel?: string,
+}

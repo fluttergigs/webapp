@@ -4,7 +4,7 @@ import {Wrapper} from "~/core/wrapper";
 import {logDev} from "~/core/helpers/log";
 import {MultiApiResponse, SingleApiResponse} from "~/core/shared/types";
 import {AppStrings} from "~/core/strings";
-import type {JobOffer} from "~/features/jobs/job.types";
+import type {JobOffer, JobSearchFilters} from "~/features/jobs/job.types";
 
 // @ts-ignore
 export const useJobStore = defineStore('job', {
@@ -13,9 +13,15 @@ export const useJobStore = defineStore('job', {
         selectedJob: Wrapper.getEmpty().toInitial(),
         jobCreation: new Wrapper<SingleApiResponse<JobOffer>>().toInitial(),
         jobFiltersResponse: new Wrapper<MultiApiResponse<JobOffer>>().toInitial(),
-
+        searchFilters: <JobSearchFilters>{}
     }),
     actions: {
+        async setJobSearchFilters(filters: JobSearchFilters) {
+            this.searchFilters = {
+                ...this.searchFilters,
+                ...filters
+            }
+        },
         async fetchJobs(): Promise<void> {
             try {
                 // @ts-ignore
@@ -31,6 +37,26 @@ export const useJobStore = defineStore('job', {
         },
 
         async filterJobs(): Promise<void> {
+            let query = {
+                populate: '*',
+                filter: {
+                    remoteOptions: {
+                        $eq: this.searchFilters.remoteOption
+                    },
+                    seniorityLevel: {
+                        $eq: this.searchFilters.seniorityLevel
+                    },
+                    workType: {
+                        $eq: this.searchFilters.workType
+                    },
+                    description: {
+                        $contains: this.searchFilters.keyword,
+                    },
+                    name: {
+                        $contains: this.searchFilters.keyword,
+                    },
+                },
+            }
             this.jobFiltersResponse = new Wrapper<MultiApiResponse<JobOffer>>().toLoading()
         },
 
