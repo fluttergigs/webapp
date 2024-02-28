@@ -5,6 +5,8 @@ import {logDev} from "~/core/helpers/log";
 import {MultiApiResponse, SingleApiResponse} from "~/core/shared/types";
 import {AppStrings} from "~/core/strings";
 import type {JobOffer, JobSearchFilters} from "~/features/jobs/job.types";
+import type {HttpClient} from "~/core/network/http_client";
+import {stringify} from "qs";
 
 // @ts-ignore
 export const useJobStore = defineStore('job', {
@@ -37,27 +39,45 @@ export const useJobStore = defineStore('job', {
         },
 
         async filterJobs(): Promise<void> {
-            let query = {
-                populate: '*',
-                filter: {
-                    remoteOptions: {
-                        $eq: this.searchFilters.remoteOption
+            try {
+                const query = stringify({
+                    populate: '*',
+                    filters: {
+                        ...(!!this.searchFilters.remoteOption && {
+                            remoteOptions: {
+                                $eq: this.searchFilters.remoteOption
+                            }
+                        }),
+                        ...(!!this.searchFilters.seniorityLevel && {
+                            seniorityLevel: {
+                                $eq: this.searchFilters.seniorityLevel
+                            }
+                        }),
+                        ...(!!this.searchFilters.workType && {
+                            workType: {
+                                $eq: this.searchFilters.workType
+                            }
+                        }),
+                        ...(!!this.searchFilters.keyword && {
+                            description: {
+                                $containsi: this.searchFilters.keyword,
+                            },
+                            name: {
+                                $containsi: this.searchFilters.keyword,
+                            }
+                        })
                     },
-                    seniorityLevel: {
-                        $eq: this.searchFilters.seniorityLevel
-                    },
-                    workType: {
-                        $eq: this.searchFilters.workType
-                    },
-                    description: {
-                        $contains: this.searchFilters.keyword,
-                    },
-                    name: {
-                        $contains: this.searchFilters.keyword,
-                    },
-                },
+                }, {
+                    encodeValuesOnly: true,
+                })
+                this.jobFiltersResponse = new Wrapper<MultiApiResponse<JobOffer>>().toLoading()
+                const {$http} = useNuxtApp()
+                const response = await (<HttpClient>$http).get(`${Endpoint.jobOffers}?${query}`)
+                // @ts-ignore
+                this.jobFiltersResponse = this.jobFiltersResponse.toSuccess(response)
+            } catch (e) {
+                this.jobFiltersResponse = this.jobFiltersResponse.toFailed(AppStrings.unableToFetchJobs)
             }
-            this.jobFiltersResponse = new Wrapper<MultiApiResponse<JobOffer>>().toLoading()
         },
 
         async setSelectedJob(job: JobOffer) {

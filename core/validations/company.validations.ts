@@ -1,3 +1,4 @@
+//@ts-ignore
 import * as yup from "yup";
 
 export const companyCreationFormSchema = yup.object({

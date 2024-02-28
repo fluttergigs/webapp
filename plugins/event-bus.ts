@@ -1,3 +1,4 @@
+// @ts-ignore
 import mitt from 'mitt'
 
 type ApplicationEvents = {

@@ -11,7 +11,9 @@ export class AppRoutes {
 
     static companyPage = (id: number) => `/companies/${id}`;
 
-    static hireFlutterDevs = '/hire-flutter-devs'
+    static consultantDetail = (slug: string) => `/flutter-consultants/${slug}`;
+
+    static hireConsultants = '/flutter-consultants'
 
     static learn = '/learn'
 

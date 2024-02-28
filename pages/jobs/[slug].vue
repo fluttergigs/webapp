@@ -11,6 +11,7 @@ import {AppRoutes} from "~/core/routes";
 import useJobActions from '@/composables/useJobActions'
 import {Direction} from "~/core/shared/types";
 import CompanyInfoCard from "~/components/company/CompanyInfoCard.vue";
+import {stringify} from "qs";
 
 definePageMeta({
   layout: 'main-layout'
@@ -24,31 +25,29 @@ const company = computed(() => ({
   ...extractCompanyFromJob(data.value)
 }));
 
-
 const jobSlug = ref(useRoute().params.slug)
+
+const query = ref(stringify({
+  populate: '*',
+  filters: {
+    slug: {
+      $eq: jobSlug.value,
+    }
+  },
+}, {encodeValuesOnly: true}))
 
 const {
   data,
   error,
   pending
-} = await useFetch(`${useRuntimeConfig().public.apiBaseUrl}${Endpoint.jobOffers}`, {
-  //@ts-ignore
-  query: {
-    populate: '*',
-    filter: {
-      slug: {
-        $eq: jobSlug.value,
-      }
-    },
-  },
-  transform:
-      (results) => {
-        const job = results.data[0]
-        return {
-          ...job[`attributes`],
-          id: job['id']
-        }
-      }
+} = await useFetch(`${useRuntimeConfig().public.apiBaseUrl}${Endpoint.jobOffers}?${query.value}`, {
+  transform: (results) => {
+    const job = results.data[0]
+    return {
+      ...job[`attributes`],
+      id: job['id']
+    }
+  }
 })
 
 onMounted(() => {
@@ -71,11 +70,10 @@ onBeforeMount(() => {
             class="bg-transparent text-indigo-700 border-none"
             loading/>
       </div>
-
     </template>
 
     <template v-else>
-      <section class="bg-blueGray-50 w-full relative">
+      <section class="bg-blueGray-100 w-full relative">
         <div class="container px-20 py-6 md:py-14 mx-auto">
           <LazyUiAvatar class="absolute left-16 top-16"/>
         </div>
@@ -121,7 +119,7 @@ onBeforeMount(() => {
           <div class="flex flex-col flex-shrink-0 w-full md:max-w-3xl space-y-10">
             <div class="space-y-10 text-gray-900 font-medium">
               <p class="leading-10">{{ company?.description }}</p>
-              <p class="leading-10">{{ currentViewedJob?.description }}</p>
+              <p class="leading-10">{{ data?.description }}</p>
             </div>
 
             <!--          apply section-->
@@ -129,14 +127,14 @@ onBeforeMount(() => {
           </div>
 
           <div class="flex flex-col space-y-9 w-full">
-            <LazyJobApplicationCtaCard
+            <JobApplicationCtaCard
                 :layout-direction='Direction.vertical'
                 :job="data"
                 :company="company"/>
 
-            <LazyJobDetailsCard :job="data"/>
+            <JobDetailsCard :job="data"/>
 
-            <LazyCompanyInfoCard :company="company"/>
+            <CompanyInfoCard :company="company"/>
           </div>
         </section>
       </div>

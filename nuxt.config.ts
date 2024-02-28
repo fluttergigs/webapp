@@ -61,7 +61,6 @@ export default defineNuxtConfig({
         // 'nuxt-appwrite',
         '@nuxtjs/strapi',
         '@nuxt/ui',
-        "@nuxt/image"
     ],
     runtimeConfig: {
         strapiEndpoint: "",
@@ -100,7 +99,6 @@ export default defineNuxtConfig({
     },
     plugins: [
         {src: "~/plugins/tippy", mode: "client"},
-        {src: "~/plugins/maska", mode: "client"},
         {src: "~/plugins/vue-easymde", mode: "client"},
         {src: "~/plugins/vue3-apexcharts", mode: "client"},
         {src: "~/plugins/store"},

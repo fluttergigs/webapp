@@ -1,8 +1,5 @@
 <script setup>
 
-// import {JobOffer} from "@/features/jobs/job.types";
-// import type {PropType} from "@vue/runtime-core";
-
 import ArrowBackIcon from "~/components/icons/ArrowBackIcon.vue";
 import {extractCompanyFromJob, userFacingRemoteOptions, userFacingWorkType} from "~/features/jobs/transformers";
 import {AppRoutes} from "~/core/routes";
@@ -54,7 +51,7 @@ const company = computed(() => ({
 
           <div class="inline-flex items-center space-x-2 rounded-full px-4 py-0.5 bg-indigo-700/10 text-indigo-700">
             <UIcon name="i-heroicons-currency-dollar"/>
-            <span>{{ props.job.salaryFrom }} - {{ props.job.salaryTo }}</span>
+            <span>{{ props.job.salaryFrom }} - {{ props.job.salaryTo }}/month</span>
           </div>
 
         </div>
@@ -67,7 +64,6 @@ const company = computed(() => ({
         </div>
       </div>
     </div>
-
   </UCard>
 
 </template>

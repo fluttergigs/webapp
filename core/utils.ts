@@ -1,3 +1,4 @@
+//@ts-ignore
 import {customAlphabet} from "nanoid";
 
 export const generateUserName = (email: string) => {

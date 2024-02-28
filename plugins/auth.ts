@@ -1,5 +1,6 @@
 import {AuthProvider} from "~/services/auth/auth_provider";
 import {AuthStrapiClient} from "~/services/auth/auth_strapi_client";
+//@ts-ignore
 import {StrapiAuthenticationData, StrapiRegistrationData} from "@nuxtjs/strapi/dist/runtime/types";
 
 export default defineNuxtPlugin((nuxtApp) => {

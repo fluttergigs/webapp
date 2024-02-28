@@ -27,14 +27,14 @@ const props = defineProps({
         <p class="text-md font-medium" v-date-format="{date:props.job.createdAt, format:'MMM YYYY, D'}"></p>
       </template>
     </ItemData>
-    <ItemData :value="userFacingWorkType(props.job.workType)" label="Job type"/>
-    <ItemData :value="userFacingSeniorityLevel(props.job.seniorityLevel)" label="Experience Level"/>
-    <ItemData :value="userFacingRemoteOptions(props.job.remoteOptions)" label="Remote options"/>
+    <ItemData :value="userFacingWorkType(props.job?.workType)" label="Job type"/>
+    <ItemData :value="userFacingSeniorityLevel(props.job?.seniorityLevel)" label="Experience Level"/>
+    <ItemData :value="userFacingRemoteOptions(props.job?.remoteOptions)" label="Remote options"/>
     <ItemData label="Salary range">
       <template #content>
         <div class="inline-flex items-center space-x-2 font-medium text-md">
           <UIcon name="i-heroicons-currency-dollar"/>
-          <span>{{ props.job.salaryFrom }} - {{ props.job.salaryTo }}</span>
+          <span>{{ props.job?.salaryFrom }} - {{ props.job?.salaryTo }}/month</span>
         </div>
       </template>
     </ItemData>

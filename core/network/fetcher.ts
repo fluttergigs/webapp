@@ -1,5 +1,8 @@
+//@ts-ignore
 import {FetchOptions} from "ofetch";
 import {$fetchInterceptor} from "~/core/network/interceptor";
+import type {HttpClient} from "~/core/network/http_client";
+import {HttpMethod} from "~/core/network/http_client";
 
 
 const headers = {
@@ -42,7 +45,7 @@ export class Fetcher implements HttpClient<Response> {
     async delete(url: String, config?: Record<any, any>): Promise<Response> {
 
         return await this.instance(this.baseURL + url, {
-            method: 'delete',
+            method: HttpMethod.DELETE,
             ...config
         });
     }
@@ -50,14 +53,14 @@ export class Fetcher implements HttpClient<Response> {
     async get(url: String, config?: Record<any, any>): Promise<Response> {
         // logDev('BASE URL GET',useRuntimeConfig().public.apiBaseUrl)
         return await this.instance(this.baseURL + url, {
-            method: 'get',
+            method: HttpMethod.GET,
             ...config,
         });
     }
 
     async post(url: String, payload: Record<string, any>, config?: Record<any, any>): Promise<Response> {
         return await this.instance(this.baseURL + url, {
-            method: 'post',
+            method: HttpMethod.POST,
             body: payload,
             ...config
         });
@@ -65,7 +68,7 @@ export class Fetcher implements HttpClient<Response> {
 
     async put(url: String, payload: Record<string, any>, config?: Record<any, any>): Promise<Response> {
         return await this.instance(this.baseURL + url, {
-            method: 'put',
+            method: HttpMethod.PUT,
             body: payload,
             ...config,
         });

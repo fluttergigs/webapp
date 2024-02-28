@@ -1,5 +1,4 @@
-// @ts-ignore
-abstract class HttpClient<Response = any> {
+export abstract class HttpClient<Response = any> {
 
     abstract get(url: String): Promise<Response>;
 
@@ -8,5 +7,12 @@ abstract class HttpClient<Response = any> {
     abstract put(url: String, payload: Record<string, any>, config?: Record<any, any>): Promise<Response>;
 
     abstract delete(url: String, config?: Record<any, any>): Promise<Response>;
+}
 
+export enum HttpMethod {
+    GET = "get",
+    POST = "post",
+    PUT = "put",
+    DELETE = "delete",
+    "PATCH" = "patch"
 }

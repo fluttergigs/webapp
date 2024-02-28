@@ -2,7 +2,7 @@
 
 import {seniorityLevelOptions} from "~/core/constants";
 
-const selected = ref(seniorityLevelOptions[0].id)
+const selected = ref(null)
 
 //@ts-ignore
 const emits = defineEmits(['filterBySeniorityLevel'])

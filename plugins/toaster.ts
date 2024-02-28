@@ -1,3 +1,4 @@
+//@ts-ignore
 import * as toast from 'vue-toast-notification';
 // const toast = useToast();
 

@@ -3,6 +3,7 @@ import {LoginData, RegistrationData, User} from "~/services/auth/auth.types";
 import {AppRoutes} from "~/core/routes";
 import {generateUserName} from "~/core/utils";
 import {logDev} from "~/core/helpers/log";
+// @ts-ignore
 import {jwtDecode} from "jwt-decode";
 import {useNuxtApp} from "#imports"
 import {Wrapper} from "~/core/wrapper";
@@ -12,6 +13,7 @@ import {AppStrings} from "~/core/strings";
 import {UpdatePasswordRequest, UpdateUserRequest} from "~/features/users/user.types";
 import {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider";
 import type {AuthProvider} from "~/services/auth/auth_provider";
+import type {HttpClient} from "~/core/network/http_client";
 
 
 //@ts-ignore

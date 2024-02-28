@@ -10,7 +10,7 @@ const {filteredJobs, jobFiltersResponse} = storeToRefs(jobStore)
 const {searchFilters} = storeToRefs(jobStore)
 
 
-watch(searchFilters, ()=> {
+watch(searchFilters, () => {
 
 })
 
@@ -19,7 +19,16 @@ watch(searchFilters, ()=> {
 <template>
   <div class="flex flex-col space-y-4">
     <client-only>
-      <JobCard v-if="jobFiltersResponse.isSuccess" v-for="job in filteredJobs" :job="job" :key="job.slug"/>
+
+
+      <template v-if="jobFiltersResponse.isSuccess">
+
+        <JobCard v-if="filteredJobs.length > 0" v-for="job in filteredJobs" :job="job" :key="job.slug"/>
+        <div class="flex items-center justify-center" v-else>
+          <img class="w-96 h-96" alt="Empty job results" src="@/assets/images/emptyJobFiltersResult.svg"/>
+        </div>
+
+      </template>
       <div v-else-if="jobFiltersResponse.isLoading">
 
         <div v-for="_ in defaultShimmerListItemsCount">

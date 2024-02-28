@@ -2,7 +2,7 @@
 
 import {remoteOptions} from "~/core/constants";
 
-const selected = ref(remoteOptions[0].id)
+const selected = ref(null)
 //@ts-ignore
 const emits = defineEmits(['filterByRemoteOptions'])
 watch(selected, ()=>{

@@ -16,6 +16,7 @@ export interface Company {
     size: CompanySize,
     linkedin: string,
     twitter: string,
+    slug: string,
 
     [key: string]: any,
 }

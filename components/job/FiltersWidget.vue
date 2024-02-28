@@ -5,6 +5,19 @@ import WorkTypeFilter from "~/components/job/WorkTypeFilter.vue";
 import SeniorityLevelFilter from "~/components/job/SeniorityLevelFilter.vue";
 import RemoteOptionsFilter from "~/components/job/RemoteFilter.vue";
 import {useJobStore} from "~/stores/job";
+import {storeToRefs} from "pinia";
+//@ts-ignore
+import {watchDebounced} from "@vueuse/core";
+
+const {searchFilters} = storeToRefs(useJobStore())
+
+watchDebounced(
+    searchFilters,
+    async () => {
+      await useJobStore().filterJobs()
+    },
+    {debounce: 500, maxWait: 1000},
+)
 </script>
 
 <template>
@@ -15,7 +28,8 @@ import {useJobStore} from "~/stores/job";
     <div class="flex flex-col space-y-6">
       <KeywordFilter @filterByKeyword="(value)=> useJobStore().setJobSearchFilters({keyword: value})"/>
       <WorkTypeFilter @filterByWorkType="(value)=> useJobStore().setJobSearchFilters({workType: value})"/>
-      <SeniorityLevelFilter @filterBySeniorityLevel="(value)=> useJobStore().setJobSearchFilters({seniorityLevel: value})"/>
+      <SeniorityLevelFilter
+          @filterBySeniorityLevel="(value)=> useJobStore().setJobSearchFilters({seniorityLevel: value})"/>
       <RemoteOptionsFilter @filterByRemoteOptions="(value)=> useJobStore().setJobSearchFilters({remoteOption: value})"/>
     </div>
   </section>

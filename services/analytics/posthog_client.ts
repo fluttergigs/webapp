@@ -1,3 +1,4 @@
+//@ts-ignore
 import posthog from "posthog-js";
 import {AppAnalytics} from "~/services/analytics/app_analytics";
 import {AnalyticsEvent} from "~/services/analytics/events";

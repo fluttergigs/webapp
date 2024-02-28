@@ -28,18 +28,20 @@
                 >
                   Login
                 </NuxtLink>
-                <NuxtLink v-else
-                          :to="AppRoutes.myAccount"
-                          class="transparent-button"
-                >👋, {{ useAuthStore().userFullName }} My account
-                </NuxtLink>
+                <UDropdown v-else :items="accountLinks" :popper="{ placement: 'bottom-start'}">
+                  <div class="flex justify-center items-center">
+                    <span class="font-medium">  {{ useAuthStore().userFullName.toUpperCase() }}
+                    </span>
+                    <UIcon name="i-heroicons-chevron-down-20-solid"/>
+                  </div>
+                </UDropdown>
               </div>
             </ClientOnly>
           </div>
           <div class="w-auto hidden lg:block">
             <UButton block :to="AppRoutes.postJob" size="lg"
                      class="bg-indigo-700"
-                     square label="Post a job" color="primary"
+                     square label="Post a job"
                      variant="solid"/>
           </div>
           <div class="w-auto lg:hidden">
@@ -116,18 +118,21 @@
                     >
                       Login
                     </NuxtLink>
-                    <NuxtLink v-else
-                              :to="AppRoutes.myAccount"
-                    >
-                      👋, {{ useAuthStore().userFullName }} My account
-                    </NuxtLink>
+
+                    <UDropdown v-else :items="accountLinks" :popper="{ placement: 'bottom-start'}">
+                      <div class="flex justify-center items-center">
+                    <span class="font-medium">  {{ useAuthStore().userFullName.toUpperCase() }}
+                    </span>
+                        <UIcon name="i-heroicons-chevron-down-20-solid"/>
+                      </div>
+                    </UDropdown>
                   </div>
                 </ClientOnly>
 
               </div>
               <UButton :to="AppRoutes.postJob" size="lg"
                        class="bg-indigo-700"
-                       square label="Post a job" color="primary"
+                       square label="Post a job"
                        variant="solid"/>
             </div>
           </div>
@@ -158,6 +163,34 @@ const links = ref([{
     name: 'Learn',
   },
 ])
+
+const accountLinks = [
+  [{
+    label: 'User Profile',
+    click: () => {
+      navigateTo(AppRoutes.myAccount)
+    }
+  }],
+  [{
+    label: 'My Jobs',
+    click: () => {
+      navigateTo(AppRoutes.myJobs)
+    }
+  }],
+  [{
+    label: 'My company',
+    click: () => {
+      navigateTo(AppRoutes.myCompany)
+    }
+  }],
+
+  [{
+    label: 'Logout',
+    click: () => {
+      useAuthStore().logout()
+    }
+  },],
+]
 
 const {isAuthenticated} = storeToRefs(useAuthStore())
 

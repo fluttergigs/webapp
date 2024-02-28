@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {workTypeOptions} from "~/core/constants";
 
-const selected = ref(workTypeOptions[0].id)
+const selected = ref(null)
 
 //@ts-ignore
 const emits = defineEmits(['filterByWorkType'])
@@ -15,6 +15,7 @@ watch(selected, ()=>{
   <USelectMenu
       clear-search-on-close
       searchable
+      size="lg"
       v-model="selected"
       :options="workTypeOptions"
       placeholder="Select a work type option"
