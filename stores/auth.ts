@@ -142,10 +142,10 @@ export let useAuthStore = defineStore('auth', {
         hasTokenExpired: state => !!state.jwt && Date.now() > (jwtDecode(state.jwt).exp! * 1000),
         authUser: state => (state.user._value as User),
         isAuthenticated: state => {
-            return !!useAuthStore().authUser && Object.keys(useAuthStore().authUser).length > 0;
+            return (!!useAuthStore().authUser && Object.keys(useAuthStore().authUser).length > 0) ?? false;
         },
         userFullName: state => `${useAuthStore().authUser?.firstName ?? ''} ${useAuthStore().authUser?.lastName ?? ''}`,
-        hasCompanies: (state) => useAuthStore().authUser?.companies?.length > 0,
+        hasCompanies: (state) => (useAuthStore().authUser?.companies?.length > 0) ?? false,
 
         myCompany: (state) => useAuthStore().hasCompanies ? useAuthStore().authUser?.companies[0] : null,
     },

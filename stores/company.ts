@@ -8,11 +8,14 @@ import {
     ListCompanyApiResponse,
     UpdateCompanyRequest
 } from "~/features/companies/company.types";
-import {SingleApiResponse} from "~/core/shared/types";
+import {MultiApiResponse, SingleApiResponse} from "~/core/shared/types";
 import {AppStrings} from "~/core/strings";
 import {useAuthStore} from "~/stores/auth";
 import type {HttpClient} from "~/core/network/http_client";
+//@ts-ignore
 import slugify from "@sindresorhus/slugify";
+import {JobOffer} from "~/features/jobs/job.types";
+import {stringify} from "qs";
 
 // @ts-ignore
 export const useCompanyStore = defineStore('company', {
@@ -21,8 +24,34 @@ export const useCompanyStore = defineStore('company', {
         selectedCompany: Wrapper.getEmpty().toInitial(),
         companyCreation: new Wrapper<SingleApiResponse<Company>>().toInitial(),
         companyUpdate: new Wrapper<SingleApiResponse<Company>>().toInitial(),
+        companyJobsResponse: new Wrapper<MultiApiResponse<JobOffer>>().toInitial(),
     }),
     actions: {
+
+        async fetchMyJobs() {
+            try {
+                const query = stringify({
+                    populate: '*',
+                    filters: {
+                        company: {
+                            id: {
+                                $eq: useAuthStore().myCompany.id,
+                            }
+                        }
+                    },
+                }, {
+                    encodeValuesOnly: true,
+                })
+                this.companyJobsResponse = new Wrapper<MultiApiResponse<JobOffer>>().toLoading()
+                const {$http} = useNuxtApp()
+                const response = await (<HttpClient>$http).get(`${Endpoint.jobOffers}?${query}`)
+                // @ts-ignore
+                this.companyJobsResponse = this.companyJobsResponse.toSuccess(response)
+            } catch (e) {
+                this.companyJobsResponse = this.companyJobsResponse.toFailed(AppStrings.unableToFetchJobs)
+            }
+
+        },
         async fetchCompanies(): Promise<void> {
             try {
                 // @ts-ignore
@@ -90,6 +119,10 @@ export const useCompanyStore = defineStore('company', {
             ...item['attributes'],
             id: item['id']
         })),
+        myJobPostings: (state) => state.companyJobsResponse?.value?.data?.map((item: { [x: string]: any; }) => ({
+            ...item['attributes'],
+            id: item['id']
+        }))
     },
     // persist: true,
 })

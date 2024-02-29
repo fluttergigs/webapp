@@ -1,27 +1,10 @@
 <template>
   <section class="flex w-full bg-white">
-    <!--
-          <nav class="flex xl:hidden items-center justify-between py-3.5 px-7 bg-light">
-            <div class="w-full xl:w-auto px-2 xl:mr-10">
-              <div class="flex items-center justify-between"><a class="inline-flex items-center h-7" href="#"><img
-                  src="@/assets/images/logo.svg" alt=""></a>
-                <div class="xl:hidden">
-                  <button class="navbar-burger text-gray-400 hover:text-gray-300 focus:outline-none">
-                    <svg width="20" height="12" viewBox="0 0 20 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path
-                          d="M1 2H19C19.2652 2 19.5196 1.89464 19.7071 1.70711C19.8946 1.51957 20 1.26522 20 1C20 0.734784 19.8946 0.48043 19.7071 0.292893C19.5196 0.105357 19.2652 0 19 0H1C0.734784 0 0.48043 0.105357 0.292893 0.292893C0.105357 0.48043 0 0.734784 0 1C0 1.26522 0.105357 1.51957 0.292893 1.70711C0.48043 1.89464 0.734784 2 1 2ZM19 10H1C0.734784 10 0.48043 10.1054 0.292893 10.2929C0.105357 10.4804 0 10.7348 0 11C0 11.2652 0.105357 11.5196 0.292893 11.7071C0.48043 11.8946 0.734784 12 1 12H19C19.2652 12 19.5196 11.8946 19.7071 11.7071C19.8946 11.5196 20 11.2652 20 11C20 10.7348 19.8946 10.4804 19.7071 10.2929C19.5196 10.1054 19.2652 10 19 10ZM19 5H1C0.734784 5 0.48043 5.10536 0.292893 5.29289C0.105357 5.48043 0 5.73478 0 6C0 6.26522 0.105357 6.51957 0.292893 6.70711C0.48043 6.89464 0.734784 7 1 7H19C19.2652 7 19.5196 6.89464 19.7071 6.70711C19.8946 6.51957 20 6.26522 20 6C20 5.73478 19.8946 5.48043 19.7071 5.29289C19.5196 5.10536 19.2652 5 19 5Z"
-                          fill="currentColor"></path>
-                    </svg>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </nav>
-    -->
-    <div class="navbar-menu max-w-xs relative z-50 w-full xl:flex xl:flex-col transition-all ease-in">
-      <div class="navbar-backdrop fixed xl:hidden inset-0 bg-blueGray-50 opacity-10"></div>
-      <div class="inset-0 max-w-xs bg-blueGray-50 border-r fixed transition-all ease-in">
-        <div class="flex flex-wrap items-center justify-between px-7 py-6 pb-0">
+    <!--    xl:flex xl:flex-col-->
+    <div class="navbar-menu max-w-[280px] relative z-50 w-full flex flex-col h-full transition-all ease-in">
+      <!--      <div class="navbar-backdrop fixed xl:hidden inset-0 bg-blueGray-50 opacity-10"></div>-->
+      <div class="inset-0 max-w-[280px] bg-blueGray-50 border-r fixed transition-all ease-in h-full">
+        <div class="flex flex-wrap items-center justify-between px-9 py-6 pb-0">
           <div class="w-auto">
             <NuxtLink :to="AppRoutes.welcome" class="inline-block">
               <img src="@/assets/images/logo.svg" alt="">
@@ -33,29 +16,33 @@
             </a>
           </div>
         </div>
-        <div class="flex-1 flex flex-col justify-between mx-4 py-8 overflow-x-hidden overflow-y-auto">
+        <div class="flex flex-col justify-between mx-4 py-8 overflow-x-hidden overflow-y-auto">
           <div class="flex flex-col flex-wrap px-7 mb-8 -m-2.5">
 
-            <div v-for="(linkItems,section) in groupedLinks" class="my-3">
+            <div v-for="(linkItems,section, sectionIndex) in groupedLinks" class="my-3">
               <p v-if="!!section" class="w-auto text-xs text-neutral-400 font-medium uppercase mb-2">
                 {{ section }}
               </p>
 
-              <div class="w-auto py-2" v-for="link in linkItems">
-                <NuxtLink :to="link.path"
-                          :class="['flex flex-wrap items-center space-x-3', useRoute().path===link.path ?'text-indigo-500':'']">
-                  <component :is="link.icon"
-                             :class="['w-5 h-5',useRoute().path===link.path ?'text-indigo-500':'text-gray-600']"/>
-                  <p class="hover:text-neutral-700 font-medium">{{ link.name }}</p>
-                </NuxtLink>
-              </div>
+              <div
+                  :class="['w-auto p-2 flex', useRoute().path===link.path ?'text-blueGray-800 bg-gray-200 rounded-md':'']"
+                  v-for="(link, index) in linkItems">
 
+                <div class="flex">
+                  <NuxtLink :to="link.path"
+                            :class="['flex flex-wrap items-center space-x-3']">
+                    <component :is="link.icon"
+                               :class="['w-5 h-5 text-gray-600']"/>
+                    <p class="hover:text-neutral-700 font-medium">{{ link.name }}</p>
+                  </NuxtLink>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="xl:pl-4 flex flex-1 grow w-full min-h-screen">
+    <div class="px-6 flex flex-1 grow w-full min-h-screen">
       <NuxtPage/>
     </div>
   </section>

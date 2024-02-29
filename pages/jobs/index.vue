@@ -21,7 +21,8 @@
 
     </div>
     <div class="w-full md:w-4/6">
-      <JobOffersList class="md:mx-8"/>
+      <JobOffersList :jobs="filteredJobs"
+                     :jobs-response="jobFiltersResponse" class="md:mx-8"/>
     </div>
 
   </section>
@@ -33,12 +34,15 @@
 import FiltersWidget from "~/components/job/FiltersWidget.vue";
 import JobOffersList from "~/components/job/JobOffersList.vue";
 import {AnalyticsEvent} from "~/services/analytics/events";
+import {storeToRefs} from "pinia";
+import {useJobStore} from "~/stores/job";
 
 definePageMeta({
   layout: 'main-layout'
 })
 
 const {$analytics} = useNuxtApp()
+const {filteredJobs, jobFiltersResponse} = storeToRefs(useJobStore())
 
 onMounted(() => {
   $analytics.capture(AnalyticsEvent.findJobOfferPageEntered)
