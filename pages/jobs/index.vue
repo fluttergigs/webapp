@@ -1,6 +1,6 @@
 <template>
   <section class="bg-blueGray-100">
-    <div class="container px-4 py-14 mx-auto">
+    <div class="container px-4 py-16 mx-auto">
       <div class="flex flex-col -m-8">
         <h1 class="mb-6 text-5xl md:text-6xl lg:text-6xl font-semibold primary-gradient">
           FlutterGigs
@@ -38,7 +38,7 @@ import {storeToRefs} from "pinia";
 import {useJobStore} from "~/stores/job";
 
 definePageMeta({
-  layout: 'main-layout'
+  layout: 'main-layout',
 })
 
 const {$analytics} = useNuxtApp()

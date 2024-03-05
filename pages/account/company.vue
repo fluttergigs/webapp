@@ -2,7 +2,7 @@
 
 <template>
   <div class="flex flex-col w-full">
-    <section class="py-8 px-2 md:py-16 xl:pb-56 bg-white overflow-hidden">
+    <section class="py-8 px-2 md:py-12 xl:pb-56 bg-white overflow-hidden">
       <h3
           class="mb-4 text-2xl md:text-4xl font-semibold tracking-px-n leading-tight">
         Your company <span class="text-indigo-500">{{ formInput.name }}</span>

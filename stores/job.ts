@@ -4,9 +4,10 @@ import {Wrapper} from "~/core/wrapper";
 import {logDev} from "~/core/helpers/log";
 import {MultiApiResponse, SingleApiResponse} from "~/core/shared/types";
 import {AppStrings} from "~/core/strings";
-import type {JobOffer, JobSearchFilters} from "~/features/jobs/job.types";
+import type {JobCreationRequest, JobOffer, JobSearchFilters} from "~/features/jobs/job.types";
 import type {HttpClient} from "~/core/network/http_client";
 import {stringify} from "qs";
+import {remoteOptions, seniorityLevelOptions, workTypeOptions} from "~/core/constants";
 
 // @ts-ignore
 export const useJobStore = defineStore('job', {
@@ -15,7 +16,13 @@ export const useJobStore = defineStore('job', {
         selectedJob: Wrapper.getEmpty().toInitial(),
         jobCreation: new Wrapper<SingleApiResponse<JobOffer>>().toInitial(),
         jobFiltersResponse: new Wrapper<MultiApiResponse<JobOffer>>().toInitial(),
-        searchFilters: <JobSearchFilters>{}
+        searchFilters: <JobSearchFilters>{},
+        jobCreationData: <JobCreationRequest>{
+            applyBefore: new Date(),
+            workType: workTypeOptions[0].id,
+            seniorityLevel: seniorityLevelOptions[0].id,
+            remoteOptions: remoteOptions[0].id,
+        }
     }),
     actions: {
         async setJobSearchFilters(filters: JobSearchFilters) {

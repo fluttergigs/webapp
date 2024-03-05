@@ -8,8 +8,7 @@ import {useAuthStore} from "~/stores/auth";
 import {useCompanyStore} from "~/stores/company";
 import {companyCreationFormSchema} from "~/core/validations/company.validations";
 import {AnalyticsEvent} from "~/services/analytics/events";
-import {CreateCompanyRequest} from "~/features/companies/company.types";
-
+import {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider";
 
 useHead({title: "Flutter Gigs - Company creation"});
 
@@ -33,7 +32,7 @@ const formInput = ref({
 
 const canSubmit = ref(false)
 
-watch(formInput, async (oldVal, newVal) => {
+watch(formInput, async () => {
   canSubmit.value = await companyCreationFormSchema.isValid(formInput.value);
 
   //TODO - remove comment later
@@ -44,21 +43,22 @@ watch(formInput, async (oldVal, newVal) => {
 }, {deep: true, immediate: true},)
 
 onMounted(() => {
-  $analytics.capture(AnalyticsEvent.companyCreationPageEntered);
+  (<AppAnalyticsProvider>$analytics).capture(AnalyticsEvent.companyCreationPageEntered);
 
 })
 const submit = async () => {
   try {
-    $analytics.capture(AnalyticsEvent.companyCreationButtonClicked, formInput.value);
-    //@ts-ignore
-    await companyStore.createCompany({data: formInput.value})
-    $analytics.capture(AnalyticsEvent.successfulCompanyCreation, formInput.value);
+    (<AppAnalyticsProvider>$analytics).capture(AnalyticsEvent.companyCreationButtonClicked, formInput.value);
+    await companyStore.createCompany({data: formInput.value});
+    (<AppAnalyticsProvider>$analytics).capture(AnalyticsEvent.successfulCompanyCreation, formInput.value);
 
+    //@ts-ignore
     $toast.success(<string>companyStore.companyCreation.message);
 
     //TODO replace with post jobs or redirect to dashboard
     await useRouter().push({path: AppRoutes.welcome})
   } catch (e) {
+    //@ts-ignore
     $toast.error(<string>companyStore.companyCreation.message);
   }
 }

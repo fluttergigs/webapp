@@ -18,6 +18,8 @@ export type JobOffer = {
     company: CompanyApiResponse,
 }
 
+export type JobCreationRequest = Omit<JobOffer, 'id' | 'company'>
+
 export enum SeniorityLevel {
     junior = "junior",
     senior = "senior",

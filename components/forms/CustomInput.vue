@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col space-y-2">
     <slot name="label">
-      <p v-if="hasLabel && showLabel" class="text-sm">{{ label }}</p>
+      <p v-if="hasLabel && showLabel" class="text-sm font-medium">{{ label }}</p>
     </slot>
 
     <client-only>
@@ -52,7 +52,7 @@ const props = defineProps({
     default: "",
   },
   modelValue: {
-    type: String,
+    type: [String, Number]
   },
   placeholder: {
     type: String,
@@ -106,6 +106,8 @@ const validators = {
   description: yup.string().required().min(30).max(400).label(hasLabel ? props.label : 'Description'),
   bio: yup.string().min(15).max(200).label(hasLabel ? props.label : 'Bio'),
   url: yup.string().url().label(hasLabel ? props.label : 'Url'),
+  jobTitle: yup.string().required().min(8).label(hasLabel ? props.label : 'Job title'),
+  amount: yup.number().required().min(1).label(hasLabel ? props.label : 'Amount'),
 }
 
 const {

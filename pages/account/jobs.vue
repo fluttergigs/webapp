@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col w-full">
-    <section class="py-8 px-2 md:py-16 xl:pb-56 bg-white overflow-hidden">
+    <section class="py-8 px-2 md:py-12 xl:pb-56 bg-white overflow-hidden">
 
       <div class="flex justify-between items-center">
         <h3
@@ -16,11 +16,12 @@
       </div>
 
 
-      <JobOffersList :jobs="myJobPostings"
-                     :jobs-response="companyJobsResponse"
-                     class="my-10"/>
+      <keep-alive>
+        <JobOffersList :jobs="myJobPostings"
+                       :jobs-response="companyJobsResponse"
+                       class="my-10"/>
+      </keep-alive>
     </section>
-
   </div>
 
 </template>
@@ -31,7 +32,7 @@ import {useCompanyStore} from "~/stores/company";
 import {storeToRefs} from "pinia";
 import {AppRoutes} from "~/core/routes";
 
-definePageMeta({layout: 'app-layout', middleware: ['auth']})
+definePageMeta({layout: 'app-layout', middleware: ['auth', 'no-company']})
 
 useHead({title: "Flutter Gigs - My job postings"});
 
@@ -42,7 +43,7 @@ onBeforeMount(() => {
   companyStore.fetchMyJobs()
 })
 
-const {myJobPostings, companyJobsResponse} = storeToRefs(useCompanyStore())
+const {myJobPostings, companyJobsResponse} = storeToRefs(companyStore)
 </script>
 
 <style scoped>
