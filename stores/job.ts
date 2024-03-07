@@ -8,6 +8,7 @@ import type {JobCreationRequest, JobOffer, JobSearchFilters} from "~/features/jo
 import type {HttpClient} from "~/core/network/http_client";
 import {stringify} from "qs";
 import {remoteOptions, seniorityLevelOptions, workTypeOptions} from "~/core/constants";
+import {GenerativeAIProvider} from "~/services/ai/generative_ai_provider";
 
 // @ts-ignore
 export const useJobStore = defineStore('job', {
@@ -17,6 +18,8 @@ export const useJobStore = defineStore('job', {
         jobCreation: new Wrapper<SingleApiResponse<JobOffer>>().toInitial(),
         jobFiltersResponse: new Wrapper<MultiApiResponse<JobOffer>>().toInitial(),
         searchFilters: <JobSearchFilters>{},
+        isJobDescriptionGenerationModalOpen: false,
+        jobDescriptionTask: new Wrapper<String>().toInitial(),
         jobCreationData: <JobCreationRequest>{
             applyBefore: new Date(),
             workType: workTypeOptions[0].id,
@@ -24,7 +27,26 @@ export const useJobStore = defineStore('job', {
             remoteOptions: remoteOptions[0].id,
         }
     }),
+
     actions: {
+        async generateJobDescription(prompt: string) {
+            try {
+                this.jobDescriptionTask = new Wrapper<String>().toLoading()
+                const {$generativeAI} = useNuxtApp();
+                const response = await (<GenerativeAIProvider>$generativeAI).generateText(prompt);
+                this.jobCreationData.description = response;
+                this.jobDescriptionTask = this.jobDescriptionTask.toSuccess(response, AppStrings.jobDescriptionIsReady)
+            } catch (e) {
+                this.jobDescriptionTask = this.jobDescriptionTask.toFailed(AppStrings.unableToGenerateJobDescription)
+                throw e;
+            }
+        },
+        hideJobDescriptionGenerationModal() {
+            this.isJobDescriptionGenerationModalOpen = false;
+        },
+        showJobDescriptionGenerationModal() {
+            this.isJobDescriptionGenerationModalOpen = true;
+        },
         async setJobSearchFilters(filters: JobSearchFilters) {
             this.searchFilters = {
                 ...this.searchFilters,

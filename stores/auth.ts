@@ -145,7 +145,7 @@ export let useAuthStore = defineStore('auth', {
             return (!!useAuthStore().authUser && Object.keys(useAuthStore().authUser).length > 0) ?? false;
         },
         userFullName: state => `${useAuthStore().authUser?.firstName ?? ''} ${useAuthStore().authUser?.lastName ?? ''}`,
-        hasCompanies: (state) => (useAuthStore().authUser?.companies?.length > 0) ?? false,
+        hasCompanies: (state) => (useAuthStore().authUser?.companies?.length > 0),
 
         myCompany: (state) => useAuthStore().hasCompanies ? useAuthStore().authUser?.companies[0] : null,
     },

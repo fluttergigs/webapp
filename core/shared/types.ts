@@ -15,6 +15,15 @@ export interface MultiApiResponse<T> {
 }
 
 export enum Direction {
-    vertical ="vertical",
+    vertical = "vertical",
     horizontal = "horizontal"
+}
+
+export interface Country {
+    name: string,
+    flag: {
+        src: string,
+        ico: string,
+    },
+    iso: string,
 }

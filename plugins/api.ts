@@ -9,7 +9,6 @@ export default defineNuxtPlugin((nuxtApp) => {
     });
 */
     return ({
-
         provide: {
             http: new Fetcher()
         }

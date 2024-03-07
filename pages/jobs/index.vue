@@ -21,7 +21,7 @@
 
     </div>
     <div class="w-full md:w-4/6">
-      <JobOffersList :jobs="filteredJobs"
+      <JobOffersList v-if="!!jobFiltersResponse" :jobs="filteredJobs"
                      :jobs-response="jobFiltersResponse" class="md:mx-8"/>
     </div>
 

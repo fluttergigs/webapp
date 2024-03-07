@@ -1,4 +1,5 @@
 <template>
+  <JobDescriptionGenerationModal/>
   <section class="py-8 px-2 md:py-12 xl:pb-56 bg-white overflow-hidden w-full">
     <div class="font-normal flex flex-col my-4 gap-x-16 md:flex-row">
       <div class="flex flex-col gap-y-8 xl:mx-auto w-full">
@@ -11,9 +12,10 @@
           <CustomInput placeholder="eg. Senior Flutter Engineer" name="jobTitle" label="Job title *"
                        v-model="jobCreationData.title" type="text"/>
 
-          <CustomInput inside-text="Generate description using AI 🚀" name="description" label="Job description *"
+          <CustomInput @inside-text-clicked="jobStore.showJobDescriptionGenerationModal()"
+                       inside-text="Generate description using AI 🚀" name="description"
+                       label="Job description *"
                        v-model="jobCreationData.description" :is-text-area="true"/>
-
 
           <div class="flex space-x-3">
             <!--          job type-->
@@ -48,7 +50,6 @@
               </LabelledInput>
             </div>
           </div>
-
           <!--          remote options-->
           <div class="flex flex-col space-y-2">
             <LabelledInput label="Remote options *">
@@ -77,7 +78,6 @@
                 <CustomInput @keydown="checkDigit" placeholder="8000" name="amount" :show-label="false" label="From"
                              class="w-full"
                              v-model="jobCreationData.salaryTo"/>
-
               </div>
             </LabelledInput>
           </div>
@@ -91,18 +91,30 @@
               <template #panel="{ close }">
                 <DatePicker color="bg-indigo-700" v-model="jobCreationData.applyBefore" @close="close"/>
               </template>
-
             </UPopover>
           </LabelledInput>
 
-          <CustomInput name="url" label="Application method *"
-                       class="w-full" inside-text="Enter an email or application link."
-                       v-model="jobCreationData.salaryTo"/>
+          <LabelledInput label="Working permits *">
 
+            <div class="space-y-3">
+              <URadio :ui="{label: 'text-sm font-medium text-black'}" :value="false" v-model="hasWorkPermit"
+                      label="No working permits required"/>
+
+              <div class="space-y-2">
+                <URadio :ui="{label: 'text-sm font-medium text-black'}" :value="true" v-model="hasWorkPermit"
+                        label="Must be eligible to work in"/>
+                <WorkPermitSelector @selected-countries="getSelectedCountries"/>
+              </div>
+            </div>
+          </LabelledInput>
+
+          <CustomInput placeholder="eg. https://fluttergigs.com/apply" name="url" label="Application method *"
+                       class="w-full" inside-text="Enter an email or application link."
+                       v-model="jobCreationData.howToApply"/>
         </form>
       </div>
 
-      <div class="hidden xl:flex xl:min-w-[300px] xl:w-[380px]">
+      <div class="xl:flex xl:min-w-[300px] xl:w-[380px]">
         <JobCreationPreview :job="jobCreationData"/>
       </div>
     </div>
@@ -110,7 +122,7 @@
 
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {storeToRefs} from "pinia";
 import {useJobStore} from "~/stores/job";
 import CustomInput from "~/components/forms/CustomInput.vue";
@@ -120,21 +132,33 @@ import 'v-calendar/dist/style.css'
 import {format} from "date-fns";
 import {DatePicker} from "v-calendar";
 import LabelledInput from "~/components/forms/LabelledInput.vue";
+import JobDescriptionGenerationModal from "~/components/job/JobDescriptionGenerationModal.vue";
+import WorkPermitSelector from "~/components/job/WorkPermitSelector.vue";
+import type {Country} from "~/core/shared/types";
+import {logDev} from "~/core/helpers/log";
 
 definePageMeta({layout: 'app-layout', middleware: ['auth', 'no-company'],})
+const jobStore = useJobStore()
+const {jobCreationData} = storeToRefs(jobStore)
 
-const {jobCreationData} = storeToRefs(useJobStore())
+const hasWorkPermit = ref(false)
 
 watch(jobCreationData, () => {
-  if (jobCreationData.value.salaryTo === "") {
+  if (jobCreationData.value.salaryTo == "") {
     jobCreationData.value.salaryTo = 1
   }
 
-  if (jobCreationData.value.salaryFrom === "") {
+  if (jobCreationData.value.salaryFrom == "") {
     jobCreationData.value.salaryFrom = 1
   }
-
 }, {deep: true,})
+
+const getSelectedCountries = (data: {
+  countries: [Country]
+}) => {
+  logDev('SELECTED COUNTRIES POST', data)
+  jobCreationData.value.workPermits = hasWorkPermit.value ? data.countries.map(({iso}) => iso) : null;
+}
 </script>
 
 <style scoped>

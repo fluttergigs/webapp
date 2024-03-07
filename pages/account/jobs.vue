@@ -8,7 +8,7 @@
           Your job postings
         </h3>
 
-        <UButton :padded=false :to="AppRoutes.postJob"
+        <UButton color="indigo"  :padded=false :to="AppRoutes.postJob"
                  icon="i-heroicons-plus"
                  :class="['bg-indigo-700 px-2 py-1 sm:px-4 md:py-3']"
                  square label="Post a job"
@@ -17,7 +17,7 @@
 
 
       <keep-alive>
-        <JobOffersList :jobs="myJobPostings"
+        <JobOffersList v-if="!!companyJobsResponse" :jobs="myJobPostings"
                        :jobs-response="companyJobsResponse"
                        class="my-10"/>
       </keep-alive>

@@ -26,4 +26,8 @@ export class AppStrings {
     static unableToUpdateYourPassword = "Unable to update your password. Please try again later"
 
     static errorOccurred ="An error occurred. Please try again later!"
+
+    static jobDescriptionIsReady = "Your job description is ready"
+
+    static unableToGenerateJobDescription="Unable to generate your job description"
 }

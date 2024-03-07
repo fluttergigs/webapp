@@ -10,16 +10,18 @@ const props = defineProps({
 </script>
 
 <template>
-  <div class="flex flex-col space-y-2">
-    <slot name="label">
-      <p class="text-sm font-medium">{{ label }}
-      </p>
-    </slot>
+  <client-only>
+    <div class="flex flex-col space-y-2">
+      <slot name="label">
+        <p class="text-sm font-medium">{{ label }}
+        </p>
+      </slot>
 
-    <slot>
+      <slot>
 
-    </slot>
-  </div>
+      </slot>
+    </div>
+  </client-only>
 </template>
 
 <style scoped>

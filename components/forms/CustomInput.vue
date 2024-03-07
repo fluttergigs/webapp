@@ -14,16 +14,17 @@
         </slot>
 
         <textarea
+            rows="5"
             v-model="fieldValue"
             v-if="isTextArea"
-            :class="['custom-input',isDisabled? 'disabled:opacity-50 cursor-not-allowed':'']"
+            :class="['custom-input !text-black',isDisabled? 'disabled:opacity-50 cursor-not-allowed':'']"
             :disabled="isDisabled"
             :name="name"
             :placeholder="placeholder">
 
           </textarea>
         <input v-model="fieldValue" v-else
-               :class="['custom-input',isDisabled? 'disabled:opacity-50 cursor-not-allowed':'']"
+               :class="['custom-input !text-black',isDisabled? 'disabled:opacity-50 cursor-not-allowed':'']"
                :type="type"
                :name="name"
                :disabled="isDisabled"
@@ -103,8 +104,8 @@ const validators = {
   confirmPassword: yup.string().label(hasLabel ? props.label : 'Confirm password')
       .oneOf([yup.ref('password'), null], 'Passwords must match'),
 
-  description: yup.string().required().min(30).max(400).label(hasLabel ? props.label : 'Description'),
-  bio: yup.string().min(15).max(200).label(hasLabel ? props.label : 'Bio'),
+  description: yup.string().required().min(30).max(5000).label(hasLabel ? props.label : 'Description'),
+  bio: yup.string().min(15).max(500).label(hasLabel ? props.label : 'Bio'),
   url: yup.string().url().label(hasLabel ? props.label : 'Url'),
   jobTitle: yup.string().required().min(8).label(hasLabel ? props.label : 'Job title'),
   amount: yup.number().required().min(1).label(hasLabel ? props.label : 'Amount'),

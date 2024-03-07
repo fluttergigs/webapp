@@ -1,8 +1,7 @@
 <script setup lang="ts">
-
-
 import type {JobCreationRequest} from "~/features/jobs/job.types";
 import {userFacingWorkType} from "~/features/jobs/transformers";
+import {useAuthStore} from "~/stores/auth";
 
 //@ts-ignore
 const props = defineProps({
@@ -13,8 +12,7 @@ const props = defineProps({
 </script>
 
 <template>
-
-  <div class="flex flex-col w-full">
+  <div class="flex flex-col space-y-4 w-full">
     <div
         class="transition-all ease-in-2s
         flex flex-col
@@ -23,7 +21,9 @@ const props = defineProps({
       <div class="flex space-x-2">
         <UiAvatar/>
       </div>
-      <p class="text-lg text-blue-gray font-medium">{{ job?.title }}</p>
+      <p class="text-lg text-gray-900 font-medium">{{ job?.title }}</p>
+
+      <p class="font-medium text-gray-700">{{ useAuthStore()?.myCompany?.name }}</p>
 
       <div class="inline-flex items-center space-x-1 text-md font-normal">
         <UIcon name="i-heroicons-currency-dollar"/>
@@ -35,6 +35,9 @@ const props = defineProps({
       </div>
     </div>
 
+    <UButton size="xl" color="indigo"
+             class="bg-indigo-700 flex justify-center items-center"
+             label="Post job for $20"/>
   </div>
 </template>
 

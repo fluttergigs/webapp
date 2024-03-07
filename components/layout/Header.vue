@@ -39,7 +39,7 @@
             </ClientOnly>
           </div>
           <div class="w-auto hidden lg:block">
-            <UButton block :to="AppRoutes.postJob" size="lg"
+            <UButton color="indigo" block :to="AppRoutes.postJob" size="lg"
                      class="bg-indigo-700"
                      square label="Post a job"
                      variant="solid"/>
@@ -130,7 +130,7 @@
                 </ClientOnly>
 
               </div>
-              <UButton :to="AppRoutes.postJob" size="lg"
+              <UButton color="indigo"  :to="AppRoutes.postJob" size="lg"
                        class="bg-indigo-700"
                        square label="Post a job"
                        variant="solid"/>

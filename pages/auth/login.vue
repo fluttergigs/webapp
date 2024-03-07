@@ -62,8 +62,7 @@ const formInput = ref({
   password: 'test1234',
 })
 
-
-watch(formInput, async (oldVal, newVal) => {
+watch(formInput, async () => {
   canSubmit.value = await loginFormSchema.isValid(formInput.value);
 
   //TODO - remove comment later

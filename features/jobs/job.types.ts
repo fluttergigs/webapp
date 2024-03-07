@@ -16,9 +16,10 @@ export type JobOffer = {
     applyBefore: Date,
     createdAt: string,
     company: CompanyApiResponse,
+    workPermits: string[] | null,
 }
 
-export type JobCreationRequest = Omit<JobOffer, 'id' | 'company'>
+export type JobCreationRequest = Omit<JobOffer, 'id' | 'company' | 'isFeatured'>
 
 export enum SeniorityLevel {
     junior = "junior",
