@@ -4,7 +4,7 @@
       <p v-if="hasLabel && showLabel" class="text-sm font-medium">{{ label }}</p>
     </slot>
 
-    <client-only>
+<!--    <client-only>-->
       <div class="relative">
         <slot name="insideText">
           <div class="absolute right-4 bottom-0.5 transform -translate-y-1/2">
@@ -35,7 +35,7 @@
       <p v-if="true" class="text-red-600 text-start text-sm capitalize">
         {{ errorMessage }}
       </p>
-    </client-only>
+<!--    </client-only>-->
   </div>
 </template>
 

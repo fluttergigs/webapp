@@ -89,18 +89,17 @@
                        :label="format(jobCreationData.applyBefore, 'd MMM, yyy')"/>
 
               <template #panel="{ close }">
-                <DatePicker color="bg-indigo-700" v-model="jobCreationData.applyBefore" @close="close"/>
+                <DatePicker :min-date="new Date()" color="indigo" v-model="jobCreationData.applyBefore" @close="close"/>
               </template>
             </UPopover>
           </LabelledInput>
 
           <LabelledInput label="Working permits *">
-
-            <div class="space-y-3">
+            <div class="space-y-4">
               <URadio :ui="{label: 'text-sm font-medium text-black'}" :value="false" v-model="hasWorkPermit"
                       label="No working permits required"/>
 
-              <div class="space-y-2">
+              <div class="space-y-3">
                 <URadio :ui="{label: 'text-sm font-medium text-black'}" :value="true" v-model="hasWorkPermit"
                         label="Must be eligible to work in"/>
                 <WorkPermitSelector @selected-countries="getSelectedCountries"/>
@@ -115,7 +114,8 @@
       </div>
 
       <div class="xl:flex xl:min-w-[300px] xl:w-[380px]">
-        <JobCreationPreview :job="jobCreationData"/>
+        <JobCreationPreview :job="jobCreationData"
+                            :work-permit-countries="workPermits"/>
       </div>
     </div>
   </section>
@@ -136,12 +136,19 @@ import JobDescriptionGenerationModal from "~/components/job/JobDescriptionGenera
 import WorkPermitSelector from "~/components/job/WorkPermitSelector.vue";
 import type {Country} from "~/core/shared/types";
 import {logDev} from "~/core/helpers/log";
+import {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider";
+import {AnalyticsEvent} from "~/services/analytics/events";
 
 definePageMeta({layout: 'app-layout', middleware: ['auth', 'no-company'],})
 const jobStore = useJobStore()
 const {jobCreationData} = storeToRefs(jobStore)
-
 const hasWorkPermit = ref(false)
+const workPermits = ref([]);
+const {$analytics} = useNuxtApp()
+
+onMounted(() => {
+  ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.jobPostPageEntered,)
+})
 
 watch(jobCreationData, () => {
   if (jobCreationData.value.salaryTo == "") {
@@ -153,11 +160,23 @@ watch(jobCreationData, () => {
   }
 }, {deep: true,})
 
+watch(hasWorkPermit, (value: boolean) => {
+  if (!value) {
+    jobCreationData.value.workPermits = null
+  }
+})
+
 const getSelectedCountries = (data: {
   countries: [Country]
 }) => {
   logDev('SELECTED COUNTRIES POST', data)
-  jobCreationData.value.workPermits = hasWorkPermit.value ? data.countries.map(({iso}) => iso) : null;
+
+  if (!hasWorkPermit.value) {
+    hasWorkPermit.value = true;
+  }
+
+  workPermits.value = data.countries.map((country)=> country)
+  jobCreationData.value.workPermits = workPermits.value.map(({iso}: Country) => iso)
 }
 </script>
 

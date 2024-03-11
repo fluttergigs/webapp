@@ -2,12 +2,24 @@
 import type {JobCreationRequest} from "~/features/jobs/job.types";
 import {userFacingWorkType} from "~/features/jobs/transformers";
 import {useAuthStore} from "~/stores/auth";
+//@ts-ignore
+import type {PropType} from "@vue/runtime-core";
+import type {Country} from "~/core/shared/types";
 
 //@ts-ignore
 const props = defineProps({
   job: {
     type: Object as PropType<JobCreationRequest>,
-  }
+  },
+  workPermitCountries: {
+    type: Object as PropType<Country[]>
+  },
+})
+
+const userFacingWorkPermits = computed(() => {
+  const countries = props.workPermitCountries.map((country: Country) => country)
+
+  return `${countries[0].name}  ${countries.length > 1 ? `+ ${countries.length - 1} more` : ''}`
 })
 </script>
 
@@ -18,8 +30,15 @@ const props = defineProps({
         flex flex-col
         rounded-lg shadow-sm hover:shadow-md border border-indigo-700
         px-8 py-4 space-y-2 ">
-      <div class="flex space-x-2">
+      <div class="flex space-x-2 items-start justify-between">
         <UiAvatar/>
+
+        <div
+            class="inline-flex items-center border rounded-md font-medium w-max rounded-l-2xl text-xs pr-2 pl-0.75 py-0.5"
+            v-if="workPermitCountries?.length > 0">
+          <img alt="Flag" class="rounded-full w-4 h-4 mr-1.5" :src="workPermitCountries?.[0].flag.src"/>
+          <span>{{ userFacingWorkPermits }}</span>
+        </div>
       </div>
       <p class="text-lg text-gray-900 font-medium">{{ job?.title }}</p>
 

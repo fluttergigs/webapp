@@ -15,11 +15,12 @@ export type JobOffer = {
     slug: string,
     applyBefore: Date,
     createdAt: string,
+    updatedAt: string,
     company: CompanyApiResponse,
     workPermits: string[] | null,
 }
 
-export type JobCreationRequest = Omit<JobOffer, 'id' | 'company' | 'isFeatured'>
+export type JobCreationRequest = Partial<Omit<JobOffer, 'id' | 'company' | 'isFeatured' | 'createdAt' | 'updatedAt' | 'slug'>>
 
 export enum SeniorityLevel {
     junior = "junior",

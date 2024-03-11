@@ -1,15 +1,13 @@
 <script setup lang="ts">
 
 import type {Country} from "~/core/shared/types";
-import {logDev} from "~/core/helpers/log";
+import {COUNTRIES_API_ENDPOINT} from "~/core/constants";
 
 const selected = ref([])
 //@ts-ignore
 const emits = defineEmits(['selectedCountries'])
 
 watch(selected, () => {
-
-  logDev('SELECTED COUNTRIES',selected.value.join(' '))
   const selectedCountries = data.value?.countries.filter(({iso}: Country) => selected.value.join(' ').includes(iso))
   emits("selectedCountries", {countries: selectedCountries})
 }, {
@@ -20,7 +18,7 @@ const {
   data,
   error,
   pending
-} = await useFetch(`https://restcountries.com/v3.1/all`, {
+} = await useFetch(COUNTRIES_API_ENDPOINT, {
   transform: (countries) => {
     const result: [Country] = countries.map((country: any) => ({
       name: country.name.common,
