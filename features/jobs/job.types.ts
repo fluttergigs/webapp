@@ -1,4 +1,5 @@
 import type {CompanyApiResponse} from "~/features/companies/company.types";
+import {SingleApiResponse} from "~/core/shared/types";
 
 export type JobOffer = {
     id: number,
@@ -16,11 +17,13 @@ export type JobOffer = {
     applyBefore: Date,
     createdAt: string,
     updatedAt: string,
-    company: CompanyApiResponse,
+    company: CompanyApiResponse | string,
     workPermits: string[] | null,
 }
 
-export type JobCreationRequest = Partial<Omit<JobOffer, 'id' | 'company' | 'isFeatured' | 'createdAt' | 'updatedAt' | 'slug'>>
+export type JobCreationRequest = Partial<Omit<JobOffer, 'id' | 'isFeatured' | 'createdAt' | 'updatedAt'>>
+
+export type JobOfferApiResponse = SingleApiResponse<JobOffer>
 
 export enum SeniorityLevel {
     junior = "junior",

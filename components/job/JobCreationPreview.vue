@@ -5,6 +5,9 @@ import {useAuthStore} from "~/stores/auth";
 //@ts-ignore
 import type {PropType} from "@vue/runtime-core";
 import type {Country} from "~/core/shared/types";
+import {useJobStore} from "~/stores/job";
+import useCompanyActions from "~/composables/useCompanyActions";
+import {AppRoutes} from "~/core/routes";
 
 //@ts-ignore
 const props = defineProps({
@@ -14,17 +17,23 @@ const props = defineProps({
   workPermitCountries: {
     type: Object as PropType<Country[]>
   },
+  isCtaEnabled: {
+    type: Boolean,
+    default: false,
+  }
 })
+
+const {postJobOffer} = useCompanyActions()
 
 const userFacingWorkPermits = computed(() => {
   const countries = props.workPermitCountries.map((country: Country) => country)
 
-  return `${countries[0].name}  ${countries.length > 1 ? `+ ${countries.length - 1} more` : ''}`
+  return `${countries[0].name} ${countries.length > 1 ? `+ ${countries.length - 1} more` : ''}`
 })
 </script>
 
 <template>
-  <div class="flex flex-col space-y-4 w-full">
+  <div class="flex flex-col space-y-4 w-full sticky top-[88px]">
     <div
         class="transition-all ease-in-2s
         flex flex-col
@@ -54,7 +63,9 @@ const userFacingWorkPermits = computed(() => {
       </div>
     </div>
 
-    <UButton size="xl" color="indigo"
+    <UButton @click="()=>postJobOffer(()=> navigateTo(AppRoutes.myJobs))"
+             :loading="useJobStore().jobCreation.isLoading"
+             :disabled="!isCtaEnabled" size="xl" color="indigo"
              class="bg-indigo-700 flex justify-center items-center"
              label="Post job for $20"/>
   </div>

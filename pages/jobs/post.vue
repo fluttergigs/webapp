@@ -1,3 +1,6 @@
+<!--TODO - check whether min salary is > max salary-->
+<!--TODO check whether user has selected at least a work permit-->
+
 <template>
   <JobDescriptionGenerationModal/>
   <section class="py-8 px-2 md:py-12 xl:pb-56 bg-white overflow-hidden w-full">
@@ -9,11 +12,14 @@
         </h3>
 
         <form class="flex flex-col space-y-8 my-12 w-full">
-          <CustomInput placeholder="eg. Senior Flutter Engineer" name="jobTitle" label="Job title *"
+          <CustomInput placeholder="eg. Senior Flutter Engineer"
+                       name="jobTitle"
+                       label="Job title *"
                        v-model="jobCreationData.title" type="text"/>
 
           <CustomInput @inside-text-clicked="jobStore.showJobDescriptionGenerationModal()"
-                       inside-text="Generate description using AI 🚀" name="description"
+                       inside-text="Generate description using AI 🚀"
+                       name="description"
                        label="Job description *"
                        v-model="jobCreationData.description" :is-text-area="true"/>
 
@@ -69,13 +75,17 @@
           <div class="flex flex-col space-y-2">
             <LabelledInput label="Monthly Salary range (USD) *">
               <div class="flex space-x-3">
-                <CustomInput @keydown="checkDigit" placeholder="2000" name="amount" :show-label="false" label="From"
+                <CustomInput @keydown="checkDigit"
+                             placeholder="2000" name="amount"
+                             :show-label="false" label="From"
                              class="w-full"
                              v-model="jobCreationData.salaryFrom"/>
 
                 <span class="self-baseline">-</span>
 
-                <CustomInput @keydown="checkDigit" placeholder="8000" name="amount" :show-label="false" label="From"
+                <CustomInput @keydown="checkDigit" placeholder="8000"
+                             name="amount"
+                             :show-label="false" label="From"
                              class="w-full"
                              v-model="jobCreationData.salaryTo"/>
               </div>
@@ -85,38 +95,58 @@
           <!--          apply before-->
           <LabelledInput label="Application closes on *">
             <UPopover :popper="{ placement: 'bottom-start' }">
-              <UButton class="w-full" size="xl" color="white" icon="i-heroicons-calendar-days-20-solid"
+              <UButton class="w-full" size="xl" color="white"
+                       icon="i-heroicons-calendar-days-20-solid"
                        :label="format(jobCreationData.applyBefore, 'd MMM, yyy')"/>
 
               <template #panel="{ close }">
-                <DatePicker :min-date="new Date()" color="indigo" v-model="jobCreationData.applyBefore" @close="close"/>
+                <DatePicker :min-date="new Date()" color="indigo"
+                            v-model="jobCreationData.applyBefore" @close="close"/>
               </template>
             </UPopover>
           </LabelledInput>
 
           <LabelledInput label="Working permits *">
             <div class="space-y-4">
-              <URadio :ui="{label: 'text-sm font-medium text-black'}" :value="false" v-model="hasWorkPermit"
+              <URadio :ui="{label: 'text-sm font-medium text-black'}"
+                      :value="false" v-model="hasWorkPermit"
                       label="No working permits required"/>
 
               <div class="space-y-3">
-                <URadio :ui="{label: 'text-sm font-medium text-black'}" :value="true" v-model="hasWorkPermit"
+                <URadio :ui="{label: 'text-sm font-medium text-black'}"
+                        :value="true" v-model="hasWorkPermit"
                         label="Must be eligible to work in"/>
                 <WorkPermitSelector @selected-countries="getSelectedCountries"/>
               </div>
             </div>
           </LabelledInput>
 
-          <CustomInput placeholder="eg. https://fluttergigs.com/apply" name="url" label="Application method *"
-                       class="w-full" inside-text="Enter an email or application link."
+          <CustomInput placeholder="eg. https://fluttergigs.com/apply"
+                       name="url"
+                       label="Application method *"
+                       class="w-full"
+                       inside-text="Enter an email or application link."
                        v-model="jobCreationData.howToApply"/>
+
+          <UButton :loading="jobCreation.isLoading"
+                   :disabled="!isSubmitButtonEnabled"
+                   @click="()=>postJobOffer(()=> navigateTo(AppRoutes.myJobs))"
+                   size="xl"
+                   color="indigo"
+                   class="bg-indigo-700 flex justify-center items-center"
+                   label="Post job for $20"/>
         </form>
       </div>
 
-      <div class="xl:flex xl:min-w-[300px] xl:w-[380px]">
-        <JobCreationPreview :job="jobCreationData"
-                            :work-permit-countries="workPermits"/>
+      <div class="hidden lg:flex lg:min-w-[300px] lg:w-[380px] h-full">
+        <div class="flex flex-col h-full w-full relative">
+          <JobCreationPreview :is-cta-enabled="isSubmitButtonEnabled"
+                              :job="jobCreationData"
+                              :work-permit-countries="workPermits"/>
+        </div>
       </div>
+
+
     </div>
   </section>
 
@@ -138,17 +168,29 @@ import type {Country} from "~/core/shared/types";
 import {logDev} from "~/core/helpers/log";
 import {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider";
 import {AnalyticsEvent} from "~/services/analytics/events";
+import {postJobFormSchema} from "~/core/validations/job.validations";
+import useCompanyActions from "~/composables/useCompanyActions";
+import {AppRoutes} from "~/core/routes";
+
 
 definePageMeta({layout: 'app-layout', middleware: ['auth', 'no-company'],})
 const jobStore = useJobStore()
-const {jobCreationData} = storeToRefs(jobStore)
+const {jobCreationData, jobCreation} = storeToRefs(jobStore)
 const hasWorkPermit = ref(false)
 const workPermits = ref([]);
 const {$analytics} = useNuxtApp()
+const canPostJob = ref(false)
+const {postJobOffer} = useCompanyActions()
 
 onMounted(() => {
   ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.jobPostPageEntered,)
 })
+
+watch(jobCreationData, async () => {
+  canPostJob.value = await postJobFormSchema.isValid(jobCreationData.value);
+}, {deep: true, immediate: true},)
+
+const isSubmitButtonEnabled = computed(() => canPostJob.value && !jobCreation.value.isLoading)
 
 watch(jobCreationData, () => {
   if (jobCreationData.value.salaryTo == "") {
@@ -175,7 +217,7 @@ const getSelectedCountries = (data: {
     hasWorkPermit.value = true;
   }
 
-  workPermits.value = data.countries.map((country)=> country)
+  workPermits.value = data.countries.map((country) => country)
   jobCreationData.value.workPermits = workPermits.value.map(({iso}: Country) => iso)
 }
 </script>

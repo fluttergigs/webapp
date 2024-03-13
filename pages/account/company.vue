@@ -114,9 +114,10 @@ const submit = async () => {
     (<AppAnalyticsProvider>$analytics).capture(AnalyticsEvent.companyUpdateButtonClicked, formInput.value);
     await companyStore.updateCompany({data: formInput.value});
     (<AppAnalyticsProvider>$analytics).capture(AnalyticsEvent.successfulCompanyUpdate, formInput.value);
-
-    $toast.success(<string>companyStore.companyUpdate!.message);
+    //@ts-ignore
+    $toast.info(<string>companyStore.companyUpdate!.message);
   } catch (e) {
+    //@ts-ignore
     $toast.error(<string>companyStore.companyUpdate!.message);
   }
 }

@@ -37,11 +37,11 @@ import {useAuthStore} from "~/stores/auth";
 import {AppRoutes} from "~/core/routes";
 import LoadingSpinnerIcon from "~/components/icons/LoadingSpinnerIcon.vue";
 import {storeToRefs} from "pinia";
-import {loginFormSchema} from "@/core/validations";
+import {loginFormSchema} from "@/core/validations/auth.validations";
 import {Form} from 'vee-validate'
-import {useNuxtApp} from "#app";
 import {AnalyticsEvent} from "~/services/analytics/events";
 import BasicFormContent from "~/components/ui/BasicFormContent.vue";
+import {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider";
 
 useHead({title: "Flutter Gigs - Authentication"});
 
@@ -72,17 +72,18 @@ watch(formInput, async () => {
 }, {deep: true, immediate: true},)
 
 onMounted(() => {
-  $analytics.capture(AnalyticsEvent.loginPageEntered);
+  ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.loginPageEntered);
 })
 
 const submit = async () => {
   try {
-    const loginData = {email: formInput.value.email, password: formInput.value.password,}
-    $analytics.capture(AnalyticsEvent.loginButtonClicked, loginData)
-    await login(loginData)
-    $analytics.capture(AnalyticsEvent.successfulLogin)
+    const loginData = {email: formInput.value.email, password: formInput.value.password,};
+    ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.loginButtonClicked, loginData);
+    await login(loginData);
+    ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.successfulLogin)
     await useRouter().push({path: !!returnUrl.value ? returnUrl.value : AppRoutes.myAccount})
   } catch (e) {
+    //@ts-ignore
     $toast.error(user.value.message);
   }
 }

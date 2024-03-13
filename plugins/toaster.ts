@@ -7,6 +7,7 @@ export default defineNuxtPlugin(() => {
         provide: {
             toast: toast.useToast({
                 position: 'top',
+                duration: 6500,
                 pauseOnHover: true,
                 dismissible: true,
             })

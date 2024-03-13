@@ -16,10 +16,13 @@ export class AppStrings {
 
     static unableToFetchJob ="Unable to fetch job"
 
+    static unableToCreateJobOffer = "Unable to create job offer"
+
+    static jobOfferPostedSuccessfully ="Your job offer {{title}} has been posted successfully and available";
+
     static yourProfileInfoHasBeenUpdatedSuccessfully = "Your profile info has has been updated successfully"
 
     static unableToUpdateProfileInfo = "Unable to update your account info. Please try again"
-
 
     static yourPasswordHasBeenUpdatedSuccessfully = "Your password has has been updated successfully"
 

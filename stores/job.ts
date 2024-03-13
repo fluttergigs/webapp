@@ -4,11 +4,13 @@ import {Wrapper} from "~/core/wrapper";
 import {logDev} from "~/core/helpers/log";
 import {MultiApiResponse, SingleApiResponse} from "~/core/shared/types";
 import {AppStrings} from "~/core/strings";
-import type {JobCreationRequest, JobOffer, JobSearchFilters} from "~/features/jobs/job.types";
+import type {JobCreationRequest, JobOffer, JobOfferApiResponse, JobSearchFilters} from "~/features/jobs/job.types";
 import type {HttpClient} from "~/core/network/http_client";
 import {stringify} from "qs";
 import {remoteOptions, seniorityLevelOptions, workTypeOptions} from "~/core/constants";
 import {GenerativeAIProvider} from "~/services/ai/generative_ai_provider";
+import {generateJobOfferSlug} from "~/core/utils";
+import {useAuthStore} from "~/stores/auth";
 
 // @ts-ignore
 export const useJobStore = defineStore('job', {
@@ -25,6 +27,7 @@ export const useJobStore = defineStore('job', {
             workType: workTypeOptions[0].id,
             seniorityLevel: seniorityLevelOptions[0].id,
             remoteOptions: remoteOptions[0].id,
+            company: useAuthStore().myCompany.id,
         }
     }),
 
@@ -53,6 +56,25 @@ export const useJobStore = defineStore('job', {
                 ...filters
             }
         },
+
+        async postJob() {
+            try {
+                this.jobCreation = new Wrapper<JobOfferApiResponse>().toLoading()
+                const {$http} = useNuxtApp()
+                this.jobCreationData.slug = generateJobOfferSlug({
+                    jobTitle: this.jobCreationData.title,
+                    companyName: useAuthStore().myCompany.name
+                })
+                const response = await (<HttpClient>$http).post(`${Endpoint.jobOffers}`, {data: this.jobCreationData})
+                this.jobCreation = this.jobCreation.toSuccess(response, AppStrings.jobOfferPostedSuccessfully.replaceAll('{{title}}', this.jobCreationData.title))
+                //TODO - think more on that
+                this.resetJobCreationData()
+            } catch (e) {
+                logDev('create company error', e)
+                this.jobCreation = this.jobCreation.toFailed(AppStrings.unableToCreateJobOffer)
+            }
+        },
+
         async fetchJobs(): Promise<void> {
             try {
                 // @ts-ignore
@@ -96,6 +118,7 @@ export const useJobStore = defineStore('job', {
                             }
                         })
                     },
+                    sort: 'createdAt:desc',
                 }, {
                     encodeValuesOnly: true,
                 })
@@ -126,6 +149,14 @@ export const useJobStore = defineStore('job', {
                 logDev('single Job RESPONSE', response)
             } catch (e) {
                 this.selectedJob = this.selectedJob.toSuccess(job, AppStrings.unableToFetchJob)
+            }
+        },
+        resetJobCreationData() {
+            this.jobCreationData = <JobCreationRequest>{
+                applyBefore: new Date(),
+                workType: workTypeOptions[0].id,
+                seniorityLevel: seniorityLevelOptions[0].id,
+                remoteOptions: remoteOptions[0].id,
             }
         }
     },

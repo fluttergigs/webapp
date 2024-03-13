@@ -27,3 +27,5 @@ export interface Country {
     },
     iso: string,
 }
+
+export declare type CallbackFunction<T> = ((val?: T, err?: null,) => void) | ((err?: Error) => void);

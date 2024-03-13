@@ -39,6 +39,7 @@ export const useCompanyStore = defineStore('company', {
                             }
                         }
                     },
+                    sort: 'createdAt:desc',
                 }, {
                     encodeValuesOnly: true,
                 })
