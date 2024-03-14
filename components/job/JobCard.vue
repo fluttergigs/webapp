@@ -1,24 +1,27 @@
-<script setup>
+<script setup lang="ts">
 
 import ArrowBackIcon from "~/components/icons/ArrowBackIcon.vue";
 import {extractCompanyFromJob, userFacingRemoteOptions, userFacingWorkType} from "~/features/jobs/transformers";
 import {AppRoutes} from "~/core/routes";
-import {useJobStore} from "~/stores/job";
 import {userFacingCompanySize} from "~/features/companies/transformers";
-import {useAuthStore} from "~/stores/auth";
+import useJobActions from "~/composables/useJobActions";
+//@ts-ignore
+import type {PropType} from "@vue/runtime-core";
+import type {JobOffer} from "~/features/jobs/job.types";
+import {RemoteOptions} from "~/features/jobs/job.types";
+import WorkingPermits from "~/components/job/WorkingPermits.vue";
 
+const {data, error} = await useCountries();
+const {jobWorkingPermits} = useJobActions();
+
+//@ts-ignore
 const props = defineProps({
-  job: Object,
+  job: {
+    type: Object as PropType<JobOffer>,
+  }
 })
 
-const isMyJob = computed(() => {
-  return (company.value?.id === useAuthStore().myCompany.id) ?? false
-})
-
-const viewDetails = () => {
-  useJobStore().findJobById(props.job)
-  navigateTo(AppRoutes.jobDetail(props.job.slug))
-}
+const isJobSidePanelOpen = ref(false)
 
 const company = computed(() => ({
   ...extractCompanyFromJob(props.job)
@@ -43,7 +46,6 @@ const jobActionItems = [
       navigateTo(AppRoutes.jobDetail(props.job.slug))
     }
   }],
-
   [{
     label: 'Delete',
     click: () => {
@@ -55,24 +57,25 @@ const jobActionItems = [
 </script>
 
 <template>
-  <UCard
-      :class="['transition-all duration-300 ease-in-out cursor-pointer', isMyJob?'':'hover:translate-x-1.5 ']">
+  <UCard @click="useJobActions().viewDetails(job!)"
+         :class="['transition-all duration-300 ease-in-out cursor-pointer',
+      useJobActions().jobBelongsToCompany(company)?'':'hover:translate-x-1.5 ']">
     <div class="flex justify-between items-center relative">
-      <div class="absolute right-[7px] top-0" v-if="isMyJob">
+      <div class="absolute right-[7px] top-0" v-if="useJobActions().jobBelongsToCompany(company)">
         <UDropdown :items="jobActionItems" :popper="{ placement: 'bottom-start'}">
           <div class="flex justify-center items-center">
             <UIcon class="ml-5 text-2xl" name="i-heroicons-ellipsis-horizontal"/>
           </div>
         </UDropdown>
       </div>
-      <div class="flex flex-col flex-grow space-y-2">
+      <div class="flex flex-col flex-grow space-y-1.5">
         <div class="flex justify-between w-full">
-          <h3 class="text-xl font-semibold flex-grow">
+          <h3 class="text-lg font-semibold flex-grow">
             {{ props.job?.title }}
           </h3>
         </div>
         <div class="flex space-x-3 text-sm">
-          <h4 class="text-md text-gray-900 font-medium">{{ company?.name }}</h4>
+          <h4 class="text-sm text-gray-900 font-medium">{{ company?.name }}</h4>
 
           <div class="flex items-center space-x-1">
             <UIcon class="text-gray-600" name="i-heroicons-user-group"/>
@@ -84,8 +87,10 @@ const jobActionItems = [
 
         <!--        options-->
         <div class="space-x-3 text-sm">
+          <WorkingPermits :countries="jobWorkingPermits(data?.countries??[], props.job as JobOffer)"/>
+
           <span class="rounded-full px-4 py-0.5 border border-gray-500/30">
-            {{ userFacingRemoteOptions(props.job?.remoteOptions) }}
+            {{ userFacingRemoteOptions(props.job?.remoteOptions as RemoteOptions) }}
           </span>
 
           <span>•</span>
@@ -103,18 +108,23 @@ const jobActionItems = [
       </div>
       <div class="flex flex-col">
         <div
-            class="w-9 h-9 self-end flex
+            class="w-8 h-8 self-end flex
             justify-self-end
             items-center justify-center
             rounded-full bg-indigo-600
             cursor-pointer"
-            @click="viewDetails">
+            @click.capture.stop="isJobSidePanelOpen = true">
           <ArrowBackIcon class="h-3 rotate-180 shadow-lg text-white"/>
         </div>
       </div>
     </div>
   </UCard>
 
+  <USlideover v-model="isJobSidePanelOpen">
+    <div class="p-4 flex-1">
+      <JobDetailsCard :job="job"/>
+    </div>
+  </USlideover>
 </template>
 
 <style scoped>

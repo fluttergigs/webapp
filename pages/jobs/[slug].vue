@@ -12,6 +12,7 @@ import useJobActions from '@/composables/useJobActions'
 import {Direction} from "~/core/shared/types";
 import CompanyInfoCard from "~/components/company/CompanyInfoCard.vue";
 import {stringify} from "qs";
+import WorkingPermits from "~/components/job/WorkingPermits.vue";
 
 definePageMeta({
   layout: 'main-layout'
@@ -26,6 +27,9 @@ const company = computed(() => ({
 }));
 
 const jobSlug = ref(useRoute().params.slug)
+
+const {data: countriesData, error: countriesError} = await useCountries();
+const {jobWorkingPermits} = useJobActions();
 
 const query = ref(stringify({
   populate: '*',
@@ -86,10 +90,18 @@ onBeforeMount(() => {
             </h2>
 
             <client-only>
-              <UButton @click="useJobActions().shareJobOffer(data)" size="lg"
-                       icon="i-heroicons-share"
-                       square label="Share job offer" color="white"
-                       variant="solid"/>
+              <div class="flex space-x-2">
+                <UButton v-if="useJobActions().jobBelongsToCompany(company)"
+                         @click="useJobActions().editJobOffer(data)" size="lg"
+                         icon="i-heroicons-pencil"
+                         square label="Edit job offer" color="white"
+                         variant="solid"/>
+
+                <UButton @click="useJobActions().shareJobOffer(data)" size="lg"
+                         icon="i-heroicons-share"
+                         square label="Share job offer" color="white"
+                         variant="solid"/>
+              </div>
             </client-only>
           </div>
 
@@ -111,6 +123,9 @@ onBeforeMount(() => {
                 Website
               </a>
             </div>
+
+            <WorkingPermits :countries="jobWorkingPermits(countriesData?.countries??[], data)"/>
+
           </div>
         </section>
 

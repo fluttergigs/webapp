@@ -8,6 +8,7 @@ import type {Country} from "~/core/shared/types";
 import {useJobStore} from "~/stores/job";
 import useCompanyActions from "~/composables/useCompanyActions";
 import {AppRoutes} from "~/core/routes";
+import WorkingPermits from "~/components/job/WorkingPermits.vue";
 
 //@ts-ignore
 const props = defineProps({
@@ -25,11 +26,12 @@ const props = defineProps({
 
 const {postJobOffer} = useCompanyActions()
 
-const userFacingWorkPermits = computed(() => {
+
+/*const userFacingWorkPermits = computed(() => {
   const countries = props.workPermitCountries.map((country: Country) => country)
 
   return `${countries[0].name} ${countries.length > 1 ? `+ ${countries.length - 1} more` : ''}`
-})
+})*/
 </script>
 
 <template>
@@ -42,12 +44,7 @@ const userFacingWorkPermits = computed(() => {
       <div class="flex space-x-2 items-start justify-between">
         <UiAvatar/>
 
-        <div
-            class="inline-flex items-center border rounded-md font-medium w-max rounded-l-2xl text-xs pr-2 pl-0.75 py-0.5"
-            v-if="workPermitCountries?.length > 0">
-          <img alt="Flag" class="rounded-full w-4 h-4 mr-1.5" :src="workPermitCountries?.[0].flag.src"/>
-          <span>{{ userFacingWorkPermits }}</span>
-        </div>
+        <WorkingPermits :countries="workPermitCountries??[]"/>
       </div>
       <p class="text-lg text-gray-900 font-medium">{{ job?.title }}</p>
 

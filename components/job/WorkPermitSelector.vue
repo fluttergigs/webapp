@@ -1,9 +1,11 @@
 <script setup lang="ts">
 
 import type {Country} from "~/core/shared/types";
-import {COUNTRIES_API_ENDPOINT} from "~/core/constants";
+import useCountries from "~/composables/useCountries";
 
 const selected = ref([])
+
+const {data, error} = await useCountries();
 //@ts-ignore
 const emits = defineEmits(['selectedCountries'])
 
@@ -13,25 +15,6 @@ watch(selected, () => {
 }, {
   deep: true,
 })
-
-const {
-  data,
-  error,
-  pending
-} = await useFetch(COUNTRIES_API_ENDPOINT, {
-  transform: (countries) => {
-    const result: [Country] = countries.map((country: any) => ({
-      name: country.name.common,
-      flag: {src: country.flags.svg, ico: country.flag,},
-      iso: country.fifa,
-    }));
-
-    return {
-      countries: result,
-    }
-  }
-})
-
 </script>
 
 <template>

@@ -11,7 +11,7 @@ export const generateUserName = (email: string) => {
 export const generateJobOfferSlug = ({jobTitle, companyName}: { companyName: string, jobTitle: string }) => {
     const jobTitleSlug = slugify(jobTitle, {lowercase: true,})
     const companyNameSlug = slugify(companyName, {lowercase: true})
-    const nanoid = customAlphabet(`1234567890${jobTitleSlug}-${companyNameSlug}`, 10);
+    const nanoid = customAlphabet(`1234567890${jobTitleSlug}-at-${companyNameSlug}`, 6);
     return `${jobTitleSlug}-${companyNameSlug}-${nanoid()}`
 }
 

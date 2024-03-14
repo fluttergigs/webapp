@@ -1,15 +1,13 @@
-import {LoginData, RegistrationData, ResetPasswordData,} from "~/services/auth/auth.types";
-
+import {ResetPasswordData} from "~/services/auth/auth.types";
 
 export abstract class AuthService<LData, RData> {
+    abstract register(data: RData): Promise<any>;
 
-    abstract async register(data: RData);
+    abstract login(data: LData): Promise<any>;
 
-    abstract async login(data: LData);
+    abstract logout(): Promise<void> ;
 
-    abstract async logout(): Promise<void> ;
+    abstract fetchUser(): Promise<any>;
 
-    abstract async fetchUser(): Promise<any>;
-
-    abstract async resetPassword(data: ResetPasswordData);
+    abstract resetPassword(data: ResetPasswordData): Promise<any>;
 }

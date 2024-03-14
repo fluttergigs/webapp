@@ -17,6 +17,15 @@ import slugify from "@sindresorhus/slugify";
 import {JobOffer} from "~/features/jobs/job.types";
 import {stringify} from "qs";
 
+//@ts-ignore
+import isBefore from "date-fns/isBefore";
+//@ts-ignore
+import isAfter from "date-fns/isAfter";
+//@ts-ignore
+import isSameDay from "date-fns/isSameDay";
+//@ts-ignore
+import parseISO from "date-fns/parseISO"
+
 // @ts-ignore
 export const useCompanyStore = defineStore('company', {
     state: () => ({
@@ -27,7 +36,6 @@ export const useCompanyStore = defineStore('company', {
         companyJobsResponse: new Wrapper<MultiApiResponse<JobOffer>>().toInitial(),
     }),
     actions: {
-
         async fetchMyJobs() {
             try {
                 const query = stringify({
@@ -123,7 +131,9 @@ export const useCompanyStore = defineStore('company', {
         myJobPostings: (state) => state.companyJobsResponse?.value?.data?.map((item: { [x: string]: any; }) => ({
             ...item['attributes'],
             id: item['id']
-        }))
+        })),
+        expiredJobPostings: state => useCompanyStore().myJobPostings?.filter((job: JobOffer) => isBefore(parseISO(job.applyBefore), new Date())),
+        activeJobPostings: state => useCompanyStore().myJobPostings?.filter((job: JobOffer) => isAfter(parseISO(job.applyBefore), new Date())),
     },
     // persist: true,
 })

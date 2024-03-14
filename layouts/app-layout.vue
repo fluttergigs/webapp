@@ -29,12 +29,18 @@
                   v-for="(link, index) in linkItems">
 
                 <div class="flex">
-                  <NuxtLink :to="link.path"
+
+                  <NuxtLink v-if="link.path" :to="link.path"
                             :class="['flex flex-wrap items-center space-x-3']">
                     <component :is="link.icon"
                                :class="['w-5 h-5 text-gray-600']"/>
                     <p class="hover:text-neutral-700 font-medium">{{ link.name }}</p>
                   </NuxtLink>
+                  <div v-else @click="link.onClick" :class="['flex flex-wrap items-center space-x-3 cursor-pointer']">
+                    <component :is="link.icon"
+                               :class="['w-5 h-5 text-gray-600']"/>
+                    <p class="hover:text-neutral-700 font-medium">{{ link.name }}</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -51,10 +57,11 @@
 <script setup>
 
 import {
+  ArrowLeftEndOnRectangleIcon,
   BuildingOffice2Icon,
   ClipboardDocumentListIcon,
   PresentationChartBarIcon,
-  UserIcon
+  UserIcon,
 } from '@heroicons/vue/24/outline'
 import {AppRoutes} from "~/core/routes";
 import ArrowBackIcon from "~/components/icons/ArrowBackIcon.vue";
@@ -87,6 +94,15 @@ const links = [
     section: "User",
     path: AppRoutes.myAccount,
     name: 'User Settings',
+  },
+  {
+    icon: ArrowLeftEndOnRectangleIcon,
+    section: "User",
+    onClick: () => {
+      useAuthStore().logout()
+    },
+    // path: AppRoutes.,
+    name: 'Logout',
   }
 ]
 

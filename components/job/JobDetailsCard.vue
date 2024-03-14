@@ -2,14 +2,19 @@
 
 import ItemData from "~/components/job/ItemData.vue";
 import {userFacingRemoteOptions, userFacingSeniorityLevel, userFacingWorkType} from "~/features/jobs/transformers";
+import WorkingPermits from "~/components/job/WorkingPermits.vue";
+import useJobActions from "~/composables/useJobActions";
 
 const props = defineProps({
-      job: {
-        type: Object,
-        required: true,
-      }
-    }
-)
+  job: {
+    type: Object,
+    required: true,
+  }
+})
+
+
+const {data, error} = await useCountries();
+const {jobWorkingPermits} = useJobActions();
 </script>
 
 <template>
@@ -38,6 +43,15 @@ const props = defineProps({
         </div>
       </template>
     </ItemData>
+
+    <UDivider class="my-2"/>
+
+    <ItemData label="Location requirements">
+      <template #content>
+        <WorkingPermits :countries="jobWorkingPermits(data?.countries??[], props.job)"/>
+      </template>
+    </ItemData>
+
   </div>
 </template>
 

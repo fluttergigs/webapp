@@ -20,19 +20,21 @@ const props = defineProps({
 <template>
   <div class="flex flex-col space-y-4">
     <client-only>
-      <template v-if="props.jobsResponse.isSuccess">
+      <template v-if="props.jobsResponse.isSuccess || props.jobsResponse.isFailure">
 
-        <template v-if="props.jobs.length > 0">
+        <div class="flex items-center justify-center" v-if="props.jobs.length <= 0">
+          <slot name="noData">
+            <img class="w-96 h-96" alt="Empty job results" src="@/assets/images/emptyJobFiltersResult.svg"/>
+          </slot>
+        </div>
+
+        <template v-else>
           <slot v-for="job in props.jobs" :job="job" :key="job.slug">
             <JobCard :job="job" :key="job.slug"/>
           </slot>
         </template>
 
-        <div class="flex items-center justify-center" v-else>
-          <slot name="noData">
-            <img class="w-96 h-96" alt="Empty job results" src="@/assets/images/emptyJobFiltersResult.svg"/>
-          </slot>
-        </div>
+
       </template>
       <div v-else-if="props.jobsResponse.isLoading">
         <slot name="loader">

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-
+//@ts-ignore
 const props = defineProps({
   title: {
     type: String,
@@ -33,7 +33,6 @@ const props = defineProps({
           <slot v-else name="title">
 
           </slot>
-
 
           <p v-if="description" class="mb-12 font-medium text-lg text-gray-600 leading-normal">
             {{ description }}

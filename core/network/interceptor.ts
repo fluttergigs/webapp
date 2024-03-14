@@ -1,10 +1,11 @@
+//@ts-ignore
 import {FetchContext, FetchResponse} from "ofetch";
 import {useAuthStore} from "~/stores/auth";
 import {logDev} from "~/core/helpers/log";
 
 export type PromiseVoid = Promise<void> | void
 export const $fetchInterceptor = {
-    async onRequest(context: FetchContext): PromiseVoid {
+    async onRequest(context: FetchContext): Promise<void> {
         const {
             isAuthenticated,
             hasTokenExpired,

@@ -19,13 +19,14 @@ export enum Direction {
     horizontal = "horizontal"
 }
 
-export interface Country {
+export declare type Country = {
     name: string,
     flag: {
         src: string,
         ico: string,
     },
     iso: string,
+    [key:string]: any,
 }
 
 export declare type CallbackFunction<T> = ((val?: T, err?: null,) => void) | ((err?: Error) => void);
