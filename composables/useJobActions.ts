@@ -6,26 +6,37 @@ import {Company} from "~/features/companies/company.types";
 import {useJobStore} from "~/stores/job";
 import {AppRoutes} from "~/core/routes";
 import type {Country} from "~/core/shared/types";
+import {CallbackFunction} from "~/core/shared/types";
 import {useUserStore} from "~/stores/user";
 
 
 export default function useJobActions() {
+    const handleJobBookmark = async (job: JobOffer, onSuccess?: CallbackFunction<any>) => {
+        try {
+            const userStore = useUserStore()
+            const {$toast} = useNuxtApp()
+            if (useAuthStore().isAuthenticated) {
+                userStore.jobToBookmark = job.id;
+                if (isJobBookmarked(job)) {
+                    const bookmarkedJob: JobOffer = useUserStore().bookmarkedJobs?.find((savedJob: JobOffer) => savedJob.id === job.id);
+                    await userStore.deleteSavedJob({id: bookmarkedJob.bookmarkedJob});
+                    // @ts-ignore
+                    $toast.info(userStore.bookmarkedJobDelete.message)
+                } else {
+                    await userStore.saveJob({jobOffer: job.id, user: useAuthStore().user.id})
+                    // @ts-ignore
+                    $toast.info(userStore.bookmarkedJobCreation.message)
+                }
 
-    const handleJobBookmark = async (job: JobOffer) => {
-        const userStore = useUserStore()
-        const $toast = useNuxtApp()
-        if (useAuthStore().isAuthenticated) {
-            if (isJobBookmarked(job)) {
-                //TODO : write custom backend logic for this
+                if (onSuccess != null) {
+                    onSuccess()
+                    return;
+                }
             } else {
-                await userStore.saveJob({jobOffer: job.id, user: useAuthStore().user.id})
-                // @ts-ignore
-                $toast.info(userStore.bookmarkedJobsListResponse.message)
+                navigateTo(AppRoutes.login)
             }
+        } finally {
 
-        } else {
-
-            navigateTo(AppRoutes.login)
         }
 
     }

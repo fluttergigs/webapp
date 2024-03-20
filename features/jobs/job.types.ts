@@ -20,6 +20,7 @@ export type JobOffer = {
     updatedAt: string,
     company: CompanyApiResponse | string,
     workPermits: string[] | null,
+    bookmarkedJob?: number,
 }
 
 export type BookmarkedJobOffer = {

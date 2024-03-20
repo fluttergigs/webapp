@@ -1,7 +1,6 @@
 import {defineStore} from "pinia";
 import {logDev} from "~/core/helpers/log";
 // @ts-ignore
-import {useNuxtApp} from "#imports"
 import {Wrapper} from "~/core/wrapper";
 import {MultiApiResponse, SingleApiResponse} from "~/core/shared/types";
 import {Endpoint} from "~/core/network/endpoints";
@@ -17,13 +16,13 @@ import isAfter from "date-fns/isAfter";
 import {stringify} from "qs";
 import {useAuthStore} from "~/stores/auth";
 
-
 //@ts-ignore
 export const useUserStore = defineStore('user', {
     state: () => ({
         bookmarkedJobsListResponse: new Wrapper<MultiApiResponse<BookmarkedJobOffer>>().toInitial(),
         bookmarkedJobCreation: new Wrapper<SingleApiResponse<BookmarkedJobOffer>>().toInitial(),
         bookmarkedJobDelete: new Wrapper<SingleApiResponse<Object>>().toInitial(),
+        jobToBookmark: null,
     }),
     actions: {
         async saveJob(request: SaveJobOfferRequest) {
@@ -80,12 +79,18 @@ export const useUserStore = defineStore('user', {
         },
     },
     getters: {
-        bookmarkedJobs: (state) => state.bookmarkedJobsListResponse?.value?.data?.map((savedJob: BookmarkedJobOffer) => ({
-            ...savedJob.attributes.jobOffer.data.attributes,
-            id: savedJob.attributes.jobOffer.data.id,
-        })),
+        activeBookmarkedJobs: state => useUserStore().bookmarkedJobs?.filter((job: JobOffer) => isAfter(parseISO(job.applyBefore), new Date())),
+
+        bookmarkedJobs(state): JobOffer[] {
+            return state.bookmarkedJobsListResponse?.value?.data?.map((savedJob: BookmarkedJobOffer) => ({
+                ...savedJob.attributes.jobOffer.data.attributes,
+                id: savedJob.attributes.jobOffer.data.id,
+                bookmarkedJob: savedJob.id,
+            }));
+        },
 
         expiredBookmarkedJobs: state => useUserStore().bookmarkedJobs?.filter((job: JobOffer) => isBefore(parseISO(job.applyBefore), new Date())),
-        activeBookmarkedJobs: state => useUserStore().bookmarkedJobs?.filter((job: JobOffer) => isAfter(parseISO(job.applyBefore), new Date())),
+
+        isHandlingBookmark: state => state.bookmarkedJobCreation.isLoading || state.bookmarkedJobDelete.isLoading
     },
 })
