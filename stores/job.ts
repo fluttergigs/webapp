@@ -4,7 +4,15 @@ import {Wrapper} from "~/core/wrapper";
 import {logDev} from "~/core/helpers/log";
 import {MultiApiResponse, SingleApiResponse} from "~/core/shared/types";
 import {AppStrings} from "~/core/strings";
-import type {JobCreationRequest, JobOffer, JobOfferApiResponse, JobSearchFilters} from "~/features/jobs/job.types";
+import type {
+    BookmarkedJobOffer,
+    DeleteSavedJobOfferRequest,
+    JobCreationRequest,
+    JobOffer,
+    JobOfferApiResponse,
+    JobSearchFilters,
+    SaveJobOfferRequest
+} from "~/features/jobs/job.types";
 import type {HttpClient} from "~/core/network/http_client";
 import {stringify} from "qs";
 import {remoteOptions, seniorityLevelOptions, workTypeOptions} from "~/core/constants";
@@ -84,7 +92,7 @@ export const useJobStore = defineStore('job', {
                 // @ts-ignore
                 this.jobListResponse = this.jobFiltersResponse = this.jobListResponse.toSuccess(response)
             } catch (e) {
-                logDev('fetching companies error', e)
+                logDev('fetching job offers error', e)
                 this.jobListResponse = this.jobListResponse.toFailed(AppStrings.unableToFetchJobs)
             }
         },
@@ -162,12 +170,11 @@ export const useJobStore = defineStore('job', {
     },
     getters: {
         //@ts-ignore
-        jobs: (state) => {
-            return state.jobListResponse?.value?.data?.map((item: { [x: string]: any; }) => ({
+        jobs: (state) =>
+            state.jobListResponse?.value?.data?.map((item: { [x: string]: any; }) => ({
                 ...item['attributes'],
                 id: item['id']
-            }));
-        },
+            })),
         currentViewedJob: (state) => state.selectedJob.value,
         filteredJobs: (state) => state.jobFiltersResponse?.value?.data?.map((item: { [x: string]: any; }) => ({
             ...item['attributes'],

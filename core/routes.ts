@@ -21,6 +21,8 @@ export class AppRoutes {
 
     static myAccount = '/account/user'
 
+    static mySavedJobs = '/account/saved-jobs'
+
     static myCompany = '/account/company'
 
     static welcome = '/'

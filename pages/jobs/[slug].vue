@@ -14,6 +14,9 @@ import CompanyInfoCard from "~/components/company/CompanyInfoCard.vue";
 import {stringify} from "qs";
 import WorkingPermits from "~/components/job/WorkingPermits.vue";
 
+import {HeartIcon,} from '@heroicons/vue/24/solid'
+import SaveJobIconButton from "~/components/job/SaveJobIconButton.vue";
+
 definePageMeta({
   layout: 'main-layout'
 })
@@ -90,7 +93,7 @@ onBeforeMount(() => {
             </h2>
 
             <client-only>
-              <div class="flex space-x-2">
+              <div class="flex space-x-2 items-center">
                 <UButton v-if="useJobActions().jobBelongsToCompany(company)"
                          @click="useJobActions().editJobOffer(data)" size="lg"
                          icon="i-heroicons-pencil"
@@ -101,6 +104,8 @@ onBeforeMount(() => {
                          icon="i-heroicons-share"
                          square label="Share job offer" color="white"
                          variant="solid"/>
+
+                <SaveJobIconButton :job="data" :company="company"/>
               </div>
             </client-only>
           </div>

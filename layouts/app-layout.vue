@@ -58,6 +58,7 @@
 
 import {
   ArrowLeftEndOnRectangleIcon,
+  BriefcaseIcon,
   BuildingOffice2Icon,
   ClipboardDocumentListIcon,
   PresentationChartBarIcon,
@@ -72,32 +73,38 @@ import {groupBy} from "lodash"
 import {useJobStore} from "~/stores/job";
 
 const links = [
-  {
+  /*{
     icon: PresentationChartBarIcon,
     path: '/dashboard',
     name: 'Dashboard'
-  },
+  },*/
   {
     icon: BuildingOffice2Icon,
     path: AppRoutes.myCompany,
-    section: 'Employer',
+    section: 'employer',
     name: 'My Company'
   },
   {
-    icon: ClipboardDocumentListIcon,
+    icon: BriefcaseIcon,
     path: AppRoutes.myJobs,
-    section: 'Employer',
+    section: 'employer',
     name: 'My Job offers'
   },
   {
+    icon: ClipboardDocumentListIcon,
+    section: "user",
+    path: AppRoutes.mySavedJobs,
+    name: 'Saved Jobs',
+  },
+  {
     icon: UserIcon,
-    section: "User",
+    section: "user",
     path: AppRoutes.myAccount,
     name: 'User Settings',
   },
   {
     icon: ArrowLeftEndOnRectangleIcon,
-    section: "User",
+    section: "user",
     onClick: () => {
       useAuthStore().logout()
     },

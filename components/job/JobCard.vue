@@ -10,6 +10,7 @@ import type {PropType} from "@vue/runtime-core";
 import type {JobOffer} from "~/features/jobs/job.types";
 import {RemoteOptions} from "~/features/jobs/job.types";
 import WorkingPermits from "~/components/job/WorkingPermits.vue";
+import SaveJobIconButton from "~/components/job/SaveJobIconButton.vue";
 
 const {data, error} = await useCountries();
 const {jobWorkingPermits} = useJobActions();
@@ -61,12 +62,15 @@ const jobActionItems = [
          :class="['transition-all duration-300 ease-in-out cursor-pointer',
       useJobActions().jobBelongsToCompany(company)?'':'hover:translate-x-1.5 ']">
     <div class="flex justify-between items-center relative">
-      <div class="absolute right-[7px] top-0" v-if="useJobActions().jobBelongsToCompany(company)">
+      <div class="absolute right-[7px] top-[-12px]" v-if="useJobActions().jobBelongsToCompany(company)">
         <UDropdown :items="jobActionItems" :popper="{ placement: 'bottom-start'}">
           <div class="flex justify-center items-center">
             <UIcon class="ml-5 text-2xl" name="i-heroicons-ellipsis-horizontal"/>
           </div>
         </UDropdown>
+      </div>
+      <div class="absolute right-[3.5px] bottom-[-20px]" >
+       <SaveJobIconButton :job="props.job" :company="company"/>
       </div>
       <div class="flex flex-col flex-grow space-y-1.5">
         <div class="flex justify-between w-full">
@@ -86,7 +90,7 @@ const jobActionItems = [
         </div>
 
         <!--        options-->
-        <div class="space-x-3 text-sm">
+        <div class="flex space-x-3 text-sm items-center">
           <WorkingPermits :countries="jobWorkingPermits(data?.countries??[], props.job as JobOffer)"/>
 
           <span class="rounded-full px-4 py-0.5 border border-gray-500/30">

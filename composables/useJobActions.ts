@@ -6,9 +6,31 @@ import {Company} from "~/features/companies/company.types";
 import {useJobStore} from "~/stores/job";
 import {AppRoutes} from "~/core/routes";
 import type {Country} from "~/core/shared/types";
+import {useUserStore} from "~/stores/user";
 
 
 export default function useJobActions() {
+
+    const handleJobBookmark = async (job: JobOffer) => {
+        const userStore = useUserStore()
+        const $toast = useNuxtApp()
+        if (useAuthStore().isAuthenticated) {
+            if (isJobBookmarked(job)) {
+                //TODO : write custom backend logic for this
+            } else {
+                await userStore.saveJob({jobOffer: job.id, user: useAuthStore().user.id})
+                // @ts-ignore
+                $toast.info(userStore.bookmarkedJobsListResponse.message)
+            }
+
+        } else {
+
+            navigateTo(AppRoutes.login)
+        }
+
+    }
+    const isJobBookmarked = (job: JobOffer): boolean => useUserStore().bookmarkedJobs?.filter((savedJob: JobOffer) => savedJob.id == job.id).length > 0
+
     const jobBelongsToCompany = (company: Company) =>
         (company.id === useAuthStore().myCompany.id) && useAuthStore().isAuthenticated
 
@@ -36,5 +58,14 @@ export default function useJobActions() {
 
     const userFacingWorkingPermits = (countries: Country[]) => `${countries[0].name} ${countries.length > 1 ? `+ ${countries.length - 1} more` : ' only'}`
 
-    return {shareJobOffer, editJobOffer, jobBelongsToCompany, viewDetails, jobWorkingPermits, userFacingWorkingPermits}
+    return {
+        shareJobOffer,
+        editJobOffer,
+        jobBelongsToCompany,
+        viewDetails,
+        jobWorkingPermits,
+        userFacingWorkingPermits,
+        isJobBookmarked,
+        handleJobBookmark
+    }
 }

@@ -16,6 +16,10 @@ export class Endpoint {
         return `/job-offers`
     }
 
+    static get bookmarkedJobOffers() {
+        return `/bookmarked-job-offers`
+    }
+
     static get getMe(){
         return '/users/me'
     }

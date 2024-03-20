@@ -30,7 +30,7 @@
                 </NuxtLink>
                 <UDropdown v-else :items="accountLinks" :popper="{ placement: 'bottom-start'}">
                   <div class="flex justify-center items-center">
-                    <span class="font-medium">  {{ useAuthStore().userFullName.toUpperCase() }}
+                    <span class="font-medium text-sm">  {{ useAuthStore().userFullName.toUpperCase() }}
                     </span>
                     <UIcon name="i-heroicons-chevron-down-20-solid"/>
                   </div>

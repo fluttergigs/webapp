@@ -1,5 +1,6 @@
 import type {CompanyApiResponse} from "~/features/companies/company.types";
 import {SingleApiResponse} from "~/core/shared/types";
+import type {UserApiResponse} from "~/features/users/user.types";
 
 export type JobOffer = {
     id: number,
@@ -21,9 +22,21 @@ export type JobOffer = {
     workPermits: string[] | null,
 }
 
+export type BookmarkedJobOffer = {
+    id: number,
+    attributes: {
+        jobOffer: JobOfferApiResponse,
+        user: UserApiResponse,
+    }
+}
+
 export type JobCreationRequest = Partial<Omit<JobOffer, 'id' | 'isFeatured' | 'createdAt' | 'updatedAt'>>
 
 export type JobOfferApiResponse = SingleApiResponse<JobOffer>
+
+export type SaveJobOfferRequest = { user: string, jobOffer: string }
+
+export type DeleteSavedJobOfferRequest = Pick<BookmarkedJobOffer, 'id'>
 
 export enum SeniorityLevel {
     junior = "junior",

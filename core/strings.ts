@@ -4,21 +4,31 @@ export class AppStrings {
 
     static unableToFetchJobs = "Unable to fetch jobs"
 
+    static unableToFetchBookmarkedJobs = "Unable to fetch your saved jobs"
+
+    static unableToSaveJob = "Unable to save this job offer"
+
+    static jobOfferSavedSuccessfully = "The job offer has been saved successfully";
+
+    static jobOfferRemovedFromBookmarksSuccessfully = "Job offer removed from your saved jobs";
+
+    static unableToRemoveSavedJob = "Unable to remove this job from your bookmarks";
+
     static yourCompanyHasBeenCreatedSuccessfully = "Your company {{name}} has been created successfully"
 
     static yourCompanyHasBeenUpdatedSuccessfully = "Your company {{name}} has been updated successfully"
 
-    static unableToCreateCompany ="Unable to create company with name: {{name}}. Please try again!"
+    static unableToCreateCompany = "Unable to create company with name: {{name}}. Please try again!"
 
-    static unableToUpdateCompany ="Unable to update company with name: {{name}}. Please try again!"
+    static unableToUpdateCompany = "Unable to update company with name: {{name}}. Please try again!"
 
-    static unableToFetchCompany ="Unable to fetch company"
+    static unableToFetchCompany = "Unable to fetch company"
 
-    static unableToFetchJob ="Unable to fetch job"
+    static unableToFetchJob = "Unable to fetch job"
 
     static unableToCreateJobOffer = "Unable to create job offer"
 
-    static jobOfferPostedSuccessfully ="Your job offer {{title}} has been posted successfully and available";
+    static jobOfferPostedSuccessfully = "Your job offer {{title}} has been posted successfully and available";
 
     static yourProfileInfoHasBeenUpdatedSuccessfully = "Your profile info has has been updated successfully"
 
@@ -28,9 +38,14 @@ export class AppStrings {
 
     static unableToUpdateYourPassword = "Unable to update your password. Please try again later"
 
-    static errorOccurred ="An error occurred. Please try again later!"
+    static errorOccurred = "An error occurred. Please try again later!"
 
     static jobDescriptionIsReady = "Your job description is ready"
 
-    static unableToGenerateJobDescription="Unable to generate your job description"
+    static unableToGenerateJobDescription = "Unable to generate your job description"
+
+    static saveJobOffer = 'Save this job offer'
+
+    static removeJobFromBookmarks = 'Remove this job offer from your bookmarks'
+
 }
