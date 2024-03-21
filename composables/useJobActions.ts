@@ -8,24 +8,25 @@ import {AppRoutes} from "~/core/routes";
 import type {Country} from "~/core/shared/types";
 import {CallbackFunction} from "~/core/shared/types";
 import {useUserStore} from "~/stores/user";
-
+import {BaseToast} from "~/core/ui/base_toast";
+//@ts-ignore
+import type {Notification} from "#ui/types";
 
 export default function useJobActions() {
     const handleJobBookmark = async (job: JobOffer, onSuccess?: CallbackFunction<any>) => {
         try {
             const userStore = useUserStore()
             const {$toast} = useNuxtApp()
+
             if (useAuthStore().isAuthenticated) {
                 userStore.jobToBookmark = job.id;
                 if (isJobBookmarked(job)) {
                     const bookmarkedJob: JobOffer = useUserStore().bookmarkedJobs?.find((savedJob: JobOffer) => savedJob.id === job.id);
                     await userStore.deleteSavedJob({id: bookmarkedJob.bookmarkedJob});
-                    // @ts-ignore
-                    $toast.info(userStore.bookmarkedJobDelete.message)
+                    ($toast as BaseToast<Notification>).info(userStore.bookmarkedJobDelete.message)
                 } else {
-                    await userStore.saveJob({jobOffer: job.id, user: useAuthStore().user.id})
-                    // @ts-ignore
-                    $toast.info(userStore.bookmarkedJobCreation.message)
+                    await userStore.saveJob({jobOffer: job.id, user: useAuthStore().user.id});
+                    ($toast as BaseToast<Notification>).info(userStore.bookmarkedJobCreation.message)
                 }
 
                 if (onSuccess != null) {
@@ -53,8 +54,7 @@ export default function useJobActions() {
         })
 
         await copy();
-        // @ts-ignore
-        $toast.info('Job link copied to your clipboard. You can share it :)')
+        ($toast as BaseToast<Notification>).info('Job link copied to your clipboard. You can share it :)')
     }
 
     const editJobOffer = async ({slug}: JobOffer) => {

@@ -6,7 +6,9 @@ import {AnalyticsEvent} from "~/services/analytics/events";
 import {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider";
 import type {JobOfferApiResponse} from "~/features/jobs/job.types";
 import type {CallbackFunction} from "~/core/shared/types";
-
+import {BaseToast} from "~/core/ui/base_toast";
+//@ts-ignore
+import type {Notification} from "#ui/types";
 export default function useCompanyActions() {
     const {$analytics, $toast} = useNuxtApp()
     const handleJobCreation = () => {
@@ -31,8 +33,7 @@ export default function useCompanyActions() {
                 onSuccess();
             }
         } finally {
-            //@ts-ignore
-            $toast.info(useJobStore().jobCreation.message)
+            ($toast as BaseToast<Notification>).info(useJobStore().jobCreation.message)
         }
     }
 

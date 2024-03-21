@@ -15,6 +15,7 @@ watch(selected, ()=>{
   <USelectMenu
       clear-search-on-close
       searchable
+      :required="false"
       size="lg"
       v-model="selected"
       :options="workTypeOptions"

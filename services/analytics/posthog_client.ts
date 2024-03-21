@@ -30,7 +30,7 @@ export class PosthogClient implements AppAnalytics {
     }
 
     identifyUser(identifier: string, properties?: any): void {
-        posthog.identify(identifier, properties);
+        posthog.identify(identifier, JSON.stringify(properties));
     }
 
     reset(): void {

@@ -174,6 +174,9 @@ import {AppRoutes} from "~/core/routes";
 
 
 definePageMeta({layout: 'app-layout', middleware: ['auth', 'no-company'],})
+useHead({title: `Flutter Gigs - Post your job`});
+
+
 const jobStore = useJobStore()
 const {jobCreationData, jobCreation} = storeToRefs(jobStore)
 const hasWorkPermit = ref(false)

@@ -43,6 +43,9 @@ import {registerFormSchema} from "@/core/validations/auth.validations";
 import {AnalyticsEvent} from "~/services/analytics/events";
 import BasicFormContent from "~/components/ui/BasicFormContent.vue";
 import {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider";
+import {BaseToast} from "~/core/ui/base_toast";
+//@ts-ignore
+import type {Notification} from "#ui/types";
 
 useHead({title: "Flutter Gigs - Authentication"});
 
@@ -88,7 +91,7 @@ const submit = async () => {
     await useRouter().push({path: !!returnUrl.value ? returnUrl.value : AppRoutes.myAccount})
   } catch (e) {
     //@ts-ignore
-    $toast.error(user.value.message);
+    ($toast as BaseToast<Notification>).error(user.value.message);
   }
 }
 

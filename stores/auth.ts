@@ -33,7 +33,7 @@ export let useAuthStore = defineStore('auth', {
             this.returnUrl = path
         },
         async login({email, password}: LoginData) {
-            const {$auth, $analytics, $toast} = useNuxtApp()
+            const {$auth, $analytics} = useNuxtApp()
 
             try {
                 this.user = new Wrapper(null).toLoading()
@@ -54,7 +54,7 @@ export let useAuthStore = defineStore('auth', {
         },
 
         async register({email, password, firstName, lastName}: RegistrationData) {
-            const {$auth, $analytics, $toast} = useNuxtApp()
+            const {$auth, $analytics} = useNuxtApp()
             try {
                 this.user = new Wrapper(null).toLoading()
                 const username = generateUserName(email)

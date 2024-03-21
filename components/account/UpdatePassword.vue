@@ -6,7 +6,9 @@ import {useAuthStore} from "~/stores/auth";
 import {changePasswordFormSchema} from "~/core/validations/auth.validations";
 import {AnalyticsEvent} from "~/services/analytics/events";
 import {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider";
-
+import {BaseToast} from "~/core/ui/base_toast";
+//@ts-ignore
+import type {Notification} from "#ui/types";
 const {$analytics, $toast} = useNuxtApp()
 const authStore = useAuthStore()
 
@@ -30,11 +32,9 @@ const submit = async () => {
     });
     (<AppAnalyticsProvider>$analytics).capture(AnalyticsEvent.successfulPasswordChange, formInput.value);
 
-    //@ts-ignore
-    $toast.success(<string>authStore.updateUser!.message);
+    ($toast as BaseToast<Notification>).success(<string>authStore.updateUser!.message);
   } catch (e) {
-    //@ts-ignore
-    $toast.error(<string>authStore.updateUser!.message);
+    ($toast as BaseToast<Notification>).error(<string>authStore.updateUser!.message);
   }
 }
 </script>

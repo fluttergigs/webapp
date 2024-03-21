@@ -13,9 +13,8 @@ import {Direction} from "~/core/shared/types";
 import CompanyInfoCard from "~/components/company/CompanyInfoCard.vue";
 import {stringify} from "qs";
 import WorkingPermits from "~/components/job/WorkingPermits.vue";
-
-import {HeartIcon,} from '@heroicons/vue/24/solid'
 import SaveJobIconButton from "~/components/job/SaveJobIconButton.vue";
+
 
 definePageMeta({
   layout: 'main-layout'
@@ -57,6 +56,9 @@ const {
   }
 })
 
+useHead({title: `Flutter Gigs - ${data.value.title}`});
+
+
 onMounted(() => {
   ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.jobOfferDetailEntered, {jobOffer: data})
 })
@@ -80,7 +82,7 @@ onBeforeMount(() => {
     </template>
 
     <template v-else>
-      <section class="bg-blueGray-100 w-full relative">
+      <section class="bg-blueGray-50 w-full relative">
         <div class="container px-20 py-6 md:py-14 mx-auto">
           <LazyUiAvatar class="absolute left-16 top-16"/>
         </div>

@@ -1,5 +1,5 @@
 <template>
-  <section class="bg-blueGray-100">
+  <section class="bg-blueGray-50">
     <div class="container px-4 py-16 mx-auto">
       <div class="flex flex-col -m-8">
         <h1 class="mb-6 text-5xl md:text-6xl lg:text-6xl font-semibold primary-gradient">
@@ -40,6 +40,9 @@ import {useJobStore} from "~/stores/job";
 definePageMeta({
   layout: 'main-layout',
 })
+
+useHead({title: `Flutter Gigs - Browse jobs`});
+
 
 const {$analytics} = useNuxtApp()
 const {filteredJobs, jobFiltersResponse} = storeToRefs(useJobStore())

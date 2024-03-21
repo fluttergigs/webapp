@@ -124,7 +124,7 @@ const jobActionItems = [
     </div>
   </UCard>
 
-  <USlideover v-model="isJobSidePanelOpen">
+  <USlideover v-model="isJobSidePanelOpen" :ui="{ overlay: {  background: 'bg-gray-200/60 dark:bg-gray-800/75',}}">
     <div class="p-4 flex-1">
       <JobDetailsCard :job="job"/>
     </div>

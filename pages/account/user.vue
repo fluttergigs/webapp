@@ -35,6 +35,7 @@ import UpdatePassword from "~/components/account/UpdatePassword.vue";
 import {AnalyticsEvent} from "~/services/analytics/events";
 
 definePageMeta({layout: 'app-layout', middleware: ['auth']})
+useHead({title: "Flutter Gigs - My account"});
 
 const authStore = useAuthStore()
 const {$analytics} = useNuxtApp()

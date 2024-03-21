@@ -24,8 +24,7 @@
             <ClientOnly>
               <div class="inline-block">
                 <NuxtLink v-if="!isAuthenticated"
-                          :to="AppRoutes.login"
-                >
+                          :to="AppRoutes.login">
                   Login
                 </NuxtLink>
                 <UDropdown v-else :items="accountLinks" :popper="{ placement: 'bottom-start'}">
@@ -42,6 +41,7 @@
             <UButton color="indigo" block :to="AppRoutes.postJob" size="lg"
                      class="bg-indigo-700"
                      square label="Post a job"
+                     icon="i-heroicons-megaphone"
                      variant="solid"/>
           </div>
           <div class="w-auto lg:hidden">
@@ -131,6 +131,7 @@
 
               </div>
               <UButton color="indigo"  :to="AppRoutes.postJob" size="lg"
+                       icon="i-heroicons-megaphone"
                        class="bg-indigo-700"
                        square label="Post a job"
                        variant="solid"/>
@@ -172,7 +173,13 @@ const accountLinks = [
     }
   }],
   [{
-    label: 'My Jobs',
+    label: 'Saved Jobs',
+    click: () => {
+      navigateTo(AppRoutes.mySavedJobs)
+    }
+  }],
+  [{
+    label: 'My Job postings',
     click: () => {
       navigateTo(AppRoutes.myJobs)
     }

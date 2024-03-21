@@ -1,6 +1,5 @@
 <script setup>
 import {useJobStore} from "~/stores/job";
-import {storeToRefs} from "pinia";
 import {defaultShimmerListItemsCount} from "~/core/constants";
 
 const jobStore = useJobStore()
@@ -22,9 +21,14 @@ const props = defineProps({
     <client-only>
       <template v-if="props.jobsResponse.isSuccess || props.jobsResponse.isFailure">
 
-        <div class="flex items-center justify-center" v-if="props.jobs.length <= 0">
+        <div class="flex flex-col items-center justify-center" v-if="props.jobs.length <= 0">
           <slot name="noData">
-            <img class="w-96 h-96" alt="Empty job results" src="@/assets/images/emptyJobFiltersResult.svg"/>
+            <div class="flex flex-col items-center space-y-2">
+              <p>No jobs found in the list</p>
+              <img class="w-96 h-96" alt="Empty job results" src="@/assets/images/emptyJobFiltersResult.svg"/>
+            </div>
+          </slot>
+          <slot name="cta">
           </slot>
         </div>
 

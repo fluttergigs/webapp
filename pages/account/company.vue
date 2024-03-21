@@ -76,6 +76,9 @@ import {useCompanyStore} from "~/stores/company";
 import {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider";
 import {companySizeOptions} from "~/core/constants";
 import {CompanySize} from "~/features/companies/company.types";
+import {BaseToast} from "~/core/ui/base_toast";
+//@ts-ignore
+import type {Notification} from "#ui/types";
 
 useHead({title: "Flutter Gigs - Company information update"});
 
@@ -114,11 +117,9 @@ const submit = async () => {
     (<AppAnalyticsProvider>$analytics).capture(AnalyticsEvent.companyUpdateButtonClicked, formInput.value);
     await companyStore.updateCompany({data: formInput.value});
     (<AppAnalyticsProvider>$analytics).capture(AnalyticsEvent.successfulCompanyUpdate, formInput.value);
-    //@ts-ignore
-    $toast.info(<string>companyStore.companyUpdate!.message);
+    ($toast as BaseToast<Notification>).info(<string>companyStore.companyUpdate!.message);
   } catch (e) {
-    //@ts-ignore
-    $toast.error(<string>companyStore.companyUpdate!.message);
+    ($toast as BaseToast<Notification>).error(<string>companyStore.companyUpdate!.message);
   }
 }
 
