@@ -7,13 +7,21 @@ export class AppRoutes {
 
     static jobs = '/jobs/'
 
-    static hireFlutterDevs = '/hire-flutter-devs'
+    static jobDetail = (slug: string) => `/jobs/${slug}`;
+
+    static companyPage = (id: number) => `/companies/${id}`;
+
+    static consultantDetail = (slug: string) => `/flutter-consultants/${slug}`;
+
+    static hireConsultants = '/flutter-consultants'
 
     static learn = '/learn'
 
     static myJobs = '/account/jobs'
 
     static myAccount = '/account/user'
+
+    static mySavedJobs = '/account/saved-jobs'
 
     static myCompany = '/account/company'
 
@@ -22,4 +30,6 @@ export class AppRoutes {
     static alerts = '/alerts'
 
     static dashboard = '/dashboard'
+
+    static createCompany = '/companies/create'
 }

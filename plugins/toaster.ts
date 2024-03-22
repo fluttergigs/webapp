@@ -1,10 +1,12 @@
-import * as toast from 'vue-toast-notification';
+//@ts-ignore
+import {VueToastImpl} from "~/core/ui/vue_toast";
 // const toast = useToast();
 
 export default defineNuxtPlugin(() => {
     return {
         provide: {
-            toast: toast.useToast()
+            toast: new VueToastImpl()
         }
     }
 });
+

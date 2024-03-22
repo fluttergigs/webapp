@@ -1,3 +1,4 @@
+//@ts-ignore
 import VueEasymde from 'vue3-easymde';
 import 'easymde/dist/easymde.min.css';
 

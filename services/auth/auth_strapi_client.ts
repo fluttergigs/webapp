@@ -1,14 +1,15 @@
 import {AuthService} from "~/services/auth/auth.base.service";
-import {LoginData, ResetPasswordData} from "~/services/auth/auth.types";
-import {StrapiAuthenticationData, StrapiRegistrationData} from "@nuxtjs/strapi/dist/runtime/types";
+import {ResetPasswordData} from "~/services/auth/auth.types";
 import {useStrapiAuth} from "#imports";
+import {Endpoint} from "~/core/network/endpoints";
+import type {HttpClient} from "~/core/network/http_client";
 
 
-export class AuthStrapiClient implements AuthService<LoginData, StrapiRegistrationData> {
+export class AuthStrapiClient<LoginData, StrapiRegistrationData> implements AuthService<LoginData, StrapiRegistrationData> {
 
     private strapiAuth = useStrapiAuth();
 
-    async login(data): Promise<any> {
+    async login(data: any): Promise<any> {
         return this.strapiAuth.login(data)
     }
 
@@ -25,7 +26,7 @@ export class AuthStrapiClient implements AuthService<LoginData, StrapiRegistrati
     }
 
     async fetchUser(): Promise<any> {
-        return this.strapiAuth.fetchUser();
+        return (useNuxtApp().$http as HttpClient).get(`${Endpoint.getMe}?populate=*`)
     }
 
 

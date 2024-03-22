@@ -1,6 +1,6 @@
 <template>
   <section class="overflow-hidden">
-    <div class="flex items-center justify-between py-5 bg-blueGray-50 px-12">
+    <div class="flex items-center justify-between py-5 bg-blueGray-50 px-18">
       <div class="w-auto">
         <div class="flex flex-wrap items-center">
           <div class="w-auto mr-14">
@@ -10,7 +10,7 @@
           </div>
           <div class="w-auto hidden lg:block">
             <ul class="flex items-center mr-16">
-              <li class="mr-9 font-medium hover:text-gray-700" v-for="link in links">
+              <li class="mr-9 font-medium hover:text-indigo-900" v-for="link in links">
                 <NuxtLink :to="link.path">{{ link.name }}</NuxtLink>
               </li>
             </ul>
@@ -20,31 +20,29 @@
       <div class="w-auto">
         <div class="flex flex-wrap items-center">
           <div class="w-auto hidden mr-5 lg:block">
-            <div class="inline-block">
-              <NuxtLink v-if="!useAuthStore().isAuthenticated"
-                        :to="AppRoutes.login"
-                        class="primary-button"
-                        type="button"
-              >
-                Login
-              </NuxtLink>
-              <NuxtLink v-else
-                        :to="AppRoutes.dashboard"
-                        class="transparent-button"
-              >
-                Hello 👋, {{ useAuthStore().userFullName }}
-              </NuxtLink>
-            </div>
+
+            <ClientOnly>
+              <div class="inline-block">
+                <NuxtLink v-if="!isAuthenticated"
+                          :to="AppRoutes.login">
+                  Login
+                </NuxtLink>
+                <UDropdown v-else :items="accountLinks" :popper="{ placement: 'bottom-start'}">
+                  <div class="flex justify-center items-center">
+                    <span class="font-medium text-sm">  {{ useAuthStore().userFullName.toUpperCase() }}
+                    </span>
+                    <UIcon name="i-heroicons-chevron-down-20-solid"/>
+                  </div>
+                </UDropdown>
+              </div>
+            </ClientOnly>
           </div>
           <div class="w-auto hidden lg:block">
-            <div class="inline-block">
-              <NuxtLink :to="AppRoutes.postJob"
-                        class="transparent-button"
-                        type="button"
-              >
-                Post a job
-              </NuxtLink>
-            </div>
+            <UButton color="indigo" block :to="AppRoutes.postJob" size="lg"
+                     class="bg-indigo-700"
+                     square label="Post a job"
+                     icon="i-heroicons-megaphone"
+                     variant="solid"/>
           </div>
           <div class="w-auto lg:hidden">
             <a href="#">
@@ -105,39 +103,38 @@
           <div class="flex flex-col justify-center py-16 w-full">
             <ul>
               <li class="mb-12" v-for="link in links">
-                <NuxtLink class="font-medium hover:text-gray-700" :href="link.path">{{ link.name }}</NuxtLink>
+                <NuxtLink class="font-medium hover:text-indigo-900" :href="link.path">{{ link.name }}</NuxtLink>
               </li>
             </ul>
           </div>
           <div class="flex flex-col justify-end w-full pb-8">
             <div class="flex flex-wrap">
               <div class="w-full mb-3">
-                <div class="block">
-                  <NuxtLink v-if="!useAuthStore().isAuthenticated"
-                            :to="AppRoutes.login"
-                            class="transparent-button"
-                            type="button"
-                  >
-                    Login
-                  </NuxtLink>
-                  <NuxtLink v-else
-                            :to="AppRoutes.dashboard"
-                            class="transparent-button"
-                  >
-                   Hello 👋, {{ useAuthStore().userFullName }}
-                  </NuxtLink>
-                </div>
+
+                <ClientOnly>
+                  <div class="block">
+                    <NuxtLink v-if="!isAuthenticated"
+                              :to="AppRoutes.login"
+                    >
+                      Login
+                    </NuxtLink>
+
+                    <UDropdown v-else :items="accountLinks" :popper="{ placement: 'bottom-start'}">
+                      <div class="flex justify-center items-center">
+                    <span class="font-medium">  {{ useAuthStore().userFullName.toUpperCase() }}
+                    </span>
+                        <UIcon name="i-heroicons-chevron-down-20-solid"/>
+                      </div>
+                    </UDropdown>
+                  </div>
+                </ClientOnly>
+
               </div>
-              <div class="w-full">
-                <div class="block">
-                  <NuxtLink
-                      :to="AppRoutes.postJob"
-                      class="primary-button"
-                  >
-                    Post a job
-                  </NuxtLink>
-                </div>
-              </div>
+              <UButton color="indigo"  :to="AppRoutes.postJob" size="lg"
+                       icon="i-heroicons-megaphone"
+                       class="bg-indigo-700"
+                       square label="Post a job"
+                       variant="solid"/>
             </div>
           </div>
         </div>
@@ -150,21 +147,58 @@
 
 import {AppRoutes} from "~/core/routes";
 import {useAuthStore} from "~/stores/auth";
+import {storeToRefs} from "pinia";
 
 const links = ref([{
   path: AppRoutes.jobs,
   name: 'Jobs',
-}, {
+}, /*{
   path: AppRoutes.hireFlutterDevs,
   name: 'Hire Flutter devs',
 }, {
   path: AppRoutes.alerts,
   name: 'Job Alerts',
-},
+},*/
   {
     path: AppRoutes.learn,
     name: 'Learn',
   },
 ])
+
+const accountLinks = [
+  [{
+    label: 'User Profile',
+    click: () => {
+      navigateTo(AppRoutes.myAccount)
+    }
+  }],
+  [{
+    label: 'Saved Jobs',
+    click: () => {
+      navigateTo(AppRoutes.mySavedJobs)
+    }
+  }],
+  [{
+    label: 'My Job postings',
+    click: () => {
+      navigateTo(AppRoutes.myJobs)
+    }
+  }],
+  [{
+    label: 'My company',
+    click: () => {
+      navigateTo(AppRoutes.myCompany)
+    }
+  }],
+
+  [{
+    label: 'Logout',
+    click: () => {
+      useAuthStore().logout()
+    }
+  },],
+]
+
+const {isAuthenticated} = storeToRefs(useAuthStore())
 
 </script>

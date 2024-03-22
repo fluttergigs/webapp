@@ -112,9 +112,9 @@
             </h3>
             <ul>
               <li class="mb-5">
-                <a
-                    class="text-white hover:text-gray-200 font-medium leading-relaxed"
-                    href="#"
+                <a @click.prevent="useCompanyActions().handleJobCreation()"
+                   class="text-white hover:text-gray-200 font-medium leading-relaxed"
+                   href="#"
                 >Post a job</a
                 >
               </li>
@@ -150,4 +150,6 @@
   </section>
 </template>
 
-<script setup></script>
+<script setup>
+import useCompanyActions from "~/composables/useCompanyActions";
+</script>
