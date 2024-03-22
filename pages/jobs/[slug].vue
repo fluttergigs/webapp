@@ -112,7 +112,7 @@ onBeforeMount(() => {
             </client-only>
           </div>
 
-          <div class="flex space-x-4">
+          <div class="flex space-x-4 my-2">
             <a :href="AppRoutes.companyPage(company.id)" class="text-lg text-gray-900 font-medium">
               {{ company?.name }}
             </a>

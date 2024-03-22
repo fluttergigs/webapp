@@ -26,7 +26,8 @@ export class PosthogClient implements AppAnalytics {
     }
 
     captureEvent(event: AnalyticsEvent, properties?: any): void {
-        posthog.capture(event, properties);
+        if (import.meta.env.MODE !== "development")
+            posthog.capture(event, properties);
     }
 
     identifyUser(identifier: string, properties?: any): void {

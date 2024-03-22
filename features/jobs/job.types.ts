@@ -65,4 +65,5 @@ export interface JobSearchFilters {
     remoteOption?: string,
     workType?: string
     seniorityLevel?: string,
+    countries?: string[]
 }

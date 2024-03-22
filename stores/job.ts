@@ -4,18 +4,10 @@ import {Wrapper} from "~/core/wrapper";
 import {logDev} from "~/core/helpers/log";
 import {MultiApiResponse, SingleApiResponse} from "~/core/shared/types";
 import {AppStrings} from "~/core/strings";
-import type {
-    BookmarkedJobOffer,
-    DeleteSavedJobOfferRequest,
-    JobCreationRequest,
-    JobOffer,
-    JobOfferApiResponse,
-    JobSearchFilters,
-    SaveJobOfferRequest
-} from "~/features/jobs/job.types";
+import type {JobCreationRequest, JobOffer, JobOfferApiResponse, JobSearchFilters} from "~/features/jobs/job.types";
 import type {HttpClient} from "~/core/network/http_client";
 import {stringify} from "qs";
-import {remoteOptions, seniorityLevelOptions, workTypeOptions} from "~/core/constants";
+import {MAX_LANDING_PAGE_JOBS, remoteOptions, seniorityLevelOptions, workTypeOptions} from "~/core/constants";
 import {GenerativeAIProvider} from "~/services/ai/generative_ai_provider";
 import {generateJobOfferSlug} from "~/core/utils";
 import {useAuthStore} from "~/stores/auth";
@@ -124,6 +116,11 @@ export const useJobStore = defineStore('job', {
                             name: {
                                 $containsi: this.searchFilters.keyword,
                             }
+                        }),
+                        ...(!!this.searchFilters.countries && {
+                            workPermits: {
+                                $containsi: this.searchFilters.countries
+                            },
                         })
                     },
                     sort: 'createdAt:desc',
@@ -179,7 +176,11 @@ export const useJobStore = defineStore('job', {
         filteredJobs: (state) => state.jobFiltersResponse?.value?.data?.map((item: { [x: string]: any; }) => ({
             ...item['attributes'],
             id: item['id']
-        }))
+        })),
+        landingPageJobs: state => {
+            const jobs = useJobStore().jobs as JobOffer[]
+            return jobs?.length > MAX_LANDING_PAGE_JOBS ? jobs?.slice(0, MAX_LANDING_PAGE_JOBS - 1) : jobs;
+        }
     },
     // persist: true,
     persist:

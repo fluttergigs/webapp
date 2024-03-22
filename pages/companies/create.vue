@@ -16,7 +16,11 @@ import type {Notification} from "#ui/types";
 useHead({title: "Flutter Gigs - Company creation"});
 
 definePageMeta({
-  middleware: ['auth']
+  middleware: ['auth', function () {
+    if (useAuthStore().hasCompanies) {
+      return navigateTo(AppRoutes.myCompany)
+    }
+  }]
 })
 
 const {$toast, $analytics} = useNuxtApp()

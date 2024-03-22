@@ -11,20 +11,24 @@ import {useUserStore} from "~/stores/user";
 import {BaseToast} from "~/core/ui/base_toast";
 //@ts-ignore
 import type {Notification} from "#ui/types";
+import {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider";
+import {AnalyticsEvent} from "~/services/analytics/events";
 
 export default function useJobActions() {
     const handleJobBookmark = async (job: JobOffer, onSuccess?: CallbackFunction<any>) => {
         try {
             const userStore = useUserStore()
-            const {$toast} = useNuxtApp()
+            const {$toast, $analytics} = useNuxtApp();
 
             if (useAuthStore().isAuthenticated) {
                 userStore.jobToBookmark = job.id;
                 if (isJobBookmarked(job)) {
+                    ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.unBookmarkJobOfferClicked, {job});
                     const bookmarkedJob: JobOffer = useUserStore().bookmarkedJobs?.find((savedJob: JobOffer) => savedJob.id === job.id);
                     await userStore.deleteSavedJob({id: bookmarkedJob.bookmarkedJob});
                     ($toast as BaseToast<Notification>).info(userStore.bookmarkedJobDelete.message)
                 } else {
+                    ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.bookmarkJobOfferClicked, {job});
                     await userStore.saveJob({jobOffer: job.id, user: useAuthStore().user.id});
                     ($toast as BaseToast<Notification>).info(userStore.bookmarkedJobCreation.message)
                 }
@@ -61,6 +65,7 @@ export default function useJobActions() {
 
     }
     const viewDetails = (job: JobOffer) => {
+        (useNuxtApp().$analytics as AppAnalyticsProvider).capture(AnalyticsEvent.jobOfferClicked, {job});
         useJobStore().findJobById(job)
         navigateTo(AppRoutes.jobDetail(job.slug))
     }

@@ -8,7 +8,7 @@
           Your job postings
         </h3>
 
-        <UButton color="indigo" :padded=false :to="AppRoutes.postJob"
+        <UButton color="indigo" :padded=false @click="postJob"
                  icon="i-heroicons-megaphone"
                  :class="['bg-indigo-700 px-2 py-1 sm:px-4 md:py-3']"
                  square label="Post a job"
@@ -44,18 +44,19 @@
 
 </template>
 
-<script setup>
+<script setup lang="ts">
+//@ts-ignore
 import {useAuthStore} from "~/stores/auth";
 import {useCompanyStore} from "~/stores/company";
 import {storeToRefs} from "pinia";
 import {AppRoutes} from "~/core/routes";
 import {AnalyticsEvent} from "~/services/analytics/events";
+import {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider";
 
 definePageMeta({layout: 'app-layout', middleware: ['auth', 'no-company']})
 
 useHead({title: "Flutter Gigs - My job postings"});
 
-const authStore = useAuthStore()
 const companyStore = useCompanyStore()
 const {$analytics} = useNuxtApp()
 
@@ -74,14 +75,18 @@ const tabs = [{
 }]
 
 onMounted(() => {
-  $analytics.capture(AnalyticsEvent.myJobsPageEntered);
+  ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.myJobsPageEntered);
 })
-
 
 onBeforeMount(() => {
   companyStore.fetchMyJobs()
 })
 
+const postJob = () => {
+  ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.postJobOfferButtonClicked,);
+
+  navigateTo(AppRoutes.postJob)
+}
 const {myJobPostings, expiredJobPostings, activeJobPostings, companyJobsResponse} = storeToRefs(companyStore)
 </script>
 

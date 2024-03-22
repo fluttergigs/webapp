@@ -5,6 +5,14 @@ import useCountries from "~/composables/useCountries";
 
 const selected = ref([])
 
+//@ts-ignore
+const props = defineProps({
+  searchPlaceholder: {
+    type: String,
+    default: 'Select the work permit for this job'
+  }
+})
+
 const {data, error} = await useCountries();
 //@ts-ignore
 const emits = defineEmits(['selectedCountries'])
@@ -23,7 +31,7 @@ watch(selected, () => {
                  v-model="selected"
                  size="lg"
                  :options="data!.countries"
-                 placeholder="Select the work permit for this job"
+                 :placeholder="searchPlaceholder"
                  value-attribute="iso"
                  :search-attributes="['name']"
                  searchable
