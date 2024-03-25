@@ -41,7 +41,7 @@ import {CheckCircleIcon} from "@heroicons/vue/24/outline";
                 <li class="mb-4 flex items-center space-x-2">
                   <CheckCircleIcon class="w-5 text-indigo-700"/>
                   <p class="font-semibold leading-normal">
-                    More than 1k of applications every month 
+                    More than 1k of applications every month
                   </p>
                 </li>
                 <li class="mb-4 flex items-center space-x-2">
@@ -56,9 +56,7 @@ import {CheckCircleIcon} from "@heroicons/vue/24/outline";
               <div class="flex flex-wrap -m-8">
                 <div class="w-full sm:w-1/2 p-8">
                   <span
-                      class="mb-2 inline-block text-sm text-gray-500 font-semibold uppercase tracking-px"
-                  >BEST PACKAGE</span
-                  >
+                      class="mb-2 inline-block text-sm text-gray-500 font-semibold uppercase tracking-px">BEST PACKAGE</span>
                   <p class="text-gray-900 font-semibold leading-normal">
                     Best for Startups &amp; Small Businesses
                   </p>

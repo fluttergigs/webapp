@@ -64,7 +64,6 @@ if (!data.value) {
 
 useHead({title: `Flutter Gigs - ${data.value?.title}`});
 
-
 onMounted(() => {
   ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.jobOfferDetailEntered, {jobOffer: data})
 })
@@ -138,7 +137,6 @@ onBeforeMount(() => {
             </div>
 
             <WorkingPermits :countries="jobWorkingPermits(countriesData?.countries??[], data)"/>
-
           </div>
         </section>
 

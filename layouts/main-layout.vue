@@ -5,19 +5,21 @@
       <NuxtPage/>
     </div>
     <LayoutFooter/>
-    <UNotifications />
+    <UNotifications/>
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 
 import {useSettingStore} from "~/stores/setting";
 import {useCompanyStore} from "~/stores/company";
 import {useAuthStore} from "~/stores/auth";
 import {useJobStore} from "~/stores/job";
+import useFeatureFlags from "~/composables/useFeatureFlags";
 
 onBeforeMount(async () => {
   await Promise.all([
+    useFeatureFlags().loadFlags(),
     useCompanyStore().fetchCompanies(),
     useJobStore().fetchJobs(),
     useSettingStore().fetchSetting(),

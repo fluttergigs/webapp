@@ -56,4 +56,6 @@ export class AppStrings {
 
     static errorMessage = "An unexpected error occurred. Please go back to homepage"
 
+    static featureAvailableSoon="Feature will be available soon";
+
 }

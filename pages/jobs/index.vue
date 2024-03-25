@@ -1,7 +1,7 @@
 <template>
   <section class="relative bg-blueGray-50">
     <img
-        class="absolute left-1/2 bottom-0 transform -translate-x-1/2"
+        class="absolute left-1/2 bottom-0 transform"
         src="@/assets/images/gradient6.svg"
         alt=""
     />

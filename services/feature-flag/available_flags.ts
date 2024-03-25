@@ -1,3 +1,4 @@
 export enum AvailableFlags {
-  WaitingList = "waiting-list",
+    WaitingList = "waiting-list",
+    consultants = "consultants"
 }

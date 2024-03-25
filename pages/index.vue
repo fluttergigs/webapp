@@ -1,67 +1,67 @@
 <template>
   <LandingHeader/>
 
-  <section class="py-20 bg-blueGray-100">
-    <div class="container px-4 mx-auto">
-      <div class="flex flex-wrap items-center -m-8">
-        <div class="w-full md:w-1/3 p-8">
-          <div class="md:max-w-sm">
-            <div class="flex flex-wrap items-center -m-3">
-              <div class="w-auto p-3">
-                <div
-                    class="flex items-center justify-center w-20 h-20 bg-indigo-100 rounded-full"
-                >
-                  <img src="@/assets/images/chat.svg" alt=""/>
+  <!--
+    <section class="py-20 bg-blueGray-100">
+      <div class="container px-4 mx-auto">
+        <div class="flex flex-wrap items-center -m-8">
+          <div class="w-full md:w-1/3 p-8">
+            <div class="md:max-w-sm">
+              <div class="flex flex-wrap items-center -m-3">
+                <div class="w-auto p-3">
+                  <div
+                      class="flex items-center justify-center w-20 h-20 bg-indigo-100 rounded-full"
+                  >
+                    <img src="@/assets/images/chat.svg" alt=""/>
+                  </div>
                 </div>
-              </div>
-              <div class="flex-1 p-3">
-                <h3 class="text-xl font-semibold">
-                  A platform to find Flutter framework related job opportunities and more
-                </h3>
+                <div class="flex-1 p-3">
+                  <h3 class="text-xl font-semibold">
+                    A platform to find Flutter framework related job opportunities and more
+                  </h3>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="w-full md:w-1/3 p-8">
-          <div class="md:max-w-sm">
-            <div class="flex flex-wrap items-center -m-3">
-              <div class="w-auto p-3">
-                <div
-                    class="flex items-center justify-center w-20 h-20 bg-indigo-100 rounded-full"
-                >
-                  <img src="@/assets/images/layers.svg" alt=""/>
+          <div class="w-full md:w-1/3 p-8">
+            <div class="md:max-w-sm">
+              <div class="flex flex-wrap items-center -m-3">
+                <div class="w-auto p-3">
+                  <div
+                      class="flex items-center justify-center w-20 h-20 bg-indigo-100 rounded-full"
+                  >
+                    <img src="@/assets/images/layers.svg" alt=""/>
+                  </div>
                 </div>
-              </div>
-              <div class="flex-1 p-3">
-                <h3 class="text-xl font-semibold">
-                  Effortlessly find and apply to Flutter framework related job offers
-                </h3>
+                <div class="flex-1 p-3">
+                  <h3 class="text-xl font-semibold">
+                    Effortlessly find and apply to Flutter framework related job offers
+                  </h3>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="w-full md:w-1/3 p-8">
-          <div class="md:max-w-sm">
-            <div class="flex flex-wrap items-center -m-3">
-              <div class="w-auto p-3">
-                <div
-                    class="flex items-center justify-center w-20 h-20 bg-indigo-100 rounded-full"
-                >
-                  <img src="@/assets/images/replace.svg" alt=""/>
+          <div class="w-full md:w-1/3 p-8">
+            <div class="md:max-w-sm">
+              <div class="flex flex-wrap items-center -m-3">
+                <div class="w-auto p-3">
+                  <div
+                      class="flex items-center justify-center w-20 h-20 bg-indigo-100 rounded-full">
+                    <img src="@/assets/images/replace.svg" alt=""/>
+                  </div>
                 </div>
-              </div>
-              <div class="flex-1 p-3">
-                <h3 class="text-xl font-semibold">
-                  Get expert guidance and support to land your dream Flutter job
-                </h3>
+                <div class="flex-1 p-3">
+                  <h3 class="text-xl font-semibold">
+                    Get expert guidance and support to land your dream Flutter job
+                  </h3>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
-
+    </section>
+  -->
   <UserSection/>
 
   <CompanySection/>

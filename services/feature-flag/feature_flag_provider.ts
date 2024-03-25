@@ -28,8 +28,8 @@ export class FeatureFlagProvider {
         return this.client.get(flag, properties);
     }
 
-    isEnabled(flag: AvailableFlags): boolean {
-        return this.client.isEnabled(flag);
+    isEnabled(flag: AvailableFlags, defaultValue?: boolean): boolean {
+        return this.client.isEnabled(flag) ?? defaultValue;
     }
 
 }

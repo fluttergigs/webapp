@@ -1,5 +1,5 @@
 <template>
-  <section class="overflow-hidden">
+  <section class="overflow-hidden z-50">
     <div class="flex items-center justify-between py-5 bg-blueGray-50 px-18 sticky">
       <div class="w-auto">
         <div class="flex flex-wrap items-center">
@@ -10,8 +10,13 @@
           </div>
           <div class="w-auto hidden lg:block">
             <ul class="flex items-center mr-16">
-              <li class="mr-9 font-medium hover:text-indigo-900" v-for="link in links">
-                <NuxtLink :to="link.path">{{ link.name }}</NuxtLink>
+              <li class="mr-9 font-medium hover:text-indigo-900" v-for="link in links" :key="link.name">
+                <UChip :show="link.hasOwnProperty('tag')" :text="link['tag']" size="xl" color="green">
+                  <NuxtLink
+                      :class="['font-medium hover:text-indigo-900', {'text-indigo-800': useRoute().fullPath === link.path}]"
+                      :to="link.path">{{ link.name }}
+                  </NuxtLink>
+                </UChip>
               </li>
             </ul>
           </div>
@@ -70,7 +75,7 @@
     </div>
     <div class="hidden navbar-menu fixed top-0 left-0 bottom-0 w-4/6 sm:max-w-xs z-50">
       <div class="navbar-backdrop fixed inset-0 bg-gray-800 opacity-80"></div>
-      <nav class="relative z-10 px-9 pt-8 bg-white h-full overflow-y-auto">
+      <nav class="relative z-10 px-9 pt-8 bg-white h-full overflow-y-auto ">
         <div class="flex flex-wrap justify-between h-full">
           <div class="w-full">
             <div class="flex items-center justify-between -m-2">
@@ -102,8 +107,13 @@
           </div>
           <div class="flex flex-col justify-center py-16 w-full">
             <ul>
-              <li class="mb-12" v-for="link in links">
-                <NuxtLink class="font-medium hover:text-indigo-900" :href="link.path">{{ link.name }}</NuxtLink>
+              <li class="mb-12" v-for="link in links" :key="link.name">
+                <UChip :show="link.hasOwnProperty('tag')" :text="link['tag']" size="xl" color="green">
+                  <NuxtLink
+                      :class="['font-medium hover:text-indigo-900', {'text-indigo-800': useRoute().fullPath === link.path}]"
+                      :to="link.path">{{ link.name }}
+                  </NuxtLink>
+                </UChip>
               </li>
             </ul>
           </div>
@@ -129,7 +139,7 @@
                 </ClientOnly>
 
               </div>
-              <UButton color="indigo"  :to="AppRoutes.postJob" size="lg"
+              <UButton color="indigo" :to="AppRoutes.postJob" size="lg"
                        icon="i-heroicons-megaphone"
                        class="bg-indigo-700"
                        square label="Post a job"
@@ -142,25 +152,25 @@
   </section>
 </template>
 
-<script setup>
+<script setup lang="ts">
 
 import {AppRoutes} from "~/core/routes";
 import {useAuthStore} from "~/stores/auth";
 import {storeToRefs} from "pinia";
+import {AvailableFlags} from "~/services/feature-flag/available_flags";
+import useFeatureFlags from "~/composables/useFeatureFlags";
 
-const links = ref([{
-  path: AppRoutes.jobs,
-  name: 'Jobs',
-}, /*{
-  path: AppRoutes.hireFlutterDevs,
-  name: 'Hire Flutter devs',
-}, {
-  path: AppRoutes.alerts,
-  name: 'Job Alerts',
-},*/
+const links = ref([
   {
-    path: AppRoutes.learn,
-    name: 'Learn',
+    path: AppRoutes.jobs,
+    name: 'Jobs',
+    isEnabled: true,
+  },
+  {
+    path: AppRoutes.consultants,
+    name: 'Consultants',
+    tag: useFeatureFlags().isFeatureEnabled(AvailableFlags.consultants,) ? 'New' : 'Soon',
+    isEnabled: useFeatureFlags().isFeatureEnabled(AvailableFlags.consultants,)
   },
 ])
 

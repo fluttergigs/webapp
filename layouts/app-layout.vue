@@ -85,8 +85,7 @@ import {groupBy} from "lodash"
 import {useJobStore} from "~/stores/job";
 import {useAppStore} from "~/stores/app";
 import {storeToRefs} from "pinia";
-import {BaseToast} from "~/core/ui/base_toast";
-import {useUserStore} from "~/stores/user";
+import useFeatureFlags from "~/composables/useFeatureFlags";
 
 
 const links = [
@@ -135,6 +134,7 @@ const groupedLinks = computed(() => groupBy(links, 'section'))
 
 onBeforeMount(async () => {
   await Promise.all([
+     useFeatureFlags().loadFlags(),
     useCompanyStore().fetchCompanies(),
     useJobStore().fetchJobs(),
     useSettingStore().fetchSetting(),

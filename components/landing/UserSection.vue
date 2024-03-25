@@ -15,9 +15,9 @@ const findJobs = () => {
 </script>
 
 <template>
-  <section class="relative py-16 bg-blueGray-50">
+  <section class="relative py-16 bg-blueGray-100">
     <img
-        class="absolute left-1/2 bottom-0 transform -translate-x-1/2"
+        class="absolute left-1/2 bottom-0 transform translate-x-1/4"
         src="@/assets/images/gradient6.svg"
         alt=""
     />
@@ -29,8 +29,7 @@ const findJobs = () => {
       <div class="md:flex md:justify-between">
         <div class="md:max-w-3xl">
           <h2
-              class="mb-5 text-5xl md:text-6xl font-bold font-heading tracking-px-n leading-tight"
-          >
+              class="mb-5 text-5xl md:text-6xl font-bold font-heading tracking-px-n leading-tight">
             Find your dream Flutter job today
           </h2>
           <p class="mb-20 text-gray-600 font-medium leading-relaxed md:max-w-md">
