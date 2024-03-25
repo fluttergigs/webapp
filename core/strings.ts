@@ -52,4 +52,8 @@ export class AppStrings {
 
     static removeJobFromBookmarks = 'Remove this job offer from your bookmarks'
 
+    static  notFoundMessage =  " The page you are looking for is not found! Try something else or go back to homepage."
+
+    static errorMessage = "An unexpected error occurred. Please go back to homepage"
+
 }

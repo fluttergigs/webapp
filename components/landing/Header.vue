@@ -30,7 +30,7 @@
             </p>
             <div class="flex flex-wrap mb-20 space-x-3">
               <UButton
-                  @click="handleJobCreation"
+                  @click="findJobs"
                   color="indigo"
                   class="py-4 px-9 rounded-xl flex space-x-2 font-medium"
                   label="Find your job now"/>

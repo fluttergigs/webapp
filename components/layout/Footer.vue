@@ -83,23 +83,19 @@
           </div>
           <div class="w-full sm:w-1/2 lg:w-2/12 p-8">
             <h3
-                class="mb-8 text-sm text-gray-600 uppercase font-semibold leading-normal tracking-px"
-            >
+                class="mb-8 text-sm text-gray-600 uppercase font-semibold leading-normal tracking-px">
               FIND A JOB
             </h3>
             <ul>
               <li class="mb-5">
-                <a
-                    class="text-white hover:text-gray-200 font-medium leading-relaxed"
-                    href="#"
-                >Latest Flutter Jobs</a
-                >
+                <NuxtLink :to="AppRoutes.jobs" class="text-white hover:text-gray-200 font-medium leading-relaxed">Latest
+                  Flutter Jobs
+                </NuxtLink>
               </li>
               <li class="mb-5">
                 <a
                     class="text-white hover:text-gray-200 font-medium leading-relaxed"
-                    href="#"
-                >Subscribe to job alerts</a
+                    href="#">Subscribe to job alerts</a
                 >
               </li>
             </ul>
@@ -113,24 +109,16 @@
             <ul>
               <li class="mb-5">
                 <a @click.prevent="useCompanyActions().handleJobCreation()"
-                   class="text-white hover:text-gray-200 font-medium leading-relaxed"
-                   href="#"
-                >Post a job</a
-                >
+                   class="text-white hover:text-gray-200 font-medium leading-relaxed">Post a job</a>
               </li>
               <li class="mb-5">
-                <a
-                    class="text-white hover:text-gray-200 font-medium leading-relaxed"
-                    href="#"
-                >Hire Flutter Consultants</a
-                >
+                <a class="text-white hover:text-gray-200 font-medium leading-relaxed">Hire Flutter Consultants</a>
               </li>
             </ul>
           </div>
           <div class="w-full sm:w-1/2 lg:w-2/12 p-8">
             <h3
-                class="mb-8 text-sm text-gray-600 uppercase font-semibold leading-normal tracking-px"
-            >
+                class="mb-8 text-sm text-gray-600 uppercase font-semibold leading-normal tracking-px">
               Discover
             </h3>
             <ul>
@@ -152,4 +140,5 @@
 
 <script setup>
 import useCompanyActions from "~/composables/useCompanyActions";
+import {AppRoutes} from "~/core/routes";
 </script>

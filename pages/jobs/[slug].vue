@@ -55,6 +55,12 @@ const {
     }
   }
 })
+if (!data.value) {
+  throw createError({
+    statusCode: 404,
+    statusMessage: 'Page Not Found',
+  })
+}
 
 useHead({title: `Flutter Gigs - ${data.value?.title}`});
 
