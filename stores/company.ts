@@ -8,13 +8,13 @@ import {
     ListCompanyApiResponse,
     UpdateCompanyRequest
 } from "~/features/companies/company.types";
-import {MultiApiResponse, SingleApiResponse} from "~/core/shared/types";
+import {CallbackFunction, MultiApiResponse, SingleApiResponse} from "~/core/shared/types";
 import {AppStrings} from "~/core/strings";
 import {useAuthStore} from "~/stores/auth";
 import type {HttpClient} from "~/core/network/http_client";
 //@ts-ignore
 import slugify from "@sindresorhus/slugify";
-import {JobOffer} from "~/features/jobs/job.types";
+import {JobOffer, JobOfferApiResponse} from "~/features/jobs/job.types";
 import {stringify} from "qs";
 
 //@ts-ignore
@@ -25,6 +25,8 @@ import isAfter from "date-fns/isAfter";
 import isSameDay from "date-fns/isSameDay";
 //@ts-ignore
 import parseISO from "date-fns/parseISO"
+import {useUserStore} from "~/stores/user";
+import {GenerativeAIProvider} from "~/services/ai/generative_ai_provider";
 
 // @ts-ignore
 export const useCompanyStore = defineStore('company', {
@@ -34,8 +36,30 @@ export const useCompanyStore = defineStore('company', {
         companyCreation: new Wrapper<SingleApiResponse<Company>>().toInitial(),
         companyUpdate: new Wrapper<SingleApiResponse<Company>>().toInitial(),
         companyJobsResponse: new Wrapper<MultiApiResponse<JobOffer>>().toInitial(),
+        isCompanyDescriptionGenerationModalOpen: false,
+        companyDescriptionGenerationTask: new Wrapper<String>().toInitial(),
+
     }),
     actions: {
+        hideCompanyDescriptionGenerationModal() {
+            this.isCompanyDescriptionGenerationModalOpen = false;
+        },
+        showCompanyDescriptionGenerationModal() {
+            this.isCompanyDescriptionGenerationModalOpen = true;
+        },
+        async generateCompanyDescription(prompt: string) {
+            this.companyDescriptionGenerationTask = new Wrapper<String>().toLoading()
+            try {
+                //@ts-ignore
+                const {$generativeAI} = useNuxtApp();
+                const response: String = await (<GenerativeAIProvider>$generativeAI).generateText(prompt);
+                //@ts-ignore
+                this.companyDescriptionGenerationTask = this.companyDescriptionGenerationTask.toSuccess(response as String, AppStrings.companyDescriptionIsReady)
+            } catch (e) {
+                this.companyDescriptionGenerationTask = this.companyDescriptionGenerationTask.toFailed(AppStrings.unableToGenerateCompanyDescription)
+                throw e;
+            }
+        },
         async fetchMyJobs() {
             try {
                 const query = stringify({
@@ -43,7 +67,7 @@ export const useCompanyStore = defineStore('company', {
                     filters: {
                         company: {
                             id: {
-                                $eq: useAuthStore().myCompany.id,
+                                $eq: useUserStore().myCompany?.id,
                             }
                         }
                     },
@@ -79,7 +103,7 @@ export const useCompanyStore = defineStore('company', {
             try {
                 //@ts-ignore
                 payload.data.slug = slugify(useAuthStore().authUser?.username + payload.data.name)
-                this.companyCreation = new Wrapper().toLoading()
+                this.companyCreation = new Wrapper<SingleApiResponse<Company>>().toLoading()
                 const {$http} = useNuxtApp()
                 const response = await (<HttpClient>$http).post(`${Endpoint.companies}`, payload)
                 //@ts-ignore
@@ -97,7 +121,7 @@ export const useCompanyStore = defineStore('company', {
                 //@ts-ignore
                 this.companyUpdate = new Wrapper<SingleApiResponse<Company>>().toLoading()
                 const {$http} = useNuxtApp()
-                const response = await (<HttpClient>$http).put(`${Endpoint.companies}/${useAuthStore().myCompany.id}`, payload)
+                const response = await (<HttpClient>$http).put(`${Endpoint.companies}/${useUserStore().myCompany?.id}`, payload)
                 //@ts-ignore
                 this.companyUpdate = this.companyUpdate.toSuccess(response, AppStrings.yourCompanyHasBeenUpdatedSuccessfully.replaceAll('{{name}}', payload.data.name))
                 // logDev('COMPANY RESPONSE', response)

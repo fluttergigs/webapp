@@ -145,8 +145,6 @@
                               :work-permit-countries="workPermits"/>
         </div>
       </div>
-
-
     </div>
   </section>
 
@@ -172,10 +170,8 @@ import {postJobFormSchema} from "~/core/validations/job.validations";
 import useCompanyActions from "~/composables/useCompanyActions";
 import {AppRoutes} from "~/core/routes";
 
-
 definePageMeta({layout: 'app-layout', middleware: ['auth', 'no-company'],})
 useHead({title: `Flutter Gigs - Post your job`});
-
 
 const jobStore = useJobStore()
 const {jobCreationData, jobCreation} = storeToRefs(jobStore)

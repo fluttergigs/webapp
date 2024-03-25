@@ -22,9 +22,11 @@ export const useUserStore = defineStore('user', {
         bookmarkedJobsListResponse: new Wrapper<MultiApiResponse<BookmarkedJobOffer>>().toInitial(),
         bookmarkedJobCreation: new Wrapper<SingleApiResponse<BookmarkedJobOffer>>().toInitial(),
         bookmarkedJobDelete: new Wrapper<SingleApiResponse<Object>>().toInitial(),
-        jobToBookmark: null,
+        jobToBookmark: -1,
     }),
     actions: {
+
+
         async saveJob(request: SaveJobOfferRequest) {
             try {
                 this.bookmarkedJobCreation = new Wrapper<SingleApiResponse<BookmarkedJobOffer>>().toLoading()
@@ -58,7 +60,7 @@ export const useUserStore = defineStore('user', {
                     filters: {
                         user: {
                             id: {
-                                $eq: useAuthStore().user.id,
+                                $eq: useAuthStore().authUser?.id!,
                             }
                         },
                     },
@@ -89,8 +91,14 @@ export const useUserStore = defineStore('user', {
             }));
         },
 
+        companies: state => useAuthStore().authUser?.companies ?? [],
+
         expiredBookmarkedJobs: state => useUserStore().bookmarkedJobs?.filter((job: JobOffer) => isBefore(parseISO(job.applyBefore), new Date())),
 
-        isHandlingBookmark: state => state.bookmarkedJobCreation.isLoading || state.bookmarkedJobDelete.isLoading
+        isHandlingBookmark: state => state.bookmarkedJobCreation.isLoading || state.bookmarkedJobDelete.isLoading,
+
+        hasCompanies: (state) => (useUserStore().companies.length > 0),
+
+        myCompany: (state) => useUserStore().hasCompanies ? useUserStore().companies[0] : null,
     },
 })

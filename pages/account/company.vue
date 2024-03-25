@@ -1,6 +1,7 @@
 <!--TODO - upload logo for company-->
 
 <template>
+  <CompanyDescriptionGenerationModal @on-generate="({result})=> formInput.description = result"/>
   <div class="flex flex-col w-full">
     <section class="py-8 px-2 md:py-12 xl:pb-56 bg-white overflow-hidden">
       <h3
@@ -23,7 +24,7 @@
         <div class="flex space-x-4 mb-5 w-full">
           <CustomInput class="w-1/2" name="url" label="Linkedin"
                        v-model="formInput.linkedin"/>
-          <CustomInput class="w-1/2" name="url" label="Twitter" :is-disabled="true"
+          <CustomInput class="w-1/2" name="url" label="Twitter"
                        v-model="formInput.twitter"/>
         </div>
         <div class="block mb-5">
@@ -45,10 +46,12 @@
         </div>
         <div class="block mb-5">
           <!--          TODO generate company description using AI-->
-          <CustomInput inside-text="Generate using AI" :is-text-area="true" name="description" label="Description"
-                       placeholder="Description"
-                       v-model="formInput.description"
-                       type="text"/>
+          <CustomInput
+              @inside-text-clicked="companyStore.showCompanyDescriptionGenerationModal()"
+              inside-text="Generate using AI" :is-text-area="true" name="description" label="Description"
+              placeholder="Description"
+              v-model="formInput.description"
+              type="text"/>
         </div>
 
         <button
@@ -75,30 +78,34 @@ import {AnalyticsEvent} from "~/services/analytics/events";
 import {useCompanyStore} from "~/stores/company";
 import {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider";
 import {companySizeOptions} from "~/core/constants";
-import {CompanySize} from "~/features/companies/company.types";
+import type {UpdateCompanyRequest} from "~/features/companies/company.types";
+import {CompanySize,} from "~/features/companies/company.types";
 import {BaseToast} from "~/core/ui/base_toast";
 //@ts-ignore
 import type {Notification} from "#ui/types";
+import {useUserStore} from "~/stores/user";
+import CompanyDescriptionGenerationModal from "~/components/company/CompanyDescriptionGenerationModal.vue";
 
 useHead({title: "Flutter Gigs - Company information update"});
 
 definePageMeta({layout: 'app-layout', middleware: ['auth', 'no-company']})
 
+const userStore = useUserStore()
 const authStore = useAuthStore()
 const companyStore = useCompanyStore()
 
 const {$analytics, $toast} = useNuxtApp()
 
 const formInput = ref({
-  email: authStore.myCompany.email,
-  user: authStore.authUser.id,
-  name: authStore.myCompany.name,
-  website: authStore.myCompany.website,
-  logo: authStore.myCompany.logo,
-  description: authStore.myCompany.description,
-  size: authStore.myCompany.size ?? CompanySize.small,
-  linkedin: authStore.myCompany.linkedin,
-  twitter: authStore.myCompany.twitter,
+  email: userStore.myCompany?.email,
+  user: authStore.authUser?.id,
+  name: userStore.myCompany?.name,
+  website: userStore.myCompany?.website,
+  logo: userStore.myCompany?.logo,
+  description: userStore.myCompany?.description,
+  size: userStore.myCompany?.size ?? CompanySize.small,
+  linkedin: userStore.myCompany?.linkedin,
+  twitter: userStore.myCompany?.twitter,
 })
 
 const canSubmit = ref(false)
@@ -115,7 +122,7 @@ onMounted(() => {
 const submit = async () => {
   try {
     (<AppAnalyticsProvider>$analytics).capture(AnalyticsEvent.companyUpdateButtonClicked, formInput.value);
-    await companyStore.updateCompany({data: formInput.value});
+    await companyStore.updateCompany({data: formInput.value} as UpdateCompanyRequest);
     (<AppAnalyticsProvider>$analytics).capture(AnalyticsEvent.successfulCompanyUpdate, formInput.value);
     ($toast as BaseToast<Notification>).info(<string>companyStore.companyUpdate!.message);
   } catch (e) {

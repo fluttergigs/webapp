@@ -1,4 +1,3 @@
-import {useAuthStore} from "~/stores/auth";
 import {AppRoutes} from "~/core/routes";
 import type {Company} from "~/features/companies/company.types";
 import {useJobStore} from "~/stores/job";
@@ -9,10 +8,13 @@ import type {CallbackFunction} from "~/core/shared/types";
 import {BaseToast} from "~/core/ui/base_toast";
 //@ts-ignore
 import type {Notification} from "#ui/types";
+import {useUserStore} from "~/stores/user";
+
 export default function useCompanyActions() {
     const {$analytics, $toast} = useNuxtApp()
+    const userStore = useUserStore()
     const handleJobCreation = () => {
-        if (useAuthStore().hasCompanies) {
+        if (userStore.hasCompanies) {
             return navigateTo(AppRoutes.postJob)
         } else {
             return navigateTo(AppRoutes.createCompany)
@@ -20,7 +22,7 @@ export default function useCompanyActions() {
     }
 
     const checkCompanyExistenceGuard = () => {
-        if (!useAuthStore().hasCompanies) {
+        if (!userStore.hasCompanies) {
             return navigateTo(AppRoutes.createCompany)
         }
     }
@@ -33,7 +35,7 @@ export default function useCompanyActions() {
                 onSuccess();
             }
         } finally {
-            ($toast as BaseToast<Notification>).info(useJobStore().jobCreation.message)
+            ($toast as BaseToast<Notification>).info(<string>useJobStore().jobCreation.message)
         }
     }
 

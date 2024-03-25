@@ -1,9 +1,9 @@
 <template>
   <section class="bg-blueGray-50">
     <div class="overflow-hidden">
-      <div class="container px-4 py-6 md:py-8 mx-auto">
+      <div class="container py-6 md:py-8 mx-auto">
         <div class="flex flex-wrap -m-8 justify-center items-center">
-          <div class="flex flex-col space-y-4 w-full md:w-1/2 p-8" contenteditable="false">
+          <div class="flex flex-col space-y-8 w-full md:w-1/2 p-8" contenteditable="false">
             <div
                 class="inline-block mb-6 px-2 py-1 font-semibold bg-green-100 rounded-full" style="width: fit-content">
               <div class="flex flex-wrap items-center -m-1 p-2" contenteditable="false">
@@ -28,35 +28,19 @@
               Get the best-in-class group mentoring plans and professional benefits for
               your team
             </p>
-            <div class="flex flex-wrap -m-2.5 mb-20">
-              <div class="w-full md:w-auto p-2.5">
-                <div class="block">
-                  <button
-                      class="py-4 px-6 w-full text-white font-semibold border border-indigo-700 rounded-xl focus:ring focus:ring-indigo-300 bg-indigo-600 hover:bg-indigo-700 transition ease-in-out duration-200"
-                      type="button"
-                      @click="findJobs">
-                    Find a job
-                  </button>
-                </div>
-              </div>
-              <div class="w-full md:w-auto p-2.5">
-                <div class="block">
-                  <button
-                      class="py-4 px-9 w-full font-semibold border border-gray-300 hover:border-gray-400 rounded-xl focus:ring focus:ring-gray-50 bg-transparent hover:bg-gray-100 transition ease-in-out duration-200"
-                      type="button"
-                      @click="handleJobCreation"
-                  >
-                    <div class="flex flex-wrap justify-center items-center -m-1">
-                      <div class="w-auto p-1">
-                        <MegaphoneIcon class="text-gray-600 w-5"/>
-                      </div>
-                      <div class="w-auto p-1">
-                        <span contenteditable="false">Post a new Flutter job</span>
-                      </div>
-                    </div>
-                  </button>
-                </div>
-              </div>
+            <div class="flex flex-wrap mb-20 space-x-3">
+              <UButton
+                  @click="handleJobCreation"
+                  color="indigo"
+                  class="py-4 px-9 rounded-xl flex space-x-2 font-medium"
+                  label="Find your job now"/>
+
+              <UButton
+                  @click="handleJobCreation"
+                  icon="i-heroicons-megaphone-solid"
+                  color="white"
+                  class="py-4 px-9 rounded-xl flex space-x-2 font-medium"
+                  label="Post a new Flutter job"/>
             </div>
           </div>
           <div class="w-full md:w-1/2 p-8">
@@ -77,11 +61,9 @@
 
 import {AppRoutes} from "~/core/routes";
 import useCompanyActions from '@/composables/useCompanyActions'
-import {MegaphoneIcon} from "@heroicons/vue/24/solid";
 import {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider";
 import {AnalyticsEvent} from "~/services/analytics/events";
 import ArrowBackIcon from "~/components/icons/ArrowBackIcon.vue";
-
 
 const handleJobCreation = () => {
   (useNuxtApp().$analytics as AppAnalyticsProvider).capture(AnalyticsEvent.landingPageHeaderPostJobOfferButtonClicked,);

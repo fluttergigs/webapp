@@ -5,7 +5,7 @@ export enum Status {
     failure = "failure"
 }
 
-export class Wrapper<Type = unknown> {
+export class Wrapper<Type extends  Object> {
     _status = Status.initial;
     _value: Type = <Type>{};
 
@@ -47,7 +47,7 @@ export class Wrapper<Type = unknown> {
 
     public toInitial() {
         return new Wrapper(
-            null,
+            <Type>{},
             Status.initial,
         );
     }

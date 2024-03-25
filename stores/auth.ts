@@ -37,6 +37,7 @@ export let useAuthStore = defineStore('auth', {
 
             try {
                 this.user = new Wrapper(null).toLoading()
+
                 const response = await (<AuthProvider>$auth).login({identifier: email, password})
 
                 //@ts-ignore
@@ -45,6 +46,8 @@ export let useAuthStore = defineStore('auth', {
 
                 //@ts-ignore
                 $analytics.identify(this.user.value.email, this.user)
+
+                await this.fetchUser()
             } catch (error: any) {
                 logDev('LOGIN ERROR', error)
 
@@ -65,6 +68,7 @@ export let useAuthStore = defineStore('auth', {
                 // @ts-ignore
                 $analytics.identify(this.user.value?.email, this.user)
                 this.setToken(unref(response.jwt))
+                await this.fetchUser()
             } catch (error: any) {
                 logDev(error)
                 this.user = this.user.toFailed(error.error?.message ?? AppStrings.errorOccurred)
@@ -77,8 +81,8 @@ export let useAuthStore = defineStore('auth', {
                 const {$auth, $analytics} = useNuxtApp()
                 await (<AuthProvider>$auth).logout()
                 this.user = new Wrapper(null).toInitial()
-                this.setToken('')
-                (<AppAnalyticsProvider>$analytics).reset()
+                this.setToken('');
+                (<AppAnalyticsProvider>$analytics).reset();
                 await useRouter().push({path: AppRoutes.login})
             } catch (error) {
                 logDev(error)
@@ -93,7 +97,7 @@ export let useAuthStore = defineStore('auth', {
                 //@ts-ignore
                 this.updateUser = new Wrapper<SingleApiResponse<User>>().toLoading()
                 const {$http} = useNuxtApp()
-                const response = await (<HttpClient>$http).put(`${Endpoint.users}/${useAuthStore().authUser.id}`, payload);
+                const response = await (<HttpClient>$http).put(`${Endpoint.users}/${useAuthStore().authUser?.id}`, payload);
                 //@ts-ignore
                 this.updateUser = this.updateUser.toSuccess(response, AppStrings.yourProfileInfoHasBeenUpdatedSuccessfully)
                 // logDev('COMPANY RESPONSE', response)
@@ -109,7 +113,7 @@ export let useAuthStore = defineStore('auth', {
                 //@ts-ignore
                 this.changePassword = new Wrapper<SingleApiResponse<User>>().toLoading()
                 const {$http} = useNuxtApp()
-                const response = await (<HttpClient>$http).put(`${Endpoint.users}/${useAuthStore().authUser.id}`, payload);
+                const response = await (<HttpClient>$http).put(`${Endpoint.users}/${useAuthStore().authUser?.id}`, payload);
                 //@ts-ignore
                 this.changePassword = this.changePassword.toSuccess(response, AppStrings.yourPasswordHasBeenUpdatedSuccessfully)
                 // logDev('COMPANY RESPONSE', response)
@@ -123,6 +127,7 @@ export let useAuthStore = defineStore('auth', {
             const {$auth, $analytics} = useNuxtApp()
             try {
                 if (this.isAuthenticated) {
+                    logDev('FETCHING USER')
                     const response: User = await ($auth as AuthProvider).fetchUser();
                     //@ts-ignore
                     (<AppAnalyticsProvider>$analytics).identify(response!.email!, response!);
@@ -145,9 +150,6 @@ export let useAuthStore = defineStore('auth', {
             return (!!useAuthStore().authUser && Object.keys(useAuthStore().authUser).length > 0) ?? false;
         },
         userFullName: state => `${useAuthStore().authUser?.firstName ?? ''} ${useAuthStore().authUser?.lastName ?? ''}`,
-        hasCompanies: (state) => (useAuthStore().authUser?.companies?.length > 0),
-
-        myCompany: (state) => useAuthStore().hasCompanies ? useAuthStore().authUser?.companies[0] : null,
     },
     persist: {
         storage: persistedState.cookies,

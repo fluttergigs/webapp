@@ -11,5 +11,5 @@ export const postJobFormSchema = yup.object({
 });
 
 export const jobDescriptionSchema = yup.object({
-    description: yup.string().required().min(10)
+    description: yup.string().required().min(30)
 });

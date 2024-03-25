@@ -1,20 +1,19 @@
-
-
 export type ToastConfig<P> = {
     [T in keyof P]?: P[T]
 }
 
 export abstract class BaseToast<NotificationData> {
+    protected timeout = 7000;
 
-    abstract info(config?: ToastConfig<NotificationData>, title?: string): void;
+    abstract info(title: string, config?: ToastConfig<NotificationData>): void;
 
-    abstract success(config?: ToastConfig<NotificationData>, title?: string): void;
+    abstract success(title: string, config?: ToastConfig<NotificationData>): void;
 
-    abstract error(config?: ToastConfig<NotificationData>, title?: string): void;
+    abstract error(title: string, config?: ToastConfig<NotificationData>): void;
 
-    abstract primary(config?: ToastConfig<NotificationData>, title?: string): void;
+    abstract primary(title: string, config?: ToastConfig<NotificationData>): void;
 
-    abstract default(config?: ToastConfig<NotificationData>, title?: string): void;
+    abstract default(title: string, config?: ToastConfig<NotificationData>): void;
 
     abstract custom(config: ToastConfig<NotificationData>): void;
 }

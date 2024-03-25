@@ -19,7 +19,20 @@ const props = defineProps({
 <template>
   <div class="flex flex-col space-y-4">
     <client-only>
-      <template v-if="props.jobsResponse.isSuccess || props.jobsResponse.isFailure">
+      <template v-if="props.jobsResponse.isFailure">
+        <div class="flex flex-col items-center justify-center">
+          <slot name="error">
+            <div class="flex flex-col items-center space-y-2">
+              <p>Unable to fetch jobs in the list</p>
+              <img class="w-96 h-96" alt="Empty job results" src="@/assets/images/emptyJobFiltersResult.svg"/>
+            </div>
+          </slot>
+          <slot name="ctaError">
+          </slot>
+        </div>
+
+      </template>
+      <template v-else-if="props.jobsResponse.isSuccess">
 
         <div class="flex flex-col items-center justify-center" v-if="props.jobs.length <= 0">
           <slot name="noData">
@@ -37,8 +50,6 @@ const props = defineProps({
             <JobCard :job="job" :key="job.slug"/>
           </slot>
         </template>
-
-
       </template>
       <div v-else-if="props.jobsResponse.isLoading">
         <slot name="loader">

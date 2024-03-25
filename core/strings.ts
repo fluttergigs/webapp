@@ -40,9 +40,13 @@ export class AppStrings {
 
     static errorOccurred = "An error occurred. Please try again later!"
 
-    static jobDescriptionIsReady = "Your job description is ready"
+    static jobDescriptionIsReady = "Your job's description is ready"
 
-    static unableToGenerateJobDescription = "Unable to generate your job description"
+    static companyDescriptionIsReady = "Your company's description is ready"
+
+    static unableToGenerateJobDescription = "Unable to generate your job's description"
+
+    static unableToGenerateCompanyDescription = "Unable to generate your company's description"
 
     static saveJobOffer = 'Save this job offer'
 

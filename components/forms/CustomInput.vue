@@ -4,38 +4,38 @@
       <p v-if="hasLabel && showLabel" class="text-sm font-medium">{{ label }}</p>
     </slot>
 
-<!--    <client-only>-->
-      <div class="relative">
-        <slot name="insideText">
-          <div class="absolute right-4 bottom-0.5 transform -translate-y-1/2">
-            <a @click="$emit('insideTextClicked')" class="text-[10px] text-indigo-600 hover:text-indigo-700 font-medium"
-               href="#">{{ insideText }}</a>
-          </div>
-        </slot>
+    <!--    <client-only>-->
+    <div class="relative">
+      <slot name="insideText">
+        <div class="absolute right-4 bottom-0.5 transform -translate-y-1/2">
+          <a @click="$emit('insideTextClicked')"
+             class="text-[10px] text-indigo-600 hover:text-indigo-700 font-medium cursor-pointer">{{ insideText }}</a>
+        </div>
+      </slot>
 
-        <textarea
-            rows="5"
-            v-model="fieldValue"
-            v-if="isTextArea"
-            :class="['custom-input !text-black',isDisabled? 'disabled:opacity-50 cursor-not-allowed':'']"
-            :disabled="isDisabled"
-            :name="name"
-            :placeholder="placeholder">
+      <textarea
+          rows="5"
+          v-model="fieldValue"
+          v-if="isTextArea"
+          :class="['custom-input !text-black',isDisabled? 'disabled:opacity-50 cursor-not-allowed':'']"
+          :disabled="isDisabled"
+          :name="name"
+          :placeholder="placeholder">
 
           </textarea>
-        <input v-model="fieldValue" v-else
-               :class="['custom-input !text-black',isDisabled? 'disabled:opacity-50 cursor-not-allowed':'']"
-               :type="type"
-               :name="name"
-               :disabled="isDisabled"
-               :placeholder="placeholder"
-        />
+      <input v-model="fieldValue" v-else
+             :class="['custom-input !text-black',isDisabled? 'disabled:opacity-50 cursor-not-allowed':'']"
+             :type="type"
+             :name="name"
+             :disabled="isDisabled"
+             :placeholder="placeholder"
+      />
 
-      </div>
-      <p v-if="true" class="text-red-600 text-start text-sm capitalize">
-        {{ errorMessage }}
-      </p>
-<!--    </client-only>-->
+    </div>
+    <p v-if="true" class="text-red-600 text-start text-sm capitalize">
+      {{ errorMessage }}
+    </p>
+    <!--    </client-only>-->
   </div>
 </template>
 

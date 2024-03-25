@@ -21,26 +21,28 @@ export const useJobStore = defineStore('job', {
         jobFiltersResponse: new Wrapper<MultiApiResponse<JobOffer>>().toInitial(),
         searchFilters: <JobSearchFilters>{},
         isJobDescriptionGenerationModalOpen: false,
-        jobDescriptionTask: new Wrapper<String>().toInitial(),
+        jobDescriptionGenerationTask: new Wrapper<String>().toInitial(),
         jobCreationData: <JobCreationRequest>{
             applyBefore: new Date(),
             workType: workTypeOptions[0].id,
             seniorityLevel: seniorityLevelOptions[0].id,
             remoteOptions: remoteOptions[0].id,
-            company: useAuthStore().myCompany.id,
+            company: useAuthStore()?.myCompany?.id,
         }
     }),
 
     actions: {
         async generateJobDescription(prompt: string) {
+            this.jobDescriptionGenerationTask = new Wrapper<String>().toLoading()
             try {
-                this.jobDescriptionTask = new Wrapper<String>().toLoading()
+                //@ts-ignore
                 const {$generativeAI} = useNuxtApp();
-                const response = await (<GenerativeAIProvider>$generativeAI).generateText(prompt);
+                const response: String = await (<GenerativeAIProvider>$generativeAI).generateText(prompt);
                 this.jobCreationData.description = response;
-                this.jobDescriptionTask = this.jobDescriptionTask.toSuccess(response, AppStrings.jobDescriptionIsReady)
+                //@ts-ignore
+                this.jobDescriptionGenerationTask = this.jobDescriptionGenerationTask.toSuccess(response as String, AppStrings.jobDescriptionIsReady)
             } catch (e) {
-                this.jobDescriptionTask = this.jobDescriptionTask.toFailed(AppStrings.unableToGenerateJobDescription)
+                this.jobDescriptionGenerationTask = this.jobDescriptionGenerationTask.toFailed(AppStrings.unableToGenerateJobDescription)
                 throw e;
             }
         },
@@ -58,15 +60,17 @@ export const useJobStore = defineStore('job', {
         },
 
         async postJob() {
+            this.jobCreation = new Wrapper<JobOfferApiResponse>().toLoading()
             try {
-                this.jobCreation = new Wrapper<JobOfferApiResponse>().toLoading()
+                //@ts-ignore
                 const {$http} = useNuxtApp()
+                //@ts-ignore
                 this.jobCreationData.slug = generateJobOfferSlug({
                     jobTitle: this.jobCreationData.title,
                     companyName: useAuthStore().myCompany.name
                 })
                 const response = await (<HttpClient>$http).post(`${Endpoint.jobOffers}`, {data: this.jobCreationData})
-                this.jobCreation = this.jobCreation.toSuccess(response, AppStrings.jobOfferPostedSuccessfully.replaceAll('{{title}}', this.jobCreationData.title))
+                this.jobCreation = this.jobCreation.toSuccess(response, AppStrings.jobOfferPostedSuccessfully.replaceAll('{{title}}', <string>this.jobCreationData.title))
                 //TODO - think more on that
                 this.resetJobCreationData()
             } catch (e) {
@@ -76,9 +80,9 @@ export const useJobStore = defineStore('job', {
         },
 
         async fetchJobs(): Promise<void> {
+            this.jobListResponse = this.jobFiltersResponse = new Wrapper<MultiApiResponse<JobOffer>>().toLoading()
             try {
                 // @ts-ignore
-                this.jobListResponse = this.jobFiltersResponse = new Wrapper<MultiApiResponse<JobOffer>>().toLoading()
                 const {$http} = useNuxtApp()
                 const response = await (<HttpClient>$http).get(`${Endpoint.jobOffers}?populate=*`)
                 // @ts-ignore
@@ -90,6 +94,7 @@ export const useJobStore = defineStore('job', {
         },
 
         async filterJobs(): Promise<void> {
+            this.jobFiltersResponse = new Wrapper<MultiApiResponse<JobOffer>>().toLoading()
             try {
                 const query = stringify({
                     populate: '*',
@@ -127,7 +132,7 @@ export const useJobStore = defineStore('job', {
                 }, {
                     encodeValuesOnly: true,
                 })
-                this.jobFiltersResponse = new Wrapper<MultiApiResponse<JobOffer>>().toLoading()
+                //@ts-ignore
                 const {$http} = useNuxtApp()
                 const response = await (<HttpClient>$http).get(`${Endpoint.jobOffers}?${query}`)
                 // @ts-ignore
@@ -139,20 +144,22 @@ export const useJobStore = defineStore('job', {
 
         async setSelectedJob(job: JobOffer) {
             logDev('SETTING VIEWED JOB')
+            //@ts-ignore
             this.selectedJob = new Wrapper().toSuccess(job)
             logDev('SETTING VIEWED JOB -- DONE')
         },
 
         async findJobById(job: JobOffer): Promise<void> {
+            this.selectedJob = new Wrapper().toLoading(job)
             try {
                 //@ts-ignore
-                this.selectedJob = new Wrapper().toLoading(job)
                 const {$http} = useNuxtApp()
                 const response = await (<HttpClient>$http).get(`${Endpoint.jobOffers}/${job.id}?populate=*`)
                 //@ts-ignore
                 this.selectedJob = this.selectedJob.toSuccess(response)
                 logDev('single Job RESPONSE', response)
             } catch (e) {
+                //@ts-ignore
                 this.selectedJob = this.selectedJob.toSuccess(job, AppStrings.unableToFetchJob)
             }
         },

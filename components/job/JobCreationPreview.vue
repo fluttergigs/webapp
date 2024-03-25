@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type {JobCreationRequest} from "~/features/jobs/job.types";
 import {userFacingWorkType} from "~/features/jobs/transformers";
-import {useAuthStore} from "~/stores/auth";
 //@ts-ignore
 import type {PropType} from "@vue/runtime-core";
 import type {Country} from "~/core/shared/types";
@@ -9,6 +8,8 @@ import {useJobStore} from "~/stores/job";
 import useCompanyActions from "~/composables/useCompanyActions";
 import {AppRoutes} from "~/core/routes";
 import WorkingPermits from "~/components/job/WorkingPermits.vue";
+import {useUserStore} from "~/stores/user";
+import type {Company} from "~/features/companies/company.types";
 
 //@ts-ignore
 const props = defineProps({
@@ -25,8 +26,6 @@ const props = defineProps({
 })
 
 const {postJobOffer} = useCompanyActions()
-
-
 /*const userFacingWorkPermits = computed(() => {
   const countries = props.workPermitCountries.map((country: Country) => country)
 
@@ -42,13 +41,13 @@ const {postJobOffer} = useCompanyActions()
         rounded-lg shadow-sm hover:shadow-md border border-indigo-700
         px-8 py-4 space-y-2 ">
       <div class="flex space-x-2 items-start justify-between">
-        <UiAvatar/>
+        <CompanyLogo :company="useUserStore().myCompany as Company"/>
 
         <WorkingPermits :countries="workPermitCountries??[]"/>
       </div>
       <p class="text-lg text-gray-900 font-medium">{{ job?.title }}</p>
 
-      <p class="font-medium text-gray-700">{{ useAuthStore()?.myCompany?.name }}</p>
+      <p class="font-medium text-gray-700">{{ useUserStore()?.myCompany?.name }}</p>
 
       <div class="inline-flex items-center space-x-1 text-md font-normal">
         <UIcon name="i-heroicons-currency-dollar"/>

@@ -12,12 +12,14 @@ import {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider"
 import {BaseToast} from "~/core/ui/base_toast";
 //@ts-ignore
 import type {Notification} from "#ui/types";
+import type {CreateCompanyRequest} from "~/features/companies/company.types";
+import {useUserStore} from "~/stores/user";
 
 useHead({title: "Flutter Gigs - Company creation"});
 
 definePageMeta({
   middleware: ['auth', function () {
-    if (useAuthStore().hasCompanies) {
+    if (useUserStore().hasCompanies) {
       return navigateTo(AppRoutes.myCompany)
     }
   }]
@@ -56,7 +58,7 @@ onMounted(() => {
 const submit = async () => {
   try {
     (<AppAnalyticsProvider>$analytics).capture(AnalyticsEvent.companyCreationButtonClicked, formInput.value);
-    await companyStore.createCompany({data: formInput.value});
+    await companyStore.createCompany({data: formInput.value} as CreateCompanyRequest);
     (<AppAnalyticsProvider>$analytics).capture(AnalyticsEvent.successfulCompanyCreation, formInput.value);
 
     //@ts-ignore

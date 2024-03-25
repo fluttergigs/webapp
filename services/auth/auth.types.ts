@@ -3,8 +3,9 @@ import {Company} from "~/features/companies/company.types";
 export interface RegistrationData {
     firstName: string,
     lastName: string,
-    email: string,
+    email?: string,
     password: string,
+    identifier?: string
 
     [name: string]: unknown,
 }

@@ -1,6 +1,6 @@
 <template>
   <section class="overflow-hidden">
-    <div class="flex items-center justify-between py-5 bg-blueGray-50 px-18">
+    <div class="flex items-center justify-between py-5 bg-blueGray-50 px-18 sticky">
       <div class="w-auto">
         <div class="flex flex-wrap items-center">
           <div class="w-auto mr-14">
@@ -23,7 +23,7 @@
 
             <ClientOnly>
               <div class="inline-block">
-                <NuxtLink v-if="!isAuthenticated"
+                <NuxtLink class="font-medium" v-if="!isAuthenticated"
                           :to="AppRoutes.login">
                   Login
                 </NuxtLink>
@@ -110,10 +110,9 @@
           <div class="flex flex-col justify-end w-full pb-8">
             <div class="flex flex-wrap">
               <div class="w-full mb-3">
-
                 <ClientOnly>
                   <div class="block">
-                    <NuxtLink v-if="!isAuthenticated"
+                    <NuxtLink class="font-medium" v-if="!isAuthenticated"
                               :to="AppRoutes.login"
                     >
                       Login

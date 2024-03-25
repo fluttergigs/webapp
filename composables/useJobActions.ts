@@ -1,6 +1,6 @@
 // @ts-ignore
 import {useClipboard} from "@vueuse/core";
-import type {JobOffer} from "~/features/jobs/job.types";
+import type {DeleteSavedJobOfferRequest, JobOffer} from "~/features/jobs/job.types";
 import {useAuthStore} from "~/stores/auth";
 import {Company} from "~/features/companies/company.types";
 import {useJobStore} from "~/stores/job";
@@ -24,13 +24,13 @@ export default function useJobActions() {
                 userStore.jobToBookmark = job.id;
                 if (isJobBookmarked(job)) {
                     ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.unBookmarkJobOfferClicked, {job});
-                    const bookmarkedJob: JobOffer = useUserStore().bookmarkedJobs?.find((savedJob: JobOffer) => savedJob.id === job.id);
-                    await userStore.deleteSavedJob({id: bookmarkedJob.bookmarkedJob});
-                    ($toast as BaseToast<Notification>).info(userStore.bookmarkedJobDelete.message)
+                    const bookmarkedJob: JobOffer | undefined = useUserStore().bookmarkedJobs?.find((savedJob: JobOffer) => savedJob.id === job.id);
+                    await userStore.deleteSavedJob(<DeleteSavedJobOfferRequest>{id: bookmarkedJob?.bookmarkedJob});
+                    ($toast as BaseToast<Notification>).info(<string>userStore.bookmarkedJobDelete.message)
                 } else {
                     ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.bookmarkJobOfferClicked, {job});
-                    await userStore.saveJob({jobOffer: job.id, user: useAuthStore().user.id});
-                    ($toast as BaseToast<Notification>).info(userStore.bookmarkedJobCreation.message)
+                    await userStore.saveJob({jobOffer: job.id, user: useAuthStore().authUser?.id!});
+                    ($toast as BaseToast<Notification>).info(<string>userStore.bookmarkedJobCreation.message)
                 }
 
                 if (onSuccess != null) {
@@ -43,12 +43,11 @@ export default function useJobActions() {
         } finally {
 
         }
-
     }
     const isJobBookmarked = (job: JobOffer): boolean => useUserStore().bookmarkedJobs?.filter((savedJob: JobOffer) => savedJob.id == job.id).length > 0
 
     const jobBelongsToCompany = (company: Company) =>
-        (company.id === useAuthStore().myCompany.id) && useAuthStore().isAuthenticated
+        (useAuthStore().isAuthenticated && useUserStore().myCompany?.id === company.id)
 
     const shareJobOffer = async ({slug}: JobOffer) => {
         const {$toast} = useNuxtApp()

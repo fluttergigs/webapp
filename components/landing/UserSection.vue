@@ -8,7 +8,7 @@ import {AnalyticsEvent} from "~/services/analytics/events";
 
 const {landingPageJobs} = storeToRefs(useJobStore())
 
-const findJobs = ()=> {
+const findJobs = () => {
   (useNuxtApp().$analytics as AppAnalyticsProvider).capture(AnalyticsEvent.landingPageUserSectionFindJobsButtonClicked,);
   navigateTo(AppRoutes.jobs)
 }

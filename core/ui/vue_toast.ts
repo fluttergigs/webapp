@@ -2,60 +2,63 @@
 import type {Notification} from "#ui/types";
 import {BaseToast, ToastConfig} from "~/core/ui/base_toast";
 import {logDev} from "~/core/helpers/log";
+import {number, string} from "yup";
+import {timeout} from "ioredis/built/utils";
 
 export class VueToastImpl implements BaseToast<Notification> {
 
+    private timeout: number;
+
     private toast = useToast()
 
-    default(config: ToastConfig<Notification>, title?: string): void {
+    default(title: string, config?: ToastConfig<Notification>,): void {
         this.toast.add({
-            title: config.title ?? title,
-            description: config.description,
-            timeout: config.timeout,
-            click: config.click,
+            title: title ?? config?.title,
+            description: config?.description,
+            timeout: config?.timeout ?? this.timeout,
+            click: config?.click,
             color: "blue-gray",
         })
     }
 
-    error(config: ToastConfig<Notification>, title?: string): void {
+    error(title: string, config?: ToastConfig<Notification>): void {
         this.toast.add({
-            title: config.title ?? title,
-            description: config.description,
-            timeout: config.timeout,
+            title: title ?? config?.title,
+            description: config?.description,
+            timeout: config?.timeout ?? this.timeout,
             color: "red",
-            click: config.click,
+            click: config?.click,
         })
     }
 
-    info(config: ToastConfig<Notification>, title?: string): void {
-        logDev('INFOING FROM TOASTER')
+    info(title: string, config?: ToastConfig<Notification>): void {
         this.toast.add({
-            title: config.title ?? title,
-            description: config.description,
-            timeout: config.timeout,
+            title: title ?? config?.title,
+            description: config?.description,
+            timeout: config?.timeout ?? this.timeout,
             color: 'primary',
-            click: config.click,
+            click: config?.click,
 
         })
     }
 
-    primary(config: ToastConfig<Notification>, title?: string): void {
+    primary(title: string, config?: ToastConfig<Notification>): void {
         this.toast.add({
-            title: config.title ?? title,
-            description: config.description,
-            timeout: config.timeout,
+            title: title ?? config?.title,
+            description: config?.description,
+            timeout: config?.timeout ?? this.timeout,
             color: 'indigo',
-            click: config.click,
+            click: config?.click,
         })
     }
 
-    success(config: ToastConfig<Notification>, title?: string): void {
+    success(title: string, config?: ToastConfig<Notification>): void {
         this.toast.add({
-            title: config.title ?? title,
-            description: config.description,
-            timeout: config.timeout,
+            title: title ?? config?.title,
+            description: config?.description,
+            timeout: config?.timeout ?? this.timeout,
             color: 'green',
-            click: config.click,
+            click: config?.click,
         })
     }
 
@@ -68,4 +71,6 @@ export class VueToastImpl implements BaseToast<Notification> {
             click: config.click,
         })
     }
+
+
 }

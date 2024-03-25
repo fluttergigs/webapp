@@ -29,4 +29,4 @@ export declare type Country = {
     [key:string]: any,
 }
 
-export declare type CallbackFunction<T> = ((val?: T, err?: null,) => void) | ((err?: Error) => void);
+export declare type CallbackFunction<Result> = ((val?: Result) => void) | ((err?: Error) => void);

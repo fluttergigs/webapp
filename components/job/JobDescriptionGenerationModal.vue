@@ -16,9 +16,9 @@ const generateText = async () => {
   } catch (e) {
     logDev('ERROR WHILE GENERATING DESCRIPTION', e)
     //@ts-ignore
-    $toast.error(jobStore.jobDescriptionTask.message)
   } finally {
     jobStore.hideJobDescriptionGenerationModal()
+    $toast.info(jobStore.jobDescriptionGenerationTask.message)
   }
 
 }
@@ -29,18 +29,19 @@ watch(description, async () => {
 </script>
 
 <template>
-  <UModal v-model="useJobStore().isJobDescriptionGenerationModalOpen">
+  <UModal v-model="jobStore.isJobDescriptionGenerationModalOpen">
     <UCard :ui="{ ring: '', divide: 'divide-y divide-gray-100 dark:divide-gray-800' }">
       <template #header>
-        <h3>Generate your description with AI 🚀</h3>
+        <h3>Generate your job's description with AI 🚀</h3>
       </template>
 
       <CustomInput :is-text-area="true" v-model="description" name="description"
                    placeholder="Generate a job description for Flutter Software Engineer post"/>
 
       <template #footer>
-        <UButton class="bg-indigo-700 text-white" :disabled="!canGenerate || jobStore.jobDescriptionTask.isLoading"
-                 @click="generateText" :loading="jobStore.jobDescriptionTask.isLoading"
+        <UButton class="bg-indigo-700 text-white"
+                 :disabled="!canGenerate || jobStore.jobDescriptionGenerationTask.isLoading"
+                 @click="generateText" :loading="jobStore.jobDescriptionGenerationTask.isLoading"
                  label="Generate" color="indigo"/>
       </template>
     </UCard>

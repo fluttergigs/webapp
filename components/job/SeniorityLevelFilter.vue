@@ -18,7 +18,7 @@ watch(selected, ()=>{
       size="lg"
       v-model="selected"
       :options="seniorityLevelOptions"
-      placeholder="Select a seniority level"
+      placeholder="Select an experience level"
       value-attribute="id"
       option-attribute="label"
   />

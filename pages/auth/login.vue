@@ -45,6 +45,7 @@ import {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider"
 import {BaseToast} from "~/core/ui/base_toast";
 //@ts-ignore
 import type {Notification} from "#ui/types";
+
 useHead({title: "Flutter Gigs - Authentication"});
 
 definePageMeta({

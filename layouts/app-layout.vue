@@ -86,6 +86,7 @@ import {useJobStore} from "~/stores/job";
 import {useAppStore} from "~/stores/app";
 import {storeToRefs} from "pinia";
 import {BaseToast} from "~/core/ui/base_toast";
+import {useUserStore} from "~/stores/user";
 
 
 const links = [

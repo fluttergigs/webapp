@@ -56,7 +56,7 @@ const {
   }
 })
 
-useHead({title: `Flutter Gigs - ${data.value.title}`});
+useHead({title: `Flutter Gigs - ${data.value?.title}`});
 
 
 onMounted(() => {
@@ -84,7 +84,7 @@ onBeforeMount(() => {
     <template v-else>
       <section class="bg-blueGray-50 w-full relative">
         <div class="container px-20 py-6 md:py-14 mx-auto">
-          <LazyUiAvatar class="absolute left-16 top-16"/>
+          <CompanyLogo :company="company" size="3xl" class="absolute left-16 top-18"/>
         </div>
       </section>
       <div class="px-20 py-20">
