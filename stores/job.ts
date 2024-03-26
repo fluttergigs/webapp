@@ -4,7 +4,13 @@ import {Wrapper} from "~/core/wrapper";
 import {logDev} from "~/core/helpers/log";
 import {MultiApiResponse, SingleApiResponse} from "~/core/shared/types";
 import {AppStrings} from "~/core/strings";
-import type {JobCreationRequest, JobOffer, JobOfferApiResponse, JobSearchFilters} from "~/features/jobs/job.types";
+import type {
+    JobCreationRequest,
+    JobOffer,
+    JobOfferApiResponse,
+    JobOfferDeleteRequest,
+    JobSearchFilters
+} from "~/features/jobs/job.types";
 import type {HttpClient} from "~/core/network/http_client";
 import {stringify} from "qs";
 import {MAX_LANDING_PAGE_JOBS, remoteOptions, seniorityLevelOptions, workTypeOptions} from "~/core/constants";
@@ -22,6 +28,7 @@ export const useJobStore = defineStore('job', {
         searchFilters: <JobSearchFilters>{},
         isJobDescriptionGenerationModalOpen: false,
         jobDescriptionGenerationTask: new Wrapper<String>().toInitial(),
+        jobDelete: new Wrapper<SingleApiResponse<Object>>().toInitial(),
         jobCreationData: <JobCreationRequest>{
             applyBefore: new Date(),
             workType: workTypeOptions[0].id,
@@ -59,10 +66,22 @@ export const useJobStore = defineStore('job', {
             }
         },
 
+        async deleteJob(request: JobOfferDeleteRequest) {
+            this.jobDelete = new Wrapper<SingleApiResponse<Object>>().toLoading()
+            try {
+                const {$http} = useNuxtApp()
+                const response = await (<HttpClient>$http).delete(`${Endpoint.jobOffers}/${request.jobOffer}`,)
+
+                this.jobDelete = this.jobDelete.toSuccess(response, AppStrings.jobOfferDeletedSuccessfully)
+
+            } catch (e) {
+                this.jobDelete = this.jobDelete.toFailed(AppStrings.unableToDeleteJobOffer)
+            }
+        },
+
         async postJob() {
             this.jobCreation = new Wrapper<JobOfferApiResponse>().toLoading()
             try {
-                //@ts-ignore
                 const {$http} = useNuxtApp()
                 //@ts-ignore
                 this.jobCreationData.slug = generateJobOfferSlug({

@@ -59,7 +59,8 @@
     <div class="px-6 flex flex-1 grow w-full min-h-screen">
       <NuxtPage/>
     </div>
-    <UNotifications />
+    <UNotifications/>
+    <UModals />
   </section>
 </template>
 

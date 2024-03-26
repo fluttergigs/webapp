@@ -6,6 +6,7 @@
     </div>
     <LayoutFooter/>
     <UNotifications/>
+    <UModals />
   </div>
 </template>
 

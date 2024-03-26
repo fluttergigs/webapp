@@ -84,9 +84,9 @@ export const useUserStore = defineStore('user', {
         activeBookmarkedJobs: state => useUserStore().bookmarkedJobs?.filter((job: JobOffer) => isAfter(parseISO(job.applyBefore), new Date())),
 
         bookmarkedJobs(state): JobOffer[] {
-            return state.bookmarkedJobsListResponse?.value?.data?.map((savedJob: BookmarkedJobOffer) => ({
-                ...savedJob.attributes.jobOffer.data.attributes,
-                id: savedJob.attributes.jobOffer.data.id,
+            return state.bookmarkedJobsListResponse?.value?.data?.map((savedJob: any) => ({
+                ...savedJob.attributes.jobOffer.data?.attributes,
+                id: savedJob.attributes.jobOffer.data?.id,
                 bookmarkedJob: savedJob.id,
             }));
         },
@@ -95,7 +95,7 @@ export const useUserStore = defineStore('user', {
 
         expiredBookmarkedJobs: state => useUserStore().bookmarkedJobs?.filter((job: JobOffer) => isBefore(parseISO(job.applyBefore), new Date())),
 
-        isHandlingBookmark: state => state.bookmarkedJobCreation.isLoading || state.bookmarkedJobDelete.isLoading,
+        isHandlingBookmark: state => !!(state.bookmarkedJobCreation.isLoading || state.bookmarkedJobDelete.isLoading),
 
         hasCompanies: (state) => (useUserStore().companies.length > 0),
 

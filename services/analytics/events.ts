@@ -8,6 +8,7 @@ export const enum AnalyticsEvent {
     jobOfferClicked = "job_offer_clicked",
     bookmarkJobOfferClicked = "bookmark_job_offer_clicked",
     unBookmarkJobOfferClicked = "un_bookmark_job_offer_clicked",
+    jobOfferDeleteButtonClicked ="job_offer_delete_button_clicked",
     postJobOfferButtonClicked = "post_jobOffer_button_clicked",
     landingPageHeaderPostJobOfferButtonClicked = "landing_page_header_post_jobOffer_button_clicked",
     landingPageUserSectionFindJobsButtonClicked = "landing_page_user_section_find_jobs_button_clicked",

@@ -41,6 +41,6 @@ export function userFacingSeniorityLevel(level: SeniorityLevel) {
 }
 
 export const extractCompanyFromJob = (job: JobOffer) => <Company>({
-    ...(job?.company as CompanyApiResponse).data['attributes'],
+    ...(job?.company as CompanyApiResponse)?.data['attributes'],
     id: (job?.company as CompanyApiResponse)?.data['id']
 });

@@ -37,6 +37,8 @@ export type JobOfferApiResponse = SingleApiResponse<JobOffer>
 
 export type SaveJobOfferRequest = { user: number, jobOffer: number }
 
+export type JobOfferDeleteRequest = {jobOffer: number}
+
 export type DeleteSavedJobOfferRequest = Pick<BookmarkedJobOffer, 'id'>
 
 export enum SeniorityLevel {

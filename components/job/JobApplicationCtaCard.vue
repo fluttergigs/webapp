@@ -1,7 +1,8 @@
-<script setup>
+<script setup lang="ts">
 
 
 import {Direction} from "~/core/shared/types";
+import type {PropType} from "@vue/runtime-core";
 
 const props = defineProps({
   job: {
@@ -13,7 +14,7 @@ const props = defineProps({
     required: true,
   },
   layoutDirection: {
-    type: Direction,
+    type: Object as PropType<Direction>,
     default: Direction.horizontal,
   }
 })

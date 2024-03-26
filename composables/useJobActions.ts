@@ -15,10 +15,11 @@ import {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider"
 import {AnalyticsEvent} from "~/services/analytics/events";
 
 export default function useJobActions() {
+    const {$toast, $analytics} = useNuxtApp();
+
     const handleJobBookmark = async (job: JobOffer, onSuccess?: CallbackFunction<any>) => {
         try {
             const userStore = useUserStore()
-            const {$toast, $analytics} = useNuxtApp();
 
             if (useAuthStore().isAuthenticated) {
                 userStore.jobToBookmark = job.id;
@@ -44,13 +45,26 @@ export default function useJobActions() {
 
         }
     }
+
+    const handleJobDelete = async (job: JobOffer, onDone?: CallbackFunction<any>) => {
+        ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.jobOfferDeleteButtonClicked, {job});
+
+        const jobStore = useJobStore()
+        await jobStore.deleteJob({jobOffer: job.id});
+
+        ($toast as BaseToast<Notification>).info(<string>jobStore.jobDelete.message)
+
+        if (onDone != null) {
+            onDone()
+        }
+    }
+
     const isJobBookmarked = (job: JobOffer): boolean => useUserStore().bookmarkedJobs?.filter((savedJob: JobOffer) => savedJob.id == job.id).length > 0
 
     const jobBelongsToCompany = (company: Company) =>
         (useAuthStore().isAuthenticated && useUserStore().myCompany?.id === company.id)
 
     const shareJobOffer = async ({slug}: JobOffer) => {
-        const {$toast} = useNuxtApp()
         const {text, copy, copied,} = useClipboard({
             source: `${location.href}/jobs/${slug}`,
             legacy: true
@@ -64,7 +78,7 @@ export default function useJobActions() {
 
     }
     const viewDetails = (job: JobOffer) => {
-        (useNuxtApp().$analytics as AppAnalyticsProvider).capture(AnalyticsEvent.jobOfferClicked, {job});
+        ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.jobOfferClicked, {job});
         useJobStore().findJobById(job)
         navigateTo(AppRoutes.jobDetail(job.slug))
     }
@@ -81,6 +95,7 @@ export default function useJobActions() {
         jobWorkingPermits,
         userFacingWorkingPermits,
         isJobBookmarked,
-        handleJobBookmark
+        handleJobBookmark,
+        handleJobDelete,
     }
 }
