@@ -60,7 +60,7 @@ export let useAuthStore = defineStore('auth', {
             const {$auth, $analytics} = useNuxtApp()
             try {
                 this.user = new Wrapper(null).toLoading()
-                const username = generateUserName(email)
+                const username = generateUserName(email!)
 
                 const response = await (<AuthProvider>$auth).register({email, password, firstName, lastName, username});
                 this.user = this.user.toSuccess(unref(response.user))

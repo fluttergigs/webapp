@@ -6,6 +6,7 @@ import {MultiApiResponse, SingleApiResponse} from "~/core/shared/types";
 import {AppStrings} from "~/core/strings";
 import type {
     JobCreationRequest,
+    JobEditRequest,
     JobOffer,
     JobOfferApiResponse,
     JobOfferDeleteRequest,
@@ -29,16 +30,27 @@ export const useJobStore = defineStore('job', {
         isJobDescriptionGenerationModalOpen: false,
         jobDescriptionGenerationTask: new Wrapper<String>().toInitial(),
         jobDelete: new Wrapper<SingleApiResponse<Object>>().toInitial(),
+        jobEdit: new Wrapper<SingleApiResponse<Object>>().toInitial(),
         jobCreationData: <JobCreationRequest>{
             applyBefore: new Date(),
             workType: workTypeOptions[0].id,
             seniorityLevel: seniorityLevelOptions[0].id,
             remoteOptions: remoteOptions[0].id,
             company: useAuthStore()?.myCompany?.id,
-        }
+        },
+        jobEditData: <JobEditRequest>{},
     }),
 
     actions: {
+        setJobEditData(data: JobEditRequest) {
+            this.jobEditData = {
+                ...this.jobEditData,
+                ...data
+            }
+        },
+        clearJobEditData() {
+            this.jobEditData = <JobEditRequest>{}
+        },
         async generateJobDescription(prompt: string) {
             this.jobDescriptionGenerationTask = new Wrapper<String>().toLoading()
             try {
@@ -66,6 +78,18 @@ export const useJobStore = defineStore('job', {
             }
         },
 
+        async editJobOffer(job: JobOffer){
+            this.jobEdit = new Wrapper<SingleApiResponse<Object>>().toLoading()
+            try {
+                const {$http} = useNuxtApp()
+                const response = await (<HttpClient>$http).put(`${Endpoint.jobOffers}/${job.id}`, {data: this.jobEditData})
+                this.jobEdit = this.jobEdit.toSuccess(response, AppStrings.jobOfferUpdatedSuccessfully)
+            } catch (e) {
+                logDev('job offer edit error', e)
+                this.jobEdit = this.jobCreation.toFailed(AppStrings.unableToEditJobOffer)
+            }
+        },
+
         async deleteJob(request: JobOfferDeleteRequest) {
             this.jobDelete = new Wrapper<SingleApiResponse<Object>>().toLoading()
             try {
@@ -75,12 +99,14 @@ export const useJobStore = defineStore('job', {
                 this.jobDelete = this.jobDelete.toSuccess(response, AppStrings.jobOfferDeletedSuccessfully)
 
             } catch (e) {
+                logDev('delete company error', e)
+
                 this.jobDelete = this.jobDelete.toFailed(AppStrings.unableToDeleteJobOffer)
             }
         },
 
         async postJob() {
-            this.jobCreation = new Wrapper<JobOfferApiResponse>().toLoading()
+            this.jobCreation = new Wrapper<SingleApiResponse<JobOffer>>().toLoading()
             try {
                 const {$http} = useNuxtApp()
                 //@ts-ignore
@@ -211,7 +237,7 @@ export const useJobStore = defineStore('job', {
     // persist: true,
     persist:
         {
-            paths: ["selectedJob"],
+            paths: ["selectedJob","jobEditData"],
             storage: persistedState.localStorage,
             debug: import.meta.env.MODE === "development"
         }

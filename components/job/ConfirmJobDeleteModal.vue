@@ -1,11 +1,13 @@
 <script setup lang="ts">
 
 import BaseModal from "~/components/ui/BaseModal.vue";
+//@ts-ignore
 import type {PropType} from "@vue/runtime-core";
 import type {JobOffer} from "~/features/jobs/job.types";
 import {useJobStore} from "~/stores/job";
 import {useCompanyStore} from "~/stores/company";
 
+//@ts-ignore
 const props = defineProps({
   job: {
     type: Object as PropType<JobOffer>,

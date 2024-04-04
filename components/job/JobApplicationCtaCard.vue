@@ -2,8 +2,9 @@
 
 
 import {Direction} from "~/core/shared/types";
+//@ts-ignore
 import type {PropType} from "@vue/runtime-core";
-
+//@ts-ignore
 const props = defineProps({
   job: {
     type: Object,

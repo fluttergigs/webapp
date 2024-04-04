@@ -6,6 +6,9 @@ export default defineNuxtConfig({
     experimental: {
         renderJsonPayloads: false
     },
+    imports: {
+        dirs: ["core", "stores", "composables", "helpers", "services", "components"]
+    },
     colorMode: {
         preference: 'light',
     },
@@ -61,6 +64,7 @@ export default defineNuxtConfig({
         // 'nuxt-appwrite',
         '@nuxtjs/strapi',
         '@nuxt/ui',
+        'nuxt-tiptap-editor'
     ],
     runtimeConfig: {
         strapiEndpoint: "",
@@ -75,6 +79,9 @@ export default defineNuxtConfig({
             apiBaseUrl: "",
             googleGenerativeAiApiKey: "",
         },
+    },
+    tiptap: {
+        prefix: "Tiptap",
     },
     strapi: {
         url: process.env.STRAPI_URL || 'http://localhost:1337',

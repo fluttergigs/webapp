@@ -10,6 +10,8 @@ export const postJobFormSchema = yup.object({
     salaryTo: yup.number().required().min(1).label('Salary to')
 });
 
+export const editJobFormSchema = postJobFormSchema
+
 export const jobDescriptionSchema = yup.object({
     description: yup.string().required().min(30)
 });

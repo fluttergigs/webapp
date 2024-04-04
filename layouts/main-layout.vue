@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col">
     <LayoutHeader/>
-    <div class="flex-grow">
+    <div class="flex-grow overflow-hidden">
       <NuxtPage/>
     </div>
     <LayoutFooter/>

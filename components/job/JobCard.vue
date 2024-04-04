@@ -10,8 +10,10 @@ import type {JobOffer} from "~/features/jobs/job.types";
 import {RemoteOptions} from "~/features/jobs/job.types";
 import WorkingPermits from "~/components/job/WorkingPermits.vue";
 import SaveJobIconButton from "~/components/job/SaveJobIconButton.vue";
+//@ts-ignore
 import {XCircleIcon} from "@heroicons/vue/24/outline";
 import ConfirmJobDeleteModal from "~/components/job/ConfirmJobDeleteModal.vue";
+import useCompanyActions from "~/composables/useCompanyActions";
 
 const {data, error} = await useCountries();
 const {jobWorkingPermits} = useJobActions();
@@ -37,6 +39,7 @@ const toggleJobActionItems = () => {
 }
 const showConfirmJobDeleteModal = () => {
   modal.open(ConfirmJobDeleteModal, {
+    //@ts-ignore
     job: props.job,
     preventClose: true,
   },)
@@ -52,15 +55,15 @@ const jobActionItems = [
   [{
     label: 'Edit',
     click: () => {
-      //TODO - implement job edition
+      useCompanyActions().handleJobEdit(props.job)
     }
   }],
-  [{
+ /* [{
     label: 'Duplicate',
     click: () => {
       //TODO - implement job duplicate
     }
-  }],
+  }],*/
   [{
     label: 'View',
     click: () => {
@@ -132,7 +135,9 @@ const jobActionItems = [
             <span>•</span>
 
             <div
-                class="inline-flex text-xs items-center space-x-2 rounded-full px-3 py-0.5 bg-indigo-700/10 text-indigo-700">
+                class="inline-flex text-xs items-center
+                space-x-2 rounded-full px-3 py-0.5
+                bg-indigo-700/10 text-indigo-700">
               <UIcon name="i-heroicons-currency-dollar"/>
               <span>{{ job?.salaryFrom }} - {{ job?.salaryTo }}/month</span>
             </div>

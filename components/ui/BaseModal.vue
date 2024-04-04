@@ -1,5 +1,6 @@
 <script setup lang="ts">
 
+//@ts-ignore
 const props = defineProps({
   headerTitle: {
     type: String,

@@ -28,11 +28,15 @@ export class AppStrings {
 
     static unableToCreateJobOffer = "Unable to create job offer"
 
+    static unableToEditJobOffer = "Unable to edit job offer"
+
     static unableToDeleteJobOffer = "Unable to delete job offer"
 
     static jobOfferDeletedSuccessfully = "Your job offer has been deleted successfully"
 
     static jobOfferPostedSuccessfully = "Your job offer {{title}} has been posted successfully and available";
+
+    static jobOfferUpdatedSuccessfully = "Your job offer has been successfully updated";
 
     static yourProfileInfoHasBeenUpdatedSuccessfully = "Your profile info has has been updated successfully"
 

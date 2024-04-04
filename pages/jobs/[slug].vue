@@ -15,7 +15,6 @@ import {stringify} from "qs";
 import WorkingPermits from "~/components/job/WorkingPermits.vue";
 import SaveJobIconButton from "~/components/job/SaveJobIconButton.vue";
 
-
 definePageMeta({
   layout: 'main-layout'
 })
@@ -66,6 +65,15 @@ useHead({title: `Flutter Gigs - ${data.value?.title}`});
 
 onMounted(() => {
   ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.jobOfferDetailEntered, {jobOffer: data})
+
+  useSeoMeta({
+    title: `Find this job ${data.value.title}on FlutterGigs`,
+    ogTitle: data.value.title,
+    description: data.value.description,
+    ogDescription: data.value.description,
+    ogImage: 'https://example.com/image.png',
+    twitterCard: 'summary_large_image',
+  })
 })
 
 onBeforeMount(() => {
@@ -75,7 +83,6 @@ onBeforeMount(() => {
 
 <template>
   <client-only>
-
     <template v-if="pending">
       <div class="flex items-center justify-center p-52">
         <UButton
@@ -102,7 +109,7 @@ onBeforeMount(() => {
             <client-only>
               <div class="flex space-x-2 items-center">
                 <UButton v-if="useJobActions().jobBelongsToCompany(company)"
-                         @click="useJobActions().editJobOffer(data)" size="lg"
+                         @click="useCompanyActions().handleJobEdit(data)" size="lg"
                          icon="i-heroicons-pencil"
                          square label="Edit job offer" color="white"
                          variant="solid"/>
@@ -147,7 +154,6 @@ onBeforeMount(() => {
               <p class="leading-10">{{ company?.description }}</p>
               <p class="leading-10">{{ data?.description }}</p>
             </div>
-
             <!--          apply section-->
             <LazyJobApplicationCtaCard class="hidden md:block" :job="data" :company="company"/>
           </div>
@@ -165,7 +171,6 @@ onBeforeMount(() => {
         </section>
       </div>
     </template>
-
   </client-only>
 </template>
 

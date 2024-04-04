@@ -88,7 +88,7 @@ export const useUserStore = defineStore('user', {
                 ...savedJob.attributes.jobOffer.data?.attributes,
                 id: savedJob.attributes.jobOffer.data?.id,
                 bookmarkedJob: savedJob.id,
-            }));
+            })).filter((job: { id: any; })=> !!job.id);
         },
 
         companies: state => useAuthStore().authUser?.companies ?? [],

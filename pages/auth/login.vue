@@ -49,7 +49,8 @@ import type {Notification} from "#ui/types";
 useHead({title: "Flutter Gigs - Authentication"});
 
 definePageMeta({
-  middleware: ['logged-in']
+  middleware: ['logged-in'],
+  layout: 'auth-layout'
 })
 
 const {$toast, $analytics} = useNuxtApp()

@@ -6,6 +6,7 @@ export const enum AnalyticsEvent {
     successfulLogin = "successful_login",
     successfulRegistration = "successful_registration",
     jobOfferClicked = "job_offer_clicked",
+    jobOfferUpdateButtonClicked = "job_offer_updated_button_clicked",
     bookmarkJobOfferClicked = "bookmark_job_offer_clicked",
     unBookmarkJobOfferClicked = "un_bookmark_job_offer_clicked",
     jobOfferDeleteButtonClicked ="job_offer_delete_button_clicked",
@@ -29,6 +30,7 @@ export const enum AnalyticsEvent {
     changePasswordButtonClicked = "change_password_button_clicked",
     successfulPasswordChange = "successful_password_change",
     jobPostPageEntered = "job_post_page_entered",
+    jobEditPageEntered = "job_edit_page_entered",
     error = "error",
     companyPerkPostJobButtonClicked="company_perk_post_job_button_clicked",
     companyPerkCreateCompanyButtonClicked="company_perk_create_company_button_clicked"

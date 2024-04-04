@@ -29,16 +29,20 @@
 </template>
 
 <script setup lang="ts">
+//@ts-ignore
 import {ArrowLeftIcon} from "@heroicons/vue/24/solid";
 
 import {logDev} from "~/core/helpers/log";
 import {AnalyticsEvent} from "~/services/analytics/events";
 import {AppRoutes} from "~/core/routes";
 import {AppStrings} from "~/core/strings";
+//@ts-ignore
 import type {NuxtError} from "#app";
+import type {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider";
 
 useHead({title: "FlutterGigs - Error "});
 
+//@ts-ignore
 const props = defineProps({
   error: Object as () => NuxtError
 });
@@ -49,7 +53,7 @@ onMounted(() => {
   logDev("ERROR STATUS CODE", props.error?.statusCode);
 
   if (import.meta.env.MODE !== "development") {
-    useNuxtApp().$analytics.capture(AnalyticsEvent.error, props.error);
+    (useNuxtApp().$analytics as AppAnalyticsProvider).capture(AnalyticsEvent.error, props.error);
   }
 });
 

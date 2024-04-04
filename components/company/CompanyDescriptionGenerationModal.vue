@@ -6,6 +6,9 @@ import {logDev} from "~/core/helpers/log";
 import {useCompanyStore} from "~/stores/company";
 import {companyDescriptionSchema} from "~/core/validations/company.validations";
 import {storeToRefs} from "pinia";
+import {BaseToast} from "~/core/ui/base_toast";
+//@ts-ignore
+import type { Notification} from "#ui/types";
 
 const companyStore = useCompanyStore()
 const {companyDescriptionGenerationTask} = storeToRefs(companyStore)
@@ -14,6 +17,7 @@ const {$toast} = useNuxtApp()
 
 const canGenerate = ref(false)
 
+//@ts-ignore
 const emits = defineEmits(['onGenerate'])
 const generateText = async () => {
   try {
@@ -23,7 +27,7 @@ const generateText = async () => {
     logDev('ERROR WHILE GENERATING COMPANY DESCRIPTION', e)
     //@ts-ignore
   } finally {
-    $toast.info(companyStore.companyDescriptionGenerationTask.message)
+    ($toast as BaseToast<Notification>).info(companyStore.companyDescriptionGenerationTask.message)
     companyStore.hideCompanyDescriptionGenerationModal()
   }
 }

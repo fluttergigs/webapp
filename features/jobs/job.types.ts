@@ -33,6 +33,8 @@ export type BookmarkedJobOffer = {
 
 export type JobCreationRequest = Partial<Omit<JobOffer, 'id' | 'isFeatured' | 'createdAt' | 'updatedAt'>>
 
+export type JobEditRequest =  Partial<JobOffer>
+
 export type JobOfferApiResponse = SingleApiResponse<JobOffer>
 
 export type SaveJobOfferRequest = { user: number, jobOffer: number }

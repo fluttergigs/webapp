@@ -2,33 +2,33 @@
 <!--TODO check whether user has selected at least a work permit-->
 
 <template>
-  <JobDescriptionGenerationModal/>
+  <JobDescriptionGenerationModal @successful-generation="successfulGeneration"/>
   <section class="py-8 px-2 md:py-12 xl:pb-56 bg-white overflow-hidden w-full">
     <div class="font-normal flex flex-col my-4 gap-x-16 md:flex-row">
       <div class="flex flex-col gap-y-8 xl:mx-auto w-full">
         <h3
             class="mb-4 text-2xl md:text-4xl font-semibold tracking-px-n leading-tight">
-          Post your job
+          Edit your job
         </h3>
 
         <form class="flex flex-col space-y-8 my-12 w-full">
           <CustomInput placeholder="eg. Senior Flutter Engineer"
                        name="jobTitle"
                        label="Job title *"
-                       v-model="jobCreationData.title" type="text"/>
+                       v-model="jobEditData.title" type="text"/>
 
 
-          <LabelledInput label="Job Description *">
-            <UiTipTap @inside-text-clicked="jobStore.showJobDescriptionGenerationModal()"
-                      v-model="jobCreationData.description"
-                      inside-text="Generate description using AI 🚀"/>
-          </LabelledInput>
+          <!--          <LabelledInput label="Job Description *">
+                      <UiTipTap @inside-text-clicked="jobStore.showJobDescriptionGenerationModal()"
+                                v-model="jobEditData.description"
+                                inside-text="Generate description using AI 🚀"/>
+                    </LabelledInput>-->
 
-          <!--          <CustomInput @inside-text-clicked="jobStore.showJobDescriptionGenerationModal()"
-                                 inside-text="Generate description using AI 🚀"
-                                 name="description"
-                                 label="Job description *"
-                                 v-model="jobCreationData.description" :is-text-area="true"/>-->
+          <CustomInput @inside-text-clicked="jobStore.showJobDescriptionGenerationModal()"
+                       inside-text="Generate description using AI 🚀"
+                       name="description"
+                       label="Job description *"
+                       v-model="jobEditData.description" :is-text-area="true"/>
 
           <div class="flex space-x-3">
             <!--          job type-->
@@ -38,7 +38,7 @@
                     clear-search-on-close
                     searchable
                     size="lg"
-                    v-model="jobCreationData.workType"
+                    v-model="jobEditData.workType"
                     :options="workTypeOptions"
                     placeholder="Select a work type option"
                     value-attribute="id"
@@ -54,7 +54,7 @@
                     clear-search-on-close
                     searchable
                     size="lg"
-                    v-model="jobCreationData.seniorityLevel"
+                    v-model="jobEditData.seniorityLevel"
                     :options="seniorityLevelOptions"
                     placeholder="Select a seniority level"
                     value-attribute="id"
@@ -70,7 +70,7 @@
                   clear-search-on-close
                   searchable
                   size="lg"
-                  v-model="jobCreationData.remoteOptions"
+                  v-model="jobEditData.remoteOptions"
                   :options="remoteOptions"
                   placeholder="Select your remote options"
                   value-attribute="id"
@@ -86,7 +86,7 @@
                              placeholder="2000" name="amount"
                              :show-label="false" label="From"
                              class="w-full"
-                             v-model="jobCreationData.salaryFrom"/>
+                             v-model="jobEditData.salaryFrom"/>
 
                 <span class="self-baseline">-</span>
 
@@ -94,7 +94,7 @@
                              name="amount"
                              :show-label="false" label="From"
                              class="w-full"
-                             v-model="jobCreationData.salaryTo"/>
+                             v-model="jobEditData.salaryTo"/>
               </div>
             </LabelledInput>
           </div>
@@ -104,11 +104,11 @@
             <UPopover :popper="{ placement: 'bottom-start' }">
               <UButton class="w-full" size="xl" color="white"
                        icon="i-heroicons-calendar-days-20-solid"
-                       :label="format(jobCreationData.applyBefore!, 'd MMM, yyy')"/>
+                       :label="format(new Date(jobEditData.applyBefore!), 'd MMM, yyy')"/>
 
               <template #panel="{ close }">
                 <DatePicker :min-date="new Date()" color="indigo"
-                            v-model="jobCreationData.applyBefore" @close="close"/>
+                            v-model="jobEditData.applyBefore" @close="close"/>
               </template>
             </UPopover>
           </LabelledInput>
@@ -133,22 +133,22 @@
                        label="Application method *"
                        class="w-full"
                        inside-text="Enter an email or application link."
-                       v-model="jobCreationData.howToApply"/>
+                       v-model="jobEditData.howToApply"/>
 
-          <UButton :loading="jobCreation.isLoading"
+          <UButton :loading="jobEdit.isLoading"
                    :disabled="!isSubmitButtonEnabled"
-                   @click="()=>postJobOffer(()=> navigateTo(AppRoutes.myJobs))"
+                   @click="()=>editJobOffer(jobEditData)"
                    size="xl"
                    color="indigo"
                    class="bg-indigo-700 flex justify-center items-center"
-                   label="Post job for $20"/>
+                   label="Edit job"/>
         </form>
       </div>
 
       <div class="hidden lg:flex lg:min-w-[300px] lg:w-[380px] h-full">
         <div class="flex flex-col h-full w-full relative">
-          <JobCreationPreview :is-cta-enabled="isSubmitButtonEnabled"
-                              :job="jobCreationData"
+          <JobCreationPreview :is-cta-visible="false"
+                              :job="jobEditData"
                               :work-permit-countries="workPermits"/>
         </div>
       </div>
@@ -173,45 +173,57 @@ import type {Country} from "~/core/shared/types";
 import {logDev} from "~/core/helpers/log";
 import {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider";
 import {AnalyticsEvent} from "~/services/analytics/events";
-import {postJobFormSchema} from "~/core/validations/job.validations";
+import {editJobFormSchema,} from "~/core/validations/job.validations";
 import useCompanyActions from "~/composables/useCompanyActions";
-import {AppRoutes} from "~/core/routes";
+import useJobActions from "~/composables/useJobActions";
+import {extractCompanyFromJob} from "~/features/jobs/transformers";
 
-
-definePageMeta({layout: 'app-layout', middleware: ['auth', 'no-company'],})
-useHead({title: `Flutter Gigs - Post your job`});
+definePageMeta({
+  layout: 'app-layout',
+  middleware: ['auth', 'no-company'],
+  function() {
+    if (!useJobActions().jobBelongsToCompany(extractCompanyFromJob(useJobStore().jobEditData.company))) {
+      return abortNavigation()
+    }
+  },
+})
 
 const jobStore = useJobStore()
-const {jobCreationData, jobCreation} = storeToRefs(jobStore)
+const {jobEditData, jobEdit} = storeToRefs(jobStore)
+useHead({title: `Flutter Gigs - Edit your job offer: ${jobEditData?.value?.title}`,});
+
 const hasWorkPermit = ref(false)
 const workPermits = ref([]);
 const {$analytics} = useNuxtApp()
-const canPostJob = ref(false)
-const {postJobOffer} = useCompanyActions()
+const canEditJob = ref(false)
+const {editJobOffer} = useCompanyActions()
 
 onMounted(() => {
-  ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.jobPostPageEntered,)
+  ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.jobEditPageEntered,)
 })
 
-watch(jobCreationData, async () => {
-  canPostJob.value = await postJobFormSchema.isValid(jobCreationData.value);
+watch(jobEditData, async () => {
+  canEditJob.value = await editJobFormSchema.isValid(jobEditData.value);
 }, {deep: true, immediate: true},)
 
-const isSubmitButtonEnabled = computed(() => canPostJob.value && !jobCreation.value.isLoading)
+const isSubmitButtonEnabled = computed(() => {
+  const canSubmit = canEditJob.value && !jobEdit.value.isLoading;
+  return (hasWorkPermit.value && workPermits.value.length === 0)  ? false : canSubmit;
+})
 
-watch(jobCreationData, () => {
-  if (jobCreationData.value.salaryTo == "") {
-    jobCreationData.value.salaryTo = 1
+watch(jobEditData, () => {
+  if (jobEditData.value.salaryTo == "") {
+    jobEditData.value.salaryTo = 1
   }
 
-  if (jobCreationData.value.salaryFrom == "") {
-    jobCreationData.value.salaryFrom = 1
+  if (jobEditData.value.salaryFrom == "") {
+    jobEditData.value.salaryFrom = 1
   }
-}, {deep: true,})
+}, {deep: true})
 
 watch(hasWorkPermit, (value: boolean) => {
   if (!value) {
-    jobCreationData.value.workPermits = null
+    jobEditData.value.workPermits = null
   }
 })
 
@@ -225,7 +237,10 @@ const getSelectedCountries = (data: {
   }
 
   workPermits.value = data.countries.map((country) => country)
-  jobCreationData.value.workPermits = workPermits.value.map(({iso}: Country) => iso)
+  jobEditData.value.workPermits = workPermits.value.map(({iso}: Country) => iso)
+}
+const successfulGeneration = (result: string) => {
+  jobEditData.value.description = result
 }
 </script>
 

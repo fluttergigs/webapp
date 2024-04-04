@@ -4,21 +4,26 @@ import {useJobStore} from "~/stores/job";
 import CustomInput from "~/components/forms/CustomInput.vue";
 import {logDev} from "~/core/helpers/log";
 import {jobDescriptionSchema} from "~/core/validations/job.validations";
+import type {BaseToast} from "~/core/ui/base_toast";
 
 const jobStore = useJobStore()
 const description = ref('')
 const {$toast} = useNuxtApp()
+//@ts-ignore
+const emits = defineEmits(['successfulGeneration'])
 
 const canGenerate = ref(false)
 const generateText = async () => {
   try {
     await jobStore.generateJobDescription(description.value)
+    emits('successfulGeneration', jobStore.jobDescriptionGenerationTask.value)
+
   } catch (e) {
     logDev('ERROR WHILE GENERATING DESCRIPTION', e)
     //@ts-ignore
   } finally {
-    jobStore.hideJobDescriptionGenerationModal()
-    $toast.info(jobStore.jobDescriptionGenerationTask.message)
+    jobStore.hideJobDescriptionGenerationModal();
+    ($toast as BaseToast<Notification>).info(jobStore.jobDescriptionGenerationTask.message)
   }
 
 }
@@ -35,8 +40,10 @@ watch(description, async () => {
         <h3>Generate your job's description with AI 🚀</h3>
       </template>
 
-      <CustomInput :is-text-area="true" v-model="description" name="description"
-                   placeholder="Generate a job description for Flutter Software Engineer post"/>
+      <CustomInput :is-text-area="true"
+                   v-model="description"
+                   name="description"
+                   placeholder="Generate a job description for Flutter Software Engineer position"/>
 
       <template #footer>
         <UButton class="bg-indigo-700 text-white"

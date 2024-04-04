@@ -16,6 +16,7 @@ import {AnalyticsEvent} from "~/services/analytics/events";
 
 export default function useJobActions() {
     const {$toast, $analytics} = useNuxtApp();
+    const jobStore = useJobStore()
 
     const handleJobBookmark = async (job: JobOffer, onSuccess?: CallbackFunction<any>) => {
         try {
@@ -49,7 +50,6 @@ export default function useJobActions() {
     const handleJobDelete = async (job: JobOffer, onDone?: CallbackFunction<any>) => {
         ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.jobOfferDeleteButtonClicked, {job});
 
-        const jobStore = useJobStore()
         await jobStore.deleteJob({jobOffer: job.id});
 
         ($toast as BaseToast<Notification>).info(<string>jobStore.jobDelete.message)
@@ -57,6 +57,7 @@ export default function useJobActions() {
         if (onDone != null) {
             onDone()
         }
+        return;
     }
 
     const isJobBookmarked = (job: JobOffer): boolean => useUserStore().bookmarkedJobs?.filter((savedJob: JobOffer) => savedJob.id == job.id).length > 0
@@ -74,12 +75,11 @@ export default function useJobActions() {
         ($toast as BaseToast<Notification>).info('Job link copied to your clipboard. You can share it :)')
     }
 
-    const editJobOffer = async ({slug}: JobOffer) => {
 
-    }
+
     const viewDetails = (job: JobOffer) => {
         ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.jobOfferClicked, {job});
-        useJobStore().findJobById(job)
+        jobStore.findJobById(job)
         navigateTo(AppRoutes.jobDetail(job.slug))
     }
 
@@ -89,7 +89,6 @@ export default function useJobActions() {
 
     return {
         shareJobOffer,
-        editJobOffer,
         jobBelongsToCompany,
         viewDetails,
         jobWorkingPermits,

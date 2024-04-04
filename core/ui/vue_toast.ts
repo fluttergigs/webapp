@@ -1,13 +1,8 @@
 // @ts-ignore
 import type {Notification} from "#ui/types";
 import {BaseToast, ToastConfig} from "~/core/ui/base_toast";
-import {logDev} from "~/core/helpers/log";
-import {number, string} from "yup";
-import {timeout} from "ioredis/built/utils";
 
-export class VueToastImpl implements BaseToast<Notification> {
-
-    private timeout: number;
+export class VueToastImpl extends BaseToast<Notification> {
 
     private toast = useToast()
 
@@ -66,6 +61,7 @@ export class VueToastImpl implements BaseToast<Notification> {
         this.toast.add({
             title: config.title ?? 'Notification',
             description: config.description,
+            actions: config.actions,
             timeout: config.timeout,
             color: config.color,
             click: config.click,

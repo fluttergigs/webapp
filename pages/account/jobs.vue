@@ -53,7 +53,11 @@ import {AppRoutes} from "~/core/routes";
 import {AnalyticsEvent} from "~/services/analytics/events";
 import {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider";
 
-definePageMeta({layout: 'app-layout', middleware: ['auth', 'no-company']})
+definePageMeta({
+  layout: 'app-layout',
+  middleware: ['auth', 'no-company'],
+  keepalive: true,
+})
 
 useHead({title: "Flutter Gigs - My job postings"});
 

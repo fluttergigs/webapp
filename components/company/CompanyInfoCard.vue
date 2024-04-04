@@ -4,9 +4,11 @@ import {userFacingCompanySize} from "~/features/companies/transformers";
 import {AppRoutes} from "~/core/routes";
 import TwitterIcon from "~/components/icons/TwitterIcon.vue";
 import LinkedinIcon from "~/components/icons/LinkedinIcon.vue";
+//@ts-ignore
 import type {PropType} from "@vue/runtime-core";
 import type {Company} from "~/features/companies/company.types";
 
+//@ts-ignore
 const props = defineProps({
       company: {
         type: Object as PropType<Company>,

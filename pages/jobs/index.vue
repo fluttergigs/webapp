@@ -44,6 +44,7 @@ import {useJobStore} from "~/stores/job";
 
 definePageMeta({
   layout: 'main-layout',
+  keepalive: true,
 })
 
 useHead({title: `Flutter Gigs - Browse jobs`});

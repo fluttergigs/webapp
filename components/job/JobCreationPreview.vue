@@ -22,6 +22,10 @@ const props = defineProps({
   isCtaEnabled: {
     type: Boolean,
     default: false,
+  },
+  isCtaVisible: {
+    type: Boolean,
+    default: true,
   }
 })
 
@@ -41,7 +45,7 @@ const {postJobOffer} = useCompanyActions()
         rounded-lg shadow-sm hover:shadow-md border border-indigo-700
         px-8 py-4 space-y-2 ">
       <div class="flex space-x-2 items-start justify-between">
-        <CompanyLogo :company="useUserStore().myCompany as Company"/>
+        <CompanyLogo size="2xl" :company="useUserStore().myCompany as Company"/>
 
         <WorkingPermits :countries="workPermitCountries??[]"/>
       </div>
@@ -59,7 +63,7 @@ const {postJobOffer} = useCompanyActions()
       </div>
     </div>
 
-    <UButton @click="()=>postJobOffer(()=> navigateTo(AppRoutes.myJobs))"
+    <UButton v-if="isCtaVisible" @click="()=>postJobOffer(()=> navigateTo(AppRoutes.myJobs))"
              :loading="useJobStore().jobCreation.isLoading"
              :disabled="!isCtaEnabled" size="xl" color="indigo"
              class="bg-indigo-700 flex justify-center items-center"

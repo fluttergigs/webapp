@@ -5,7 +5,7 @@ export enum Status {
     failure = "failure"
 }
 
-export class Wrapper<Type extends  Object> {
+export class Wrapper<Type extends  any> {
     _status = Status.initial;
     _value: Type = <Type>{};
 

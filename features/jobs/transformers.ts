@@ -13,6 +13,8 @@ export function userFacingWorkType(workType: WorkType) {
             return 'Internship';
         case WorkType.partTime:
             return 'Part time'
+        default:
+            return WorkType.fullTime;
     }
 }
 
@@ -24,6 +26,8 @@ export function userFacingRemoteOptions(remote: RemoteOptions) {
             return 'Remote not allowed';
         case RemoteOptions.hybrid:
             return 'Hybrid';
+        default:
+            return RemoteOptions.fullRemote;
     }
 }
 
@@ -37,6 +41,8 @@ export function userFacingSeniorityLevel(level: SeniorityLevel) {
             return 'Medium';
         case SeniorityLevel.senior:
             return 'Senior';
+        default:
+            return SeniorityLevel.medium;
     }
 }
 

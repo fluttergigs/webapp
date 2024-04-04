@@ -5,6 +5,8 @@ export class AppRoutes {
 
     static postJob = '/jobs/post'
 
+    static editJob = (slug: string) => `/jobs/edit/${slug}`;
+
     static jobs = '/jobs/'
 
     static jobDetail = (slug: string) => `/jobs/${slug}`;
