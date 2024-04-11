@@ -145,7 +145,7 @@
         </form>
       </div>
 
-      <div class="hidden lg:flex lg:min-w-[300px] lg:w-[380px] h-full">
+      <div class="hidden lg:flex lg:min-w-[280px] lg:w-[380px] h-full">
         <div class="flex flex-col h-full w-full relative">
           <JobCreationPreview :is-cta-visible="false"
                               :job="jobEditData"

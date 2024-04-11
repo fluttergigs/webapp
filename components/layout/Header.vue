@@ -167,6 +167,11 @@ const links = ref([
     isEnabled: true,
   },
   {
+    path: AppRoutes.companies,
+    name: 'Companies',
+    isEnabled: true,
+  },
+  {
     path: AppRoutes.consultants,
     name: 'Consultants',
     tag: useFeatureFlags().isFeatureEnabled(AvailableFlags.consultants,) ? 'New' : 'Soon',

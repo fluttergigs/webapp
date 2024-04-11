@@ -109,7 +109,7 @@ const jobActionItems = [
             </h3>
           </div>
           <div class="flex space-x-3 text-sm">
-            <h4 class="text-sm text-gray-900 font-medium">{{ company?.name }}</h4>
+            <h4 @click="()=> navigateTo(AppRoutes.companyPage(company.slug))" class="text-sm text-gray-900 font-medium">{{ company?.name }}</h4>
 
             <div class="flex items-center space-x-1">
               <UIcon class="text-gray-600" name="i-heroicons-user-group"/>

@@ -1,18 +1,21 @@
 <script setup lang="ts">
-import ItemData from "~/components/job/ItemData.vue";
-import {userFacingCompanySize} from "~/features/companies/transformers";
-import {AppRoutes} from "~/core/routes";
-import TwitterIcon from "~/components/icons/TwitterIcon.vue";
-import LinkedinIcon from "~/components/icons/LinkedinIcon.vue";
 //@ts-ignore
 import type {PropType} from "@vue/runtime-core";
 import type {Company} from "~/features/companies/company.types";
+import LinkedinIcon from "~/components/icons/LinkedinIcon.vue";
+import ItemData from "~/components/job/ItemData.vue";
+import {userFacingCompanySize} from "~/features/companies/transformers";
+import TwitterIcon from "~/components/icons/TwitterIcon.vue";
 
 //@ts-ignore
 const props = defineProps({
       company: {
         type: Object as PropType<Company>,
         required: true,
+      },
+      showViewProfileButton: {
+        type: Boolean,
+        default: () => true,
       }
     }
 )
@@ -55,7 +58,7 @@ const props = defineProps({
       </template>
     </ItemData>
 
-    <UButton :to="AppRoutes.companyPage(props.company?.id!)" target="_blank" size="lg"
+    <UButton v-if="showViewProfileButton" :to="AppRoutes.companyPage(props.company?.slug!)" target="_blank" size="lg"
              :class="['bg-indigo-700','w-full text-center flex justify-center items-center']"
              square label="View company profile"
              variant="solid"/>

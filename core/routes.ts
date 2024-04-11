@@ -4,15 +4,13 @@ export class AppRoutes {
     static register = '/auth/register'
 
     static postJob = '/jobs/post'
-
     static editJob = (slug: string) => `/jobs/edit/${slug}`;
 
     static jobs = '/jobs/'
-
     static jobDetail = (slug: string) => `/jobs/${slug}`;
+    static companyPage = (slug: string) => `/companies/${slug}`;
 
-    static companyPage = (id: number) => `/companies/${id}`;
-
+    static companies = '/companies/';
     static consultantDetail = (slug: string) => `/consultants/${slug}`;
 
     static consultants = '/consultants'

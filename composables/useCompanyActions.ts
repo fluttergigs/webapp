@@ -10,6 +10,11 @@ import {BaseToast} from "~/core/ui/base_toast";
 //@ts-ignore
 import type {Notification} from "#ui/types";
 import {useUserStore} from "~/stores/user";
+//@ts-ignore
+import {useClipboard} from "@vueuse/core";
+import {stringify} from "qs";
+import {HttpClient} from "~/core/network/http_client";
+import {Endpoint} from "~/core/network/endpoints";
 
 export default function useCompanyActions() {
     const {$analytics, $toast} = useNuxtApp()
@@ -23,6 +28,16 @@ export default function useCompanyActions() {
         }
     }
 
+    const shareCompany = async ({slug}: Company) => {
+        const {text, copy, copied,} = useClipboard({
+            source: `${location.href}/companies/${slug}`,
+            legacy: true
+        })
+
+        await copy();
+        ($toast as BaseToast<Notification>).info('Company link copied to your clipboard. You can share it :)')
+    }
+
     const postJobOffer = async (onSuccess?: CallbackFunction<JobOfferApiResponse>) => {
         try {
             ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.loginPageEntered);
@@ -31,6 +46,7 @@ export default function useCompanyActions() {
                 onSuccess();
             }
         } finally {
+            //@ts-ignore
             ($toast as BaseToast<Notification>).custom({
                 color: 'primary',
                 title: jobStore.jobCreation.message,
@@ -68,6 +84,7 @@ export default function useCompanyActions() {
             }
         } catch (e) {
         } finally {
+            //@ts-ignore
             ($toast as BaseToast<Notification>).custom({
                 color: 'primary',
                 title: jobStore.jobEdit.message,
@@ -80,6 +97,27 @@ export default function useCompanyActions() {
         }
     }
 
+    const fetchCompaniesJob = async (companyId: number) => {
+        const {$http} = useNuxtApp()
+
+        const query = stringify({
+            populate: '*',
+            filters: {
+                company: {
+                    id: {
+                        $eq: companyId,
+                    }
+                }
+            },
+            sort: 'createdAt:desc',
+        }, {
+            encodeValuesOnly: true,
+        })
+        return await (<HttpClient>$http).get(`${Endpoint.jobOffers}?${query}`);
+
+
+    }
+
     const hasSocialMedia = (company: Company) => !!company.linkedin || !!company.twitter
 
     return {
@@ -88,6 +126,8 @@ export default function useCompanyActions() {
         checkCompanyExistenceGuard,
         postJobOffer,
         editJobOffer,
-        handleJobEdit
+        handleJobEdit,
+        shareCompany,
+        fetchCompaniesJob,
     };
 }

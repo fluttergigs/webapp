@@ -8,13 +8,13 @@ import {
     ListCompanyApiResponse,
     UpdateCompanyRequest
 } from "~/features/companies/company.types";
-import {CallbackFunction, MultiApiResponse, SingleApiResponse} from "~/core/shared/types";
+import {MultiApiResponse, SingleApiResponse} from "~/core/shared/types";
 import {AppStrings} from "~/core/strings";
 import {useAuthStore} from "~/stores/auth";
 import type {HttpClient} from "~/core/network/http_client";
 //@ts-ignore
 import slugify from "@sindresorhus/slugify";
-import {JobOffer, JobOfferApiResponse} from "~/features/jobs/job.types";
+import {JobOffer} from "~/features/jobs/job.types";
 import {stringify} from "qs";
 
 //@ts-ignore
@@ -27,6 +27,7 @@ import isSameDay from "date-fns/isSameDay";
 import parseISO from "date-fns/parseISO"
 import {useUserStore} from "~/stores/user";
 import {GenerativeAIProvider} from "~/services/ai/generative_ai_provider";
+import useCompanyActions from "~/composables/useCompanyActions";
 
 // @ts-ignore
 export const useCompanyStore = defineStore('company', {
@@ -38,6 +39,7 @@ export const useCompanyStore = defineStore('company', {
         companyJobsResponse: new Wrapper<MultiApiResponse<JobOffer>>().toInitial(),
         isCompanyDescriptionGenerationModalOpen: false,
         companyDescriptionGenerationTask: new Wrapper<String>().toInitial(),
+        viewedCompanyJobsResponse: new Wrapper<MultiApiResponse<JobOffer>>().toInitial(),
 
     }),
     actions: {
@@ -61,28 +63,44 @@ export const useCompanyStore = defineStore('company', {
             }
         },
         async fetchMyJobs() {
+            this.companyJobsResponse = new Wrapper<MultiApiResponse<JobOffer>>().toLoading()
             try {
-                const query = stringify({
-                    populate: '*',
-                    filters: {
-                        company: {
-                            id: {
-                                $eq: useUserStore().myCompany?.id,
-                            }
-                        }
-                    },
-                    sort: 'createdAt:desc',
-                }, {
-                    encodeValuesOnly: true,
-                })
-                this.companyJobsResponse = new Wrapper<MultiApiResponse<JobOffer>>().toLoading()
-                const {$http} = useNuxtApp()
-                const response = await (<HttpClient>$http).get(`${Endpoint.jobOffers}?${query}`)
+                const response = await useCompanyActions().fetchCompaniesJob(useUserStore().myCompany?.id,)
                 // @ts-ignore
                 this.companyJobsResponse = this.companyJobsResponse.toSuccess(response)
             } catch (e) {
                 this.companyJobsResponse = this.companyJobsResponse.toFailed(AppStrings.unableToFetchJobs)
             }
+        },
+
+        async fetchViewedCompanyJobs(companyId: number) {
+            this.viewedCompanyJobsResponse = new Wrapper<MultiApiResponse<JobOffer>>().toLoading()
+            try {
+                const response = await useCompanyActions().fetchCompaniesJob(companyId)
+                // @ts-ignore
+                this.viewedCompanyJobsResponse = this.viewedCompanyJobsResponse.toSuccess(response)
+            } catch (e) {
+                this.viewedCompanyJobsResponse = this.viewedCompanyJobsResponse.toFailed(AppStrings.unableToFetchJobs)
+            }
+        },
+
+        async fetchCompaniesJob(companyId: number){
+            const {$http} = useNuxtApp()
+
+            const query = stringify({
+                populate: '*',
+                filters: {
+                    company: {
+                        id: {
+                            $eq: companyId,
+                        }
+                    }
+                },
+                sort: 'createdAt:desc',
+            }, {
+                encodeValuesOnly: true,
+            })
+            return await (<HttpClient>$http).get(`${Endpoint.jobOffers}?${query}`);
 
         },
         async fetchCompanies(): Promise<void> {
@@ -153,6 +171,10 @@ export const useCompanyStore = defineStore('company', {
             id: item['id']
         })),
         myJobPostings: (state) => state.companyJobsResponse?.value?.data?.map((item: { [x: string]: any; }) => ({
+            ...item['attributes'],
+            id: item['id']
+        })),
+        viewedCompanyJobs: (state) => state.viewedCompanyJobsResponse?.value?.data?.map((item: { [x: string]: any; }) => ({
             ...item['attributes'],
             id: item['id']
         })),

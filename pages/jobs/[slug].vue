@@ -1,7 +1,6 @@
 <script setup lang="ts">
 
 import {useJobStore} from "~/stores/job";
-import {storeToRefs} from "pinia";
 import {Endpoint} from "~/core/network/endpoints";
 import {extractCompanyFromJob} from "~/features/jobs/transformers";
 import type {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider";
@@ -9,22 +8,23 @@ import {AnalyticsEvent} from "~/services/analytics/events";
 import {userFacingCompanySize} from "~/features/companies/transformers";
 import {AppRoutes} from "~/core/routes";
 import useJobActions from '@/composables/useJobActions'
-import {Direction} from "~/core/shared/types";
+import {Direction, SingleApiResponse} from "~/core/shared/types";
 import CompanyInfoCard from "~/components/company/CompanyInfoCard.vue";
 import {stringify} from "qs";
 import WorkingPermits from "~/components/job/WorkingPermits.vue";
 import SaveJobIconButton from "~/components/job/SaveJobIconButton.vue";
+import type {JobOffer} from "~/features/jobs/job.types";
+import type {Company} from "~/features/companies/company.types";
 
 definePageMeta({
-  layout: 'main-layout'
+  layout: 'main-layout',
+  keepalive: true,
 })
 
 const {$analytics} = useNuxtApp()
 
-const {currentViewedJob} = storeToRefs(useJobStore())
-
 const company = computed(() => ({
-  ...extractCompanyFromJob(data.value)
+  ...extractCompanyFromJob(data.value as JobOffer)
 }));
 
 const jobSlug = ref(useRoute().params.slug)
@@ -51,7 +51,7 @@ const {
     return {
       ...job[`attributes`],
       id: job['id']
-    }
+    } as JobOffer
   }
 })
 if (!data.value) {
@@ -61,23 +61,23 @@ if (!data.value) {
   })
 }
 
-useHead({title: `Flutter Gigs - ${data.value?.title}`});
+useHead({title: `Flutter Gigs - ${data?.value?.title}`});
 
 onMounted(() => {
   ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.jobOfferDetailEntered, {jobOffer: data})
 
   useSeoMeta({
-    title: `Find this job ${data.value.title}on FlutterGigs`,
-    ogTitle: data.value.title,
-    description: data.value.description,
-    ogDescription: data.value.description,
-    ogImage: 'https://example.com/image.png',
+    title: `Find this job ${data.value?.title}on FlutterGigs`,
+    ogTitle: data.value?.title,
+    description: data.value?.description,
+    ogDescription: data.value?.description,
+    ogImage: (data.value?.company as SingleApiResponse<Company>).data.attributes.logo,
     twitterCard: 'summary_large_image',
   })
 })
 
 onBeforeMount(() => {
-  useJobStore().setSelectedJob(data)
+  useJobStore().setSelectedJob(<JobOffer>data.value)
 })
 </script>
 
@@ -109,23 +109,23 @@ onBeforeMount(() => {
             <client-only>
               <div class="flex space-x-2 items-center">
                 <UButton v-if="useJobActions().jobBelongsToCompany(company)"
-                         @click="useCompanyActions().handleJobEdit(data)" size="lg"
+                         @click="useCompanyActions().handleJobEdit(data as JobOffer)" size="lg"
                          icon="i-heroicons-pencil"
                          square label="Edit job offer" color="white"
                          variant="solid"/>
 
-                <UButton @click="useJobActions().shareJobOffer(data)" size="lg"
+                <UButton @click="useJobActions().shareJobOffer(<JobOffer>data)" size="lg"
                          icon="i-heroicons-share"
                          square label="Share job offer" color="white"
                          variant="solid"/>
 
-                <SaveJobIconButton :job="data" :company="company"/>
+                <SaveJobIconButton :job="data as JobOffer" :company="company"/>
               </div>
             </client-only>
           </div>
 
           <div class="flex space-x-4 my-2">
-            <a :href="AppRoutes.companyPage(company.id)" class="text-lg text-gray-900 font-medium">
+            <a :href="AppRoutes.companyPage(company.slug)" class="text-lg text-gray-900 font-medium">
               {{ company?.name }}
             </a>
 
@@ -143,7 +143,7 @@ onBeforeMount(() => {
               </a>
             </div>
 
-            <WorkingPermits :countries="jobWorkingPermits(countriesData?.countries??[], data)"/>
+            <WorkingPermits :countries="jobWorkingPermits(countriesData?.countries??[], data as JobOffer)"/>
           </div>
         </section>
 
