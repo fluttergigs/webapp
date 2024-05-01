@@ -1,5 +1,6 @@
 import {UserApiResponse} from "~/features/users/user.types";
 import {MultiApiResponse, SingleApiResponse} from "~/core/shared/types";
+import type {JobOffer} from "~/features/jobs/job.types";
 
 
 //TODO - add company twitter and linkedin property
@@ -9,7 +10,7 @@ export interface Company {
     website: string,
     email: string,
     logo: string,
-    jobOffers: [],
+    jobOffers: MultiApiResponse<JobOffer>,
     description: string,
     user: UserApiResponse,
     createdAt: string,
@@ -26,6 +27,11 @@ export enum CompanySize {
     small = "small",
     medium = "medium",
     large = "large"
+}
+
+export interface CompanySearchFilters {
+    keyword?: string,
+    size?: string,
 }
 
 export type CompanyApiResponse = SingleApiResponse<Company>

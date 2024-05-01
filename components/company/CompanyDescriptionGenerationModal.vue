@@ -27,7 +27,7 @@ const generateText = async () => {
     logDev('ERROR WHILE GENERATING COMPANY DESCRIPTION', e)
     //@ts-ignore
   } finally {
-    ($toast as BaseToast<Notification>).info(companyStore.companyDescriptionGenerationTask.message)
+    ($toast as BaseToast<Notification, number>).info(companyStore.companyDescriptionGenerationTask.message)
     companyStore.hideCompanyDescriptionGenerationModal()
   }
 }

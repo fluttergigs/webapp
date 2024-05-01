@@ -50,7 +50,7 @@ useHead({title: "Flutter Gigs - Authentication"});
 
 definePageMeta({
   middleware: ['logged-in'],
-  layout: 'auth-layout'
+  layout: 'main-layout'
 })
 
 const {$toast, $analytics} = useNuxtApp()
@@ -85,7 +85,7 @@ const submit = async () => {
     ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.loginButtonClicked, loginData);
     await login(loginData);
     ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.successfulLogin)
-    await useRouter().push({path: !!returnUrl.value ? returnUrl.value : AppRoutes.myAccount})
+    await useRouter().push({path: !!returnUrl.value ? returnUrl.value : AppRoutes.jobs})
   } catch (e) {
     //@ts-ignore
     ($toast as BaseToast<Notification>).error(user.value.message);

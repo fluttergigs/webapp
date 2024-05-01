@@ -86,7 +86,7 @@ export const useJobStore = defineStore('job', {
                 this.jobEdit = this.jobEdit.toSuccess(response, AppStrings.jobOfferUpdatedSuccessfully)
             } catch (e) {
                 logDev('job offer edit error', e)
-                this.jobEdit = this.jobCreation.toFailed(AppStrings.unableToEditJobOffer)
+                this.jobEdit = this.jobEdit.toFailed(AppStrings.unableToEditJobOffer)
             }
         },
 

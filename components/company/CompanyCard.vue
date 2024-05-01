@@ -1,0 +1,57 @@
+<script setup lang="ts">
+
+//@ts-ignore
+import type {PropType} from "@vue/runtime-core";
+import type {Company} from "~/features/companies/company.types";
+import {AppRoutes} from "~/core/routes";
+import {userFacingCompanySize} from "~/features/companies/transformers";
+import ItemData from "~/components/job/ItemData.vue";
+//@ts-ignore
+import {breakpointsTailwind, useBreakpoints} from '@vueuse/core'
+
+//@ts-ignore
+const props = defineProps({
+  company: {
+    type: Object as PropType<Company>,
+    required: true,
+  }
+})
+</script>
+
+<template>
+  <UCard @click="navigateTo(AppRoutes.companyPage(company.slug))"
+         :class="['transition-all duration-300 ease-in-out cursor-pointer']">
+
+    <div class="flex flex-col items-baseline space-y-3 md:flex-row md:space-x-3 p-2">
+
+      <div class="flex space-between">
+        <CompanyLogo :company="company as Company" size="xl"/>
+
+        <div v-if="useBreakpoints(breakpointsTailwind).isSmallerOrEqual('md')"
+             class="visible md:invisible">
+          {{ company.jobOffers.data.length }} jobs
+        </div>
+      </div>
+
+      <div class="flex-grow flex-wrap flex flex-col text-gray-600 space-y-2">
+        <h3 class="text-gray-700 text-xl font-medium">{{ company.name }}</h3>
+        <ItemData label="Company Size" :show-label="false">
+          <template #content>
+            <div class="flex items-center space-x-1">
+              <UIcon class="text-gray-600" name="i-heroicons-building-office"/>
+              <span class="text-black text-xl">{{ userFacingCompanySize(company?.size) }}</span>
+            </div>
+          </template>
+        </ItemData>
+        <p class="line-clamp-[10] overflow-ellipsis">{{ company.description }}</p>
+      </div>
+
+      <div class="invisible md:visible">{{ company.jobOffers.data.length }} jobs</div>
+    </div>
+  </UCard>
+
+</template>
+
+<style scoped>
+
+</style>

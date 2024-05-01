@@ -13,7 +13,7 @@
               <li class="mr-9 font-medium hover:text-indigo-900" v-for="link in links" :key="link.name">
                 <UChip :show="link.hasOwnProperty('tag')" :text="link['tag']" size="xl" color="green">
                   <NuxtLink
-                      :class="['font-medium hover:text-indigo-900', {'text-indigo-800': useRoute().fullPath === link.path}]"
+                      :class="['font-medium hover:text-indigo-900', {'text-indigo-800 font-bold': useRoute().fullPath === link.path}]"
                       :to="link.path">{{ link.name }}
                   </NuxtLink>
                 </UChip>
@@ -110,7 +110,7 @@
               <li class="mb-12" v-for="link in links" :key="link.name">
                 <UChip :show="link.hasOwnProperty('tag')" :text="link['tag']" size="xl" color="green">
                   <NuxtLink
-                      :class="['font-medium hover:text-indigo-900', {'text-indigo-800': useRoute().fullPath === link.path}]"
+                      :class="['font-medium hover:text-indigo-900', {'text-indigo-800 font-bold': useRoute().fullPath === link.path}]"
                       :to="link.path">{{ link.name }}
                   </NuxtLink>
                 </UChip>

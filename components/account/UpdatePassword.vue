@@ -32,9 +32,9 @@ const submit = async () => {
     });
     (<AppAnalyticsProvider>$analytics).capture(AnalyticsEvent.successfulPasswordChange, formInput.value);
 
-    ($toast as BaseToast<Notification>).success(<string>authStore.updateUser!.message);
+    ($toast as BaseToast<Notification, number>).success(<string>authStore.updateUser!.message);
   } catch (e) {
-    ($toast as BaseToast<Notification>).error(<string>authStore.updateUser!.message);
+    ($toast as BaseToast<Notification, number>).error(<string>authStore.updateUser!.message);
   }
 }
 </script>

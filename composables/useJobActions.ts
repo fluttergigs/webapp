@@ -28,11 +28,11 @@ export default function useJobActions() {
                     ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.unBookmarkJobOfferClicked, {job});
                     const bookmarkedJob: JobOffer | undefined = useUserStore().bookmarkedJobs?.find((savedJob: JobOffer) => savedJob.id === job.id);
                     await userStore.deleteSavedJob(<DeleteSavedJobOfferRequest>{id: bookmarkedJob?.bookmarkedJob});
-                    ($toast as BaseToast<Notification>).info(<string>userStore.bookmarkedJobDelete.message)
+                    ($toast as BaseToast<Notification, number>).info(<string>userStore.bookmarkedJobDelete.message)
                 } else {
                     ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.bookmarkJobOfferClicked, {job});
                     await userStore.saveJob({jobOffer: job.id, user: useAuthStore().authUser?.id!});
-                    ($toast as BaseToast<Notification>).info(<string>userStore.bookmarkedJobCreation.message)
+                    ($toast as BaseToast<Notification, number>).info(<string>userStore.bookmarkedJobCreation.message)
                 }
 
                 if (onSuccess != null) {
@@ -52,7 +52,7 @@ export default function useJobActions() {
 
         await jobStore.deleteJob({jobOffer: job.id});
 
-        ($toast as BaseToast<Notification>).info(<string>jobStore.jobDelete.message)
+        ($toast as BaseToast<Notification, number>).info(<string>jobStore.jobDelete.message)
 
         if (onDone != null) {
             onDone()
@@ -72,7 +72,7 @@ export default function useJobActions() {
         })
 
         await copy();
-        ($toast as BaseToast<Notification>).info('Job link copied to your clipboard. You can share it :)')
+        ($toast as BaseToast<Notification, number>).info('Job link copied to your clipboard. You can share it :)')
     }
 
 

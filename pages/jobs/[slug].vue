@@ -8,7 +8,8 @@ import {AnalyticsEvent} from "~/services/analytics/events";
 import {userFacingCompanySize} from "~/features/companies/transformers";
 import {AppRoutes} from "~/core/routes";
 import useJobActions from '@/composables/useJobActions'
-import {Direction, SingleApiResponse} from "~/core/shared/types";
+import {Direction} from "~/core/shared/types";
+import type {SingleApiResponse} from "~/core/shared/types";
 import CompanyInfoCard from "~/components/company/CompanyInfoCard.vue";
 import {stringify} from "qs";
 import WorkingPermits from "~/components/job/WorkingPermits.vue";
@@ -151,7 +152,9 @@ onBeforeMount(() => {
         <section class="font-normal flex flex-col my-4 gap-x-16 md:flex-row">
           <div class="flex flex-col flex-shrink-0 w-full md:max-w-3xl space-y-10">
             <div class="space-y-10 text-gray-900 font-medium">
-              <p class="leading-10">{{ company?.description }}</p>
+              <p class="leading-10">
+                {{ company?.description }}
+              </p>
               <p class="leading-10">{{ data?.description }}</p>
             </div>
             <!--          apply section-->

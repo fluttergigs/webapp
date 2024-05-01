@@ -1,6 +1,5 @@
 <script setup lang="ts">
 
-import KeywordFilter from "~/components/job/KeywordFilter.vue";
 import WorkTypeFilter from "~/components/job/WorkTypeFilter.vue";
 import SeniorityLevelFilter from "~/components/job/SeniorityLevelFilter.vue";
 import RemoteOptionsFilter from "~/components/job/RemoteFilter.vue";
@@ -19,7 +18,7 @@ watchDebounced(
     async () => {
       await jobStore.filterJobs()
     },
-    {debounce: 500, maxWait: 1000},
+    {debounce: 800, maxWait: 2000, rejectOnCancel: true,},
 )
 
 const getSelectedCountries = (data: {
@@ -38,7 +37,7 @@ const getSelectedCountries = (data: {
       Job Filters
     </p>
     <div class="flex flex-col space-y-6">
-      <KeywordFilter @filterByKeyword="(value)=> jobStore.setJobSearchFilters({keyword: value})"/>
+      <JobKeywordFilter @filterByKeyword="(value)=> jobStore.setJobSearchFilters({keyword: value})"/>
       <WorkTypeFilter @filterByWorkType="(value)=> jobStore.setJobSearchFilters({workType: value})"/>
       <SeniorityLevelFilter
           @filterBySeniorityLevel="(value)=> jobStore.setJobSearchFilters({seniorityLevel: value})"/>

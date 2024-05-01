@@ -35,7 +35,7 @@ export default function useCompanyActions() {
         })
 
         await copy();
-        ($toast as BaseToast<Notification>).info('Company link copied to your clipboard. You can share it :)')
+        ($toast as BaseToast<Notification, number>).info('Company link copied to your clipboard. You can share it :)')
     }
 
     const postJobOffer = async (onSuccess?: CallbackFunction<JobOfferApiResponse>) => {
@@ -71,7 +71,7 @@ export default function useCompanyActions() {
 
             await jobStore.editJobOffer(jobStore.jobEditData as JobOffer);
 
-            ($toast as BaseToast<Notification>).custom({
+            ($toast as BaseToast<Notification, number>).custom({
                 title: jobStore.jobEdit.message, timeout: 8000, actions: [{
                     label: 'View job',
 

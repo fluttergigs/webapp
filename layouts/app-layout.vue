@@ -60,20 +60,19 @@
       <NuxtPage/>
     </div>
     <UNotifications/>
-    <UModals />
+    <UModals/>
   </section>
 </template>
 
 <script setup lang="ts">
 
 import {
-  StarIcon,
   ArrowLeftEndOnRectangleIcon,
   ArrowsPointingInIcon,
   ArrowsPointingOutIcon,
   BriefcaseIcon,
   BuildingOffice2Icon,
-  ClipboardDocumentListIcon,
+  StarIcon,
   UserIcon,
 }
 //@ts-ignore
@@ -135,7 +134,7 @@ const groupedLinks = computed(() => groupBy(links, 'section'))
 
 onBeforeMount(async () => {
   await Promise.all([
-     useFeatureFlags().loadFlags(),
+    useFeatureFlags().loadFlags(),
     useCompanyStore().fetchCompanies(),
     useJobStore().fetchJobs(),
     useSettingStore().fetchSetting(),

@@ -5,7 +5,7 @@
         src="@/assets/images/gradient4.svg"
         alt=""
     />
-    <div class="relative z-10 container px-4 mx-auto">
+    <div class="relative z-10 container mx-auto">
       <div class="pb-24 border-b border-gray-900">
         <div class="flex flex-wrap -m-8">
           <div class="w-full sm:w-1/2 lg:w-6/12 p-8">

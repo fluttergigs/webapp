@@ -6,28 +6,40 @@ import {AnalyticsEvent} from "~/services/analytics/events";
 import {stringify} from "qs";
 import CompanyJobs from "~/components/company/CompanyJobs.vue";
 import {useCompanyStore} from "~/stores/company";
-import {logDev} from "~/core/helpers/log";
 import {storeToRefs} from "pinia";
 
 definePageMeta({
   layout: 'main-layout',
   keepalive: true,
 })
-const companySlug = ref(useRoute().params.slug)
 
 const {viewedCompanyJobs} = storeToRefs(useCompanyStore())
 
-const {$analytics} = useNuxtApp()
-
-const companyJobsCount = computed(()=> viewedCompanyJobs.value?.length ?? 0)
+const companyJobsCount = computed(() => viewedCompanyJobs.value?.length ?? 0)
 
 const tabs = ref([{
   key: 'overview',
   label: 'Overview',
 }, {
   key: 'jobs',
-  label: `Jobs (${companyJobsCount.value})`
+  label: `Jobs (${companyJobsCount.value ?? 0})`
 }])
+
+watch(viewedCompanyJobs, (value: string | any[]) => {
+  tabs.value = [
+    {
+      key: 'overview',
+      label: 'Overview',
+    }, {
+      key: 'jobs',
+      label: `Jobs (${value?.length ?? 0})`
+    }
+  ]
+})
+
+const companySlug = ref(useRoute().params.slug)
+
+const {$analytics} = useNuxtApp()
 
 const query = ref(stringify({
   populate: '*',

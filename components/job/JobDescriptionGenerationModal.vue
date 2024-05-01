@@ -23,7 +23,7 @@ const generateText = async () => {
     //@ts-ignore
   } finally {
     jobStore.hideJobDescriptionGenerationModal();
-    ($toast as BaseToast<Notification>).info(jobStore.jobDescriptionGenerationTask.message)
+    ($toast as BaseToast<Notification, number>).info(jobStore.jobDescriptionGenerationTask.message)
   }
 
 }

@@ -13,7 +13,7 @@ definePageMeta({
       if (!useFeatureFlags().isFeatureEnabled(AvailableFlags.consultants)) {
 
         const {$toast} = useNuxtApp();
-        ($toast as BaseToast<Notification>).info(AppStrings.featureAvailableSoon)
+        ($toast as BaseToast<Notification, number>).info(AppStrings.featureAvailableSoon)
         return navigateTo(from)
       }
     }

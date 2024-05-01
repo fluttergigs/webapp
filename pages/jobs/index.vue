@@ -1,5 +1,5 @@
 <template>
-  <section class="relative bg-blueGray-50">
+  <section class="relative bg-hero-gradient">
     <img
         class="absolute left-1/2 bottom-0 transform"
         src="@/assets/images/gradient6.svg"
@@ -7,12 +7,12 @@
     />
     <div class="container px-4 py-16 mx-auto">
       <div class="flex flex-col -m-8">
-        <h1 class="mb-6 text-5xl md:text-6xl lg:text-6xl font-semibold primary-gradient">
+        <h1 class="mb-6 text-5xl md:text-6xl lg:text-6xl font-semibold text-gray-900">
           FlutterGigs
         </h1>
 
-        <p class="mb-11 text-lg text-gray-900 font-medium">
-          Discover the best Flutter opportunities at top
+        <p class="mb-11 text-lg text-gray-700 font-medium">
+          Discover the best Flutter and other opportunities at top
           remote companies around the world.
         </p>
       </div>
@@ -20,18 +20,15 @@
   </section>
 
   <section class="flex bg-gradient-white px-20 py-14 w-full mx-auto">
-
     <div class="w-full md:w-1/6">
-      <FiltersWidget/>
+      <JobFiltersWidget/>
 
     </div>
     <div class="w-full md:w-4/6">
       <JobOffersList v-if="!!jobFiltersResponse" :jobs="filteredJobs"
                      :jobs-response="jobFiltersResponse" class="md:mx-8"/>
     </div>
-
   </section>
-
 </template>
 
 <script setup>
@@ -55,7 +52,16 @@ const {filteredJobs, jobFiltersResponse} = storeToRefs(useJobStore())
 
 onMounted(() => {
   $analytics.capture(AnalyticsEvent.findJobOfferPageEntered)
+
+  useSeoMeta({
+    title: `FlutterGigs' available jobs`,
+    ogTitle: 'Browse thousands of jobs',
+    description: 'FlutterGigs is the #1 job board in the Flutter community',
+    ogDescription: 'FlutterGigs is the #1 job board in the Flutter community',
+    twitterCard: 'summary_large_image',
+  })
 })
+
 
 </script>
 

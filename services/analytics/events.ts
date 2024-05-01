@@ -16,6 +16,7 @@ export const enum AnalyticsEvent {
     companyCreationPageEntered = "company_creation_page_entered",
     landingPageHeaderFindJobsButtonClicked = "landing_page_header_find_jobs_button_clicked",
     findJobOfferPageEntered = "find_job_offer_page_entered",
+    findCompanyPageEntered = "find_company_page_entered",
     jobOfferDetailEntered = "job_offer_detail_entered",
     companyPageDetailEntered ="company_page_detail_entered",
     companyCreationButtonClicked = "company_creation_button_clicked",

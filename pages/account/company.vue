@@ -124,9 +124,9 @@ const submit = async () => {
     (<AppAnalyticsProvider>$analytics).capture(AnalyticsEvent.companyUpdateButtonClicked, formInput.value);
     await companyStore.updateCompany({data: formInput.value} as UpdateCompanyRequest);
     (<AppAnalyticsProvider>$analytics).capture(AnalyticsEvent.successfulCompanyUpdate, formInput.value);
-    ($toast as BaseToast<Notification>).info(<string>companyStore.companyUpdate!.message);
+    ($toast as BaseToast<Notification, number>).info(<string>companyStore.companyUpdate!.message);
   } catch (e) {
-    ($toast as BaseToast<Notification>).error(<string>companyStore.companyUpdate!.message);
+    ($toast as BaseToast<Notification, number>).error(<string>companyStore.companyUpdate!.message);
   }
 }
 

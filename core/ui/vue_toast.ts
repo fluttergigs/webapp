@@ -2,12 +2,28 @@
 import type {Notification} from "#ui/types";
 import {BaseToast, ToastConfig} from "~/core/ui/base_toast";
 
-export class VueToastImpl extends BaseToast<Notification> {
+export class VueToastImpl extends BaseToast<Notification, number> {
 
     private toast = useToast()
 
+    private currentNotificationId = 0;
+
+    get currentNotification() {
+        return this.currentNotificationId;
+    }
+
+    incrementCurrentNotificationId() {
+        this.currentNotificationId += 1;
+    }
+
+    resetCurrentNotificationId() {
+        this.currentNotificationId = 0;
+    }
+
     default(title: string, config?: ToastConfig<Notification>,): void {
+        this.incrementCurrentNotificationId();
         this.toast.add({
+            id: this.currentNotification.toString(),
             title: title ?? config?.title,
             description: config?.description,
             timeout: config?.timeout ?? this.timeout,
@@ -17,7 +33,9 @@ export class VueToastImpl extends BaseToast<Notification> {
     }
 
     error(title: string, config?: ToastConfig<Notification>): void {
+        this.incrementCurrentNotificationId();
         this.toast.add({
+            id: this.currentNotification.toString(),
             title: title ?? config?.title,
             description: config?.description,
             timeout: config?.timeout ?? this.timeout,
@@ -27,7 +45,9 @@ export class VueToastImpl extends BaseToast<Notification> {
     }
 
     info(title: string, config?: ToastConfig<Notification>): void {
+        this.incrementCurrentNotificationId();
         this.toast.add({
+            id: this.currentNotification.toString(),
             title: title ?? config?.title,
             description: config?.description,
             timeout: config?.timeout ?? this.timeout,
@@ -38,7 +58,9 @@ export class VueToastImpl extends BaseToast<Notification> {
     }
 
     primary(title: string, config?: ToastConfig<Notification>): void {
+        this.incrementCurrentNotificationId();
         this.toast.add({
+            id: this.currentNotification.toString(),
             title: title ?? config?.title,
             description: config?.description,
             timeout: config?.timeout ?? this.timeout,
@@ -48,7 +70,9 @@ export class VueToastImpl extends BaseToast<Notification> {
     }
 
     success(title: string, config?: ToastConfig<Notification>): void {
+        this.incrementCurrentNotificationId();
         this.toast.add({
+            id: this.currentNotification.toString(),
             title: title ?? config?.title,
             description: config?.description,
             timeout: config?.timeout ?? this.timeout,
@@ -58,7 +82,9 @@ export class VueToastImpl extends BaseToast<Notification> {
     }
 
     custom(config: ToastConfig<Notification>): void {
+        this.incrementCurrentNotificationId();
         this.toast.add({
+            id: this.currentNotification.toString(),
             title: config.title ?? 'Notification',
             description: config.description,
             actions: config.actions,
@@ -68,5 +94,7 @@ export class VueToastImpl extends BaseToast<Notification> {
         })
     }
 
-
+    clear(id?: number): void {
+        this.toast.remove((id ?? this.currentNotification).toString());
+    }
 }

@@ -7,6 +7,10 @@ const props = defineProps({
   },
   value: {
     type: String,
+  },
+  showLabel: {
+    type: Boolean,
+    default: true,
   }
 })
 
@@ -14,8 +18,8 @@ const props = defineProps({
 
 <template>
 
-  <div class="space-y-1 flex flex-col">
-    <h4 class="text-sm text-gray-600">{{ props.label }}</h4>
+  <div class="space-y-1 flex flex-col items-start">
+    <h4 v-if="showLabel" class="text-sm text-gray-600">{{ props.label }}</h4>
 
     <slot name="content">
       <p class="text-md font-medium">{{ props.value }}

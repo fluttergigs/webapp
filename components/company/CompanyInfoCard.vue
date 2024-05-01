@@ -49,16 +49,18 @@ const props = defineProps({
              class="p-2 border rounded-md">
             <LinkedinIcon class="w-4 h-4"/>
           </a>
-          <a v-if="!!props.company?.twitter" :href="props.company?.twitter" target="_blank"
+          <a v-if="!!props.company?.twitter"
+             :href="props.company?.twitter" target="_blank"
              class="p-2 border rounded-md">
             <TwitterIcon class="w-4 h-4"/>
           </a>
         </div>
-
       </template>
     </ItemData>
 
-    <UButton v-if="showViewProfileButton" :to="AppRoutes.companyPage(props.company?.slug!)" target="_blank" size="lg"
+    <UButton v-if="showViewProfileButton"
+             :to="AppRoutes.companyPage(props.company?.slug!)"
+             size="lg"
              :class="['bg-indigo-700','w-full text-center flex justify-center items-center']"
              square label="View company profile"
              variant="solid"/>

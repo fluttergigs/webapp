@@ -51,6 +51,7 @@ useHead({title: "Flutter Gigs - Authentication"});
 
 definePageMeta({
   middleware: ['logged-in'],
+  layout: 'main-layout'
 })
 
 let formInput = ref({
@@ -88,7 +89,7 @@ const submit = async () => {
     ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.registrationButtonClicked, formInput.value);
     await register(formInput.value);
     ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.successfulRegistration, formInput.value);
-    await useRouter().push({path: !!returnUrl.value ? returnUrl.value : AppRoutes.myAccount})
+    await useRouter().push({path: !!returnUrl.value ? returnUrl.value : AppRoutes.jobs})
   } catch (e) {
     //@ts-ignore
     ($toast as BaseToast<Notification>).error(user.value.message);
