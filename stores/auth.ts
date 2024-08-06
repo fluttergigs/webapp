@@ -5,7 +5,6 @@ import {generateUserName} from "~/core/utils";
 import {logDev} from "~/core/helpers/log";
 // @ts-ignore
 import {jwtDecode} from "jwt-decode";
-import {useNuxtApp} from "#imports"
 import {Wrapper} from "~/core/wrapper";
 import {SingleApiResponse} from "~/core/shared/types";
 import {Endpoint} from "~/core/network/endpoints";
@@ -14,6 +13,7 @@ import {UpdatePasswordRequest, UpdateUserRequest} from "~/features/users/user.ty
 import {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider";
 import type {AuthProvider} from "~/services/auth/auth_provider";
 import type {HttpClient} from "~/core/network/http_client";
+import {BasicApiResponse} from "~/core/shared/types";
 
 
 //@ts-ignore
@@ -48,10 +48,11 @@ export let useAuthStore = defineStore('auth', {
                 $analytics.identify(this.user.value.email, this.user)
 
                 await this.fetchUser()
-            } catch (error: any) {
-                logDev('LOGIN ERROR', error)
+            } catch (error: BasicApiResponse) {
 
-                this.user = this.user.toFailed(error.error?.message ?? ' AppStrings.errorOccurred')
+                const message: string = (error.status === 500 ? AppStrings.invalidCredentials : error.message) ?? AppStrings.errorOccurred;
+
+                this.user = this.user.toFailed(message)
                 throw error
             }
         },

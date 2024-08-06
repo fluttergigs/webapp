@@ -1,12 +1,14 @@
 <template>
-  <div class="flex flex-col">
-    <LayoutHeader/>
-    <div class="flex-grow">
-      <NuxtPage/>
+  <client-only>
+    <div class="flex flex-col">
+      <LayoutHeader/>
+      <div class="flex-grow">
+        <NuxtPage/>
+      </div>
+      <LayoutFooter/>
+      <UNotifications />
     </div>
-    <LayoutFooter/>
-    <UNotifications />
-  </div>
+  </client-only>
 </template>
 
 <script setup>
@@ -18,10 +20,10 @@ import {useJobStore} from "~/stores/job";
 
 onBeforeMount(async () => {
   await Promise.all([
+    useAuthStore().fetchUser(),
     useCompanyStore().fetchCompanies(),
     useJobStore().fetchJobs(),
     useSettingStore().fetchSetting(),
-    useAuthStore().fetchUser(),
   ])
 })
 

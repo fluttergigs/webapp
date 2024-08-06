@@ -1,3 +1,14 @@
+
+export interface BasicApiResponse<T = unknown> {
+    data: T,
+    [key: string]: any,
+    error: {
+        message: string,
+        code: string,
+        status: number,
+        [key: string]: any
+    }
+}
 export interface SingleApiResponse<T> {
     [key: string]: unknown,
 
