@@ -20,36 +20,40 @@
           </div>
         </div>
         <div class="flex flex-col justify-between mx-4 py-8 overflow-x-hidden overflow-y-auto">
-          <div class="flex flex-col flex-wrap px-7 mb-8 -m-2.5">
+          <div class="flex flex-col space-y-3 flex-wrap px-7 mb-8 -m-2.5">
 
             <div v-for="(linkItems,section, sectionIndex) in groupedLinks" class="my-3">
               <p v-if="!!section && !isAppBarShrunk" class="w-auto text-xs text-neutral-400 font-medium uppercase mb-2">
                 {{ section }}
               </p>
 
-              <div
-                  :class="['w-auto p-2 flex', useRoute().path===link.path ?'text-blueGray-800 bg-gray-200 rounded-md':'']"
-                  v-for="(link, index) in linkItems">
+              <div class="flex flex-col space-y-4">
+                <div
+                    :class="['w-auto p-2 flex', useRoute().path===link.path ?'text-blueGray-800 bg-gray-200 rounded-md':'']"
+                    v-for="(link, index) in linkItems">
 
-                <div class="flex">
-                  <UTooltip :prevent="!isAppBarShrunk" :open-delay="200" :close-delay="100"
-                            :ui="{background: 'bg-gray-900', color: 'text-white'}"
-                            :text="link.name">
+                  <div class="flex">
+                    <UTooltip :prevent="!isAppBarShrunk" :open-delay="200" :close-delay="100"
+                              :ui="{background: 'bg-gray-900', color: 'text-white'}"
+                              :text="link.name">
 
-                    <NuxtLink v-if="link.path" :to="link.path"
-                              :class="['flex flex-wrap items-center space-x-3']">
-                      <component :is="link.icon"
-                                 :class="['w-5 h-5 text-gray-600']"/>
-                      <p v-if="!isAppBarShrunk" class="hover:text-neutral-700 font-medium">{{ link.name }}</p>
-                    </NuxtLink>
-                    <div v-else @click="link.onClick" :class="['flex flex-wrap items-center space-x-3 cursor-pointer']">
-                      <component :is="link.icon"
-                                 :class="['w-5 h-5 text-gray-600']"/>
-                      <p v-if="!isAppBarShrunk" class="hover:text-neutral-700 font-medium">{{ link.name }}</p>
-                    </div>
-                  </UTooltip>
+                      <NuxtLink v-if="link.path" :to="link.path"
+                                :class="['flex flex-wrap items-center space-x-3']">
+                        <component :is="link.icon"
+                                   :class="['w-5 h-5 text-gray-600']"/>
+                        <p v-if="!isAppBarShrunk" class="hover:text-neutral-700 font-medium">{{ link.name }}</p>
+                      </NuxtLink>
+                      <div v-else @click="link.onClick"
+                           :class="['flex flex-wrap items-center space-x-3 cursor-pointer']">
+                        <component :is="link.icon"
+                                   :class="['w-5 h-5 text-gray-600']"/>
+                        <p v-if="!isAppBarShrunk" class="hover:text-neutral-700 font-medium">{{ link.name }}</p>
+                      </div>
+                    </UTooltip>
 
+                  </div>
                 </div>
+
               </div>
             </div>
           </div>
@@ -59,7 +63,7 @@
     <div class="px-6 flex flex-1 grow w-full min-h-screen">
       <NuxtPage/>
     </div>
-    <UNotifications />
+    <UNotifications/>
   </section>
 </template>
 
@@ -76,7 +80,7 @@ import {
   UserIcon,
 }
 //@ts-ignore
-from '@heroicons/vue/24/outline'
+  from '@heroicons/vue/24/outline'
 import {AppRoutes} from "~/core/routes";
 import {useCompanyStore} from "~/stores/company";
 import {useSettingStore} from "~/stores/setting";
