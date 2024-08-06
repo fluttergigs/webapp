@@ -7,6 +7,7 @@ import {AppAnalyticsProvider} from "#build/services/analytics/app_analytics_prov
 import {AnalyticsEvent} from "~/services/analytics/events";
 import {BaseToast} from "~/core/ui/base_toast";
 import {AppRoutes} from "~/core/routes";
+import {LoginData} from "~/services/auth/auth.types";
 
 export const useLogin = () => {
     const {$toast, $analytics} = useNuxtApp()
@@ -20,7 +21,7 @@ export const useLogin = () => {
     const formInput = ref({
         email: 'john@gmail.com',
         password: 'test1234',
-    })
+    } as LoginData)
 
     onMounted(() => {
         ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.loginPageEntered);
