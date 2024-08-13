@@ -88,7 +88,12 @@ import CompanyDescriptionGenerationModal from "~/components/company/CompanyDescr
 
 useHead({title: "Flutter Gigs - Company information update"});
 
-definePageMeta({layout: 'app-layout', middleware: ['auth', 'no-company']})
+definePageMeta({
+  layout: 'app-layout',
+  middleware: ['auth', 'no-company', function () {
+    return useCompanyActions().checkCompanyExistenceGuard()
+  }]
+})
 
 const userStore = useUserStore()
 const authStore = useAuthStore()
@@ -127,6 +132,7 @@ const submit = async () => {
     ($toast as BaseToast<Notification>).info(<string>companyStore.companyUpdate!.message);
   } catch (e) {
     ($toast as BaseToast<Notification>).error(<string>companyStore.companyUpdate!.message);
+  } finally {
   }
 }
 

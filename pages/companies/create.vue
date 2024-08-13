@@ -9,11 +9,9 @@ import {useCompanyStore} from "~/stores/company";
 import {companyCreationFormSchema} from "~/core/validations/company.validations";
 import {AnalyticsEvent} from "~/services/analytics/events";
 import {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider";
-import {BaseToast} from "~/core/ui/base_toast";
-//@ts-ignore
-import type {Notification} from "#ui/types";
-import type {CreateCompanyRequest} from "~/features/companies/company.types";
 import {useUserStore} from "~/stores/user";
+import type {CreateCompanyRequest} from "~/features/companies/company.types";
+import type {Ref} from "@vue/reactivity";
 
 useHead({title: "Flutter Gigs - Company creation"});
 
@@ -25,11 +23,13 @@ definePageMeta({
   }]
 })
 
-const {$toast, $analytics} = useNuxtApp()
+const {$analytics} = useNuxtApp()
+
+const {onCompanyCreationSuccess, createCompany} = useCompanyActions()
 
 const companyStore = useCompanyStore()
 
-const formInput = ref({
+const formInput: Ref<CreateCompanyRequest> = ref({
   email: useAuthStore().authUser?.email,
   user: useAuthStore().authUser?.id,
   name: '',
@@ -38,38 +38,20 @@ const formInput = ref({
   description: '',
 })
 
-
 const canSubmit = ref(false)
 
 watch(formInput, async () => {
   canSubmit.value = await companyCreationFormSchema.isValid(formInput.value);
-
-  //TODO - remove comment later
-  /*if(canSubmit.value){
-    await submit()
-  }*/
-
 }, {deep: true, immediate: true},)
 
 onMounted(() => {
   (<AppAnalyticsProvider>$analytics).capture(AnalyticsEvent.companyCreationPageEntered);
-
 })
+
 const submit = async () => {
-  try {
-    (<AppAnalyticsProvider>$analytics).capture(AnalyticsEvent.companyCreationButtonClicked, formInput.value);
-    await companyStore.createCompany({data: formInput.value} as CreateCompanyRequest);
-    (<AppAnalyticsProvider>$analytics).capture(AnalyticsEvent.successfulCompanyCreation, formInput.value);
-
-    //@ts-ignore
-    ($toast as BaseToast<Notification>).success(<string>companyStore.companyCreation.message);
-
-    //TODO replace with post jobs or redirect to dashboard
-    await useRouter().push({path: AppRoutes.welcome})
-  } catch (e) {
-    //@ts-ignore
-    ($toast as BaseToast<Notification>).error(<string>companyStore.companyCreation.message);
-  }
+  await createCompany(formInput.value, async () => {
+    onCompanyCreationSuccess()
+  })
 }
 </script>
 

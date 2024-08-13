@@ -9,8 +9,7 @@
             <div class="flex flex-wrap items-center -m-3">
               <div class="w-auto p-3">
                 <div
-                    class="flex items-center justify-center w-20 h-20 bg-indigo-100 rounded-full"
-                >
+                    class="flex items-center justify-center w-20 h-20 bg-indigo-100 rounded-full">
                   <img src="@/assets/images/chat.svg" alt=""/>
                 </div>
               </div>

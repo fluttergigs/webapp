@@ -89,7 +89,7 @@ export const useJobStore = defineStore('job', {
                 this.jobListResponse = this.jobFiltersResponse = this.jobListResponse.toSuccess(response)
             } catch (e) {
                 logDev('fetching job offers error', e)
-                this.jobListResponse = this.jobListResponse.toFailed(AppStrings.unableToFetchJobs)
+                this.jobListResponse = this.jobFiltersResponse = this.jobListResponse.toFailed(AppStrings.unableToFetchJobs)
             }
         },
 

@@ -3,7 +3,7 @@ import {loginFormSchema} from "~/core/validations/auth.validations";
 
 import {ref, watch} from "vue";
 import {useAuthStore} from "~/stores/auth";
-import {AppAnalyticsProvider} from "#build/services/analytics/app_analytics_provider";
+import {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider";
 import {AnalyticsEvent} from "~/services/analytics/events";
 import {BaseToast} from "~/core/ui/base_toast";
 import {AppRoutes} from "~/core/routes";
@@ -34,7 +34,7 @@ export const useLogin = () => {
         /*if(canSubmit.value){
           await submit()
         }*/
-    },{immediate: true, deep: true})
+    }, {immediate: true, deep: true})
 
     const submit = async () => {
         try {

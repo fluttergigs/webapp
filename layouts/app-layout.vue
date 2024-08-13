@@ -2,10 +2,10 @@
   <section class="flex w-full bg-white">
     <!--    xl:flex xl:flex-col-->
     <div
-        :class="['navbar-menu max-w-[240px] relative z-50 w-full flex flex-col h-full transition-all ease-in', isAppBarShrunk? 'max-w-[100px]': 'max-w-[240px]' ]">
+        :class="['navbar-menu max-w-[240px] relative z-50 w-full flex flex-col h-full transition-all ease-in', isAppBarShrunk? 'max-w-[100px]': 'max-w-[240px]']">
       <!--      <div class="navbar-backdrop fixed xl:hidden inset-0 bg-blueGray-50 opacity-10"></div>-->
       <div
-          :class="['inset-0 bg-blueGray-50 border-r fixed transition-all ease-in duration-200 h-full',isAppBarShrunk? 'max-w-[100px]': 'max-w-[240px]' ]">
+          :class="['inset-0 bg-blueGray-50 border-r fixed transition-all ease-in duration-200 h-full',isAppBarShrunk? 'max-w-[100px]': 'max-w-[240px]']">
         <div class="flex flex-wrap items-center justify-between px-9 py-6 pb-0">
           <div class="w-auto">
             <NuxtLink :to="AppRoutes.welcome" class="inline-block">
