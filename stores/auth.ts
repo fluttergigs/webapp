@@ -6,14 +6,13 @@ import {logDev} from "~/core/helpers/log";
 // @ts-ignore
 import {jwtDecode} from "jwt-decode";
 import {Wrapper} from "~/core/wrapper";
-import {SingleApiResponse} from "~/core/shared/types";
+import {BasicApiResponse, SingleApiResponse} from "~/core/shared/types";
 import {Endpoint} from "~/core/network/endpoints";
 import {AppStrings} from "~/core/strings";
 import {UpdatePasswordRequest, UpdateUserRequest} from "~/features/users/user.types";
 import {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider";
 import type {AuthProvider} from "~/services/auth/auth_provider";
 import type {HttpClient} from "~/core/network/http_client";
-import {BasicApiResponse} from "~/core/shared/types";
 
 
 //@ts-ignore
@@ -36,7 +35,7 @@ export let useAuthStore = defineStore('auth', {
             const {$auth, $analytics} = useNuxtApp()
 
             try {
-                this.user = new Wrapper(null).toLoading()
+                this.user = new Wrapper().toLoading()
 
                 const response = await (<AuthProvider>$auth).login({identifier: email, password})
 
@@ -60,8 +59,8 @@ export let useAuthStore = defineStore('auth', {
         async register({email, password, firstName, lastName}: RegistrationData) {
             const {$auth, $analytics} = useNuxtApp()
             try {
-                this.user = new Wrapper(null).toLoading()
-                const username = generateUserName(email)
+                this.user = new Wrapper<User>().toLoading()
+                const username = generateUserName(email as string)
 
                 const response = await (<AuthProvider>$auth).register({email, password, firstName, lastName, username});
                 this.user = this.user.toSuccess(unref(response.user))
@@ -81,7 +80,7 @@ export let useAuthStore = defineStore('auth', {
                 logDev('LOGGING OUT...')
                 const {$auth, $analytics} = useNuxtApp()
                 await (<AuthProvider>$auth).logout()
-                this.user = new Wrapper(null).toInitial()
+                this.user = new Wrapper().toInitial()
                 this.setToken('');
                 (<AppAnalyticsProvider>$analytics).reset();
                 await useRouter().push({path: AppRoutes.login})

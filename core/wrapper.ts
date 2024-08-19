@@ -5,7 +5,7 @@ export enum Status {
     failure = "failure"
 }
 
-export class Wrapper<Type extends  Object> {
+export class Wrapper<Type extends Object = {}> {
     _status = Status.initial;
     _value: Type = <Type>{};
 
@@ -17,8 +17,8 @@ export class Wrapper<Type extends  Object> {
 
     constructor(value?: Type, status?: Status, errorMessage?: String) {
         this._value = value ?? <Type>{};
-        this._status = status!;
-        this.message = errorMessage!
+        this._status = status ?? Status.initial;
+        this.message = errorMessage ?? '';
     }
 
     public copyWith(value?: Type, status?: Status, errorMessage?: String): Wrapper<Type> {
