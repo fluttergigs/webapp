@@ -78,7 +78,15 @@ export default defineNuxtConfig(
             // 'nuxt-appwrite',
             '@nuxtjs/strapi',
             '@nuxt/ui',
+            '@sentry/nuxt/module'
         ],
+        sentry: {
+            sourceMapsUploadOptions: {
+                org: "evacorp",
+                project: "fluttergigs",
+                authToken: "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",
+            },
+        },
 
         runtimeConfig: {
             strapiEndpoint: "",
@@ -92,6 +100,10 @@ export default defineNuxtConfig(
                 posthogProjectId: "",
                 apiBaseUrl: "",
                 googleGenerativeAiApiKey: "",
+                sentry: {
+                    dsn: '',
+                    environment: ''
+                }
             },
         },
 

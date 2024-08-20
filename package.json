@@ -36,6 +36,7 @@
     "@heroicons/vue": "^2.0.18",
     "@nuxt/ui": "^2.14.0",
     "@pinia/nuxt": "^0.4.6",
+    "@sentry/nuxt": "^8.26.0",
     "@sindresorhus/slugify": "^2.2.1",
     "@types/qs": "^6.9.12",
     "@vuelidate/core": "^2.0.0",

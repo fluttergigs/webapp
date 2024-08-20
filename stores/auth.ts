@@ -13,6 +13,7 @@ import {UpdatePasswordRequest, UpdateUserRequest} from "~/features/users/user.ty
 import {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider";
 import type {AuthProvider} from "~/services/auth/auth_provider";
 import type {HttpClient} from "~/core/network/http_client";
+import {ErrorTrackerProvider} from "~/services/error-tracker/error_tracker_provider";
 
 
 //@ts-ignore
@@ -32,7 +33,7 @@ export let useAuthStore = defineStore('auth', {
             this.returnUrl = path
         },
         async login({email, password}: LoginData) {
-            const {$auth, $analytics} = useNuxtApp()
+            const {$auth, $analytics, $errorTracker} = useNuxtApp()
 
             try {
                 this.user = new Wrapper().toLoading()
@@ -44,7 +45,8 @@ export let useAuthStore = defineStore('auth', {
                 this.setToken(unref(response.jwt))
 
                 //@ts-ignore
-                $analytics.identify(this.user.value.email, this.user)
+                $analytics.identify(this.user.value.email, this.user.value)
+                ($errorTracker as ErrorTrackerProvider).setUser(this.user.value)
 
                 await this.fetchUser()
             } catch (error: BasicApiResponse) {
