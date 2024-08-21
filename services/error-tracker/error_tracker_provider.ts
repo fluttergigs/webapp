@@ -1,3 +1,4 @@
+import type {User} from "~/services/error-tracker/error_tracker";
 import {Context, ErrorTracker} from "~/services/error-tracker/error_tracker";
 import {SentryClient} from "~/services/error-tracker/sentry_client";
 
@@ -38,7 +39,7 @@ export class ErrorTrackerProvider {
      * @param user
      */
     setUser(user: User) {
-        this.client.setUser(identifier, properties);
+        this.client.setUser(user);
         return this.client;
     }
 }

@@ -11,7 +11,6 @@ import {AnalyticsEvent} from "~/services/analytics/events";
 import {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider";
 import {useUserStore} from "~/stores/user";
 import type {CreateCompanyRequest} from "~/features/companies/company.types";
-import type {Ref} from "@vue/reactivity";
 
 useHead({title: "Flutter Gigs - Company creation"});
 
@@ -30,7 +29,7 @@ const {onCompanyCreationSuccess, createCompany} = useCompanyActions()
 const companyStore = useCompanyStore()
 
 const formInput: Ref<CreateCompanyRequest> = ref({
-  email: useAuthStore().authUser?.email,
+  email: '',
   user: useAuthStore().authUser?.id,
   name: '',
   website: '',
@@ -89,8 +88,7 @@ const submit = async () => {
             :disabled="!canSubmit ||companyStore.companyCreation.isLoading"
             class="primary-button flex items-center justify-center space-x-2"
             type="button"
-            @click.prevent="submit"
-        >
+            @click.prevent="submit">
           <LoadingSpinnerIcon v-if="companyStore.companyCreation.isLoading" class="text-primary animate-spin"/>
           <span v-else> Create my company</span>
 

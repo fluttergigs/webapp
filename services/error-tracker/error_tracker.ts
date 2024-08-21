@@ -9,9 +9,9 @@ export interface Context {
 
 export abstract class ErrorTracker {
 
-    captureException(exception: any, context?: Context): void;
+    abstract captureException(exception: any, context?: Context): void;
 
-    captureMessage(message: string, context?: Context): void;
+    abstract captureMessage(message: string, context?: Context): void;
 
-    setUser(user: User): void;
+    abstract setUser(user: User): void;
 }

@@ -47,6 +47,8 @@ const props = defineProps({
         </div>
       </div>
     </section>
+
+    <UNotifications/>
   </client-only>
 
 </template>

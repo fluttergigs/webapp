@@ -1,24 +1,24 @@
 import {AuthService} from "~/services/auth/auth.base.service";
-import {ResetPasswordData} from "~/services/auth/auth.types";
+import {ResetPasswordData, User} from "~/services/auth/auth.types";
 import {Endpoint} from "~/core/network/endpoints";
 import type {HttpClient} from "~/core/network/http_client";
 import {BasicApiResponse} from "~/core/shared/types";
-import {User} from "~/services/auth/auth.types";
+//@ts-ignore
 import {StrapiForgotPasswordData} from "@nuxtjs/strapi/dist/runtime/types";
 
 export class AuthStrapiClient<LoginData, StrapiRegistrationData> implements AuthService<LoginData, StrapiRegistrationData> {
 
     private strapiAuth = useStrapiAuth();
 
-    async login(data: any): Promise<User |BasicApiResponse> {
+    async login(data: any): Promise<User | BasicApiResponse> {
         return this.strapiAuth.login(data)
     }
 
     async logout(): Promise<void> {
-        await this.strapiAuth.logout()
+        this.strapiAuth.logout()
     }
 
-    async register(data: StrapiRegistrationData):  Promise<User |BasicApiResponse> {
+    async register(data: StrapiRegistrationData): Promise<User | BasicApiResponse> {
         return this.strapiAuth.register(data)
     }
 

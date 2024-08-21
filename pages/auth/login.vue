@@ -16,7 +16,7 @@
             :disabled="!canSubmit ||user.isLoading"
             class="primary-button flex items-center justify-center space-x-2"
             type="button"
-            @click.prevent="submit">
+            @click.prevent="()=> submit(onSuccessfulLogin)">
           <LoadingSpinnerIcon v-if="user.isLoading" class="text-primary animate-spin"/>
           <span v-else> Sign In</span>
 
@@ -46,5 +46,5 @@ definePageMeta({
   middleware: ['logged-in']
 })
 
-const {formInput, canSubmit, login, user, submit} = useLogin()
+const {formInput, canSubmit, user, submit, onSuccessfulLogin} = useLogin()
 </script>

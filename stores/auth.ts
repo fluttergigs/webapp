@@ -44,22 +44,24 @@ export let useAuthStore = defineStore('auth', {
                 this.user = this.user.toSuccess(unref(response.user))
                 this.setToken(unref(response.jwt))
 
-                //@ts-ignore
-                $analytics.identify(this.user.value.email, this.user.value)
+                ($analytics as AppAnalyticsProvider).identify(this.user.value.email, this.user.value);
                 ($errorTracker as ErrorTrackerProvider).setUser(this.user.value)
 
                 await this.fetchUser()
-            } catch (error: BasicApiResponse) {
+            } catch (customError) {
 
-                const message: string = (error.status === 500 ? AppStrings.invalidCredentials : error.message) ?? AppStrings.errorOccurred;
+                let error = customError as BasicApiResponse
+                logDev('ERROR', error)
+
+                const message: string = (error.error.status === 500 || error.error.status === 401 ? AppStrings.invalidCredentials : error.message) ?? AppStrings.errorOccurred;
 
                 this.user = this.user.toFailed(message)
-                throw error
+                throw customError
             }
         },
 
         async register({email, password, firstName, lastName}: RegistrationData) {
-            const {$auth, $analytics} = useNuxtApp()
+            const {$auth, $analytics, $errorTracker} = useNuxtApp()
             try {
                 this.user = new Wrapper<User>().toLoading()
                 const username = generateUserName(email as string)
@@ -67,14 +69,20 @@ export let useAuthStore = defineStore('auth', {
                 const response = await (<AuthProvider>$auth).register({email, password, firstName, lastName, username});
                 this.user = this.user.toSuccess(unref(response.user))
 
-                // @ts-ignore
-                $analytics.identify(this.user.value?.email, this.user)
+                ($analytics as AppAnalyticsProvider).identify(this.user.value?.email, this.user)
+                ($errorTracker as ErrorTrackerProvider).setUser(this.user.value)
+
                 this.setToken(unref(response.jwt))
                 await this.fetchUser()
-            } catch (error: any) {
-                logDev(error)
-                this.user = this.user.toFailed(error.error?.message ?? AppStrings.errorOccurred)
-                throw error
+            } catch (customError: any) {
+                logDev('Error', customError)
+
+                let error = customError as BasicApiResponse
+
+                const message: string = (error.error.status === 500 || error.error.status === 401 ? AppStrings.invalidCredentials : error.error.message) ?? AppStrings.errorOccurred;
+
+                this.user = this.user.toFailed(message)
+                throw customError
             }
         },
         async logout() {
@@ -126,15 +134,16 @@ export let useAuthStore = defineStore('auth', {
             }
         },
         async fetchUser() {
-            const {$auth, $analytics} = useNuxtApp()
+            const {$auth, $analytics, $errorTracker} = useNuxtApp()
             try {
                 if (this.isAuthenticated) {
                     logDev('FETCHING USER')
                     const response: User = await ($auth as AuthProvider).fetchUser();
-                    //@ts-ignore
-                    (<AppAnalyticsProvider>$analytics).identify(response!.email!, response!);
+
                     //@ts-ignore
                     this.user = new Wrapper().toSuccess(response);
+                    (<AppAnalyticsProvider>$analytics).identify(response!.email!, this.user);
+                    ($errorTracker as ErrorTrackerProvider).setUser(this.user)
                 }
             } catch (error) {
                 // $analytics.capture(AnalyticsEvent.error, {user: this.user})

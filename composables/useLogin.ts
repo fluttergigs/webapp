@@ -1,13 +1,13 @@
 import {storeToRefs} from "pinia";
 import {loginFormSchema} from "~/core/validations/auth.validations";
 
-import {ref, watch} from "vue";
 import {useAuthStore} from "~/stores/auth";
 import {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider";
 import {AnalyticsEvent} from "~/services/analytics/events";
 import {BaseToast} from "~/core/ui/base_toast";
 import {AppRoutes} from "~/core/routes";
-import {LoginData} from "~/services/auth/auth.types";
+import {LoginData, User} from "~/services/auth/auth.types";
+import type {CallbackFunction} from "~/core/shared/types";
 
 export const useLogin = () => {
     const {$toast, $analytics} = useNuxtApp()
@@ -36,28 +36,32 @@ export const useLogin = () => {
         }*/
     }, {immediate: true, deep: true})
 
-    const submit = async () => {
+    const submit = async (onDone?: CallbackFunction<User>) => {
         try {
             const loginData = {email: formInput.value.email, password: formInput.value.password,};
             ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.loginButtonClicked, loginData);
             await login(loginData);
             ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.successfulLogin)
-            await useRouter().push({path: !!returnUrl.value ? returnUrl.value : AppRoutes.myAccount})
-        } catch (e) {
-            //@ts-ignore
-            ($toast as BaseToast<Notification>).error(user.value.message);
 
-        } finally {
+            onDone?.(user.value.value)
+            navigateTo(returnUrl.value ?? AppRoutes.myAccount)
+        } catch (e) {
+            ($toast as BaseToast<Notification>).error(user.value.message);
         }
     }
+
+    const onSuccessfulLogin: CallbackFunction<User> = (user?: User) => {
+        navigateTo(returnUrl.value ?? AppRoutes.myAccount)
+    }
+
 
     return {
         user,
         returnUrl,
         canSubmit,
-        login,
         formInput,
-        submit
+        submit,
+        onSuccessfulLogin
     }
 
 }

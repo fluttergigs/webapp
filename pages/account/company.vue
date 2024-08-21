@@ -102,7 +102,7 @@ const companyStore = useCompanyStore()
 const {$analytics, $toast} = useNuxtApp()
 
 const formInput = ref({
-  email: userStore.myCompany?.email,
+  email: userStore.myCompany?.email ?? userStore.authUser?.email,
   user: authStore.authUser?.id,
   name: userStore.myCompany?.name,
   website: userStore.myCompany?.website,

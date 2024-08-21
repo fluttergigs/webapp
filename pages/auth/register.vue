@@ -19,7 +19,7 @@
             :disabled="!canSubmit || user.isLoading"
             class="primary-button flex items-center justify-center space-x-2"
             type="button"
-            @click.prevent="submit">
+            @click.prevent="submit(onSuccessfulRegistration)">
           <LoadingSpinnerIcon v-if="user.isLoading" class="text-primary animate-spin"/>
           <span v-else> Create account</span>
 
@@ -47,6 +47,6 @@ definePageMeta({
   middleware: ['logged-in'],
 })
 
-const {formInput, canSubmit, user, register, submit} = useRegister()
+const {formInput, canSubmit, user, submit, onSuccessfulRegistration} = useRegister()
 
 </script>

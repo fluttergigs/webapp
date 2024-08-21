@@ -1,9 +1,10 @@
+import type {User} from "~/services/error-tracker/error_tracker";
 import {Context, ErrorTracker} from "~/services/error-tracker/error_tracker";
-import {Sentry} from "@sentry/nuxt";
-import {Models} from "appwrite";
-import User = Models.User;
+// @ts-ignore
+import * as Sentry from "@sentry/nuxt";
 
-class SentryClient implements ErrorTracker {
+
+export class SentryClient implements ErrorTracker {
 
     captureException(error: Error, context?: Context): void {
         Sentry.captureException(error, context);
@@ -14,8 +15,7 @@ class SentryClient implements ErrorTracker {
     }
 
     setUser(user: User): void {
-        Sentry.captureUser(user);
+        Sentry.setUser(user);
     }
-
 
 }
