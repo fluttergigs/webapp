@@ -89,11 +89,11 @@
             </h3>
             <ul>
               <li class="mb-5">
-                <a
+                <NuxtLink
                     class="text-white hover:text-gray-200 font-medium leading-relaxed"
-                    href="#"
-                >Latest Flutter Jobs</a
-                >
+                    :to="AppRoutes.jobs"
+                >Latest Flutter Jobs
+                </NuxtLink>
               </li>
               <li class="mb-5">
                 <a
@@ -115,8 +115,7 @@
                 <a @click.prevent="useCompanyActions().handleJobCreation()"
                    class="text-white hover:text-gray-200 font-medium leading-relaxed"
                    href="#"
-                >Post a job</a
-                >
+                >Post a job</a>
               </li>
               <li class="mb-5">
                 <a

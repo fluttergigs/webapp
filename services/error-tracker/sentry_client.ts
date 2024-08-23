@@ -14,7 +14,7 @@ export class SentryClient implements ErrorTracker {
         Sentry.captureMessage(message, context);
     }
 
-    setUser(user: User): void {
+    setUser(user: User | null): void {
         Sentry.setUser(user);
     }
 

@@ -9,6 +9,7 @@ import type {AppAnalyticsProvider} from "~/services/analytics/app_analytics_prov
 import {BaseToast} from "~/core/ui/base_toast";
 //@ts-ignore
 import type {Notification} from "#ui/types";
+
 const {$analytics, $toast} = useNuxtApp()
 const authStore = useAuthStore()
 
@@ -74,7 +75,6 @@ const submit = async () => {
       <span v-else> Save changes</span>
     </button>
   </form>
-
 
 </template>
 

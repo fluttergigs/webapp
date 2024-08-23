@@ -13,5 +13,5 @@ export abstract class ErrorTracker {
 
     abstract captureMessage(message: string, context?: Context): void;
 
-    abstract setUser(user: User): void;
+    abstract setUser(user: User | null): void;
 }

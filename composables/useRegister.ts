@@ -24,9 +24,7 @@ export const useRegister = () => {
 
     const authStore = useAuthStore()
 
-    const {user, returnUrl} = storeToRefs(authStore)
-
-    const {register} = authStore
+    const {user, authUser, hasReturnUrl, returnUrl} = storeToRefs(authStore)
 
     watch(formInput, async () => {
         canSubmit.value = await registerFormSchema.isValid(formInput.value);
@@ -44,18 +42,17 @@ export const useRegister = () => {
     const submit = async (onDone?: CallbackFunction<User>) => {
         try {
             ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.registrationButtonClicked, formInput.value);
-            await register(formInput.value);
+            await authStore.register(formInput.value);
             ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.successfulRegistration, formInput.value);
 
-            onDone?.(user.value.value)
-            navigateTo(returnUrl.value ?? AppRoutes.myAccount)
+            onDone?.(authUser.value)
         } catch (e) {
             ($toast as BaseToast<Notification>).error(user.value.message);
         }
     }
 
     const onSuccessfulRegistration: CallbackFunction<User> = (user?: User) => {
-        navigateTo(returnUrl.value ?? AppRoutes.myAccount)
+        navigateTo(hasReturnUrl.value ? returnUrl.value : AppRoutes.myAccount)
     }
 
     return {

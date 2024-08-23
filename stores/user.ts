@@ -25,8 +25,6 @@ export const useUserStore = defineStore('user', {
         jobToBookmark: -1,
     }),
     actions: {
-
-
         async saveJob(request: SaveJobOfferRequest) {
             try {
                 this.bookmarkedJobCreation = new Wrapper<SingleApiResponse<BookmarkedJobOffer>>().toLoading()

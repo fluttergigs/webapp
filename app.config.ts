@@ -5,6 +5,14 @@ export default defineAppConfig({
         avatar: {
             background: 'bg-indigo-600',
             text: 'text-white'
+        },
+
+        button: {
+            icon: {
+                size: {
+                    '2xl': 'h-8 w-8',
+                }
+            },
         }
     }
     /*ui: {

@@ -1,6 +1,6 @@
 export class AppStrings {
 
-    static  unableToFetchSetting = "Unable to fetch settings"
+    static unableToFetchSetting = "Unable to fetch settings"
     static unableToFetchCompanies = "Unable to fetch companies"
 
     static unableToFetchJobs = "Unable to fetch jobs"
@@ -42,6 +42,8 @@ export class AppStrings {
     static errorOccurred = "An error occurred. Please try again later!"
 
     static invalidCredentials = "Invalid credentials. Please try again!"
+
+    static emailAlreadyTaken = "Email already taken. Please try again!"
 
     static jobDescriptionIsReady = "Your job's description is ready"
 

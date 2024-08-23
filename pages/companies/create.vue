@@ -55,7 +55,7 @@ const submit = async () => {
 </script>
 
 <template>
-  <BasicFormContent title="Create your company"
+  <BasicFormContent :show-close-button="true" title="Create your company"
                     description="Create your company to start posting job offers to attract talented Flutter engineers">
 
     <template #form>

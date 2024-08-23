@@ -38,7 +38,7 @@ export class ErrorTrackerProvider {
      * Identify the user
      * @param user
      */
-    setUser(user: User) {
+    setUser(user: User | null) {
         this.client.setUser(user);
         return this.client;
     }

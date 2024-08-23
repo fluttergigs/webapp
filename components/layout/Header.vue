@@ -129,7 +129,7 @@
                 </ClientOnly>
 
               </div>
-              <UButton color="indigo"  :to="AppRoutes.postJob" size="lg"
+              <UButton color="indigo" :to="AppRoutes.postJob" size="lg"
                        icon="i-heroicons-megaphone"
                        class="bg-indigo-700"
                        square label="Post a job"
@@ -147,6 +147,7 @@
 import {AppRoutes} from "~/core/routes";
 import {useAuthStore} from "~/stores/auth";
 import {storeToRefs} from "pinia";
+import {AnalyticsEvent} from "~/services/analytics/events";
 
 const links = ref([{
   path: AppRoutes.jobs,
@@ -193,7 +194,10 @@ const accountLinks = [
   [{
     label: 'Logout',
     click: () => {
-      useAuthStore().logout()
+      const {$analytics} = useNuxtApp();
+      ($analytics).capture(AnalyticsEvent.logoutButtonClicked);
+
+      useAuthStore().logout();
     }
   },],
 ]

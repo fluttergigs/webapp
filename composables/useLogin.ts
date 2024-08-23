@@ -14,9 +14,8 @@ export const useLogin = () => {
 
     const authStore = useAuthStore()
 
-    const {user, returnUrl} = storeToRefs(authStore)
+    const {user, authUser, hasReturnUrl, returnUrl} = storeToRefs(authStore)
     const canSubmit = ref(false)
-    const {login} = authStore
 
     const formInput = ref({
         email: 'john@gmail.com',
@@ -40,20 +39,22 @@ export const useLogin = () => {
         try {
             const loginData = {email: formInput.value.email, password: formInput.value.password,};
             ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.loginButtonClicked, loginData);
-            await login(loginData);
+            await authStore.login(loginData);
             ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.successfulLogin)
 
-            onDone?.(user.value.value)
-            navigateTo(returnUrl.value ?? AppRoutes.myAccount)
+            onDone?.(authUser.value)
         } catch (e) {
             ($toast as BaseToast<Notification>).error(user.value.message);
         }
     }
 
     const onSuccessfulLogin: CallbackFunction<User> = (user?: User) => {
-        navigateTo(returnUrl.value ?? AppRoutes.myAccount)
+        if (useUserStore().hasCompanies) {
+            navigateTo(hasReturnUrl.value ? returnUrl.value : AppRoutes.myAccount)
+        } else {
+            navigateTo(hasReturnUrl.value ? returnUrl.value : AppRoutes.jobs)
+        }
     }
-
 
     return {
         user,

@@ -34,4 +34,4 @@ export type User = {
     bio: string,
     companies?: Company[]
     [key: string]: unknown,
-} | null
+}

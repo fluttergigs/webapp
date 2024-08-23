@@ -67,20 +67,17 @@
   </section>
 </template>
 
-<script setup lang="ts">
+<script setup>
 
 import {
-  StarIcon,
   ArrowLeftEndOnRectangleIcon,
   ArrowsPointingInIcon,
   ArrowsPointingOutIcon,
   BriefcaseIcon,
   BuildingOffice2Icon,
-  ClipboardDocumentListIcon,
+  StarIcon,
   UserIcon,
-}
-//@ts-ignore
-  from '@heroicons/vue/24/outline'
+} from '@heroicons/vue/24/outline'
 import {AppRoutes} from "~/core/routes";
 import {useCompanyStore} from "~/stores/company";
 import {useSettingStore} from "~/stores/setting";
@@ -89,8 +86,7 @@ import {groupBy} from "lodash"
 import {useJobStore} from "~/stores/job";
 import {useAppStore} from "~/stores/app";
 import {storeToRefs} from "pinia";
-import {BaseToast} from "~/core/ui/base_toast";
-import {useUserStore} from "~/stores/user";
+import {AnalyticsEvent} from "~/services/analytics/events";
 
 
 const links = [
@@ -127,6 +123,8 @@ const links = [
     icon: ArrowLeftEndOnRectangleIcon,
     section: "user",
     onClick: () => {
+      const {$analytics} = useNuxtApp();
+      ($analytics).capture(AnalyticsEvent.logoutButtonClicked);
       useAuthStore().logout()
     },
     // path: AppRoutes.,
