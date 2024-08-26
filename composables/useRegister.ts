@@ -52,7 +52,7 @@ export const useRegister = () => {
     }
 
     const onSuccessfulRegistration: CallbackFunction<User> = (user?: User) => {
-        navigateTo(hasReturnUrl.value ? returnUrl.value : AppRoutes.myAccount)
+        navigateTo(hasReturnUrl.value ? returnUrl.value : AppRoutes.jobs)
     }
 
     return {

@@ -10,7 +10,6 @@ import {stringify} from "qs";
 import {MAX_LANDING_PAGE_JOBS, remoteOptions, seniorityLevelOptions, workTypeOptions} from "~/core/constants";
 import {GenerativeAIProvider} from "~/services/ai/generative_ai_provider";
 import {generateJobOfferSlug} from "~/core/utils";
-import {useAuthStore} from "~/stores/auth";
 
 // @ts-ignore
 export const useJobStore = defineStore('job', {
@@ -27,7 +26,7 @@ export const useJobStore = defineStore('job', {
             workType: workTypeOptions[0].id,
             seniorityLevel: seniorityLevelOptions[0].id,
             remoteOptions: remoteOptions[0].id,
-            company: useAuthStore()?.myCompany?.id,
+            company: useUserStore()?.myCompany?.id,
         }
     }),
 
@@ -67,7 +66,7 @@ export const useJobStore = defineStore('job', {
                 //@ts-ignore
                 this.jobCreationData.slug = generateJobOfferSlug({
                     jobTitle: this.jobCreationData.title,
-                    companyName: useAuthStore().myCompany.name
+                    companyName: useUserStore().myCompany.name
                 })
                 const response = await (<HttpClient>$http).post(`${Endpoint.jobOffers}`, {data: this.jobCreationData})
                 this.jobCreation = this.jobCreation.toSuccess(response, AppStrings.jobOfferPostedSuccessfully.replaceAll('{{title}}', <string>this.jobCreationData.title))

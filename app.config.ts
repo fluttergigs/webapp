@@ -13,7 +13,10 @@ export default defineAppConfig({
                     '2xl': 'h-8 w-8',
                 }
             },
-        }
+        },
+        dropdown: {
+            container: 'z-[500]'
+        },
     }
     /*ui: {
         strategy: "override",

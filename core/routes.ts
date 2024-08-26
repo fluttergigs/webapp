@@ -5,9 +5,11 @@ export class AppRoutes {
 
     static postJob = '/jobs/post'
 
-    static jobs = '/jobs/'
+    static jobs = '/jobs'
 
     static jobDetail = (slug: string) => `/jobs/${slug}`;
+
+    static companies = '/companies'
 
     static companyPage = (id: number) => `/companies/${id}`;
 

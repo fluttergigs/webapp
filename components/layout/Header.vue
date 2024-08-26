@@ -11,7 +11,7 @@
           <div class="w-auto hidden lg:block">
             <ul class="flex items-center mr-16">
               <li class="mr-9 font-medium hover:text-indigo-900" v-for="link in links">
-                <NuxtLink :to="link.path">{{ link.name }}</NuxtLink>
+                <NuxtLink :to="link.path" v-if="link.enabled">{{ link.name }}</NuxtLink>
               </li>
             </ul>
           </div>
@@ -29,7 +29,7 @@
                 </NuxtLink>
                 <UDropdown v-else :items="accountLinks" :popper="{ placement: 'bottom-start'}">
                   <div class="flex justify-center items-center">
-                    <span class="font-medium text-sm">  {{ useAuthStore().userFullName.toUpperCase() }}
+                    <span class="font-medium text-sm capitalize">  {{ useAuthStore().userFullName }}
                     </span>
                     <UIcon name="i-heroicons-chevron-down-20-solid"/>
                   </div>
@@ -120,7 +120,7 @@
 
                     <UDropdown v-else :items="accountLinks" :popper="{ placement: 'bottom-start'}">
                       <div class="flex justify-center items-center">
-                    <span class="font-medium">  {{ useAuthStore().userFullName.toUpperCase() }}
+                    <span class="font-medium capitalize">  {{ useAuthStore().userFullName }}
                     </span>
                         <UIcon name="i-heroicons-chevron-down-20-solid"/>
                       </div>
@@ -148,11 +148,20 @@ import {AppRoutes} from "~/core/routes";
 import {useAuthStore} from "~/stores/auth";
 import {storeToRefs} from "pinia";
 import {AnalyticsEvent} from "~/services/analytics/events";
+import {useFeatureFlags} from "~/composables/useFeatureFlags";
+import {AvailableFlags} from "~/services/feature-flag/available_flags";
 
-const links = ref([{
-  path: AppRoutes.jobs,
-  name: 'Jobs',
-}, /*{
+const links = ref([
+  {
+    path: AppRoutes.companies,
+    name: 'Companies',
+    enabled: useFeatureFlags().isEnabled(AvailableFlags.companiesList,)
+  },
+  {
+    path: AppRoutes.jobs,
+    name: 'Jobs',
+    enabled: true
+  }, /*{
   path: AppRoutes.hireFlutterDevs,
   name: 'Hire Flutter devs',
 }, {
@@ -162,6 +171,7 @@ const links = ref([{
   {
     path: AppRoutes.learn,
     name: 'Learn',
+    enabled: useFeatureFlags().isEnabled(AvailableFlags.learn,)
   },
 ])
 

@@ -18,7 +18,7 @@ export type JobOffer = {
     applyBefore: Date,
     createdAt: string,
     updatedAt: string,
-    company: CompanyApiResponse | string,
+    company: CompanyApiResponse | number,
     workPermits: string[] | null,
     bookmarkedJob?: number,
 }

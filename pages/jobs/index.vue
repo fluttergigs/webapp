@@ -1,5 +1,5 @@
 <template>
-  <section class="relative bg-blueGray-50">
+  <section class="relative bg-blueGray-50 z-[-10]">
     <img
         class="absolute left-1/2 bottom-0 transform -translate-x-1/2"
         src="@/assets/images/gradient6.svg"
@@ -12,7 +12,7 @@
         </h1>
 
         <p class="mb-11 text-lg text-gray-900 font-medium">
-          Discover the best Flutter opportunities at top
+          Discover the best Flutter opportunities and more at top
           remote companies around the world.
         </p>
       </div>

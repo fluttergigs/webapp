@@ -83,46 +83,38 @@
           </div>
           <div class="w-full sm:w-1/2 lg:w-2/12 p-8">
             <h3
-                class="mb-8 text-sm text-gray-600 uppercase font-semibold leading-normal tracking-px"
-            >
+                class="mb-8 text-sm text-gray-600 uppercase font-semibold leading-normal tracking-px">
               FIND A JOB
             </h3>
             <ul>
               <li class="mb-5">
                 <NuxtLink
                     class="text-white hover:text-gray-200 font-medium leading-relaxed"
-                    :to="AppRoutes.jobs"
-                >Latest Flutter Jobs
+                    :to="AppRoutes.jobs">Latest Flutter Jobs
                 </NuxtLink>
               </li>
               <li class="mb-5">
                 <a
                     class="text-white hover:text-gray-200 font-medium leading-relaxed"
-                    href="#"
-                >Subscribe to job alerts</a
-                >
+                    href="#">Subscribe to job alerts</a>
               </li>
             </ul>
           </div>
           <div class="w-full sm:w-1/2 lg:w-2/12 p-8">
             <h3
-                class="mb-8 text-sm text-gray-600 uppercase font-semibold leading-normal tracking-px"
-            >
+                class="mb-8 text-sm text-gray-600 uppercase font-semibold leading-normal tracking-px">
               HIRE
             </h3>
             <ul>
               <li class="mb-5">
                 <a @click.prevent="useCompanyActions().handleJobCreation()"
                    class="text-white hover:text-gray-200 font-medium leading-relaxed"
-                   href="#"
-                >Post a job</a>
+                   href="#">Post a job</a>
               </li>
-              <li class="mb-5">
+              <li class="mb-5" v-if="useFeatureFlags().isEnabled(AvailableFlags.hireConsultants)">
                 <a
                     class="text-white hover:text-gray-200 font-medium leading-relaxed"
-                    href="#"
-                >Hire Flutter Consultants</a
-                >
+                    href="#">Hire Flutter Consultants</a>
               </li>
             </ul>
           </div>
@@ -151,4 +143,5 @@
 
 <script setup>
 import useCompanyActions from "~/composables/useCompanyActions";
+import {AvailableFlags} from "~/services/feature-flag/available_flags";
 </script>

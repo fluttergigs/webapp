@@ -83,16 +83,15 @@ export const useAuthStore = defineStore('auth', {
                     username: generateUserName(email as string)
                 });
 
-                this.setToken(unref(response.jwt))
+                this.setToken(unref(response.jwt));
 
-                logDev('USER', unref(this.user))
-
-                this.user = (Wrapper.getEmpty().toSuccess(unref(response.user)) as unknown as Wrapper<User>);
 
                 (<ErrorTrackerProvider>$errorTracker).setUser(this.user.value);
-                (<AppAnalyticsProvider>$analytics).identify(this.user.value?.email, this.user.value)
+                (<AppAnalyticsProvider>$analytics).identify(this.user.value?.email, this.user.value);
 
                 await this.fetchUser()
+                this.user = (Wrapper.getEmpty().toSuccess(unref(response.user)) as unknown as Wrapper<User>);
+
             } catch (customError: any) {
                 this.setToken('')
 
