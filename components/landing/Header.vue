@@ -65,13 +65,15 @@ import {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider"
 import {AnalyticsEvent} from "~/services/analytics/events";
 import ArrowBackIcon from "~/components/icons/ArrowBackIcon.vue";
 
+const {$analytics} = useNuxtApp()
+
 const handleJobCreation = () => {
-  (useNuxtApp().$analytics as AppAnalyticsProvider).capture(AnalyticsEvent.landingPageHeaderPostJobOfferButtonClicked,);
+  ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.landingPageHeaderPostJobOfferButtonClicked,);
   useCompanyActions().handleJobCreation()
 }
 
 const findJobs = () => {
-  (useNuxtApp().$analytics as AppAnalyticsProvider).capture(AnalyticsEvent.landingPageHeaderFindJobsButtonClicked,);
+  ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.landingPageHeaderFindJobsButtonClicked,);
   navigateTo(AppRoutes.jobs)
 }
 </script>

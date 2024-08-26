@@ -2,7 +2,7 @@ export type ToastConfig<P> = {
     [T in keyof P]?: P[T]
 }
 
-export abstract class BaseToast<NotificationData> {
+export abstract class BaseToast<NotificationData = any> {
     protected timeout = 7000;
 
     abstract info(title: string, config?: ToastConfig<NotificationData>): void;

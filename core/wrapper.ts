@@ -5,7 +5,7 @@ export enum Status {
     failure = "failure"
 }
 
-export class Wrapper<Type extends  any> {
+export class Wrapper<Type extends Object = {}> {
     _status = Status.initial;
     _value: Type = <Type>{};
 
@@ -17,27 +17,27 @@ export class Wrapper<Type extends  any> {
 
     constructor(value?: Type, status?: Status, errorMessage?: String) {
         this._value = value ?? <Type>{};
-        this._status = status!;
-        this.message = errorMessage!
+        this._status = status ?? Status.initial;
+        this.message = errorMessage ?? '';
     }
 
-    public copyWith(value?: Type, status?: Status, errorMessage?: String): Wrapper<Type> {
-        return new Wrapper(
+    copyWith(value?: Type, status?: Status, errorMessage?: String): Wrapper<Type> {
+        return new Wrapper<Type>(
             value ?? this._value,
             status ?? this._status,
             errorMessage ?? this.message,
         )
     }
 
-    public toSuccess(value: Type, message?: string) {
-        return new Wrapper(
+    toSuccess(value: Type, message?: string): Wrapper<Type> {
+        return new Wrapper<Type>(
             value,
             Status.success,
             message ?? ''
         );
     }
 
-    public toFailed(error: any): Wrapper<Type> {
+    toFailed(error: any): Wrapper<Type> {
         return new Wrapper<Type>(
             <Type>{},
             Status.failure,
@@ -45,18 +45,19 @@ export class Wrapper<Type extends  any> {
         );
     }
 
-    public toInitial() {
-        return new Wrapper(
+    toInitial(): Wrapper<Type> {
+        return new Wrapper<Type>(
             <Type>{},
             Status.initial,
         );
     }
 
-    public toLoading = (value?: Type): Wrapper<Type> =>
-        new Wrapper(
+    toLoading(value?: Type): Wrapper<Type> {
+        return new Wrapper<Type>(
             value as Type ?? this._value,
             Status.loading,
         );
+    }
 
     get value(): Type {
         return this._value;

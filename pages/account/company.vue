@@ -88,7 +88,12 @@ import CompanyDescriptionGenerationModal from "~/components/company/CompanyDescr
 
 useHead({title: "Flutter Gigs - Company information update"});
 
-definePageMeta({layout: 'app-layout', middleware: ['auth', 'no-company']})
+definePageMeta({
+  layout: 'app-layout',
+  middleware: ['auth', 'no-company', function () {
+    return useCompanyActions().checkCompanyExistenceGuard()
+  }]
+})
 
 const userStore = useUserStore()
 const authStore = useAuthStore()
@@ -97,7 +102,7 @@ const companyStore = useCompanyStore()
 const {$analytics, $toast} = useNuxtApp()
 
 const formInput = ref({
-  email: userStore.myCompany?.email,
+  email: userStore.myCompany?.email ?? userStore.authUser?.email,
   user: authStore.authUser?.id,
   name: userStore.myCompany?.name,
   website: userStore.myCompany?.website,
@@ -127,6 +132,7 @@ const submit = async () => {
     ($toast as BaseToast<Notification>).info(<string>companyStore.companyUpdate!.message);
   } catch (e) {
     ($toast as BaseToast<Notification>).error(<string>companyStore.companyUpdate!.message);
+  } finally {
   }
 }
 

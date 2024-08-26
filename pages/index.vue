@@ -1,67 +1,66 @@
 <template>
   <LandingHeader/>
 
-  <!--
-    <section class="py-20 bg-blueGray-100">
-      <div class="container px-4 mx-auto">
-        <div class="flex flex-wrap items-center -m-8">
-          <div class="w-full md:w-1/3 p-8">
-            <div class="md:max-w-sm">
-              <div class="flex flex-wrap items-center -m-3">
-                <div class="w-auto p-3">
-                  <div
-                      class="flex items-center justify-center w-20 h-20 bg-indigo-100 rounded-full"
-                  >
-                    <img src="@/assets/images/chat.svg" alt=""/>
-                  </div>
+  <section class="py-20 bg-blueGray-100">
+    <div class="container px-4 mx-auto">
+      <div class="flex flex-wrap items-center -m-8">
+        <div class="w-full md:w-1/3 p-8">
+          <div class="md:max-w-sm">
+            <div class="flex flex-wrap items-center -m-3">
+              <div class="w-auto p-3">
+                <div
+                    class="flex items-center justify-center w-20 h-20 bg-indigo-100 rounded-full">
+                  <img src="@/assets/images/chat.svg" alt=""/>
                 </div>
-                <div class="flex-1 p-3">
-                  <h3 class="text-xl font-semibold">
-                    A platform to find Flutter framework related job opportunities and more
-                  </h3>
-                </div>
+              </div>
+              <div class="flex-1 p-3">
+                <h3 class="text-xl font-semibold">
+                  A platform to find Flutter framework related job opportunities and more
+                </h3>
               </div>
             </div>
           </div>
-          <div class="w-full md:w-1/3 p-8">
-            <div class="md:max-w-sm">
-              <div class="flex flex-wrap items-center -m-3">
-                <div class="w-auto p-3">
-                  <div
-                      class="flex items-center justify-center w-20 h-20 bg-indigo-100 rounded-full"
-                  >
-                    <img src="@/assets/images/layers.svg" alt=""/>
-                  </div>
+        </div>
+        <div class="w-full md:w-1/3 p-8">
+          <div class="md:max-w-sm">
+            <div class="flex flex-wrap items-center -m-3">
+              <div class="w-auto p-3">
+                <div
+                    class="flex items-center justify-center w-20 h-20 bg-indigo-100 rounded-full"
+                >
+                  <img src="@/assets/images/layers.svg" alt=""/>
                 </div>
-                <div class="flex-1 p-3">
-                  <h3 class="text-xl font-semibold">
-                    Effortlessly find and apply to Flutter framework related job offers
-                  </h3>
-                </div>
+              </div>
+              <div class="flex-1 p-3">
+                <h3 class="text-xl font-semibold">
+                  Effortlessly find and apply to Flutter framework related job offers
+                </h3>
               </div>
             </div>
           </div>
-          <div class="w-full md:w-1/3 p-8">
-            <div class="md:max-w-sm">
-              <div class="flex flex-wrap items-center -m-3">
-                <div class="w-auto p-3">
-                  <div
-                      class="flex items-center justify-center w-20 h-20 bg-indigo-100 rounded-full">
-                    <img src="@/assets/images/replace.svg" alt=""/>
-                  </div>
+        </div>
+        <div class="w-full md:w-1/3 p-8">
+          <div class="md:max-w-sm">
+            <div class="flex flex-wrap items-center -m-3">
+              <div class="w-auto p-3">
+                <div
+                    class="flex items-center justify-center w-20 h-20 bg-indigo-100 rounded-full"
+                >
+                  <img src="@/assets/images/replace.svg" alt=""/>
                 </div>
-                <div class="flex-1 p-3">
-                  <h3 class="text-xl font-semibold">
-                    Get expert guidance and support to land your dream Flutter job
-                  </h3>
-                </div>
+              </div>
+              <div class="flex-1 p-3">
+                <h3 class="text-xl font-semibold">
+                  Get expert guidance and support to land your dream Flutter job
+                </h3>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </section>
-  -->
+    </div>
+  </section>
+
   <UserSection/>
 
   <CompanySection/>
@@ -172,7 +171,31 @@ import CompanySection from "~/components/landing/CompanySection.vue";
 import CompanyCreationSection from "~/components/landing/CompanyCreationSection.vue";
 
 definePageMeta({
-  layout: 'main-layout'
+  layout: 'main-layout',
+})
+
+useSeoMeta({
+  title: 'Flutter Gigs - The #1 Flutter job platform',
+  ogTitle: 'Flutter Gigs - The #1 Flutter job platform',
+  description: 'Flutter Gigs is a platform to find Flutter framework related job opportunities and more',
+  ogDescription: 'Flutter Gigs is a platform to find Flutter framework related job opportunities and more',
+  ogSiteName: 'Flutter Gigs',
+  twitterCard: 'summary_large_image',
+  twitterSite: '@fluttergigs',
+  twitterTitle: () => `Flutter Gigs - Find the best Flutter opportunities at top remote companies around the world`,
+  twitterDescription: () => 'Flutter Gigs is a platform to find Flutter framework related job opportunities and more',
+  twitterImage: () => 'https://fluttergigs.com/images/og-image.png',
+})
+
+
+useHead({
+  title: 'Flutter Gigs',
+  meta: [
+    {
+      name: 'description',
+      content: 'Flutter Gigs is a platform to find Flutter framework related job opportunities and more',
+    },
+  ],
 })
 
 

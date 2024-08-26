@@ -5,21 +5,21 @@ import {generateUserName} from "~/core/utils";
 import {logDev} from "~/core/helpers/log";
 // @ts-ignore
 import {jwtDecode} from "jwt-decode";
-import {useNuxtApp} from "#imports"
 import {Wrapper} from "~/core/wrapper";
-import {SingleApiResponse} from "~/core/shared/types";
+import {BasicApiResponse, SingleApiResponse} from "~/core/shared/types";
 import {Endpoint} from "~/core/network/endpoints";
 import {AppStrings} from "~/core/strings";
 import {UpdatePasswordRequest, UpdateUserRequest} from "~/features/users/user.types";
 import {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider";
 import type {AuthProvider} from "~/services/auth/auth_provider";
 import type {HttpClient} from "~/core/network/http_client";
+import {ErrorTrackerProvider} from "~/services/error-tracker/error_tracker_provider";
 
 
 //@ts-ignore
-export let useAuthStore = defineStore('auth', {
+export const useAuthStore = defineStore('auth', {
     state: () => ({
-        user: new Wrapper<User>().toInitial(),
+        user: Wrapper.getEmpty().toInitial() as unknown as Wrapper<User>,
         updateUser: new Wrapper<SingleApiResponse<User>>().toInitial(),
         changePassword: new Wrapper<SingleApiResponse<User>>().toInitial(),
         deleteAccount: new Wrapper().toInitial(),
@@ -33,56 +33,100 @@ export let useAuthStore = defineStore('auth', {
             this.returnUrl = path
         },
         async login({email, password}: LoginData) {
-            const {$auth, $analytics} = useNuxtApp()
+            const {$auth, $analytics, $errorTracker} = useNuxtApp()
 
             try {
-                this.user = new Wrapper(null).toLoading()
+                this.user = new Wrapper().toLoading();
 
-                const response = await (<AuthProvider>$auth).login({identifier: email, password})
+                const response = await (<AuthProvider>$auth).login({identifier: email, password});
 
+                this.setToken(unref(response.jwt));
+
+                (<AppAnalyticsProvider>$analytics).identify(this.user.value.email, this.user.value);
+                (<ErrorTrackerProvider>$errorTracker).setUser(this.user.value);
+
+                await this.fetchUser();
                 //@ts-ignore
-                this.user = this.user.toSuccess(unref(response.user))
-                this.setToken(unref(response.jwt))
+                this.user = this.user.toSuccess(unref(response.user));
+            } catch (customError) {
+                this.setToken('')
 
-                //@ts-ignore
-                $analytics.identify(this.user.value.email, this.user)
+                const error = customError as BasicApiResponse
+                logDev('ERROR', error)
 
-                await this.fetchUser()
-            } catch (error: any) {
-                logDev('LOGIN ERROR', error)
+                let message = ''
+                if (error.error) {
+                    if (error?.error?.status === 401 || error?.error?.status === 500) {
+                        message = AppStrings.invalidCredentials
+                    } else {
+                        message = error.error.message ?? AppStrings.errorOccurred
+                    }
+                } else {
+                    message = AppStrings.errorOccurred
+                }
 
-                this.user = this.user.toFailed(error.error?.message ?? ' AppStrings.errorOccurred')
-                throw error
+                this.user = this.user.toFailed(message)
+                throw customError
             }
         },
 
         async register({email, password, firstName, lastName}: RegistrationData) {
-            const {$auth, $analytics} = useNuxtApp()
+            const {$auth, $analytics, $errorTracker} = useNuxtApp()
             try {
-                this.user = new Wrapper(null).toLoading()
-                const username = generateUserName(email!)
+                this.user = new Wrapper().toLoading()
 
-                const response = await (<AuthProvider>$auth).register({email, password, firstName, lastName, username});
-                this.user = this.user.toSuccess(unref(response.user))
+                const response = await ($auth as AuthProvider).register({
+                    email,
+                    password,
+                    firstName,
+                    lastName,
+                    username: generateUserName(email as string)
+                });
 
-                // @ts-ignore
-                $analytics.identify(this.user.value?.email, this.user)
-                this.setToken(unref(response.jwt))
+                this.setToken(unref(response.jwt));
+
+
+                (<ErrorTrackerProvider>$errorTracker).setUser(this.user.value);
+                (<AppAnalyticsProvider>$analytics).identify(this.user.value?.email, this.user.value);
+
                 await this.fetchUser()
-            } catch (error: any) {
-                logDev(error)
-                this.user = this.user.toFailed(error.error?.message ?? AppStrings.errorOccurred)
-                throw error
+                this.user = (Wrapper.getEmpty().toSuccess(unref(response.user)) as unknown as Wrapper<User>);
+
+            } catch (customError: any) {
+                this.setToken('')
+
+                logDev('Error', customError)
+
+                const error = customError as BasicApiResponse
+
+                let message = ''
+
+                if (error.error) {
+                    if (error?.error?.status === 401) {
+                        message = error.error.message ?? AppStrings.invalidCredentials
+                    } else if (error?.error?.status === 500) {
+                        message = AppStrings.emailAlreadyTaken
+                    } else {
+                        message = error.error.message ?? AppStrings.errorOccurred
+                    }
+                } else {
+                    message = AppStrings.errorOccurred
+                }
+
+                this.user = this.user.toFailed(message)
+                throw customError
             }
         },
         async logout() {
             try {
                 logDev('LOGGING OUT...')
-                const {$auth, $analytics} = useNuxtApp()
-                await (<AuthProvider>$auth).logout()
-                this.user = new Wrapper(null).toInitial()
-                this.setToken('');
+
+                const {$auth, $analytics, $errorTracker} = useNuxtApp();
                 (<AppAnalyticsProvider>$analytics).reset();
+                (<ErrorTrackerProvider>$errorTracker).setUser(null);
+                await (<AuthProvider>$auth).logout()
+                this.user = new Wrapper().toInitial()
+                this.setToken('');
                 await useRouter().push({path: AppRoutes.login})
             } catch (error) {
                 logDev(error)
@@ -124,15 +168,16 @@ export let useAuthStore = defineStore('auth', {
             }
         },
         async fetchUser() {
-            const {$auth, $analytics} = useNuxtApp()
+            const {$auth, $analytics, $errorTracker} = useNuxtApp()
             try {
                 if (this.isAuthenticated) {
                     logDev('FETCHING USER')
                     const response: User = await ($auth as AuthProvider).fetchUser();
-                    //@ts-ignore
-                    (<AppAnalyticsProvider>$analytics).identify(response!.email!, response!);
+
                     //@ts-ignore
                     this.user = new Wrapper().toSuccess(response);
+                    (<AppAnalyticsProvider>$analytics).identify(response!.email!, this.user);
+                    (<ErrorTrackerProvider>$errorTracker).setUser(this.user)
                 }
             } catch (error) {
                 // $analytics.capture(AnalyticsEvent.error, {user: this.user})
@@ -144,12 +189,13 @@ export let useAuthStore = defineStore('auth', {
         }
     },
     getters: {
-        hasTokenExpired: state => !!state.jwt && Date.now() > (jwtDecode(state.jwt).exp! * 1000),
+        hasTokenExpired: state => state.jwt != '' && Date.now() > (jwtDecode(state.jwt).exp! * 1000),
         authUser: state => (state.user._value as User),
         isAuthenticated: state => {
             return (!!useAuthStore().authUser && Object.keys(useAuthStore().authUser).length > 0) ?? false;
         },
         userFullName: state => `${useAuthStore().authUser?.firstName ?? ''} ${useAuthStore().authUser?.lastName ?? ''}`,
+        hasReturnUrl: state => !!state.returnUrl || state.returnUrl !== '',
     },
     persist: {
         storage: persistedState.cookies,

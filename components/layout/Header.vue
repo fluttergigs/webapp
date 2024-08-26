@@ -1,5 +1,5 @@
 <template>
-  <section class="overflow-hidden z-50">
+  <section class="overflow-hidden">
     <div class="flex items-center justify-between py-5 bg-blueGray-50 px-18 sticky">
       <div class="w-auto">
         <div class="flex flex-wrap items-center">
@@ -10,13 +10,8 @@
           </div>
           <div class="w-auto hidden lg:block">
             <ul class="flex items-center mr-16">
-              <li class="mr-9 font-medium hover:text-indigo-900" v-for="link in links" :key="link.name">
-                <UChip :show="link.hasOwnProperty('tag')" :text="link['tag']" size="xl" color="green">
-                  <NuxtLink
-                      :class="['font-medium hover:text-indigo-900', {'text-indigo-800': useRoute().fullPath === link.path}]"
-                      :to="link.path">{{ link.name }}
-                  </NuxtLink>
-                </UChip>
+              <li class="mr-9 font-medium hover:text-indigo-900" v-for="link in links">
+                <NuxtLink :to="link.path" v-if="link.enabled">{{ link.name }}</NuxtLink>
               </li>
             </ul>
           </div>
@@ -34,7 +29,7 @@
                 </NuxtLink>
                 <UDropdown v-else :items="accountLinks" :popper="{ placement: 'bottom-start'}">
                   <div class="flex justify-center items-center">
-                    <span class="font-medium text-sm">  {{ useAuthStore().userFullName.toUpperCase() }}
+                    <span class="font-medium text-sm capitalize">  {{ useAuthStore().userFullName }}
                     </span>
                     <UIcon name="i-heroicons-chevron-down-20-solid"/>
                   </div>
@@ -75,7 +70,7 @@
     </div>
     <div class="hidden navbar-menu fixed top-0 left-0 bottom-0 w-4/6 sm:max-w-xs z-50">
       <div class="navbar-backdrop fixed inset-0 bg-gray-800 opacity-80"></div>
-      <nav class="relative z-10 px-9 pt-8 bg-white h-full overflow-y-auto ">
+      <nav class="relative z-10 px-9 pt-8 bg-white h-full overflow-y-auto">
         <div class="flex flex-wrap justify-between h-full">
           <div class="w-full">
             <div class="flex items-center justify-between -m-2">
@@ -107,13 +102,8 @@
           </div>
           <div class="flex flex-col justify-center py-16 w-full">
             <ul>
-              <li class="mb-12" v-for="link in links" :key="link.name">
-                <UChip :show="link.hasOwnProperty('tag')" :text="link['tag']" size="xl" color="green">
-                  <NuxtLink
-                      :class="['font-medium hover:text-indigo-900', {'text-indigo-800': useRoute().fullPath === link.path}]"
-                      :to="link.path">{{ link.name }}
-                  </NuxtLink>
-                </UChip>
+              <li class="mb-12" v-for="link in links">
+                <NuxtLink class="font-medium hover:text-indigo-900" :href="link.path">{{ link.name }}</NuxtLink>
               </li>
             </ul>
           </div>
@@ -130,7 +120,7 @@
 
                     <UDropdown v-else :items="accountLinks" :popper="{ placement: 'bottom-start'}">
                       <div class="flex justify-center items-center">
-                    <span class="font-medium">  {{ useAuthStore().userFullName.toUpperCase() }}
+                    <span class="font-medium capitalize">  {{ useAuthStore().userFullName }}
                     </span>
                         <UIcon name="i-heroicons-chevron-down-20-solid"/>
                       </div>
@@ -152,25 +142,36 @@
   </section>
 </template>
 
-<script setup lang="ts">
+<script setup>
 
 import {AppRoutes} from "~/core/routes";
 import {useAuthStore} from "~/stores/auth";
 import {storeToRefs} from "pinia";
+import {AnalyticsEvent} from "~/services/analytics/events";
+import {useFeatureFlags} from "~/composables/useFeatureFlags";
 import {AvailableFlags} from "~/services/feature-flag/available_flags";
-import useFeatureFlags from "~/composables/useFeatureFlags";
 
 const links = ref([
   {
-    path: AppRoutes.jobs,
-    name: 'Jobs',
-    isEnabled: true,
+    path: AppRoutes.companies,
+    name: 'Companies',
+    enabled: useFeatureFlags().isEnabled(AvailableFlags.companiesList,)
   },
   {
-    path: AppRoutes.consultants,
-    name: 'Consultants',
-    tag: useFeatureFlags().isFeatureEnabled(AvailableFlags.consultants,) ? 'New' : 'Soon',
-    isEnabled: useFeatureFlags().isFeatureEnabled(AvailableFlags.consultants,)
+    path: AppRoutes.jobs,
+    name: 'Jobs',
+    enabled: true
+  }, /*{
+  path: AppRoutes.hireFlutterDevs,
+  name: 'Hire Flutter devs',
+}, {
+  path: AppRoutes.alerts,
+  name: 'Job Alerts',
+},*/
+  {
+    path: AppRoutes.learn,
+    name: 'Learn',
+    enabled: useFeatureFlags().isEnabled(AvailableFlags.learn,)
   },
 ])
 
@@ -203,7 +204,10 @@ const accountLinks = [
   [{
     label: 'Logout',
     click: () => {
-      useAuthStore().logout()
+      const {$analytics} = useNuxtApp();
+      ($analytics).capture(AnalyticsEvent.logoutButtonClicked);
+
+      useAuthStore().logout();
     }
   },],
 ]

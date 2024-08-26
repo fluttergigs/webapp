@@ -5,17 +5,17 @@ export class AppRoutes {
 
     static postJob = '/jobs/post'
 
-    static editJob = (slug: string) => `/jobs/edit/${slug}`;
-
-    static jobs = '/jobs/'
+    static jobs = '/jobs'
 
     static jobDetail = (slug: string) => `/jobs/${slug}`;
 
+    static companies = '/companies'
+
     static companyPage = (id: number) => `/companies/${id}`;
 
-    static consultantDetail = (slug: string) => `/consultants/${slug}`;
+    static consultantDetail = (slug: string) => `/flutter-consultants/${slug}`;
 
-    static consultants = '/consultants'
+    static hireConsultants = '/flutter-consultants'
 
     static learn = '/learn'
 

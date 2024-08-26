@@ -18,6 +18,11 @@ export class AppAnalyticsProvider {
         this.client.reset();
     }
 
+    /**
+     * Captures an event
+     * @param event
+     * @param properties
+     */
     capture(event: AnalyticsEvent, properties?: Object) {
         if (import.meta.env.MODE === "development") {
             this.client.captureEvent(event, properties);
@@ -25,6 +30,11 @@ export class AppAnalyticsProvider {
         return this.client;
     }
 
+    /**
+     * Identify the user
+     * @param identifier
+     * @param properties
+     */
     identify(identifier: string, properties?: Object) {
         this.client.identifyUser(identifier, properties);
         return this.client;

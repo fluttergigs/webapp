@@ -14,7 +14,7 @@ export class PosthogClient implements AppAnalytics {
                 name: "Flutter Gigs",
                 debug: import.meta.env.MODE === "development",
                 advanced_disable_decide: import.meta.env.MODE === "development",
-                // api_host: "https://app.posthog.com",
+                api_host: "https://us.i.posthog.com",
                 loaded: (posthog: any) => {
                     posthog.debug(import.meta.env.MODE === "development");
                 }

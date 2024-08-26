@@ -8,13 +8,12 @@ import {
     ListCompanyApiResponse,
     UpdateCompanyRequest
 } from "~/features/companies/company.types";
-import {CallbackFunction, MultiApiResponse, SingleApiResponse} from "~/core/shared/types";
+import {MultiApiResponse, SingleApiResponse} from "~/core/shared/types";
 import {AppStrings} from "~/core/strings";
-import {useAuthStore} from "~/stores/auth";
 import type {HttpClient} from "~/core/network/http_client";
 //@ts-ignore
 import slugify from "@sindresorhus/slugify";
-import {JobOffer, JobOfferApiResponse} from "~/features/jobs/job.types";
+import {JobOffer} from "~/features/jobs/job.types";
 import {stringify} from "qs";
 
 //@ts-ignore
@@ -102,7 +101,6 @@ export const useCompanyStore = defineStore('company', {
         async createCompany(payload: CreateCompanyRequest): Promise<void> {
             try {
                 //@ts-ignore
-                payload.data.slug = slugify(useAuthStore().authUser?.username + payload.data.name)
                 this.companyCreation = new Wrapper<SingleApiResponse<Company>>().toLoading()
                 const {$http} = useNuxtApp()
                 const response = await (<HttpClient>$http).post(`${Endpoint.companies}`, payload)

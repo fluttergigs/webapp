@@ -3,10 +3,9 @@ import {LoginData, RegistrationData, ResetPasswordData} from "~/services/auth/au
 
 
 export class AuthProvider {
-
     private authService: AuthService<LoginData, RegistrationData>;
 
-     constructor(service: AuthService<LoginData, RegistrationData>) {
+    constructor(service: AuthService<LoginData, RegistrationData>) {
         this.authService = service;
     }
 
