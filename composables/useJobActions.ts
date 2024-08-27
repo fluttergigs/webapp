@@ -76,7 +76,6 @@ export default function useJobActions() {
     }
 
 
-
     const viewDetails = (job: JobOffer) => {
         ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.jobOfferClicked, {job});
         jobStore.findJobById(job)

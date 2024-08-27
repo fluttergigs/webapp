@@ -1,7 +1,5 @@
-import {useFeatureFlags} from "~/composables/useFeatureFlags";
-
 export default defineNuxtPlugin(async (nuxtApp) => {
-    nuxtApp.hook('app:beforeMount', async () => {
+    nuxtApp.hook('app:created', async () => {
         // useAppStore().toggleMainLoader()
         await useFeatureFlags().loadFlags()
     })

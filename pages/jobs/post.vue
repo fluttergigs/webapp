@@ -18,17 +18,17 @@
                        v-model="jobCreationData.title" type="text"/>
 
 
-          <LabelledInput label="Job Description *">
-            <UiTipTap @inside-text-clicked="jobStore.showJobDescriptionGenerationModal()"
-                      v-model="jobCreationData.description"
-                      inside-text="Generate description using AI 🚀"/>
-          </LabelledInput>
+          <!--          <LabelledInput label="Job Description *">
+                      <UiTipTap @inside-text-clicked="jobStore.showJobDescriptionGenerationModal()"
+                                v-model="jobCreationData.description"
+                                inside-text="Generate description using AI 🚀"/>
+                    </LabelledInput>-->
 
-          <!--          <CustomInput @inside-text-clicked="jobStore.showJobDescriptionGenerationModal()"
-                                 inside-text="Generate description using AI 🚀"
-                                 name="description"
-                                 label="Job description *"
-                                 v-model="jobCreationData.description" :is-text-area="true"/>-->
+          <CustomInput @inside-text-clicked="jobStore.showJobDescriptionGenerationModal()"
+                       inside-text="Generate description using AI 🚀"
+                       name="description"
+                       label="Job description *"
+                       v-model="jobCreationData.description" :is-text-area="true"/>
 
           <div class="flex space-x-3">
             <!--          job type-->

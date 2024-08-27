@@ -13,7 +13,6 @@ import SaveJobIconButton from "~/components/job/SaveJobIconButton.vue";
 //@ts-ignore
 import {XCircleIcon} from "@heroicons/vue/24/outline";
 import ConfirmJobDeleteModal from "~/components/job/ConfirmJobDeleteModal.vue";
-import useCompanyActions from "~/composables/useCompanyActions";
 
 const {data, error} = await useCountries();
 const {jobWorkingPermits} = useJobActions();
@@ -58,12 +57,12 @@ const jobActionItems = [
       useCompanyActions().handleJobEdit(props.job)
     }
   }],
- /* [{
+  [{
     label: 'Duplicate',
     click: () => {
-      //TODO - implement job duplicate
+      useCompanyActions().handleJobDuplicate(props.job)
     }
-  }],*/
+  }],
   [{
     label: 'View',
     click: () => {

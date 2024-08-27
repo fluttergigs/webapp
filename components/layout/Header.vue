@@ -148,7 +148,6 @@ import {AppRoutes} from "~/core/routes";
 import {useAuthStore} from "~/stores/auth";
 import {storeToRefs} from "pinia";
 import {AnalyticsEvent} from "~/services/analytics/events";
-import {useFeatureFlags} from "~/composables/useFeatureFlags";
 import {AvailableFlags} from "~/services/feature-flag/available_flags";
 
 const links = ref([

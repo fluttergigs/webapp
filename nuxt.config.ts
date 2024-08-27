@@ -1,3 +1,4 @@
+//@ts-ignore
 import path from "path";
 
 
@@ -7,6 +8,7 @@ export default defineNuxtConfig(
         experimental: {
             renderJsonPayloads: false
         },
+
         ssr: false,
         spaLoadingTemplate: false,
 

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 
-import useFeatureFlags from "~/composables/useFeatureFlags";
 import {AvailableFlags} from "~/services/feature-flag/available_flags";
 import type {BaseToast} from "~/core/ui/base_toast";
 //@ts-ignore
@@ -10,7 +9,7 @@ import {AppStrings} from "~/core/strings";
 definePageMeta({
   middleware: [
     function (to: any, from: any) {
-      if (!useFeatureFlags().isFeatureEnabled(AvailableFlags.consultants)) {
+      if (!useFeatureFlags().isEnabled(AvailableFlags.hireConsultants)) {
 
         const {$toast} = useNuxtApp();
         ($toast as BaseToast<Notification>).info(AppStrings.featureAvailableSoon)

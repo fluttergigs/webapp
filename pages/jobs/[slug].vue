@@ -1,10 +1,9 @@
-<script setup lang="ts">
+<script setup>
 
 import {useJobStore} from "~/stores/job";
 import {storeToRefs} from "pinia";
 import {Endpoint} from "~/core/network/endpoints";
 import {extractCompanyFromJob} from "~/features/jobs/transformers";
-import type {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider";
 import {AnalyticsEvent} from "~/services/analytics/events";
 import {userFacingCompanySize} from "~/features/companies/transformers";
 import {AppRoutes} from "~/core/routes";
@@ -57,7 +56,7 @@ const {
 if (!data.value) {
   throw createError({
     statusCode: 404,
-    statusMessage: 'Page Not Found',
+    statusMessage: 'Job Not Found',
   })
 }
 
@@ -76,16 +75,7 @@ useSeoMeta({
 })
 
 onMounted(() => {
-  ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.jobOfferDetailEntered, {jobOffer: data})
-
-  useSeoMeta({
-    title: `Find this job ${data.value.title}on FlutterGigs`,
-    ogTitle: data.value.title,
-    description: data.value.description,
-    ogDescription: data.value.description,
-    ogImage: 'https://example.com/image.png',
-    twitterCard: 'summary_large_image',
-  })
+  ($analytics).capture(AnalyticsEvent.jobOfferDetailEntered, {jobOffer: data})
 })
 
 onBeforeMount(() => {

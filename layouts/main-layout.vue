@@ -2,11 +2,11 @@
   <client-only>
     <div class="flex flex-col">
       <LayoutHeader/>
-      <div class="flex-grow">
+      <div class="flex-grow z-[-20]">
         <NuxtPage/>
       </div>
       <LayoutFooter/>
-      <UNotifications />
+      <UNotifications/>
     </div>
   </client-only>
 </template>

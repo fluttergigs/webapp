@@ -12,7 +12,7 @@
         </h3>
 
         <form class="flex flex-col space-y-8 my-12 w-full">
-          <CustomInput placeholder="eg. Senior Flutter Engineer"
+          <CustomInput is-disabled placeholder="eg. Senior Flutter Engineer"
                        name="jobTitle"
                        label="Job title *"
                        v-model="jobEditData.title" type="text"/>
@@ -104,7 +104,7 @@
             <UPopover :popper="{ placement: 'bottom-start' }">
               <UButton class="w-full" size="xl" color="white"
                        icon="i-heroicons-calendar-days-20-solid"
-                       :label="format(new Date(jobEditData.applyBefore!), 'd MMM, yyy')"/>
+                       :label="format(new Date(jobEditData.applyBefore), 'd MMM, yyy')"/>
 
               <template #panel="{ close }">
                 <DatePicker :min-date="new Date()" color="indigo"
@@ -141,7 +141,7 @@
                    size="xl"
                    color="indigo"
                    class="bg-indigo-700 flex justify-center items-center"
-                   label="Edit job"/>
+                   label="Save changes"/>
         </form>
       </div>
 
@@ -154,10 +154,9 @@
       </div>
     </div>
   </section>
-
 </template>
 
-<script setup lang="ts">
+<script setup>
 import {storeToRefs} from "pinia";
 import {useJobStore} from "~/stores/job";
 import CustomInput from "~/components/forms/CustomInput.vue";
@@ -169,9 +168,7 @@ import {DatePicker} from "v-calendar";
 import LabelledInput from "~/components/forms/LabelledInput.vue";
 import JobDescriptionGenerationModal from "~/components/job/JobDescriptionGenerationModal.vue";
 import WorkPermitSelector from "~/components/job/WorkPermitSelector.vue";
-import type {Country} from "~/core/shared/types";
 import {logDev} from "~/core/helpers/log";
-import {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider";
 import {AnalyticsEvent} from "~/services/analytics/events";
 import {editJobFormSchema,} from "~/core/validations/job.validations";
 import useCompanyActions from "~/composables/useCompanyActions";
@@ -188,9 +185,9 @@ definePageMeta({
   },
 })
 
+
 const jobStore = useJobStore()
 const {jobEditData, jobEdit} = storeToRefs(jobStore)
-useHead({title: `Flutter Gigs - Edit your job offer: ${jobEditData?.value?.title}`,});
 
 const hasWorkPermit = ref(false)
 const workPermits = ref([]);
@@ -199,7 +196,9 @@ const canEditJob = ref(false)
 const {editJobOffer} = useCompanyActions()
 
 onMounted(() => {
-  ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.jobEditPageEntered,)
+  ($analytics).capture(AnalyticsEvent.jobEditPageEntered,)
+  useHead({title: `Flutter Gigs - Edit your job offer: ${jobEditData?.value?.title}`,});
+
 })
 
 watch(jobEditData, async () => {
@@ -208,7 +207,7 @@ watch(jobEditData, async () => {
 
 const isSubmitButtonEnabled = computed(() => {
   const canSubmit = canEditJob.value && !jobEdit.value.isLoading;
-  return (hasWorkPermit.value && workPermits.value.length === 0)  ? false : canSubmit;
+  return (hasWorkPermit.value && workPermits.value.length === 0) ? false : canSubmit;
 })
 
 watch(jobEditData, () => {
@@ -221,15 +220,13 @@ watch(jobEditData, () => {
   }
 }, {deep: true})
 
-watch(hasWorkPermit, (value: boolean) => {
+watch(hasWorkPermit, (value) => {
   if (!value) {
     jobEditData.value.workPermits = null
   }
 })
 
-const getSelectedCountries = (data: {
-  countries: [Country]
-}) => {
+const getSelectedCountries = (data) => {
   logDev('SELECTED COUNTRIES POST', data)
 
   if (!hasWorkPermit.value) {
@@ -237,9 +234,10 @@ const getSelectedCountries = (data: {
   }
 
   workPermits.value = data.countries.map((country) => country)
-  jobEditData.value.workPermits = workPermits.value.map(({iso}: Country) => iso)
+  jobEditData.value.workPermits = workPermits.value.map(({iso}) => iso)
 }
-const successfulGeneration = (result: string) => {
+
+const successfulGeneration = (result) => {
   jobEditData.value.description = result
 }
 </script>
