@@ -19,6 +19,8 @@ const props = defineProps({
     default: Direction.horizontal,
   }
 })
+
+const {handleJobApply} = useJobActions()
 </script>
 
 <template>
@@ -32,7 +34,7 @@ const props = defineProps({
         </p>
       </div>
 
-      <UButton :to="props.job?.howToApply" target="_blank" size="lg"
+      <UButton @click="handleJobApply(props.job)" size="lg"
                :class="['bg-indigo-700',props.layoutDirection=== Direction.vertical?'w-full text-center flex justify-center items-center':'' ]"
                square label="Apply now" color="primary"
                variant="solid"/>

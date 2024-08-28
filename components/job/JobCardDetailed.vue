@@ -35,7 +35,7 @@ const company = computed(() => ({
             <h3 class="mb-4 text-xl font-bold font-heading leading-snug">
               {{ job.title }}
             </h3>
-            <p class="text-gray-500 font-medium leading-relaxed line-clamp-1 overflow-ellipsis">
+            <p class="text-gray-500 font-medium leading-relaxed line-clamp-2 overflow-ellipsis">
               {{ job.description }}
             </p>
           </div>

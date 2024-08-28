@@ -9,6 +9,7 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
+    "@nuxt/devtools": "^1.4.1",
     "@nuxtjs/i18n": "^8.0.0-beta.9",
     "@nuxtjs/strapi": "^1.9.1",
     "@pinia-plugin-persistedstate/nuxt": "^1.1.1",

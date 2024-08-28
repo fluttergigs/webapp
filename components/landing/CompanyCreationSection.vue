@@ -10,7 +10,7 @@ const {$analytics} = useNuxtApp()
 const postJob = () => {
   ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.companyPerkPostJobButtonClicked,);
 
-  navigateTo(AppRoutes.postJob)
+  useCompanyActions().handleJobCreation()
 }
 
 const createCompany = () => {

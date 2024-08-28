@@ -5,6 +5,9 @@ import path from "path";
 //@ts-ignore
 export default defineNuxtConfig(
     {
+        devtools: {
+            enabled: true,
+        },
         experimental: {
             renderJsonPayloads: false
         },

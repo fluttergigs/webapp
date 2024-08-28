@@ -40,7 +40,15 @@ export default function useJobActions() {
                     return;
                 }
             } else {
-                navigateTo(AppRoutes.login)
+                ($toast as BaseToast<Notification>).custom({
+                    color: 'primary',
+                    title: 'You need to be logged in to bookmark a job offer',
+                    timeout: 8000,
+                    actions: [{
+                        label: 'Login',
+                        click: () => navigateTo(AppRoutes.login)
+                    }]
+                })
             }
         } finally {
 
@@ -57,7 +65,6 @@ export default function useJobActions() {
         if (onDone != null) {
             onDone()
         }
-        return;
     }
 
     const isJobBookmarked = (job: JobOffer): boolean => useUserStore().bookmarkedJobs?.filter((savedJob: JobOffer) => savedJob.id == job.id).length > 0
@@ -86,6 +93,12 @@ export default function useJobActions() {
 
     const userFacingWorkingPermits = (countries: Country[]) => `${countries[0].name} ${countries.length > 1 ? `+ ${countries.length - 1} more` : ' only'}`
 
+    const handleJobApply = async (job: JobOffer) => {
+        ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.jobOfferApplyButtonClicked, {job});
+
+        window.open(job.howToApply!, '_blank')
+    }
+    
     return {
         shareJobOffer,
         jobBelongsToCompany,
@@ -95,5 +108,6 @@ export default function useJobActions() {
         isJobBookmarked,
         handleJobBookmark,
         handleJobDelete,
+        handleJobApply
     }
 }

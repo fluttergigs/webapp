@@ -2,7 +2,7 @@
   <client-only>
     <div class="flex flex-col">
       <LayoutHeader/>
-      <div class="flex-grow z-[-20]">
+      <div class="flex-grow">
         <NuxtPage/>
       </div>
       <LayoutFooter/>

@@ -61,6 +61,7 @@
     </div>
   </section>
 
+
   <UserSection/>
 
   <CompanySection/>
@@ -166,9 +167,9 @@
 <script setup>
 
 import '@/components/landing/Header.vue'
-import UserSection from "~/components/landing/UserSection.vue";
 import CompanySection from "~/components/landing/CompanySection.vue";
 import CompanyCreationSection from "~/components/landing/CompanyCreationSection.vue";
+import UserSection from "~/components/landing/UserSection.vue";
 
 definePageMeta({
   layout: 'main-layout',
