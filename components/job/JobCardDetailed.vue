@@ -5,6 +5,7 @@ import {RemoteOptions} from "~/features/jobs/job.types";
 import {extractCompanyFromJob, userFacingRemoteOptions, userFacingWorkType} from "~/features/jobs/transformers";
 import WorkingPermits from "~/components/job/WorkingPermits.vue";
 import useJobActions from "~/composables/useJobActions";
+import JobSalaryBox from "~/components/job/JobSalaryBox.vue";
 
 //@ts-ignore
 const props = defineProps({
@@ -31,13 +32,15 @@ const company = computed(() => ({
           group-hover:border-gray-300 group-hover:shadow-xl rounded-xl
           transition-all ease-in duration-200">
         <div class="flex flex-col justify-between h-full">
-          <div class="mb-16">
+          <div class="mb-16 flex flex-col space-y-2">
             <h3 class="mb-4 text-xl font-bold font-heading leading-snug">
               {{ job.title }}
             </h3>
             <p class="text-gray-500 font-medium leading-relaxed line-clamp-2 overflow-ellipsis">
               {{ job.description }}
             </p>
+
+            <JobSalaryBox :job="job"/>
           </div>
 
           <div class="flex flex-grow space-x-3 text-sm items-center">

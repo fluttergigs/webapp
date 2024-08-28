@@ -72,9 +72,12 @@ export default function useJobActions() {
     const jobBelongsToCompany = (company: Company) =>
         (useAuthStore().isAuthenticated && useUserStore().myCompany?.id === company.id)
 
-    const shareJobOffer = async ({slug}: JobOffer) => {
+    const shareJobOffer = async (job: JobOffer) => {
+        ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.jobOfferShareButtonClicked, {job})
+
+
         const {text, copy, copied,} = useClipboard({
-            source: `${location.href}/jobs/${slug}`,
+            source: `${location.href}/jobs/${job.slug}`,
             legacy: true
         })
 
@@ -98,7 +101,7 @@ export default function useJobActions() {
 
         window.open(job.howToApply!, '_blank')
     }
-    
+
     return {
         shareJobOffer,
         jobBelongsToCompany,

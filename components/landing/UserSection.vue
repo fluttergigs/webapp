@@ -23,7 +23,7 @@ const findJobs = () => {
     />
     <div class="relative z-10 container px-4 py-8 mx-auto">
       <p class="mb-6 text-sm text-indigo-600 font-bold uppercase tracking-px">
-        For users
+        For job seekers
       </p>
 
       <div class="md:flex md:justify-between">

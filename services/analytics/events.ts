@@ -12,6 +12,7 @@ export const enum AnalyticsEvent {
     bookmarkJobOfferClicked = "bookmark_job_offer_clicked",
     unBookmarkJobOfferClicked = "un_bookmark_job_offer_clicked",
     jobOfferDeleteButtonClicked = "job_offer_delete_button_clicked",
+    jobOfferShareButtonClicked = "job_offer_share_button_clicked",
     postJobOfferButtonClicked = "post_jobOffer_button_clicked",
     landingPageHeaderPostJobOfferButtonClicked = "landing_page_header_post_jobOffer_button_clicked",
     landingPageUserSectionFindJobsButtonClicked = "landing_page_user_section_find_jobs_button_clicked",
@@ -35,5 +36,6 @@ export const enum AnalyticsEvent {
     jobEditPageEntered = "job_edit_page_entered",
     error = "error",
     companyPerkPostJobButtonClicked = "company_perk_post_job_button_clicked",
-    companyPerkCreateCompanyButtonClicked = "company_perk_create_company_button_clicked"
+    companyPerkCreateCompanyButtonClicked = "company_perk_create_company_button_clicked",
+    userPerkCreateAccountButtonClicked = "user_perk_create_account_button_clicked"
 }
