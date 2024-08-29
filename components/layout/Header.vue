@@ -1,6 +1,6 @@
 <template>
   <section class="overflow-hidden">
-    <div class="flex items-center justify-between py-5 bg-blueGray-50 px-18 sticky">
+    <div class="flex items-center justify-between py-5 bg-blueGray-50 px-2 md:px-18 sticky">
       <div class="w-auto">
         <div class="flex flex-wrap items-center">
           <div class="w-auto mr-14">

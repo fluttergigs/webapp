@@ -20,7 +20,7 @@ const createCompany = () => {
 </script>
 
 <template>
-  <section class="relative py-24 bg-blueGray-50">
+  <section class="relative py-32 md:py-24 bg-blueGray-50">
     <img
         class="absolute overflow-hidden left-1/2 bottom-0 transform -translate-x-1/2"
         src="@/assets/images/gradient6.svg"
@@ -28,7 +28,7 @@ const createCompany = () => {
     />
 
     <div
-        class="flex flex-col md:flex-row w-full space-x-8 px-8 relative z-10 container mx-auto">
+        class="flex flex-col md:flex-row w-full space-y-4 md:space-x-8 px-10 md:px-8 relative container mx-auto my-8 md:my-0">
 
       <!--      TODO: change text for the second box-->
       <div class="w-full md:w-1/3">

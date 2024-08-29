@@ -1,5 +1,6 @@
 <template>
   <BasicFormContent
+      show-close-button
       title="Join for free"
       description="Create an account to get access thousands of Flutter job offers and Consultants">
 

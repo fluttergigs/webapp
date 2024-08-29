@@ -21,7 +21,7 @@ const findJobs = () => {
         src="@/assets/images/gradient6.svg"
         alt=""
     />
-    <div class="relative z-10 container px-4 py-8 mx-auto">
+    <div class="relative container sm:px-10 px-4 py-8 mx-auto">
       <p class="mb-6 text-sm text-indigo-600 font-bold uppercase tracking-px">
         For job seekers
       </p>
@@ -41,7 +41,7 @@ const findJobs = () => {
                  color="indigo" style="height: fit-content" size="xl" label="Find jobs"/>
       </div>
 
-      <div class="flex flex-wrap mb-1.5" v-if="landingPageJobs">
+      <div class="flex flex-wrap my-4" v-if="landingPageJobs">
         <JobCardDetailed :job="job" v-for="job in landingPageJobs" :key="job.slug"/>
       </div>
     </div>

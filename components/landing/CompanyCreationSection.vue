@@ -27,7 +27,7 @@ const createCompany = () => {
         alt=""
     />
 
-    <div class="flex w-full space-x-8 px-8 relative z-10 container mx-auto">
+    <div class="flex flex-col md:flex-row space-y-4 md:space-x-8 px-10 md:px-8 relative z-10 container mx-auto">
 
       <div class="w-full md:w-1/3">
         <div class="flex flex-col">
@@ -66,9 +66,7 @@ const createCompany = () => {
             :icon="MegaphoneIcon">
         </CompanyPerk>
       </div>
-
     </div>
-
   </section>
 </template>
 

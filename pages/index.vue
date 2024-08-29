@@ -6,7 +6,7 @@
       <div class="flex flex-wrap items-center -m-8">
         <div class="w-full md:w-1/3 p-8">
           <div class="md:max-w-sm">
-            <div class="flex flex-wrap items-center -m-3">
+            <div class="flex flex-wrap items-center m-3">
               <div class="w-auto p-3">
                 <div
                     class="flex items-center justify-center w-20 h-20 bg-indigo-100 rounded-full">
@@ -23,7 +23,7 @@
         </div>
         <div class="w-full md:w-1/3 p-8">
           <div class="md:max-w-sm">
-            <div class="flex flex-wrap items-center -m-3">
+            <div class="flex flex-wrap items-center m-3">
               <div class="w-auto p-3">
                 <div
                     class="flex items-center justify-center w-20 h-20 bg-indigo-100 rounded-full"
@@ -41,7 +41,7 @@
         </div>
         <div class="w-full md:w-1/3 p-8">
           <div class="md:max-w-sm">
-            <div class="flex flex-wrap items-center -m-3">
+            <div class="flex flex-wrap items-center m-3">
               <div class="w-auto p-3">
                 <div
                     class="flex items-center justify-center w-20 h-20 bg-indigo-100 rounded-full"

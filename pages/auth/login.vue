@@ -1,7 +1,9 @@
 <template>
 
-  <BasicFormContent title="Welcome Back"
-                    description="Login and get access to thousands of opportunities for your enterprise">
+  <BasicFormContent
+      show-close-button
+      title="Welcome Back"
+      description="Login and get access to thousands of opportunities for your enterprise">
 
     <template #form>
       <form class="space-y-4">
