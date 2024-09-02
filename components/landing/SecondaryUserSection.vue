@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import {MegaphoneIcon, UserIcon} from "@heroicons/vue/24/solid";
+import {MagnifyingGlassIcon, UserIcon} from "@heroicons/vue/24/solid";
 import CompanyPerk from "~/components/landing/CompanyPerk.vue";
 import {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider";
 import {AnalyticsEvent} from "~/services/analytics/events";
@@ -13,24 +13,17 @@ const createAccount = () => {
   return navigateTo(AppRoutes.login)
 }
 
-const createCompany = () => {
-  ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.companyPerkCreateCompanyButtonClicked,);
-  navigateTo(AppRoutes.createCompany)
+const findJobs = () => {
+  ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.userPerkFindJobsButtonClicked,);
+  navigateTo(AppRoutes.jobs)
 }
 </script>
 
 <template>
   <section class="relative py-32 md:py-24 bg-blueGray-50">
-    <img
-        class="absolute overflow-hidden left-1/2 bottom-0 transform -translate-x-1/2"
-        src="@/assets/images/gradient6.svg"
-        alt=""
-    />
-
     <div
         class="flex flex-col md:flex-row w-full space-y-4 md:space-x-8 px-10 md:px-8 relative container mx-auto my-8 md:my-0">
 
-      <!--      TODO: change text for the second box-->
       <div class="w-full md:w-1/3">
         <CompanyPerk
             @cta-clicked="createAccount"
@@ -42,12 +35,11 @@ const createCompany = () => {
       </div>
       <div class="w-full md:w-1/3">
         <CompanyPerk
-            @cta-clicked="createAccount"
+            @cta-clicked="findJobs"
             title="Publish"
-            cta-text="Post your job"
-            description="Reach top Flutter talents globally: Promote your remote jobs and connect with the world's best.
-                     Find the right skills, fast: Specify requirements upfront to streamline your hiring process."
-            :icon="MegaphoneIcon">
+            cta-text="Find your opportunity"
+            description="Find your next Flutter opportunity in a matter of seconds. We bridge the gap between you and your next Flutter job "
+            :icon="MagnifyingGlassIcon">
         </CompanyPerk>
       </div>
 
@@ -67,7 +59,6 @@ const createCompany = () => {
             Create your free profile today!
           </p>
         </div>
-
       </div>
     </div>
 

@@ -1,6 +1,11 @@
 <script setup lang="ts">
 
+//@ts-ignore
 import {CheckCircleIcon} from "@heroicons/vue/24/outline";
+
+const postJob = () => {
+  useCompanyActions().handleJobCreation()
+}
 </script>
 
 <template>
@@ -74,9 +79,9 @@ import {CheckCircleIcon} from "@heroicons/vue/24/outline";
                 </div>
               </div>
               <div class="mt-9">
-                <button
-                    class="py-4 px-5 w-full text-white font-semibold rounded-xl focus:ring focus:ring-indigo-300 bg-indigo-600 hover:bg-indigo-700 transition ease-in-out duration-200"
-                    type="button">
+                <button @click="postJob"
+                        class="py-4 px-5 w-full text-white font-semibold rounded-xl focus:ring focus:ring-indigo-300 bg-indigo-600 hover:bg-indigo-700 transition ease-in-out duration-200 cursor-pointer"
+                        type="button">
                   Post a job now for only $20
                 </button>
               </div>

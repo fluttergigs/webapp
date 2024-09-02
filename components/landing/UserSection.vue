@@ -41,7 +41,7 @@ const findJobs = () => {
                  color="indigo" style="height: fit-content" size="xl" label="Find jobs"/>
       </div>
 
-      <div class="flex flex-wrap my-4" v-if="landingPageJobs">
+      <div class="flex flex-wrap my-4 gap-3" v-if="landingPageJobs">
         <JobCardDetailed :job="job" v-for="job in landingPageJobs" :key="job.slug"/>
       </div>
     </div>

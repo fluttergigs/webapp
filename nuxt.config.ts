@@ -19,37 +19,7 @@ export default defineNuxtConfig(
             preference: 'light',
         },
         imports: {
-            dirs: ["core", "stores", "composables", "features"]
-        },
-        app: {
-            head: {
-                title: "Flutter Gigs",
-                htmlAttrs: {
-                    lang: "en",
-                },
-                meta: [
-                    {charset: "utf-8"},
-                    {
-                        name: "viewport",
-                        content:
-                            "width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no",
-                    },
-                    {hid: "description", name: "description", content: ""},
-                    {name: "format-detection", content: "telephone=no"},
-                ],
-                link: [
-                    {rel: "icon", type: "image/x-icon", href: "/favicon.png"},
-                    {rel: "preconnect", href: "https://fonts.gstatic.com"},
-                    {
-                        rel: "stylesheet",
-                        href: "https://fonts.cdnfonts.com/css/general-sans?styles=135312,135310,135313,135303",
-                    },
-                    {
-                        rel: "stylesheet",
-                        href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap",
-                    },
-                ],
-            },
+            dirs: ["core", "stores", "composables", "components", "services", "features"]
         },
         build: {
             // transpile: ['components/*', 'pages/*','composables/*'],

@@ -37,5 +37,6 @@ export const enum AnalyticsEvent {
     error = "error",
     companyPerkPostJobButtonClicked = "company_perk_post_job_button_clicked",
     companyPerkCreateCompanyButtonClicked = "company_perk_create_company_button_clicked",
-    userPerkCreateAccountButtonClicked = "user_perk_create_account_button_clicked"
+    userPerkCreateAccountButtonClicked = "user_perk_create_account_button_clicked",
+    userPerkFindJobsButtonClicked = "user_perk_find_jobs_button_clicked",
 }
