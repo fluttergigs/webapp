@@ -9,7 +9,7 @@
         <div class="flex flex-wrap items-center justify-between px-9 py-6 pb-0">
           <div class="w-auto">
             <NuxtLink :to="AppRoutes.welcome" class="inline-block">
-              <img src="@/assets/images/logo.svg" alt="">
+              <img class="w-16" src="@/assets/images/logo.png" alt="">
             </NuxtLink>
           </div>
           <div class="w-auto" @click="useAppStore().toggleAppBarShrink()">
@@ -53,7 +53,6 @@
 
                   </div>
                 </div>
-
               </div>
             </div>
           </div>

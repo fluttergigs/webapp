@@ -3,7 +3,7 @@
   <BasicFormContent
       show-close-button
       title="Welcome Back"
-      description="Login and get access to thousands of opportunities for your enterprise">
+      description="Login and get access to thousands of opportunities">
 
     <template #form>
       <form class="space-y-4">

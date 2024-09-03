@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import CloseButton from "~/components/ui/CloseButton.vue";
+
 //@ts-ignore
 const props = defineProps({
   title: {
@@ -19,7 +20,7 @@ const props = defineProps({
 
 <template>
   <client-only>
-    <section class="py-8 md:py-16 xl:pb-56 bg-white relative overflow-hidden">
+    <section class="flex flex-col py-8 md:py-16 xl:pb-56 bg-white relative overflow-hidden">
 
       <CloseButton v-if="showCloseButton"/>
       <div class="container px-4 mx-auto">

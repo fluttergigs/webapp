@@ -44,7 +44,7 @@ const {
   data,
   error,
   pending
-} = await useFetch(`${useRuntimeConfig().public.apiBaseUrl}${Endpoint.jobOffers}?${query.value}`, {
+} = await useLazyFetch(`${useRuntimeConfig().public.apiBaseUrl}${Endpoint.jobOffers}?${query.value}`, {
   transform: (results) => {
     const job = results.data[0]
     return {
