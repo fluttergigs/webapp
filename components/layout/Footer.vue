@@ -11,7 +11,7 @@
           <div class="w-full sm:w-1/2 lg:w-6/12 p-8">
             <div class="lg:max-w-sm">
               <a class="mb-8 inline-block" href="#">
-                <img src="@/assets/images/logo-light.svg" alt=""/>
+                <img class="w-20" src="@/assets/images/logo.png" alt=""/>
               </a>
               <p class="mb-20 text-gray-400 font-medium leading-relaxed md:max-w-xs">
                 Looking for a job in Flutter development? Check out FlutterGigs - the first Flutter job board! Find your
@@ -126,9 +126,10 @@
             </h3>
             <ul>
               <li class="mb-5">
-                <a
+                <NuxtLink
                     class="text-white hover:text-gray-200 font-medium leading-relaxed"
-                    href="#">Learning Flutter Resources</a>
+                    :to="AppRoutes.learn">Learning Flutter Resources
+                </NuxtLink>
               </li>
             </ul>
           </div>

@@ -60,15 +60,15 @@ if (!data.value) {
   })
 }
 
-useHead({title: `Flutter Gigs - ${data.value?.title}`});
 useSeoMeta({
   title: () => `Flutter Gigs - ${data.value?.title}`,
   ogTitle: () => `Flutter Gigs - ${data.value?.title}`,
+  ogImage: 'https://fluttergigs.com/fluttergigs-og.png',
   description: () => data.value?.description,
   ogDescription: () => data.value?.description,
-  ogSiteName: 'Flutter Gigs',
+  ogSiteName: 'Flutter Gigs - The #1 Flutter job platform',
   twitterCard: 'summary_large_image',
-  twitterImage: () => data.value?.company?.logo,
+  twitterImage: () => data.value?.company?.logo ?? 'https://fluttergigs.com/fluttergigs-og.png',
   twitterSite: '@fluttergigs',
   twitterTitle: () => `Flutter Gigs - ${data.value?.title}`,
   twitterDescription: () => 'Find this opportunity on FlutterGigs:' + data.value?.description,

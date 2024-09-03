@@ -1,7 +1,7 @@
 <template>
   <client-only>
     <div class="flex flex-col">
-      <LayoutHeader/>
+      <LayoutNavBar/>
       <div class="flex-grow">
         <NuxtPage/>
       </div>
@@ -12,6 +12,7 @@
 </template>
 
 <script setup lang="ts">
+import LayoutNavBar from "~/components/layout/NavBar.vue";
 
 onBeforeMount(async () => {
   await Promise.all([

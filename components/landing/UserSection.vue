@@ -37,8 +37,9 @@ const findJobs = () => {
             find your dream gig today.
           </p>
         </div>
-        <UButton @click="findJobs" class="bg-indigo-700"
-                 color="indigo" style="height: fit-content" size="xl" label="Find jobs"/>
+        <UButton
+            @click="findJobs" class="bg-indigo-700 w-full md:w-auto"
+            color="indigo" style="height: fit-content" size="xl" label="Find jobs"/>
       </div>
 
       <div class="flex flex-wrap my-4 gap-3" v-if="landingPageJobs">

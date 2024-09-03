@@ -5,12 +5,15 @@
         <div class="flex flex-wrap items-center">
           <div class="w-auto mr-14">
             <NuxtLink :to="AppRoutes.welcome">
-              <img src="@/assets/images/logo.svg" alt=""/>
+              <img class="w-20" src="@/assets/images/logo.png" alt=""/>
             </NuxtLink>
           </div>
           <div class="w-auto hidden lg:block">
             <ul class="flex items-center mr-16">
-              <li class="mr-9 font-medium hover:text-indigo-900" v-for="link in links">
+              <li class="mr-9 font-medium
+              hover:text-indigo-500 transition-all duration-300 ease-in-out"
+                  :class="{'text-indigo-900 font-bolder': isActive(link.path)}"
+                  v-for="link in links">
                 <NuxtLink :to="link.path" v-if="link.enabled">{{ link.name }}</NuxtLink>
               </li>
             </ul>
@@ -76,26 +79,12 @@
             <div class="flex items-center justify-between -m-2">
               <div class="w-auto p-2">
                 <NuxtLink class="inline-block" to="/">
-                  <img src="@/assets/images/logo.svg" alt=""/>
+                  <img class="w-20" src="@/assets/images/logo.png" alt=""/>
                 </NuxtLink>
               </div>
               <div class="w-auto p-2">
                 <a class="navbar-burger" href="#">
-                  <svg
-                      width="24"
-                      height="24"
-                      viewbox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                        d="M6 18L18 6M6 6L18 18"
-                        stroke="#111827"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    ></path>
-                  </svg>
+                  <BurgerIcon/>
                 </a>
               </div>
             </div>
@@ -149,8 +138,9 @@ import {useAuthStore} from "~/stores/auth";
 import {storeToRefs} from "pinia";
 import {AnalyticsEvent} from "~/services/analytics/events";
 import {AvailableFlags} from "~/services/feature-flag/available_flags";
+import BurgerIcon from "~/components/icons/BurgerIcon.vue";
 
-const links = ref([
+const links = shallowRef([
   {
     path: AppRoutes.welcome,
     name: 'Home',
@@ -178,6 +168,8 @@ const links = ref([
     enabled: true
   },
 ])
+
+const isActive = (path) => useRoute().path === path
 
 const accountLinks = [
   [{

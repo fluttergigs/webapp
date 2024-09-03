@@ -18,7 +18,6 @@ const props = defineProps({
 </script>
 
 <template>
-
   <client-only>
     <section class="py-8 md:py-16 xl:pb-56 bg-white relative overflow-hidden">
 
@@ -27,24 +26,20 @@ const props = defineProps({
         <div class="text-center max-w-lg mx-auto">
           <slot name="logo">
             <NuxtLink class="mb-36 inline-block" to="/">
-              <img src="@/assets/images/logo.svg" alt=""/>
+              <img class="w-12" src="@/assets/images/ico.png" alt=""/>
             </NuxtLink>
           </slot>
 
-          <h2 v-if="title"
-              class="mb-4 text-6xl md:text-7xl text-center font-bold font-heading tracking-px-n leading-tight"
-          >
-            {{ title }}
-          </h2>
-          <slot v-else name="title">
-
+          <slot name="title">
+            <h2 class="mb-4 text-6xl md:text-7xl text-center font-bold font-heading tracking-px-n leading-tight">
+              {{ title }}
+            </h2>
           </slot>
 
-          <p v-if="description" class="mb-12 font-medium text-lg text-gray-600 leading-normal">
-            {{ description }}
-          </p>
-          <slot v-else name="description">
-
+          <slot name="description">
+            <p class="mb-12 font-medium text-lg text-gray-600 leading-normal">
+              {{ description }}
+            </p>
           </slot>
 
           <slot name="form">

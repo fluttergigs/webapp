@@ -31,14 +31,14 @@
                 Get the best-in-class group mentoring plans and professional benefits for
                 your team
               </p>
-              <div style="width: fit-content" class="flex flex-col sm:flex-row gap-3 my-20 items-center">
+              <div style="width: fit-content" class="flex flex-col sm:flex-row gap-3 my-20 items-start md:items-center">
 
                 <UButton
                     @click="findJobs"
                     icon="i-heroicons-magnifying-glass-solid"
                     color="indigo"
                     class="py-5 px-9 rounded-xl flex gap-2 font-medium"
-                    label="Find your job now"/>
+                    label="Find your next job now"/>
                 <UButton
                     @click="handleJobCreation"
                     icon="i-heroicons-megaphone-solid"
