@@ -23,4 +23,12 @@ export class Endpoint {
     static get getMe() {
         return '/users/me'
     }
+
+    static get learnCategories() {
+        return '/learn-categories'
+    }
+
+    static get learnResources() {
+        return '/learn-resources'
+    }
 }

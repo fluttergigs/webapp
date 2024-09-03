@@ -190,16 +190,4 @@ useSeoMeta({
   twitterImage: () => 'https://fluttergigs.com/images/og-image.png',
 })
 
-
-useHead({
-  title: 'Flutter Gigs',
-  meta: [
-    {
-      name: 'description',
-      content: 'Flutter Gigs is a platform to find Flutter framework related job opportunities and more',
-    },
-  ],
-})
-
-
 </script>

@@ -152,6 +152,11 @@ import {AvailableFlags} from "~/services/feature-flag/available_flags";
 
 const links = ref([
   {
+    path: AppRoutes.welcome,
+    name: 'Home',
+    enabled: true
+  },
+  {
     path: AppRoutes.companies,
     name: 'Companies',
     enabled: useFeatureFlags().isEnabled(AvailableFlags.companiesList,)
@@ -170,7 +175,7 @@ const links = ref([
   {
     path: AppRoutes.learn,
     name: 'Learn',
-    enabled: useFeatureFlags().isEnabled(AvailableFlags.learn,)
+    enabled: true
   },
 ])
 
