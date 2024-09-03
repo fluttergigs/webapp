@@ -11,7 +11,17 @@
   </client-only>
 </template>
 
-<script setup>
+<script setup lang="ts">
 
+onBeforeMount(async () => {
+  await Promise.all([
+    useAuthStore().fetchUser(),
+    useCompanyStore().fetchCompanies(),
+    useJobStore().fetchJobs(),
+    useSettingStore().fetchSetting(),
+    useLearnStore().fetchLearnCategories(),
+    useLearnStore().fetchLearnResources(),
+  ])
+})
 
 </script>

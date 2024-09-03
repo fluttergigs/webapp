@@ -39,4 +39,7 @@ export const enum AnalyticsEvent {
     companyPerkCreateCompanyButtonClicked = "company_perk_create_company_button_clicked",
     userPerkCreateAccountButtonClicked = "user_perk_create_account_button_clicked",
     userPerkFindJobsButtonClicked = "user_perk_find_jobs_button_clicked",
+    learnCategoryPageEntered = "learn_category_page_entered",
+    learnCategoryClicked = "learn_category_clicked",
+    learnResourceClicked = "learn_resource_clicked",
 }

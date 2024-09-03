@@ -9,33 +9,33 @@ import type {MultiApiResponse} from "~/core/shared/types";
 // @ts-ignore
 export const useLearnStore = defineStore('learn', {
     state: () => ({
-        fetchLearnCategories: new Wrapper<MultiApiResponse<LearnCategory>>().toInitial(),
-        fetchLearnResources: new Wrapper<MultiApiResponse<LearnResource>>().toInitial(),
+        fetchLearnCategoriesProcess: new Wrapper<MultiApiResponse<LearnCategory>>().toInitial(),
+        fetchLearnResourcesProcess: new Wrapper<MultiApiResponse<LearnResource>>().toInitial(),
         selectedCategory: Wrapper.getEmpty().toInitial(),
     }),
     actions: {
         async fetchLearnCategories(): Promise<void> {
-            this.fetchLearnCategories = new Wrapper<MultiApiResponse<LearnCategory>>().toLoading()
+            this.fetchLearnCategoriesProcess = new Wrapper<MultiApiResponse<LearnCategory>>().toLoading()
             try {
                 //@ts-ignore
                 const {$http} = useNuxtApp()
                 const response = await (<HttpClient>$http).get(`${Endpoint.learnCategories}?populate=*`)
-                this.fetchLearnCategories = this.fetchLearnCategories.toSuccess(response)
+                this.fetchLearnCategoriesProcess = this.fetchLearnCategoriesProcess.toSuccess(response)
 
                 this.setSelectedCategory(this.getLearnCategories[0])
             } catch (e) {
-                this.fetchLearnCategories = this.fetchLearnCategories.toFailed(AppStrings.unableToFetchLearnCategories)
+                this.fetchLearnCategoriesProcess = this.fetchLearnCategoriesProcess.toFailed(AppStrings.unableToFetchLearnCategories)
             }
         },
         async fetchLearnResources(): Promise<void> {
-            this.fetchLearnResources = new Wrapper<MultiApiResponse<LearnResource>>().toLoading()
+            this.fetchLearnResourcesProcess = new Wrapper<MultiApiResponse<LearnResource>>().toLoading()
             try {
                 //@ts-ignore
                 const {$http} = useNuxtApp()
                 const response = await (<HttpClient>$http).get(`${Endpoint.learnResources}?populate=*`)
-                this.fetchLearnResources = this.fetchLearnResources.toSuccess(response)
+                this.fetchLearnResourcesProcess = this.fetchLearnResourcesProcess.toSuccess(response)
             } catch (e) {
-                this.fetchLearnResources = this.fetchLearnResources.toFailed(AppStrings.unableToFetchLearnResources)
+                this.fetchLearnResourcesProcess = this.fetchLearnResourcesProcess.toFailed(AppStrings.unableToFetchLearnResources)
             }
         },
         setSelectedCategory(category: LearnCategory) {
@@ -47,14 +47,18 @@ export const useLearnStore = defineStore('learn', {
         },
     },
     getters: {
-        getLearnCategories: (state) => state.fetchLearnCategories.value?.data?.map((item: { [x: string]: any; }) => ({
+        getLearnCategories: (state) => state.fetchLearnCategoriesProcess.value?.data?.map((item: {
+            [x: string]: any;
+        }) => ({
             ...item['attributes'],
             id: item['id']
-        })),
-        getLearnResources: (state) => state.fetchLearnResources.value?.data?.map((item: { [x: string]: any; }) => ({
+        })) as LearnCategory[],
+        getLearnResources: (state) => state.fetchLearnResourcesProcess.value?.data?.map((item: {
+            [x: string]: any;
+        }) => ({
             ...item['attributes'],
             id: item['id']
-        })),
-        getSelectedCategory: (state) => state.selectedCategory.value,
+        })) as LearnResource[],
+        getSelectedCategory: (state) => state.selectedCategory.value as LearnCategory,
     },
 })

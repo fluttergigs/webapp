@@ -7,11 +7,6 @@
 </template>
 
 <script setup lang="ts">
-import {useSettingStore} from "~/stores/setting";
-import {useCompanyStore} from "~/stores/company";
-import {useAuthStore} from "~/stores/auth";
-import {useJobStore} from "~/stores/job";
-import {useLearnStore} from "~/stores/learn";
 
 useHead({
   title: `Flutter Gigs - The #1 Flutter job platform - ${useRoute().meta.title ?? "Flutter Gigs"}`,
@@ -62,14 +57,5 @@ useSeoMeta({
   twitterImage: () => 'https://fluttergigs.com/images/og-image.png',
 })
 
-onBeforeMount(async () => {
-  await Promise.all([
-    useAuthStore().fetchUser(),
-    useCompanyStore().fetchCompanies(),
-    useJobStore().fetchJobs(),
-    useSettingStore().fetchSetting(),
-    useLearnStore().fetchLearnCategories(),
-    useLearnStore().fetchLearnResources(),
-  ])
-})
+
 </script>

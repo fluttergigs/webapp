@@ -14,28 +14,26 @@
 
   <section class="py-20 px-10 bg-white">
     <div class="flex flex-col gap-4 overflow-hidden">
-
-      <div class="flex flex-wrap gap-3 justify-center items-center">
-        <UButton v-for="category in getLearnCategories"
-                 :key="category.slug"
-                 :label="category.title"
-                 :color="category.slug === getSelectedCategory?.slug ? 'primary' : 'gray'"
-                 class="primary-button px-4 max-w-[80px]"
-                 @click="useLearnStore().setSelectedCategory(category)"/>
-      </div>
+      <LearnCategories/>
     </div>
   </section>
 
-
 </template>
 
-<script setup>
+<script setup lang="ts">
 
 import '@/components/landing/Header.vue'
-import {storeToRefs} from "pinia";
+import type {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider";
+import {AnalyticsEvent} from "~/services/analytics/events";
 
 definePageMeta({
   layout: 'main-layout',
+})
+
+const {$analytics} = useNuxtApp()
+
+onMounted(() => {
+  ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.learnCategoryPageEntered,);
 })
 
 
@@ -51,6 +49,5 @@ useSeoMeta({
   twitterDescription: () => 'Flutter Gigs is a platform to find Flutter framework related job opportunities and more',
   twitterImage: () => 'https://fluttergigs.com/images/og-image.png',
 })
-
 
 </script>

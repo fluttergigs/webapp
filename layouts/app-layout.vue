@@ -141,6 +141,8 @@ onBeforeMount(async () => {
     useJobStore().fetchJobs(),
     useSettingStore().fetchSetting(),
     useAuthStore().fetchUser(),
+    useLearnStore().fetchLearnCategories(),
+    useLearnStore().fetchLearnResources(),
   ])
 })
 
