@@ -62,6 +62,7 @@ if (!data.value) {
 
 useSeoMeta({
   title: () => `Flutter Gigs - ${data.value?.title}`,
+  ogUrl: 'https://fluttergigs.com',
   ogTitle: () => `Flutter Gigs - ${data.value?.title}`,
   ogImage: 'https://fluttergigs.com/fluttergigs-og.png',
   description: () => data.value?.description,

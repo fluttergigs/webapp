@@ -1,10 +1,8 @@
 //@ts-ignore
 import path from "path";
 
-
 //@ts-ignore
-export default defineNuxtConfig(
-    {
+export default defineNuxtConfig({
         devtools: {
             enabled: true,
         },
@@ -12,11 +10,17 @@ export default defineNuxtConfig(
             renderJsonPayloads: false
         },
 
-        ssr: false,
-        spaLoadingTemplate: false,
+        // spaLoadingTemplate: false,
 
         colorMode: {
             preference: 'light',
+        },
+        site: {
+            name: 'Flutter Gigs - The #1 Flutter job platform',
+            url: 'https://fluttergigs.com',
+        },
+        sitemap: {
+            sources: ['/api/sitemap'],
         },
         imports: {
             dirs: ["core", "stores", "composables", "components", "services", "features"]
@@ -44,18 +48,9 @@ export default defineNuxtConfig(
             },
         },
 
-        modules: [
-            '@pinia/nuxt',
-            '@pinia-plugin-persistedstate/nuxt',
-            '@nuxtjs/i18n',
-            'nuxt-lodash',
-            // '@nuxtjs/tailwindcss',
+        modules: ['@pinia/nuxt', '@pinia-plugin-persistedstate/nuxt', '@nuxtjs/i18n', 'nuxt-lodash', // '@nuxtjs/tailwindcss',
             // 'nuxt-appwrite',
-            '@nuxtjs/strapi',
-            '@nuxt/ui',
-            '@sentry/nuxt/module',
-            "@nuxt/image"
-        ],
+            '@nuxtjs/strapi', '@nuxt/ui', '@sentry/nuxt/module', "@nuxt/image", "@nuxtjs/sitemap"],
         sentry: {
             sourceMapsUploadOptions: {
                 org: "evacorp",
@@ -123,7 +118,7 @@ export default defineNuxtConfig(
             // optimizeDeps: { include: ["quill"] },
             resolve: {
                 alias: {
-                    vue: path.resolve('./node_modules/vue', 'dist', 'vue.runtime.esm-bundler.js')
+                    vue: path.resolve('./node_modules/vue')
                 },
                 preserveSymlinks: false
             },
@@ -134,7 +129,7 @@ export default defineNuxtConfig(
         },
 
         routeRules: {
-            "/*": {cors: true},
+            "/*": {cors: true,},
         },
 
         compatibilityDate: "2024-08-06"

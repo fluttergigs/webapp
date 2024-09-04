@@ -14,7 +14,7 @@
 <script setup lang="ts">
 import LayoutNavBar from "~/components/layout/NavBar.vue";
 
-onBeforeMount(async () => {
+onMounted(async () => {
   await Promise.all([
     useAuthStore().fetchUser(),
     useCompanyStore().fetchCompanies(),

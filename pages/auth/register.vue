@@ -42,7 +42,7 @@ import BasicFormContent from "~/components/ui/BasicFormContent.vue";
 import type {Notification} from "#ui/types";
 import {useRegister} from "~/composables/useRegister";
 
-useHead({title: "Flutter Gigs - Authentication"});
+useHead({title: "Flutter Gigs - Create your account"});
 
 definePageMeta({
   middleware: ['logged-in'],

@@ -31,7 +31,8 @@ useHead({
     },
   ],
   link: [
-    {rel: "icon", type: "image/x-icon", href: "/favicon.png"},
+    {rel: 'canonical', href: 'https://fluttergigs.com'},
+    {rel: "icon", type: "image/x-icon", href: "/favicon.ico"},
     {rel: "preconnect", href: "https://fonts.gstatic.com"},
     {
       rel: "stylesheet",
