@@ -7,6 +7,7 @@ export function useLearn() {
     const learnStore = useLearnStore()
     const {
         getLearnCategories,
+        getLearnResources,
         getSelectedCategory,
         fetchLearnCategoriesProcess,
         fetchLearnResourcesProcess,
@@ -20,6 +21,7 @@ export function useLearn() {
 
     const handleLearnResourceClick = (resource: LearnResource) => {
         ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.learnResourceClicked, {learnResource: resource});
+        window.open(resource.link, '_blank')
     }
 
     const isFetchingLearnCategories = computed(() => fetchLearnCategoriesProcess.value?.isLoading)
@@ -28,9 +30,17 @@ export function useLearn() {
     const isLearnCategoriesFetched = computed(() => fetchLearnCategoriesProcess.value?.isSuccess)
     const isLearnResourcesFetched = computed(() => fetchLearnResourcesProcess.value?.isSuccess)
 
+    const getSelectedCategoryResources = computed(() => {
+        if (getSelectedCategory.value) {
+            return getLearnResources.value?.filter(resource => resource.category.data['attributes']['slug'] === getSelectedCategory.value.slug)
+        }
+        return []
+    })
+
     return {
         handleLearnCategoryClick,
         handleLearnResourceClick,
+        getSelectedCategoryResources,
         getLearnCategories,
         getSelectedCategory,
         isFetchingLearnCategories,

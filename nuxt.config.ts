@@ -53,7 +53,8 @@ export default defineNuxtConfig(
             // 'nuxt-appwrite',
             '@nuxtjs/strapi',
             '@nuxt/ui',
-            '@sentry/nuxt/module'
+            '@sentry/nuxt/module',
+            "@nuxt/image"
         ],
         sentry: {
             sourceMapsUploadOptions: {
@@ -61,6 +62,9 @@ export default defineNuxtConfig(
                 project: "fluttergigs",
                 authToken: "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",
             },
+        },
+        image: {
+            quality: 100,
         },
 
         runtimeConfig: {
