@@ -5,10 +5,10 @@
   <div class="flex flex-col w-full">
     <section class="py-8 px-2 md:py-12 xl:pb-56 bg-white overflow-hidden">
       <h3
-          class="mb-4 text-2xl md:text-4xl font-semibold tracking-px-n leading-tight">
+          class="mb-4 text-xl md:text-3xl font-semibold tracking-px-n leading-tight">
         Your company <span class="text-indigo-500">{{ formInput.name }}</span>
       </h3>
-      <p class="text-xl ">Set your company information</p>
+      <p class="text-md md:text-xl">Set your company information</p>
 
 
       <form class="flex flex-col space-y-6 my-12 mr-8">
@@ -86,7 +86,7 @@ import type {Notification} from "#ui/types";
 import {useUserStore} from "~/stores/user";
 import CompanyDescriptionGenerationModal from "~/components/company/CompanyDescriptionGenerationModal.vue";
 
-useHead({title: "Flutter Gigs - Company information update"});
+useHead({title: "FlutterGigs - Company information update"});
 
 definePageMeta({
   layout: 'app-layout',

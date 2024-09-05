@@ -3,10 +3,10 @@
     <client-only>
       <section class="py-8 px-10 md:py-12 xl:pb-56 bg-white overflow-hidden">
         <h3
-            class="mb-4 text-2xl md:text-4xl font-semibold tracking-px-n leading-tight">
+            class="mb-4 text-xl md:text-3xl font-semibold tracking-px-n leading-tight">
           Your Settings
         </h3>
-        <p class="text-xl text">👋, <b class="text-indigo-500">{{ useAuthStore().userFullName }}</b>!
+        <p class="text-md md:text-xl">👋, <b class="text-indigo-500">{{ useAuthStore().userFullName }}</b>!
           Make changes to your account here</p>
 
         <UTabs :items="tabs" class="w-full my-12" @change="onChange">
@@ -30,14 +30,13 @@
 </template>
 
 <script setup>
-import {companyUpdateFormSchema} from "~/core/validations/company.validations";
 import {useAuthStore} from "~/stores/auth";
 import UpdateUser from "~/components/account/UpdateUser.vue";
 import UpdatePassword from "~/components/account/UpdatePassword.vue";
 import {AnalyticsEvent} from "~/services/analytics/events";
 
 definePageMeta({layout: 'app-layout', middleware: ['auth']})
-useHead({title: "Flutter Gigs - My account"});
+useHead({title: "FlutterGigs - My account"});
 
 const authStore = useAuthStore()
 const {$analytics} = useNuxtApp()
