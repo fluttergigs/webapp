@@ -30,6 +30,7 @@ useServerSeoMeta({
 })
 
 definePageMeta({
+  title: 'Create your company',
   middleware: ['auth', function () {
     if (useUserStore().hasCompanies) {
       return navigateTo(AppRoutes.myCompany)

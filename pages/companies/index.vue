@@ -6,6 +6,7 @@ import type {Notification} from "#ui/types";
 import {AppStrings} from "~/core/strings";
 
 definePageMeta({
+  title: 'Companies',
   middleware: [
     function (to: any, from: any) {
       if (!useFeatureFlags().isEnabled(AvailableFlags.companiesList)) {

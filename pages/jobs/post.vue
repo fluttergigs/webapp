@@ -178,8 +178,7 @@ import useCompanyActions from "~/composables/useCompanyActions";
 import {AppRoutes} from "~/core/routes";
 
 
-definePageMeta({layout: 'app-layout', middleware: ['auth', 'no-company'],})
-useHead({title: `Flutter Gigs - Post your job`});
+definePageMeta({layout: 'app-layout', middleware: ['auth', 'no-company'], title: 'Post your job',})
 
 const jobStore = useJobStore()
 const {jobCreationData, jobCreation} = storeToRefs(jobStore)

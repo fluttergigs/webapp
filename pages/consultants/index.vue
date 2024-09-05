@@ -7,6 +7,7 @@ import type {Notification} from "#ui/types";
 import {AppStrings} from "~/core/strings";
 
 definePageMeta({
+  title: 'Flutter Consultants',
   middleware: [
     function (to: any, from: any) {
       if (!useFeatureFlags().isEnabled(AvailableFlags.hireConsultants)) {

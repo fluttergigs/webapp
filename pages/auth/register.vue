@@ -61,6 +61,7 @@ useServerSeoMeta({
 
 definePageMeta({
   middleware: ['logged-in'],
+  title: 'Create your account',
 })
 
 const {formInput, canSubmit, user, submit, onSuccessfulRegistration} = useRegister()

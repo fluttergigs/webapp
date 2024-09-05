@@ -5,7 +5,7 @@
         <div class="flex flex-wrap items-center">
           <div class="w-auto mr-14">
             <NuxtLink :to="AppRoutes.welcome">
-              <img class="w-20" src="@/assets/images/logo.png" alt=""/>
+              <NuxtImg placeholder class="w-20" src="/logo.png" alt=""/>
             </NuxtLink>
           </div>
           <div class="w-auto hidden lg:block">
@@ -79,7 +79,7 @@
             <div class="flex items-center justify-between -m-2">
               <div class="w-auto p-2">
                 <NuxtLink class="inline-block" to="/">
-                  <img class="w-20" src="@/assets/images/logo.png" alt=""/>
+                  <NuxtImg placeholder class="w-20" src="/logo.png" alt=""/>
                 </NuxtLink>
               </div>
               <div class="w-auto p-2">

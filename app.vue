@@ -9,7 +9,7 @@
 <script setup lang="ts">
 
 useHead({
-  title: `Flutter Gigs - The #1 Flutter job platform - ${useRoute().meta.title ?? "Flutter Gigs"}`,
+  title: `Flutter Gigs, The #1 Flutter job platform - ${useRoute().meta.title ?? "Flutter Gigs"}`,
   meta: [
     {
       name: 'description',
@@ -48,6 +48,10 @@ useHead({
       href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap",
     },
     {property: 'og:title', content: 'Flutter Gigs - The #1 Flutter job platform'},
+    {property: 'og:url', content: 'https://fluttergigs.com'},
+    {property: 'og:logo', content: 'https://fluttergigs.com/ico.png'},
+    {property: 'og:type', content: 'website'},
+    {property: 'og:locale', content: 'en_US'},
     {property: 'og:image', content: 'https://fluttergigs.com/fluttergigs-og.png'},
     {
       property: 'og:description',
@@ -56,6 +60,17 @@ useHead({
     {property: 'og:site_name', content: 'Flutter Gigs - The #1 Flutter job platform'},
     {property: 'twitter:card', content: 'summary_large_image'},
     {property: 'twitter:site', content: '@fluttergigs'},
+    {
+      property: 'twitter:url',
+      content: 'https://fluttergigs.com',
+    }, {
+      property: 'twitter:domain',
+      content: 'fluttergigs.com',
+    },
+    {
+      property: 'twitter:creator',
+      content: '@enthusiastDev',
+    },
     {
       property: 'twitter:title',
       content: 'Flutter Gigs - Find the best Flutter opportunities at top remote companies around the world'
@@ -66,17 +81,22 @@ useHead({
     },
     {property: 'twitter:image', content: 'https://fluttergigs.com/fluttergigs-og.png'},
   ],
-
 })
 
 useSeoMeta({
-  title: 'Flutter Gigs - The #1 Flutter job platform',
+  title: () => 'Flutter Gigs - The #1 Flutter job platform',
   ogTitle: 'Flutter Gigs - The #1 Flutter job platform',
   ogImage: 'https://fluttergigs.com/fluttergigs-og.png',
+  ogUrl: 'https://fluttergigs.com',
+  ogType: 'website',
+  ogLocale: 'en_US',
+  ogLogo: 'https://fluttergigs.com/ico.png',
   description: 'Flutter Gigs is a platform to find Flutter framework related job opportunities and more',
   ogDescription: 'Flutter Gigs is a platform to find Flutter framework related job opportunities and more',
   ogSiteName: 'Flutter Gigs - The #1 Flutter job platform',
   twitterCard: 'summary_large_image',
+  twitterUrl: 'https://fluttergigs.com',
+  twitterDomain: 'https://fluttergigs.com',
   twitterSite: '@fluttergigs',
   twitterTitle: () => `Flutter Gigs - Find the best Flutter opportunities at top remote companies around the world`,
   twitterDescription: () => 'Flutter Gigs is a platform to find Flutter framework related job opportunities and more',

@@ -54,23 +54,7 @@ import {useMediaQuery} from "@vueuse/core";
 definePageMeta({
   layout: 'main-layout',
   keepalive: true,
-})
-
-useHead({title: `Flutter Gigs - Browse jobs`});
-
-useServerSeoMeta({
-  title: 'Flutter Gigs - The #1 Flutter job platform',
-  ogUrl: 'https://fluttergigs.com',
-  ogTitle: 'Flutter Gigs - The #1 Flutter job platform',
-  ogImage: 'https://fluttergigs.com/fluttergigs-og.png',
-  description: 'Flutter Gigs is a platform to find Flutter framework related job opportunities and more',
-  ogDescription: 'Flutter Gigs is a platform to find Flutter framework related job opportunities and more',
-  ogSiteName: 'Flutter Gigs - The #1 Flutter job platform',
-  twitterCard: 'summary_large_image',
-  twitterSite: '@fluttergigs',
-  twitterTitle: () => `Flutter Gigs - Find the best Flutter opportunities at top remote companies around the world`,
-  twitterDescription: () => 'Flutter Gigs is a platform to find Flutter framework related job opportunities and more',
-  twitterImage: 'https://fluttergigs.com/fluttergigs-og.png',
+  title: 'Browse available Flutter opportunities and more',
 })
 
 const {$analytics} = useNuxtApp()

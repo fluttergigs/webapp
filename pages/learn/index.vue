@@ -33,6 +33,7 @@ import LearnResources from "~/components/learn/resources.vue";
 
 definePageMeta({
   layout: 'main-layout',
+  title: 'Find the best resources to advance your Flutter skills',
 })
 
 const {$analytics} = useNuxtApp()
@@ -42,20 +43,5 @@ onMounted(() => {
   ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.learnCategoryPageEntered,);
 })
 
-
-useServerSeoMeta({
-  title: 'Flutter Gigs - The #1 Flutter job platform',
-  ogTitle: 'Flutter Gigs - The #1 Flutter job platform',
-  ogUrl: 'https://fluttergigs.com',
-  ogImage: 'https://fluttergigs.com/fluttergigs-og.png',
-  description: 'Flutter Gigs is a platform to find Flutter framework related job opportunities and more',
-  ogDescription: 'Flutter Gigs is a platform to find Flutter framework related job opportunities and more',
-  ogSiteName: 'Flutter Gigs - The #1 Flutter job platform',
-  twitterCard: 'summary_large_image',
-  twitterSite: '@fluttergigs',
-  twitterTitle: () => `Flutter Gigs - Find the best Flutter opportunities at top remote companies around the world`,
-  twitterDescription: () => 'Flutter Gigs is a platform to find Flutter framework related job opportunities and more',
-  twitterImage: () => 'https://fluttergigs.com/fluttergigs-og.png',
-})
 
 </script>

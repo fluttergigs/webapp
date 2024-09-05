@@ -50,11 +50,12 @@
 
           </div>
           <div class="w-full md:w-1/2 p-8">
-            <img
+            <NuxtImg
+                placeholder
                 alt=""
                 class="transform hover:-translate-y-16 transition ease-in-out duration-1000"
                 contenteditable="false"
-                src="@/assets/images/header.png"
+                src="/header.png"
             />
           </div>
         </div>

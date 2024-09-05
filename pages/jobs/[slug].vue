@@ -64,9 +64,15 @@ const {
   })
 }*/
 
+definePageMeta({layout: 'main-layout', title: `FlutterGis job opportunities`,})
+
+useHead({title: `Get this opportunity on FlutterGigs: ${data.value?.title}`});
+
 useServerSeoMeta({
   title: () => `Flutter Gigs - ${data.value?.title}`,
   ogUrl: 'https://fluttergigs.com',
+  ogType: 'website',
+  ogLocale: 'en_US',
   ogTitle: () => `Flutter Gigs - ${data.value?.title}`,
   ogImage: 'https://fluttergigs.com/fluttergigs-og.png',
   description: () => data.value?.description,
