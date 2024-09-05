@@ -58,7 +58,7 @@ definePageMeta({
 
 useHead({title: `Flutter Gigs - Browse jobs`});
 
-useSeoMeta({
+useServerSeoMeta({
   title: 'Flutter Gigs - The #1 Flutter job platform',
   ogUrl: 'https://fluttergigs.com',
   ogTitle: 'Flutter Gigs - The #1 Flutter job platform',

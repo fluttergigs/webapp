@@ -21,7 +21,7 @@ const {
                :key="category.slug"
                :label="category.title"
                :color="category.slug === getSelectedCategory?.slug ? 'primary' : 'gray'"
-               class="primary-button px-4 max-w-[90px]"
+               class="primary-button px-4 max-w-[180px]"
                @click="handleLearnCategoryClick(category)"/>
     </div>
   </client-only>

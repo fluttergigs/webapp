@@ -64,7 +64,7 @@ const {
   })
 }*/
 
-useSeoMeta({
+useServerSeoMeta({
   title: () => `Flutter Gigs - ${data.value?.title}`,
   ogUrl: 'https://fluttergigs.com',
   ogTitle: () => `Flutter Gigs - ${data.value?.title}`,

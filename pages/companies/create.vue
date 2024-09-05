@@ -14,6 +14,21 @@ import type {CreateCompanyRequest} from "~/features/companies/company.types";
 
 useHead({title: "Flutter Gigs - Company creation"});
 
+useServerSeoMeta({
+  title: 'Flutter Gigs - Create your company',
+  ogTitle: 'Flutter Gigs - Create your company',
+  ogUrl: 'https://fluttergigs.com',
+  ogImage: 'https://fluttergigs.com/fluttergigs-og.png',
+  description: 'Flutter Gigs is a platform to find Flutter framework related job opportunities and more',
+  ogDescription: 'Flutter Gigs is a platform to find Flutter framework related job opportunities and more',
+  ogSiteName: 'Flutter Gigs',
+  twitterCard: 'summary_large_image',
+  twitterSite: '@fluttergigs',
+  twitterTitle: () => `Flutter Gigs - Find the best Flutter opportunities at top remote companies around the world`,
+  twitterDescription: () => 'Flutter Gigs is a platform to find Flutter framework related job opportunities and more',
+  twitterImage: 'https://fluttergigs.com/fluttergigs-og.png',
+})
+
 definePageMeta({
   middleware: ['auth', function () {
     if (useUserStore().hasCompanies) {

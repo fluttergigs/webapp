@@ -44,6 +44,21 @@ import {useRegister} from "~/composables/useRegister";
 
 useHead({title: "Flutter Gigs - Create your account"});
 
+useServerSeoMeta({
+  title: 'Flutter Gigs - Create your account',
+  ogTitle: 'Flutter Gigs - Create your account',
+  ogUrl: 'https://fluttergigs.com',
+  ogImage: 'https://fluttergigs.com/fluttergigs-og.png',
+  description: 'Flutter Gigs is a platform to find Flutter framework related job opportunities and more',
+  ogDescription: 'Flutter Gigs is a platform to find Flutter framework related job opportunities and more',
+  ogSiteName: 'Flutter Gigs',
+  twitterCard: 'summary_large_image',
+  twitterSite: '@fluttergigs',
+  twitterTitle: () => `Flutter Gigs - Find the best Flutter opportunities at top remote companies around the world`,
+  twitterDescription: () => 'Flutter Gigs is a platform to find Flutter framework related job opportunities and more',
+  twitterImage: 'https://fluttergigs.com/fluttergigs-og.png',
+})
+
 definePageMeta({
   middleware: ['logged-in'],
 })

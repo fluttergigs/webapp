@@ -43,7 +43,7 @@ onMounted(() => {
 })
 
 
-useSeoMeta({
+useServerSeoMeta({
   title: 'Flutter Gigs - The #1 Flutter job platform',
   ogTitle: 'Flutter Gigs - The #1 Flutter job platform',
   ogUrl: 'https://fluttergigs.com',

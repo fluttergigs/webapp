@@ -14,6 +14,7 @@ const {handleLearnResourceClick} = useLearn()
        my-2 transition-all
       duration-300 hover:scale-[1.03] hover:shadow-lg cursor-pointer">
     <NuxtImg
+        placeholder
         class="object-cover rounded-tl-md rounded-tr-md"
         src="/fluttergigs-og.png"
         :alt="resource.title"/>
