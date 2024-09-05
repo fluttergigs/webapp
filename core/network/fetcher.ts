@@ -22,8 +22,6 @@ export class Fetcher implements HttpClient<Response> {
     readonly baseURL;
 
     constructor(private readonly fetchOptions?: FetchOptions) {
-
-        console.log('run time config variables', useRuntimeConfig().public.apiBaseUrl)
         this.baseURL = useRuntimeConfig().public.apiBaseUrl;
 
         // @ts-ignore
