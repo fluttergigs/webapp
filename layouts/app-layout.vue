@@ -8,12 +8,11 @@
           :class="['flex flex-col items-center inset-0 bg-blueGray-50 border-r fixed transition-all ease-in duration-200 h-full',isAppBarShrunk? 'max-w-[70px]': 'max-w-[240px]']">
 
         <!--        App Logo and menu toggle-->
-        <div class="flex items-center justify-between px-8 py-3 my-2 w-full">
-          <NuxtLink to="#" class="inline-block">
-            <img class="w-10" src="@/assets/images/ico.png" alt="" v-if="isAppBarShrunk"
-                 @click="useAppStore().toggleAppBarShrink()">
-            <img class="w-16" src="@/assets/images/logo.png" alt="" v-else>
-          </NuxtLink>
+        <div class="flex items-center justify-between py-3 my-2 w-full transition-all ease-in duration-200"
+             :class="[isAppBarShrunk? 'px-2': 'px-8']">
+          <img class="w-10" src="@/assets/images/ico.png" alt="" v-if="isAppBarShrunk"
+               @click="useAppStore().toggleAppBarShrink()">
+          <img class="w-16" src="@/assets/images/logo.png" alt="" v-else>
           <div class="w-auto" @click="useAppStore().toggleAppBarShrink()">
             <a class="text-neutral-400 hover:text-neutral-500" href="#">
               <!--              <ChevronDoubleRightIcon class="w-2" v-if="isAppBarShrunk"/>-->
