@@ -31,7 +31,7 @@ useHead({
     },
   ],
   script: [
-    {src: "https://fluttergigs.com/js/main.js", defer: true,},
+    {src: "https://fluttergigs.com/main.js", defer: true,},
   ],
   link: [
     {rel: 'canonical', href: 'https://fluttergigs.com'},
