@@ -18,15 +18,13 @@ const headers = {
 export type Response<T = any> = { data: T, [key: string] }
 
 export class Fetcher implements HttpClient<Response> {
-
     private readonly instance;
-
     readonly baseURL;
 
-    private readonly fetchOptions: FetchOptions
+    constructor(private readonly fetchOptions?: FetchOptions) {
 
-    constructor(fetchOptions?: FetchOptions) {
-        this.baseURL = useRuntimeConfig().public.apiBaseUrl ?? useRuntimeConfig().apiBaseUrl;
+        console.log('run time config variables', useRuntimeConfig().public.apiBaseUrl)
+        this.baseURL = useRuntimeConfig().public.apiBaseUrl;
 
         // @ts-ignore
         const apiFetchOptions: FetchOptions = {

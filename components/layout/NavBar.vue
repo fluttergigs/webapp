@@ -11,8 +11,8 @@
           <div class="w-auto hidden lg:block">
             <ul class="flex items-center mr-16">
               <li class="mr-9 font-medium
-              hover:text-indigo-500 transition-all duration-300 ease-in-out"
-                  :class="{'text-indigo-900 font-bolder': isActive(link.path)}"
+              hover:text-indigo-800 transition-all duration-300 ease-in-out"
+                  :class="{'text-indigo-500 font-bolder': isActive(link.path)}"
                   v-for="link in links">
                 <NuxtLink :to="link.path" v-if="link.enabled">{{ link.name }}</NuxtLink>
               </li>
@@ -133,6 +133,8 @@
 
 <script setup>
 
+// TODO handle mobile menu
+
 import {AppRoutes} from "~/core/routes";
 import {useAuthStore} from "~/stores/auth";
 import {storeToRefs} from "pinia";
@@ -169,7 +171,7 @@ const links = shallowRef([
   },
 ])
 
-const isActive = (path) => useRoute().path === path
+const isActive = (path) => useRoute().path === path || useRoute().name.includes(path)
 
 const accountLinks = [
   [{

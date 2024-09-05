@@ -6,16 +6,18 @@
       <!--      <div class="navbar-backdrop fixed xl:hidden inset-0 bg-blueGray-50 opacity-10"></div>-->
       <div
           :class="['inset-0 bg-blueGray-50 border-r fixed transition-all ease-in duration-200 h-full',isAppBarShrunk? 'max-w-[100px]': 'max-w-[240px]']">
-        <div class="flex flex-wrap items-center justify-between px-9 py-6 pb-0">
+        <div class="flex items-center justify-between px-9 py-3 my-2">
           <div class="w-auto">
-            <NuxtLink :to="AppRoutes.welcome" class="inline-block">
-              <img class="w-16" src="@/assets/images/logo.png" alt="">
+            <NuxtLink to="#" class="inline-block">
+              <img class="w-10" src="@/assets/images/ico.png" alt="" v-if="isAppBarShrunk"
+                   @click="useAppStore().toggleAppBarShrink()">
+              <img class="w-16" src="@/assets/images/logo.png" alt="" v-else>
             </NuxtLink>
           </div>
           <div class="w-auto" @click="useAppStore().toggleAppBarShrink()">
             <a class="text-neutral-400 hover:text-neutral-500" href="#">
-              <ArrowsPointingOutIcon class="w-5" v-if="isAppBarShrunk"/>
-              <ArrowsPointingInIcon class="w-5" v-else/>
+              <!--              <ChevronDoubleRightIcon class="w-2" v-if="isAppBarShrunk"/>-->
+              <ArrowsPointingInIcon class="w-5" v-if="!isAppBarShrunk"/>
             </a>
           </div>
         </div>
@@ -71,7 +73,6 @@
 import {
   ArrowLeftEndOnRectangleIcon,
   ArrowsPointingInIcon,
-  ArrowsPointingOutIcon,
   BriefcaseIcon,
   BuildingOffice2Icon,
   StarIcon,

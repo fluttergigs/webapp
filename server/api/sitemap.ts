@@ -1,4 +1,5 @@
 import {Endpoint} from "~/core/network/endpoints";
+import {logDev} from "~/core/helpers/log";
 
 export default defineSitemapEventHandler(async (e) => {
     const {apiBaseUrl} = useRuntimeConfig();

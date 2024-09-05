@@ -26,6 +26,9 @@ export default defineNuxtConfig({
             dirs: ["core", "stores", "composables", "components", "services", "features"]
         },
         build: {
+            transpile: [
+                'date-fns'
+            ],
             // transpile: ['components/*', 'pages/*','composables/*'],
             //@ts-ignore
             optimization: {
@@ -47,6 +50,9 @@ export default defineNuxtConfig({
                 autoprefixer: {},
             },
         },
+        i18n: {
+            vueI18n: '~/core/helpers/i18n.ts',
+        },
 
         modules: ['@pinia/nuxt', '@pinia-plugin-persistedstate/nuxt', '@nuxtjs/i18n', 'nuxt-lodash', // '@nuxtjs/tailwindcss',
             // 'nuxt-appwrite',
@@ -63,11 +69,6 @@ export default defineNuxtConfig({
         },
 
         runtimeConfig: {
-            strapiEndpoint: "",
-            posthogKey: "",
-            posthogProjectId: "",
-            apiBaseUrl: "",
-            googleGenerativeAiApiKey: "",
             public: {
                 strapiEndpoint: "",
                 posthogKey: "",
@@ -130,6 +131,14 @@ export default defineNuxtConfig({
 
         routeRules: {
             "/*": {cors: true,},
+            '/api/*': {
+                proxy: {
+                    target: process.env.NUXT_PUBLIC_API_BASE_URL,
+                    changeOrigin: true,
+                    rewrite: (path) => path.replace(/^\/api/, ''),
+                    secure: false,
+                },
+            },
         },
 
         compatibilityDate: "2024-08-06"

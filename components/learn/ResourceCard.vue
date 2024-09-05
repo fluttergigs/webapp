@@ -19,10 +19,12 @@ const {handleLearnResourceClick} = useLearn()
         :alt="resource.title"/>
 
     <div class="flex flex-col gap-2 p-3">
-      <p class="text-xs md:text-md font-semibold text-gray-900 line-clamp-1">{{ resource.title }}</p>
+      <p class="text-xs md:text-lg font-semibold text-gray-900 line-clamp-1">
+        {{ resource.title }}
+      </p>
 
       <span @click="handleLearnResourceClick(resource)"
-            class="text-indigo-500 text-xs">View</span>
+            class="text-indigo-500 text-xs md:text-base">View</span>
     </div>
   </div>
 </template>

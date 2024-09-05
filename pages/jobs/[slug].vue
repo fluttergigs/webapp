@@ -14,6 +14,10 @@ import {stringify} from "qs";
 import WorkingPermits from "~/components/job/WorkingPermits.vue";
 import SaveJobIconButton from "~/components/job/SaveJobIconButton.vue";
 
+
+// TODO handle mobile responsiveness
+//TODO handle account/dashboard/consultants
+
 definePageMeta({
   layout: 'main-layout'
 })
@@ -53,12 +57,12 @@ const {
     }
   }
 })
-if (!data.value) {
+/*if (!data.value) {
   throw createError({
     statusCode: 404,
     statusMessage: 'Job Not Found',
   })
-}
+}*/
 
 useSeoMeta({
   title: () => `Flutter Gigs - ${data.value?.title}`,
