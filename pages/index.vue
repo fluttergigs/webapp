@@ -1,5 +1,5 @@
 <template>
-  <LandingHeader/>
+  <LazyLandingHeader/>
 
   <section class="py-20 bg-blueGray-100">
     <div class="container px-4 mx-auto">
@@ -168,10 +168,10 @@
 <script setup>
 
 import '@/components/landing/Header.vue'
-import CompanySection from "~/components/landing/CompanySection.vue";
-import CompanyCreationSection from "~/components/landing/CompanyCreationSection.vue";
 import UserSection from "~/components/landing/UserSection.vue";
 import SecondaryUserSection from "~/components/landing/SecondaryUserSection.vue";
+import CompanySection from "~/components/landing/CompanySection.vue";
+import CompanyCreationSection from "~/components/landing/CompanyCreationSection.vue";
 
 definePageMeta({
   layout: 'main-layout',

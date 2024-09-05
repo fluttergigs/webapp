@@ -44,6 +44,10 @@ export default defineNuxtConfig({
             "vue-toast-notification/dist/theme-default.css",
         ],
 
+        script: [
+            "~/assets/js/main.js",
+        ],
+
         postcss: {
             plugins: {
                 tailwindcss: {},
