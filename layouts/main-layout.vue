@@ -1,14 +1,14 @@
 <template>
-  <client-only>
-    <div class="flex flex-col">
-      <LayoutNavBar/>
-      <div class="flex-grow">
-        <NuxtPage/>
-      </div>
-      <LayoutFooter/>
-      <UNotifications/>
+  <!--  <client-only>-->
+  <div class="flex flex-col h-full">
+    <LayoutNavBar/>
+    <div class="flex-grow">
+      <NuxtPage/>
     </div>
-  </client-only>
+    <LayoutFooter/>
+    <UNotifications/>
+  </div>
+  <!--  </client-only>-->
 </template>
 
 <script setup lang="ts">

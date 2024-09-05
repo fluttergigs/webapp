@@ -17,12 +17,13 @@ import {AnalyticsEvent} from "~/services/analytics/events";
 export default function useJobActions() {
     const {$toast, $analytics} = useNuxtApp();
     const jobStore = useJobStore()
+    const authStore = useAuthStore()
 
     const handleJobBookmark = async (job: JobOffer, onSuccess?: CallbackFunction<any>) => {
         try {
             const userStore = useUserStore()
 
-            if (useAuthStore().isAuthenticated) {
+            if (authStore.isAuthenticated) {
                 userStore.jobToBookmark = job.id;
                 if (isJobBookmarked(job)) {
                     ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.unBookmarkJobOfferClicked, {job});
@@ -31,7 +32,7 @@ export default function useJobActions() {
                     ($toast as BaseToast<Notification>).info(<string>userStore.bookmarkedJobDelete.message)
                 } else {
                     ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.bookmarkJobOfferClicked, {job});
-                    await userStore.saveJob({jobOffer: job.id, user: useAuthStore().authUser?.id!});
+                    await userStore.saveJob({jobOffer: job.id, user: authStore.authUser?.id!});
                     ($toast as BaseToast<Notification>).info(<string>userStore.bookmarkedJobCreation.message)
                 }
 
@@ -40,6 +41,8 @@ export default function useJobActions() {
                     return;
                 }
             } else {
+                authStore.returnUrl = AppRoutes.jobDetail(job.slug);
+
                 ($toast as BaseToast<Notification>).custom({
                     color: 'primary',
                     title: 'You need to be logged in to bookmark a job offer',
@@ -70,7 +73,7 @@ export default function useJobActions() {
     const isJobBookmarked = (job: JobOffer): boolean => useUserStore().bookmarkedJobs?.filter((savedJob: JobOffer) => savedJob.id == job.id).length > 0
 
     const jobBelongsToCompany = (company: Company) =>
-        (useAuthStore().isAuthenticated && useUserStore().myCompany?.id === company.id)
+        (authStore.isAuthenticated && useUserStore().myCompany?.id === company.id)
 
     const shareJobOffer = async (job: JobOffer) => {
         ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.jobOfferShareButtonClicked, {job})

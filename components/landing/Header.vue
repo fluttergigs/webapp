@@ -52,6 +52,8 @@
           <div class="w-full md:w-1/2 p-8">
             <NuxtImg
                 placeholder
+                width="500"
+                height="500"
                 alt=""
                 class="transform hover:-translate-y-16 transition ease-in-out duration-1000"
                 contenteditable="false"

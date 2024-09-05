@@ -7,7 +7,12 @@ export function useFeatureFlags() {
 
     const {$featureFlags} = useNuxtApp();
 
-    const isEnabled = (flag: AvailableFlags, defaultValue: boolean = false): boolean => ($featureFlags as FeatureFlagProvider).isEnabled(flag) ?? defaultValue;
+    const isEnabled = (flag: AvailableFlags, defaultValue: boolean = false): boolean => {
+        if (import.meta.client) {
+            return ($featureFlags as FeatureFlagProvider).isEnabled(flag) ?? defaultValue;
+        }
+        return false;
+    };
 
     const getFlag = (flag: AvailableFlags): FeatureFlag => ($featureFlags as FeatureFlagProvider).get(flag);
 

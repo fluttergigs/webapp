@@ -10,6 +10,11 @@ export default defineNuxtConfig({
             renderJsonPayloads: false
         },
 
+        app: {
+            keepalive: true,
+        },
+
+
         // spaLoadingTemplate: false,
 
         colorMode: {
@@ -54,9 +59,7 @@ export default defineNuxtConfig({
                 autoprefixer: {},
             },
         },
-        i18n: {
-            vueI18n: '~/core/helpers/i18n.ts',
-        },
+
 
         modules: ['@pinia/nuxt', '@pinia-plugin-persistedstate/nuxt', '@nuxtjs/i18n', 'nuxt-lodash', // '@nuxtjs/tailwindcss',
             // 'nuxt-appwrite',
@@ -105,7 +108,7 @@ export default defineNuxtConfig({
                 {code: "fr", file: "fr.json"},
             ],
             lazy: true,
-            defaultLocale: "fr",
+            defaultLocale: "en",
             strategy: "no_prefix",
             langDir: "locales/",
         },
@@ -137,9 +140,10 @@ export default defineNuxtConfig({
             "/*": {cors: true,},
             '/api/*': {
                 proxy: {
+                    //@ts-ignore
                     target: process.env.NUXT_PUBLIC_API_BASE_URL,
                     changeOrigin: true,
-                    rewrite: (path) => path.replace(/^\/api/, ''),
+                    rewrite: (path: any) => path.replace(/^\/api/, ''),
                     secure: false,
                 },
             },

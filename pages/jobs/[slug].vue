@@ -108,19 +108,19 @@ onBeforeMount(() => {
 
     <template v-else>
       <section class="bg-blueGray-50 w-full relative">
-        <div class="container px-20 py-6 md:py-14 mx-auto">
-          <CompanyLogo :company="company" size="3xl" class="absolute left-16 top-18"/>
+        <div class="container px-4 md:x-20 py-6 md:py-14 mx-auto">
+          <CompanyLogo :company="company" size="3xl" class="absolute left-[10px] md:left-16 top-[6px] md:top-18"/>
         </div>
       </section>
-      <div class="px-20 py-20">
+      <div class="px-4 md:px-20 py-20">
         <section class="bg-white">
-          <div class="flex flex-col items-start sm:flex-row sm:items-center sm:justify-between">
+          <div class="flex flex-col gap-5 items-start sm:flex-row sm:items-center sm:justify-between">
             <h2 class="text-xl md:text-5xl lg:text-7xl font-bold">
               {{ data?.title }}
             </h2>
 
             <client-only>
-              <div class="flex space-x-2 items-center">
+              <div class="flex flex-wrap space-x-2 items-center my-2">
                 <UButton v-if="useJobActions().jobBelongsToCompany(company)"
                          @click="useCompanyActions().handleJobEdit(data)" size="lg"
                          icon="i-heroicons-pencil"
@@ -137,7 +137,7 @@ onBeforeMount(() => {
             </client-only>
           </div>
 
-          <div class="flex space-x-4 my-2">
+          <div class="flex flex-wrap gap-4 my-4">
             <a :href="AppRoutes.companyPage(company.id)" class="text-lg text-gray-900 font-medium">
               {{ company?.name }}
             </a>
@@ -162,7 +162,7 @@ onBeforeMount(() => {
 
         <!--      job details-->
         <section class="font-normal flex flex-col my-4 gap-x-16 md:flex-row">
-          <div class="flex flex-col flex-shrink-0 w-full md:max-w-3xl space-y-10">
+          <div class="flex flex-col w-full md:w-4/6 space-y-10">
             <div class="space-y-10 text-gray-900 font-medium">
               <p class="leading-10">{{ company?.description }}</p>
               <p class="leading-10">{{ data?.description }}</p>
@@ -171,7 +171,7 @@ onBeforeMount(() => {
             <LazyJobApplicationCtaCard class="hidden md:block" :job="data" :company="company"/>
           </div>
 
-          <div class="flex flex-col space-y-9 w-full">
+          <div class="flex flex-col space-y-9 w-full md:w-2/6">
             <JobApplicationCtaCard
                 :layout-direction='Direction.vertical'
                 :job="data"
