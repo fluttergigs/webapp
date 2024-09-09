@@ -7,7 +7,7 @@ export default defineNuxtConfig({
             enabled: true,
         },
         experimental: {
-            renderJsonPayloads: false
+            renderJsonPayloads: false,
         },
 
         app: {
@@ -138,7 +138,7 @@ export default defineNuxtConfig({
 
         routeRules: {
             "/*": {cors: true,},
-            '/api/*': {
+            /*'/api/!*': {
                 proxy: {
                     //@ts-ignore
                     target: process.env.NUXT_PUBLIC_API_BASE_URL,
@@ -146,7 +146,7 @@ export default defineNuxtConfig({
                     rewrite: (path: any) => path.replace(/^\/api/, ''),
                     secure: false,
                 },
-            },
+            },*/
         },
 
         compatibilityDate: "2024-08-06"

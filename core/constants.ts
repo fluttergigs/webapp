@@ -62,8 +62,10 @@ export const remoteOptions = [{
 
 export const defaultShimmerListItemsCount = 5
 
-export const COUNTRIES_API_ENDPOINT='https://restcountries.com/v3.1/all';
+export const COUNTRIES_API_ENDPOINT = 'https://restcountries.com/v3.1/all';
 
 export const MAX_LANDING_PAGE_JOBS = 6;
 
-export const APP_NAME='Flutter Gigs'
+export const APP_NAME = 'Flutter Gigs'
+
+export const getPaymentPortalUrlForJobPosting = (email: string) => `https://fluttergigs.fillout.com/pay-job-posting?email=${email}`

@@ -4,6 +4,7 @@ import {Wrapper} from "~/core/wrapper";
 import {logDev} from "~/core/helpers/log";
 import {MultiApiResponse, SingleApiResponse} from "~/core/shared/types";
 import {AppStrings} from "~/core/strings";
+// import {persistedState} from "~/core/pinia/persisted_state";
 import type {
     JobCreationRequest,
     JobOffer,
@@ -244,7 +245,7 @@ export const useJobStore = defineStore('job', {
     // persist: true,
     persist:
         {
-            paths: ["selectedJob", "jobEditData"],
+            paths: ["selectedJob", "jobEditData", "jobCreationData"],
             storage: persistedState.localStorage,
             debug: import.meta.env.MODE === "development"
         }

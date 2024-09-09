@@ -5,7 +5,7 @@
         <div class="flex flex-wrap items-center">
           <div class="w-auto mr-14">
             <NuxtLink :to="AppRoutes.welcome">
-              <NuxtImg placeholder class="w-20" src="/logo.png" alt=""/>
+              <img class="w-20" src="/logo.webp" alt=""/>
             </NuxtLink>
           </div>
           <div class="w-auto hidden lg:block">
@@ -32,7 +32,8 @@
                 </NuxtLink>
                 <UDropdown v-else :items="accountLinks" :popper="{ placement: 'bottom-start'}">
                   <div class="flex justify-center items-center">
-                    <span class="font-medium text-sm capitalize">  {{ useAuthStore().userFullName }}
+                    <span class="font-medium text-sm capitalize">
+                      {{ useAuthStore().userFullName }}
                     </span>
                     <UIcon name="i-heroicons-chevron-down-20-solid"/>
                   </div>
@@ -79,7 +80,7 @@
             <div class="flex items-center justify-between -m-2">
               <div class="w-auto p-2">
                 <NuxtLink class="inline-block" to="/">
-                  <NuxtImg placeholder class="w-20" src="/logo.png" alt=""/>
+                  <img class="w-20" src="/logo.webp" alt=""/>
                 </NuxtLink>
               </div>
               <div class="w-auto p-2">

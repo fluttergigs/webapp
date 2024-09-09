@@ -11,6 +11,7 @@ import {BaseToast} from "~/core/ui/base_toast";
 import type {Notification} from "#ui/types";
 import {useUserStore} from "~/stores/user";
 import {useAuthStore} from "~/stores/auth";
+import {getPaymentPortalUrlForJobPosting} from "~/core/constants";
 
 export default function useCompanyActions() {
     const {$analytics, $toast} = useNuxtApp()
@@ -45,23 +46,37 @@ export default function useCompanyActions() {
         }
     }
 
+
+    const onSuccessfulPaymentForJobPosting = async (onSuccess?: CallbackFunction<JobOfferApiResponse>) => {
+        await jobStore.postJob();
+
+        if (!!onSuccess) {
+            onSuccess();
+        }
+        ($toast as BaseToast<Notification>).custom({
+            color: 'primary',
+            title: jobStore.jobCreation.message,
+            timeout: 8000,
+            actions: jobStore.jobCreation.isSuccess ? [{
+                label: 'View job',
+                click: () => navigateTo(AppRoutes.jobDetail(jobStore.jobCreation.value.data.attributes.slug))
+            }] : null
+        })
+    }
+
     const postJobOffer = async (onSuccess?: CallbackFunction<JobOfferApiResponse>) => {
         try {
             ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.loginPageEntered);
-            await jobStore.postJob();
+
+            const paymentPortal = getPaymentPortalUrlForJobPosting(userStore.user.email)
+
+            window.open(paymentPortal, '_blank');
+            /*await jobStore.postJob();
             if (!!onSuccess) {
                 onSuccess();
-            }
+            }*/
         } finally {
-            ($toast as BaseToast<Notification>).custom({
-                color: 'primary',
-                title: jobStore.jobCreation.message,
-                timeout: 8000,
-                actions: jobStore.jobCreation.isSuccess ? [{
-                    label: 'View job',
-                    click: () => navigateTo(AppRoutes.jobDetail(jobStore.jobCreation.value.data.attributes.slug))
-                }] : null
-            })
+
         }
     }
 

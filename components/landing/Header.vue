@@ -50,8 +50,7 @@
 
           </div>
           <div class="w-full md:w-1/2 p-8">
-            <NuxtImg
-                placeholder
+            <img
                 width="500"
                 height="500"
                 alt=""

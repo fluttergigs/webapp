@@ -1,6 +1,7 @@
 import {AppAnalytics} from "~/services/analytics/app_analytics";
 import {PosthogClient} from "~/services/analytics/posthog_client";
 import {AnalyticsEvent} from "~/services/analytics/events";
+import {logDev} from "~/core/helpers/log";
 
 export class AppAnalyticsProvider {
     private client: AppAnalytics;
@@ -24,9 +25,9 @@ export class AppAnalyticsProvider {
      * @param properties
      */
     capture(event: AnalyticsEvent, properties?: Object) {
-        if (import.meta.env.MODE === "development") {
-            this.client.captureEvent(event, properties);
-        }
+        logDev(`[Analytics] ${event} ${properties}`)
+        this.client.captureEvent(event, properties);
+
         return this.client;
     }
 

@@ -6,13 +6,19 @@
       <NuxtPage/>
     </div>
     <LayoutFooter/>
-    <UNotifications/>
+
+    <client-only>
+      <UNotifications/>
+    </client-only>
   </div>
   <!--  </client-only>-->
 </template>
 
 <script setup lang="ts">
 import LayoutNavBar from "~/components/layout/NavBar.vue";
+import {logDev} from "~/core/helpers/log";
+
+const {$socket} = useNuxtApp()
 
 onMounted(async () => {
   await Promise.all([
@@ -22,7 +28,28 @@ onMounted(async () => {
     useSettingStore().fetchSetting(),
     useLearnStore().fetchLearnCategories(),
     useLearnStore().fetchLearnResources(),
-  ])
+  ]);
+
+  if (true) {
+    const uid = generateUserName('test');
+
+    ($socket as WebSocket).onopen = () => {
+      logDev("connected to websocket");
+
+      localStorage.setItem(`connection`, uid);
+      ($socket as WebSocket).send(uid)
+    };
+
+    ($socket as WebSocket).onmessage = ({data}: any) => {
+      logDev("data from websocket", data);
+    };
+
+    ($socket as WebSocket).onclose = function () {
+      logDev("disconnected")
+    }
+  }
+
+
 })
 
 </script>

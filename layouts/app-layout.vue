@@ -2,17 +2,19 @@
   <section class="flex w-full bg-white">
     <!--    xl:flex xl:flex-col-->
     <div
-        :class="['navbar-menu relative z-50 w-full flex flex-col h-full transition-all ease-in', isAppBarShrunk? 'max-w-[70px]': 'max-w-[240px]']">
+        :class="['navbar-menu relative z-50 w-full flex flex-col h-full transition-all ease-in',
+        isAppBarShrunk? 'max-w-[70px]': 'max-w-[240px]']">
       <!--      <div class="navbar-backdrop fixed xl:hidden inset-0 bg-blueGray-50 opacity-10"></div>-->
       <div
-          :class="['flex flex-col items-center inset-0 bg-blueGray-50 border-r fixed transition-all ease-in duration-200 h-full',isAppBarShrunk? 'max-w-[70px]': 'max-w-[240px]']">
+          :class="['flex flex-col items-center inset-0 bg-blueGray-50 border-r fixed transition-all ease-in duration-200 h-full',
+          isAppBarShrunk? 'max-w-[70px]': 'max-w-[240px]']">
 
         <!--        App Logo and menu toggle-->
         <div class="flex items-center justify-between py-3 my-2 w-full transition-all ease-in duration-200"
              :class="[isAppBarShrunk? 'px-2': 'px-8']">
-          <img class="w-10" src="@/assets/images/ico.png" alt="" v-if="isAppBarShrunk"
+          <img class="w-10" src="/ico.webp" alt="" v-if="isAppBarShrunk"
                @click="useAppStore().toggleAppBarShrink()">
-          <img class="w-16" src="@/assets/images/logo.png" alt="" v-else>
+          <img class="w-16" src="/logo.webp" alt="" v-else>
           <div class="w-auto" @click="useAppStore().toggleAppBarShrink()">
             <a class="text-neutral-400 hover:text-neutral-500" href="#">
               <!--              <ChevronDoubleRightIcon class="w-2" v-if="isAppBarShrunk"/>-->
@@ -20,7 +22,6 @@
             </a>
           </div>
         </div>
-
 
         <!--    App menu-->
         <div class="flex flex-col justify-between flex-grow mx-4 py-8 overflow-x-hidden overflow-y-auto">
@@ -65,7 +66,9 @@
     <div class="flex flex-1 flex-grow px-1 md:px-6  w-full min-h-screen">
       <NuxtPage/>
     </div>
-    <UNotifications/>
+    <client-only>
+      <UNotifications/>
+    </client-only>
   </section>
 </template>
 
@@ -145,6 +148,12 @@ onBeforeMount(async () => {
     useLearnStore().fetchLearnCategories(),
     useLearnStore().fetchLearnResources(),
   ])
+})
+
+onMounted(() => {
+  if (!useAppStore().isAppBarShrunk) {
+    useAppStore().toggleAppBarShrink()
+  }
 })
 
 </script>

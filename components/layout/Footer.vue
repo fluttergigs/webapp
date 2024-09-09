@@ -11,7 +11,7 @@
           <div class="w-full sm:w-1/2 lg:w-6/12 p-8">
             <div class="lg:max-w-sm">
               <a class="mb-8 inline-block" href="#">
-                <NuxtImg placeholder class="w-20" src="/logo-white.png" alt=""/>
+                <img class="w-20" src="/logo-white.webp" alt=""/>
               </a>
               <p class="mb-20 text-gray-400 font-medium leading-relaxed md:max-w-xs">
                 Looking for a job in Flutter development? Check out FlutterGigs - the first Flutter job board! Find your
