@@ -17,7 +17,8 @@ const props = defineProps({
                 space-x-2 rounded-full px-3 py-0.5
                 bg-indigo-700/10 text-indigo-700 font-medium">
     <UIcon name="i-heroicons-currency-dollar"/>
-    <span>${{ props.job?.salaryFrom }} - {{ props.job?.salaryTo }}/month</span>
+    <span v-if="props.job.salaryFrom">${{ props.job?.salaryFrom }} - {{ props.job?.salaryTo }}/month</span>
+    <span v-else> N/A</span>
   </div>
 </template>
 

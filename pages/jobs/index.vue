@@ -6,8 +6,8 @@
         alt=""
     />
     <div class="container px-4 py-16 mx-auto">
-      <div class="flex flex-col p-8">
-        <h1 class="mb-6 text-5xl md:text-6xl lg:text-6xl font-semibold primary-gradient">
+      <div class="flex flex-col items-center justify-center p-8">
+        <h1 class="mb-6 text-5xl md:text-6xl lg:text-6xl font-bold primary-gradient">
           FlutterGigs
         </h1>
 

@@ -33,7 +33,8 @@ const company = computed(() => ({
           transition-all ease-in duration-200">
         <div class="flex flex-col justify-between h-full">
           <div class="mb-16 flex flex-col gap-2">
-            <h3 class="mb-4 text-md sm:text-xl font-bold font-heading leading-snug">
+            <h3 class="mb-4 text-md sm:text-xl font-bold font-heading leading-snug sm:line-clamp-2
+            line-clamp-1">
               {{ job.title }}
             </h3>
             <p class="text-gray-500 text-[12px]
