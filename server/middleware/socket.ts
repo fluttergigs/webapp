@@ -1,4 +1,6 @@
 import WebSocket, {WebSocketServer} from "ws"
+//@ts-ignore
+import EventHandlerRequest from "h3";
 
 type Client = {
     id: string
@@ -13,11 +15,11 @@ declare global {
 
 let wss: WebSocketServer
 let clients: Client[] = []
-
-export default defineEventHandler((event) => {
+export default defineEventHandler((event: EventHandlerRequest) => {
 
     if (!global.wss) {
         wss = new WebSocketServer({noServer: true})
+        // wss = new WebSocketServer({server: event.node.res.socket?.server})
         // server: event.node.res.socket?.server
 
         wss.on('upgrade', function (request, socket, head) {

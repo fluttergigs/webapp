@@ -9,6 +9,12 @@ export default defineNuxtConfig({
         experimental: {
             renderJsonPayloads: false,
         },
+        nitro: {
+            experimental: {
+                websocket: true,
+            },
+
+        },
 
         app: {
             keepalive: true,
@@ -137,7 +143,9 @@ export default defineNuxtConfig({
         },
 
         routeRules: {
-            "/*": {cors: true,},
+            "/*": {
+                cors: true,
+            },
             /*'/api/!*': {
                 proxy: {
                     //@ts-ignore

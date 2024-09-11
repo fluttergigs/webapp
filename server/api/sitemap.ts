@@ -1,7 +1,10 @@
 import {Endpoint} from "~/core/network/endpoints";
 import {logDev} from "~/core/helpers/log";
+//@ts-ignore
+import {EventHandlerRequest} from "h3";
 
-export default defineSitemapEventHandler(async (e) => {
+
+export default defineSitemapEventHandler(async (e: EventHandlerRequest) => {
     const {apiBaseUrl} = useRuntimeConfig();
     const {data} = await fetch(apiBaseUrl + Endpoint.jobOffers, {
         headers: {
@@ -13,6 +16,7 @@ export default defineSitemapEventHandler(async (e) => {
 
     logDev('JOB OFFERS DATA', data)
 
+    //@ts-ignore
     return data.map((job) => {
         return {
             loc: `/jobs/${job.attributes.slug}`,

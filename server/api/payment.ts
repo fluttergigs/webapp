@@ -1,7 +1,9 @@
 //@ts-ignore
+import {EventHandlerRequest} from "h3";
+//@ts-ignore
 import WebSocket from "ws";
 //@ts-ignore
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async (event: EventHandlerRequest) => {
     const {amount, originEmail, paymentEmail, stripeCustomerId} = await readBody(event);
 
     console.log('PAYMENT EVENT', event.body)
@@ -9,6 +11,8 @@ export default defineEventHandler(async (event) => {
 
     const paymentData = {amount, originEmail, paymentEmail, stripeCustomerId}
 
+    console.log("globalThis", globalThis.clients)
+    //@ts-ignore
     globalThis.clients.forEach(function (client, isBinary) {
         if (client.readyState === WebSocket.OPEN) {
             client.send(JSON.stringify(paymentData))
@@ -19,5 +23,4 @@ export default defineEventHandler(async (event) => {
         statusCode: 200,
         data: {'status': 'ok'}
     }
-
 });

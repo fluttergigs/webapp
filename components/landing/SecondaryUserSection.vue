@@ -1,5 +1,5 @@
 <script setup lang="ts">
-
+//@ts-ignore
 import {MagnifyingGlassIcon, UserIcon} from "@heroicons/vue/24/solid";
 import CompanyPerk from "~/components/landing/CompanyPerk.vue";
 import {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider";
@@ -36,7 +36,7 @@ const findJobs = () => {
       <div class="w-full md:w-1/3">
         <CompanyPerk
             @cta-clicked="findJobs"
-            title="Publish"
+            title="Find"
             cta-text="Find your opportunity"
             description="Find your next Flutter opportunity in a matter of seconds. We bridge the gap between you and your next Flutter job "
             :icon="MagnifyingGlassIcon">
@@ -61,7 +61,6 @@ const findJobs = () => {
         </div>
       </div>
     </div>
-
   </section>
 </template>
 

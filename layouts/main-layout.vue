@@ -56,10 +56,9 @@ onMounted(async () => {
     };
 
     ($socket as WebSocket).onclose = function () {
-      logDev("disconnected")
+      logDev("disconnected from websocket");
     }
   }
-
 
 })
 
