@@ -36,12 +36,10 @@ onMounted(async () => {
   await Promise.all([
     useAuthStore().fetchUser(),
     useJobStore().fetchJobs(),
-    /*
-    useCompanyStore().fetchCompanies(),
-    useJobStore().fetchJobs(),
     useSettingStore().fetchSetting(),
     useLearnStore().fetchLearnCategories(),
-    useLearnStore().fetchLearnResources(),*/
+    useLearnStore().fetchLearnResources(),
+    useCompanyStore().fetchCompanies(),
   ]);
 
   ($socket as WebSocket).onopen = () => {
