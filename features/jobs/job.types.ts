@@ -31,7 +31,9 @@ export type BookmarkedJobOffer = {
     }
 }
 
-export type JobCreationRequest = Partial<Omit<JobOffer, 'id' | 'isFeatured' | 'createdAt' | 'updatedAt'>>
+export type JobCreationRequest = Partial<Omit<JobOffer, 'id' | 'isFeatured' | 'createdAt' | 'updatedAt'>> & {
+    hasPaid: boolean
+}
 
 export type JobOfferEditRequest = Partial<JobOffer>
 

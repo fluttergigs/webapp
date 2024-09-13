@@ -1,6 +1,8 @@
 <template>
   <LazyLandingHeader/>
 
+  <UserSection/>
+
   <section class="py-20 bg-blueGray-100">
     <div class="container px-4 mx-auto">
       <div class="flex flex-wrap items-center -m-8">
@@ -61,14 +63,11 @@
     </div>
   </section>
 
-  <UserSection/>
-
   <SecondaryUserSection/>
 
   <CompanySection/>
 
   <CompanyCreationSection/>
-
   <!--  <section class="relative pt-32 pb-24 bg-white">
       <img
           class="absolute bottom-0 left-1/2 transform -translate-x-1/2"
@@ -175,7 +174,7 @@ import CompanyCreationSection from "~/components/landing/CompanyCreationSection.
 
 definePageMeta({
   layout: 'main-layout',
-  title: 'The #1 Flutter job platform',
+  title: 'The #1 Flutter job platform in the world',
 })
 
 

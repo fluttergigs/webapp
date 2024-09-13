@@ -20,6 +20,7 @@
 import LayoutNavBar from "~/components/layout/NavBar.vue";
 import {logDev} from "~/core/helpers/log";
 import type {ErrorTrackerProvider} from "~/services/error-tracker/error_tracker_provider";
+import {WebSocketChannel, WebSocketMessageType} from "~/server/utils/websocket_types";
 
 const {$socket} = useNuxtApp()
 const {$errorTracker} = useNuxtApp()
@@ -34,32 +35,51 @@ const onError = (error: any) => {
 onMounted(async () => {
   await Promise.all([
     useAuthStore().fetchUser(),
+    useJobStore().fetchJobs(),
+    /*
     useCompanyStore().fetchCompanies(),
     useJobStore().fetchJobs(),
     useSettingStore().fetchSetting(),
     useLearnStore().fetchLearnCategories(),
-    useLearnStore().fetchLearnResources(),
+    useLearnStore().fetchLearnResources(),*/
   ]);
 
-  if (true) {
-    const uid = generateUserName('test');
+  ($socket as WebSocket).onopen = () => {
+    console.log("connected to websocket");
 
-    ($socket as WebSocket).onopen = () => {
-      logDev("connected to websocket");
+    ($socket as WebSocket).send(JSON.stringify({
+      type: WebSocketMessageType.SUBSCRIBE,
+      channel: WebSocketChannel.NOTIFICATIONS
+    }))
+  };
 
-      localStorage.setItem(`connection`, uid);
-      ($socket as WebSocket).send(uid)
-    };
+  ($socket as WebSocket).onmessage = (message: any) => {
+    logDev("data from websocket", message);
 
-    ($socket as WebSocket).onmessage = ({data}: any) => {
-      logDev("data from websocket", data);
-    };
+    const {type, channel, data} = JSON.parse(message.data)
 
-    ($socket as WebSocket).onclose = function () {
-      logDev("disconnected from websocket");
+    logDev("PARSED DATA", {type, channel, data})
+
+    switch (type) {
+      case WebSocketMessageType.MESSAGE:
+        if (channel === WebSocketChannel.PAYMENT) {
+          const {amount, originEmail, paymentEmail, stripeCustomerId} = data
+          logDev("payment data", {amount, originEmail, paymentEmail, stripeCustomerId})
+
+          /*if (authStore.isAuthenticated) {
+            if(originEmail === authStore.authUser?.email){
+              useCompanyActions().onSuccessfulPaymentForJobPosting(()=> navigateTo(AppRoutes.myJobs))
+            }
+          }*/
+        }
+        break
+      default:
     }
   }
 
+  ($socket as WebSocket).onclose = function () {
+    logDev("disconnected from websocket");
+  }
 })
 
 </script>

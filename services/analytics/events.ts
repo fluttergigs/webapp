@@ -42,4 +42,5 @@ export const enum AnalyticsEvent {
     learnCategoryPageEntered = "learn_category_page_entered",
     learnCategoryClicked = "learn_category_clicked",
     learnResourceClicked = "learn_resource_clicked",
+    successfulJobPostingPayment = "successful_job_posting_payment",
 }

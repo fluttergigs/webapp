@@ -20,7 +20,7 @@ const createCompany = () => {
 </script>
 
 <template>
-  <section class="relative py-24 bg-blueGray-50">
+  <section class="relative py-24 bg-blueGray-50 overflow-hidden">
     <img
         class="absolute left-1/2 bottom-0 transform translate-x-1/2"
         src="@/assets/images/gradient6.svg"

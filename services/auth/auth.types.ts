@@ -34,4 +34,5 @@ export type User = {
     bio: string,
     companies?: Company[]
     [key: string]: unknown,
+    stripeCustomerId?: string
 }

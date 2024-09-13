@@ -1,7 +1,8 @@
-
 export interface BasicApiResponse<T = unknown> {
     data: T,
+
     [key: string]: any,
+
     error: {
         message: string,
         code: string,
@@ -9,6 +10,7 @@ export interface BasicApiResponse<T = unknown> {
         [key: string]: any
     }
 }
+
 export interface SingleApiResponse<T> {
     [key: string]: unknown,
 
@@ -37,7 +39,7 @@ export declare type Country = {
         ico: string,
     },
     iso: string,
-    [key:string]: any,
+    [key: string]: any,
 }
 
-export declare type CallbackFunction<Result> = ((val?: Result) => void) | ((err?: Error) => void);
+export declare type CallbackFunction<Result, Err extends any> = ((val?: Result) => void) | ((err?: Err) => void);

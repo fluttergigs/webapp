@@ -37,6 +37,7 @@ export const useJobStore = defineStore('job', {
             seniorityLevel: seniorityLevelOptions[0].id,
             remoteOptions: remoteOptions[0].id,
             company: useUserStore()?.myCompany?.id,
+            hasPaid: false
         },
         jobEditData: <JobOfferEditRequest>{},
     }),

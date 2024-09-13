@@ -48,6 +48,12 @@ export default function useCompanyActions() {
 
 
     const onSuccessfulPaymentForJobPosting = async (onSuccess?: CallbackFunction<JobOfferApiResponse>) => {
+        let jobCreationData = jobStore.jobCreationData
+        jobCreationData.hasPaid = true
+        jobStore.setJobCreationData(jobCreationData)
+
+        (<AppAnalyticsProvider>$analytics).capture(AnalyticsEvent.successfulJobPostingPayment, jobCreationData);
+
         await jobStore.postJob();
 
         if (!!onSuccess) {
@@ -64,17 +70,23 @@ export default function useCompanyActions() {
         })
     }
 
-    const postJobOffer = async (onSuccess?: CallbackFunction<JobOfferApiResponse>) => {
+    const handleJobPosting = async () => {
+        if (jobStore.jobCreationData.hasPaid) {
+            await onSuccessfulPaymentForJobPosting()
+        } else {
+            await payForJobPosting()
+        }
+
+    }
+
+    const payForJobPosting = async () => {
         try {
             ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.loginPageEntered);
 
             const paymentPortal = getPaymentPortalUrlForJobPosting(userStore.user.email)
 
             window.open(paymentPortal, '_blank');
-            /*await jobStore.postJob();
-            if (!!onSuccess) {
-                onSuccess();
-            }*/
+
         } finally {
 
         }
@@ -141,8 +153,10 @@ export default function useCompanyActions() {
         handleJobDuplicate,
         hasSocialMedia,
         checkCompanyExistenceGuard,
-        postJobOffer,
+        payForJobPosting,
+        handleJobPosting,
         createCompany,
-        onCompanyCreationSuccess
+        onCompanyCreationSuccess,
+        onSuccessfulPaymentForJobPosting
     };
 }

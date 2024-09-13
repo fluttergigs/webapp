@@ -10,6 +10,9 @@ export default defineNuxtConfig({
             renderJsonPayloads: false,
         },
         nitro: {
+
+            plugins: ['~/server/plugins/websocket.ts'],
+
             experimental: {
                 websocket: true,
             },
@@ -19,7 +22,6 @@ export default defineNuxtConfig({
         app: {
             keepalive: true,
         },
-
 
         // spaLoadingTemplate: false,
 
