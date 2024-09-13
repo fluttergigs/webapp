@@ -16,9 +16,10 @@
 
   <section class="py-20 px-10 bg-white">
     <div class="flex flex-col gap-4 overflow-hidden">
-      <LearnCategories/>
-
-      <LearnResources/>
+      <client-only>
+        <LearnCategories/>
+        <LearnResources/>
+      </client-only>
     </div>
   </section>
 
