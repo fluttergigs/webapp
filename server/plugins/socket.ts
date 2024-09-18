@@ -1,17 +1,14 @@
-import {defineNitroPlugin} from 'nitropack/runtime/plugin'
-//@ts-ignore
 import {EventHandlerRequest} from "h3";
 
-//@ts-ignore
 export default defineNitroPlugin((nitroApp) => {
     nitroApp.hooks.hook('request', (event: EventHandlerRequest) => {
-        /*try {
+        const server = event.node.res.socket?.server
+
+        /*if (!!server) {
             if (!WebSocketManager.getInstance().isInitialized()) {
                 console.log('Initializing WebSocket server from plugin')
-                WebSocketManager.getInstance().initialize()
+                WebSocketManager.getInstance().initialize(server)
             }
-        } catch (e) {
-            console.log('Error initializing WebSocket server', e)
         }*/
     })
 })

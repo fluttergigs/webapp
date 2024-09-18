@@ -1,4 +1,5 @@
-import WebSocket, {Data, WebSocketServer} from 'ws'
+import WebSocket, {WebSocketServer} from "ws"
+
 import {WebSocketChannel, WebSocketMessage, WebSocketMessageType} from './websocket_types'
 import {logDev} from "~/core/helpers/log";
 
@@ -17,7 +18,6 @@ export class WebSocketManager {
 
     private initialized: boolean = false
 
-
     isInitialized(): boolean {
         return this.initialized
     }
@@ -29,28 +29,28 @@ export class WebSocketManager {
         return WebSocketManager.instance
     }
 
-    initialize(): void {
+    initialize(server: any): void {
         try {
             if (!this.wss && !this.initialized) {
                 this.wss = new WebSocketServer({noServer: true})
 
-                console.log('Initializing WebSocket server from initialize')
-
-                //@ts-ignore
-                this.wss.on('upgrade', (request, socket, head) => {
-                    console.log('Upgrading to WebSocket')
-
+                server.on('upgrade', (request, socket, head) => {
                     //@ts-ignore
                     this.wss.handleUpgrade(request, socket, head, (ws) => {
-                        console.log('handleUpgrade')
-
                         //@ts-ignore
                         this.wss.emit('connection', ws, request);
                     });
+                    /* if (request.url === '/') {  // Define a specific path for WebSocket connections
+                         this.wss.handleUpgrade(request, socket, head, (ws) => {
+                             this.wss.emit('connection', ws, request)
+                         })
+                     } else {
+                         socket.destroy()
+                     }*/
                 });
 
                 this.setupEventListeners()
-                this.initialized = true
+
             }
         } catch (e) {
             console.log('Error initializing WebSocket server', e)
@@ -59,31 +59,31 @@ export class WebSocketManager {
 
     private setupEventListeners(): void {
         if (!this.wss) return
-        console.log('Setting up event listeners')
+        this.initialized = true
 
-
-        this.wss.on('connection', (ws: WebSocket) => {
-            ws.send("connected")
+        this.wss.on('connection', (socket: WebSocket) => {
+            // socket.send("connected")
             console.log('New WebSocket connection')
-            this.subscriptions.set(ws, {ws, channels: new Set()})
+            this.subscriptions.set(socket, {ws: socket, channels: new Set()})
 
-            ws.on('message', (message: Data) => this.handleMessage(ws, message))
-            ws.on('close', () => {
+            // socket.on('message', (message: Data) => this.handleMessage(socket, message))
+            socket.on('close', () => {
                 logDev('WebSocket connection closed')
-                this.subscriptions.delete(ws)
+                this.subscriptions.delete(socket)
             })
         })
     }
 
-    private handleMessage(ws: WebSocket, message: Data): void {
+    private handleMessage(socket: WebSocket, message: Data): void {
+        console.log('Handling message', message)
         try {
             const {type, channel, data} = JSON.parse(message.toString()) as WebSocketMessage
             switch (type) {
                 case WebSocketMessageType.SUBSCRIBE:
-                    this.subscribeToChannel(ws, channel)
+                    this.subscribeToChannel(socket, channel)
                     break
                 case WebSocketMessageType.UNSUBSCRIBE:
-                    this.unsubscribeFromChannel(ws, channel)
+                    this.unsubscribeFromChannel(socket, channel)
                     break
                 case WebSocketMessageType.MESSAGE:
                     this.broadcastToChannel(channel, data)
@@ -146,5 +146,9 @@ export class WebSocketManager {
 
     private sendToClient(ws: WebSocket, message: WebSocketMessage): void {
         ws.send(JSON.stringify(message))
+    }
+
+    toJSON() {
+        return {...this}
     }
 }

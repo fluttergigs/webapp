@@ -10,13 +10,9 @@ export default defineNuxtConfig({
             renderJsonPayloads: false,
         },
         nitro: {
-
-            plugins: ['~/server/plugins/websocket.ts'],
-
             experimental: {
                 websocket: true,
             },
-
         },
 
         app: {

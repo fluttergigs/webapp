@@ -172,7 +172,7 @@ const links = shallowRef([
   },
 ])
 
-const isActive = (path) => useRoute().path === path || useRoute().name.includes(path)
+const isActive = (path) => useRoute().path === path
 
 const accountLinks = [
   [{

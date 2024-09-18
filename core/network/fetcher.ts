@@ -22,8 +22,7 @@ export class Fetcher implements HttpClient<Response> {
     readonly baseURL;
 
     constructor(private readonly fetchOptions?: FetchOptions) {
-        this.baseURL = useRuntimeConfig().public.apiBaseUrl;
-
+        ({apiBaseUrl: this.baseURL} = useRuntimeConfig().public);
         // @ts-ignore
         const apiFetchOptions: FetchOptions = {
             baseURL: this.baseURL,
