@@ -1,20 +1,22 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import {storeToRefs} from "pinia";
 import {useCompanyStore} from "~/stores/company";
 import {AnalyticsEvent} from "~/services/analytics/events";
 import type {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider";
+import CompanyFiltersWidget from "~/components/company/FiltersWidget.vue";
+import CompanyList from "~/components/company/CompanyList.vue";
 
 definePageMeta({
   layout: 'main-layout',
   keepalive: true,
   middleware: [
     function (to: any, from: any) {
-      if (!useFeatureFlags().isEnabled(AvailableFlags.companiesList)) {
+      /* if (!useFeatureFlags().isEnabled(AvailableFlags.companiesList)) {
 
-        const {$toast} = useNuxtApp();
-        ($toast as BaseToast<Notification>).info(AppStrings.featureAvailableSoon)
-        return navigateTo(from)
-      }
+         const {$toast} = useNuxtApp();
+         ($toast as BaseToast<Notification>).info(AppStrings.featureAvailableSoon)
+         return navigateTo(from)
+       }*/
     }
   ]
 })
@@ -40,9 +42,9 @@ onMounted(() => {
 <template>
   <section class="relative bg-hero-gradient">
     <img
+        alt=""
         class="absolute left-1/2 bottom-0 transform"
         src="@/assets/images/gradient6.svg"
-        alt=""
     />
     <div class="container px-4 py-16 mx-auto">
       <div class="flex flex-col -m-8">

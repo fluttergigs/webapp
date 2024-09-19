@@ -161,8 +161,8 @@ const links = shallowRef([
   {
     path: AppRoutes.hireConsultants,
     name: 'Consultants',
-    tag: useFeatureFlags().isFeatureEnabled(AvailableFlags.hireConsultants,) ? 'New' : 'Soon',
-    isEnabled: useFeatureFlags().isFeatureEnabled(AvailableFlags.hireConsultants,)
+    tag: useFeatureFlags().isEnabled(AvailableFlags.hireConsultants,) ? 'New' : 'Soon',
+    isEnabled: useFeatureFlags().isEnabled(AvailableFlags.hireConsultants,)
   },
   {
     path: AppRoutes.learn,

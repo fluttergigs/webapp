@@ -3,13 +3,15 @@ import type {Company} from "~/features/companies/company.types";
 import {useJobStore} from "~/stores/job";
 import {AnalyticsEvent} from "~/services/analytics/events";
 import {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider";
-import type {JobEditRequest, JobOfferApiResponse} from "~/features/jobs/job.types";
+import type {JobOfferApiResponse} from "~/features/jobs/job.types";
 import {JobOffer} from "~/features/jobs/job.types";
 import type {CallbackFunction} from "~/core/shared/types";
 import {BaseToast} from "~/core/ui/base_toast";
 //@ts-ignore
 import type {Notification} from "#ui/types";
 import {useUserStore} from "~/stores/user";
+import {Endpoint} from "~/core/network/endpoints";
+import type {HttpClient} from "~/core/network/http_client";
 
 export default function useCompanyActions() {
     const {$analytics, $toast} = useNuxtApp()
@@ -176,8 +178,6 @@ export default function useCompanyActions() {
         return await (<HttpClient>$http).get(`${Endpoint.jobOffers}?${query}`);
     }
 
-    const hasSocialMedia = (company: Company) => !!company.linkedin || !!company.twitter
-
     return {
         handleJobEdit,
         editJobOffer,
@@ -187,7 +187,6 @@ export default function useCompanyActions() {
         checkCompanyExistenceGuard,
         postJobOffer,
         editJobOffer,
-        handleJobEdit,
         shareCompany,
         fetchCompaniesJob,
         payForJobPosting,
