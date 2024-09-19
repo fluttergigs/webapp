@@ -187,7 +187,6 @@ export default function useCompanyActions() {
         hasSocialMedia,
         checkCompanyExistenceGuard,
         postJobOffer,
-        editJobOffer,
         shareCompany,
         fetchCompaniesJob,
         payForJobPosting,

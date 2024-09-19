@@ -166,7 +166,8 @@ useSeoMeta({
 <style>
 
 div[role='tablist'] {
-  //z-index: 2000; //top: -40px;
+  /* z-index: 2000;
+   top: -40px;*/
 }
 
 [role='tablist'] button {
