@@ -14,7 +14,6 @@ import {stringify} from "qs";
 import WorkingPermits from "~/components/job/WorkingPermits.vue";
 import SaveJobIconButton from "~/components/job/SaveJobIconButton.vue";
 
-
 // TODO handle mobile responsiveness
 //TODO handle account/dashboard/consultants
 
@@ -50,6 +49,7 @@ const {
   error,
   pending
 } = await useLazyFetch(`${useRuntimeConfig().public.apiBaseUrl}${Endpoint.jobOffers}?${query.value}`, {
+  key: jobSlug.value,
   transform: (results) => {
     const job = results.data[0]
     return {
@@ -100,17 +100,17 @@ onBeforeMount(() => {
     <template v-if="pending">
       <div class="flex items-center justify-center p-52">
         <UButton
-            variant="ghost"
-            size="xl" label=""
             class="bg-transparent text-indigo-700 border-none"
-            loading/>
+            label="" loading
+            size="xl"
+            variant="ghost"/>
       </div>
     </template>
 
     <template v-else>
       <section class="bg-blueGray-50 w-full relative">
         <div class="container px-4 md:x-20 py-6 md:py-14 mx-auto">
-          <CompanyLogo :company="company" size="3xl" class="absolute left-[10px] md:left-16 top-[6px] md:top-18"/>
+          <CompanyLogo :company="company" class="absolute left-[10px] md:left-16 top-[6px] md:top-18" size="3xl"/>
         </div>
       </section>
       <div class="px-4 md:px-20 py-20">
@@ -123,17 +123,17 @@ onBeforeMount(() => {
             <client-only>
               <div class="flex flex-wrap space-x-2 items-center my-2">
                 <UButton v-if="useJobActions().jobBelongsToCompany(company)"
-                         @click="useCompanyActions().handleJobEdit(data)" size="lg"
-                         icon="i-heroicons-pencil"
-                         square label="Edit job offer" color="white"
-                         variant="solid"/>
+                         color="white" icon="i-heroicons-pencil"
+                         label="Edit job offer"
+                         size="lg" square variant="solid"
+                         @click="useCompanyActions().handleJobEdit(data)"/>
 
-                <UButton @click="useJobActions().shareJobOffer(data)" size="lg"
-                         icon="i-heroicons-share"
-                         square label="Share job offer" color="white"
-                         variant="solid"/>
+                <UButton color="white" icon="i-heroicons-share"
+                         label="Share job offer"
+                         size="lg" square variant="solid"
+                         @click="useJobActions().shareJobOffer(data)"/>
 
-                <SaveJobIconButton :job="data" :company="company"/>
+                <SaveJobIconButton :company="company" :job="data"/>
               </div>
             </client-only>
           </div>
@@ -152,7 +152,7 @@ onBeforeMount(() => {
 
             <div class="flex items-center space-x-1">
               <UIcon class="text-gray-600" name="i-heroicons-link"/>
-              <a class="text-black font-medium" :href="company?.website" target="_blank">
+              <a :href="company?.website" class="text-black font-medium" target="_blank">
                 Website
               </a>
             </div>
@@ -169,14 +169,14 @@ onBeforeMount(() => {
               <p class="leading-10">{{ data?.description }}</p>
             </div>
             <!--          apply section-->
-            <LazyJobApplicationCtaCard class="hidden md:block" :job="data" :company="company"/>
+            <LazyJobApplicationCtaCard :company="company" :job="data" class="hidden md:block"/>
           </div>
 
           <div class="flex flex-col space-y-9 w-full md:w-2/6">
             <JobApplicationCtaCard
-                :layout-direction='Direction.vertical'
+                :company="company"
                 :job="data"
-                :company="company"/>
+                :layout-direction='Direction.vertical'/>
 
             <JobDetailsCard :job="data"/>
 

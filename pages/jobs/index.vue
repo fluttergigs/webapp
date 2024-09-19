@@ -1,9 +1,9 @@
 <template>
   <section class="relative bg-blueGray-50">
     <img
+        alt=""
         class="absolute left-1/2 bottom-0 transform"
         src="@/assets/images/gradient6.svg"
-        alt=""
     />
     <div class="container px-4 py-16 mx-auto">
       <div class="flex flex-col items-center justify-center p-8">
@@ -11,7 +11,7 @@
           FlutterGigs
         </h1>
 
-        <p class="mb-11 text-lg text-gray-900 font-medium">
+        <p class="mb-11 text-lg text-gray-900 font-medium text-center">
           Discover the best Flutter opportunities and more at top
           remote companies around the world.
         </p>
@@ -30,9 +30,9 @@
                      :jobs-response="jobFiltersResponse" class="md:mx-8">
         <template #default="{job}">
 
-          <JobCard :job="job" v-if="isMediumScreen"/>
+          <JobCard v-if="isMediumScreen" :job="job"/>
 
-          <JobCardDetailed :job="job" v-else/>
+          <JobCardDetailed v-else :job="job"/>
 
         </template>
       </JobOffersList>

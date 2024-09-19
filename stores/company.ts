@@ -80,6 +80,7 @@ export const useCompanyStore = defineStore('company', {
             }
         },
 
+        //TODO- FIX THIS
         async fetchViewedCompanyJobs(companyId: number) {
             this.viewedCompanyJobsResponse = new Wrapper<MultiApiResponse<JobOffer>>().toLoading()
             try {

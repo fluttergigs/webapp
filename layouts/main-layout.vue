@@ -3,7 +3,7 @@
   <NuxtErrorBoundary @error="onError">
     <div class="flex flex-col h-full">
       <LayoutNavBar/>
-      <div class="flex-grow">
+      <div class="flex-grow overflow-hidden">
         <NuxtPage/>
       </div>
       <LayoutFooter/>
@@ -16,7 +16,7 @@
   <!--  </client-only>-->
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import LayoutNavBar from "~/components/layout/NavBar.vue";
 import {logDev} from "~/core/helpers/log";
 import type {ErrorTrackerProvider} from "~/services/error-tracker/error_tracker_provider";

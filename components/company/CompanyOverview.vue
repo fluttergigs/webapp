@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 //@ts-ignore
 import type {PropType} from "@vue/runtime-core";
 import type {Company} from "~/features/companies/company.types";
@@ -16,7 +16,7 @@ const props = defineProps({
 <template>
 
   <div class="flex flex-col gap-x-16 lg:flex-row">
-    <div class="flex-shrink-0 lg:w-[50rem]">
+    <div class="flex-shrink-0 lg:w-[70rem]">
       <div class="flex flex-col space-y-4 mb-12">
         <h3 class="mb-4 text-2xl font-medium text-gray-900 md:mb-5">About {{ company.name }}</h3>
 
@@ -27,8 +27,8 @@ const props = defineProps({
       </div>
     </div>
 
-    <CompanyInfoCard :show-view-profile-button="false"
-                     class="w-full" :company="company"/>
+    <CompanyInfoCard :company="company"
+                     :show-view-profile-button="false" class="w-full"/>
   </div>
 </template>
 

@@ -1,17 +1,17 @@
 <template>
   <section class="relative pt-24 bg-black overflow-hidden">
     <img
+        alt=""
         class="absolute left-1/2 bottom-0 h-full transform -translate-x-1/2"
         src="@/assets/images/gradient4.svg"
-        alt=""
     />
     <div class="relative z-10 container mx-auto">
       <div class="pb-24 border-b border-gray-900">
-        <div class="flex flex-wrap -m-8">
+        <div class="flex flex-wrap">
           <div class="w-full sm:w-1/2 lg:w-6/12 p-8">
             <div class="lg:max-w-sm">
               <a class="mb-8 inline-block" href="#">
-                <img class="w-20" src="/logo-white.webp" alt=""/>
+                <img alt="" class="w-40" src="/logo-white.webp"/>
               </a>
               <p class="mb-20 text-gray-400 font-medium leading-relaxed md:max-w-xs">
                 Looking for a job in Flutter development? Check out FlutterGigs - the first Flutter job board! Find your
@@ -24,10 +24,10 @@
                         class="flex items-center justify-center w-9 h-9 border border-gray-800 hover:border-gray-900 rounded-full"
                     >
                       <svg
-                          width="9"
+                          fill="none"
                           height="16"
                           viewbox="0 0 9 16"
-                          fill="none"
+                          width="9"
                           xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
@@ -44,10 +44,10 @@
                         class="flex items-center justify-center w-9 h-9 border border-gray-800 hover:border-gray-900 rounded-full"
                     >
                       <svg
-                          width="15"
+                          fill="none"
                           height="13"
                           viewbox="0 0 15 13"
-                          fill="none"
+                          width="15"
                           xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
@@ -64,10 +64,10 @@
                         class="flex items-center justify-center w-9 h-9 border border-gray-800 hover:border-gray-900 rounded-full"
                     >
                       <svg
-                          width="17"
+                          fill="none"
                           height="17"
                           viewbox="0 0 17 17"
-                          fill="none"
+                          width="17"
                           xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
@@ -89,8 +89,8 @@
             <ul>
               <li class="mb-5">
                 <NuxtLink
-                    class="text-white hover:text-gray-200 font-medium leading-relaxed"
-                    :to="AppRoutes.jobs">Latest Flutter Jobs
+                    :to="AppRoutes.jobs"
+                    class="text-white hover:text-gray-200 font-medium leading-relaxed">Latest Flutter Jobs
                 </NuxtLink>
               </li>
               <li class="mb-5">
@@ -107,11 +107,11 @@
             </h3>
             <ul>
               <li class="mb-5">
-                <a @click.prevent="useCompanyActions().handleJobCreation()"
-                   class="text-white hover:text-gray-200 font-medium leading-relaxed"
-                   href="#">Post a job</a>
+                <a class="text-white hover:text-gray-200 font-medium leading-relaxed"
+                   href="#"
+                   @click.prevent="useCompanyActions().handleJobCreation()">Post a job</a>
               </li>
-              <li class="mb-5" v-if="useFeatureFlags().isEnabled(AvailableFlags.hireConsultants)">
+              <li v-if="useFeatureFlags().isEnabled(AvailableFlags.hireConsultants)" class="mb-5">
                 <a
                     class="text-white hover:text-gray-200 font-medium leading-relaxed"
                     href="#">Hire Flutter Consultants</a>
@@ -127,8 +127,8 @@
             <ul>
               <li class="mb-5">
                 <NuxtLink
-                    class="text-white hover:text-gray-200 font-medium leading-relaxed"
-                    :to="AppRoutes.learn">Learning Flutter Resources
+                    :to="AppRoutes.learn"
+                    class="text-white hover:text-gray-200 font-medium leading-relaxed">Learning Flutter Resources
                 </NuxtLink>
               </li>
             </ul>

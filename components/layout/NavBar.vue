@@ -2,8 +2,8 @@
   <section class="overflow-hidden z-[2500]">
     <div :class="[isHomePage ? 'bg-white' : 'bg-blueGray-50']"
          class="flex items-center justify-between
-    py-5 bg-blueGray-50 px-4 md:px-18 sticky
-    transition-all ease-in duration-200">
+        py-5 bg-blueGray-50 px-4 md:px-18 sticky
+        transition-all ease-in duration-200">
       <div class="w-auto">
         <div class="flex flex-wrap items-center">
           <div class="w-auto mr-14">
@@ -37,8 +37,8 @@
                 </NuxtLink>
                 <UDropdown v-else :items="accountLinks" :popper="{ placement: 'bottom-start'}">
                   <div class="flex justify-center items-center">
-                    <span class="font-medium text-sm">  {{ useAuthStore().userFullName.toUpperCase() }}
-                    </span>
+                        <span class="font-medium text-sm">  {{ useAuthStore().userFullName.toUpperCase() }}
+                        </span>
                     <UIcon name="i-heroicons-chevron-down-20-solid"/>
                   </div>
                 </UDropdown>
@@ -76,8 +76,13 @@
         </div>
       </div>
     </div>
-    <div class="hidden navbar-menu fixed top-0 left-0 bottom-0 w-4/6 sm:max-w-xs z-50">
+
+
+    <div
+        class="hidden navbar-menu fixed top-0 left-0 bottom-0 w-4/6 sm:max-w-xs z-50 transition-all ease-in duration-200">
       <div class="navbar-backdrop fixed inset-0 bg-gray-800 opacity-80"></div>
+
+
       <nav class="relative z-10 px-9 pt-8 bg-white h-full overflow-y-auto">
         <div class="flex flex-wrap justify-between h-full">
           <div class="w-full">
@@ -88,8 +93,8 @@
                 </NuxtLink>
               </div>
               <div class="w-auto p-2">
-                <a class="navbar-burger" href="#">
-                  <BurgerIcon/>
+                <a class="navbar-close" href="#">
+                  <CloseIcon/>
                 </a>
               </div>
             </div>
@@ -97,7 +102,8 @@
           <div class="flex flex-col justify-center py-16 w-full">
             <ul>
               <li v-for="link in links" class="mb-12">
-                <NuxtLink :href="link.path" class="font-medium hover:text-indigo-900">{{ link.name }}</NuxtLink>
+                <a :href="link.path" class="font-medium hover:text-indigo-900"
+                   @click.prevent="onMenuLinkClick(link)">{{ link.name }}</a>
               </li>
             </ul>
           </div>
@@ -143,7 +149,7 @@ import {useAuthStore} from "~/stores/auth";
 import {storeToRefs} from "pinia";
 import {AnalyticsEvent} from "~/services/analytics/events";
 import {AvailableFlags} from "~/services/feature-flag/available_flags";
-import BurgerIcon from "~/components/icons/BurgerIcon.vue";
+import CloseIcon from "~/components/icons/CloseIcon.vue";
 
 const links = shallowRef([
   {
@@ -216,5 +222,10 @@ const accountLinks = [
 const isHomePage = useRoute().path === '/'
 
 const {isAuthenticated} = storeToRefs(useAuthStore())
+
+const onMenuLinkClick = (link: any) => {
+  document.querySelector('.navbar-close')?.click()
+  navigateTo(link.path)
+}
 
 </script>

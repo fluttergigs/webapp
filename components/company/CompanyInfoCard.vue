@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 //@ts-ignore
 import type {PropType} from "@vue/runtime-core";
 import type {Company} from "~/features/companies/company.types";
@@ -22,8 +22,7 @@ const props = defineProps({
 </script>
 
 <template>
-  <div class="p-6 border rounded-xl space-y-5 flex flex-col">
-
+  <div class="p-6 border rounded-xl space-y-5 flex flex-col" style="height: fit-content">
     <div class="flex space-x-2 items-center">
       <CompanyLogo :company="company as Company"/>
       <span class="text-lg text-gray-900 font-medium">
@@ -42,16 +41,16 @@ const props = defineProps({
 
       </template>
     </ItemData>
-    <ItemData label="Social Media" v-if="useCompanyActions().hasSocialMedia(props.company as Company)">
+    <ItemData v-if="useCompanyActions().hasSocialMedia(props.company as Company)" label="Social Media">
       <template #content>
         <div class="flex items-center space-x-2">
-          <a v-if="!!props.company?.linkedin" :href="props.company?.linkedin" target="_blank"
-             class="p-2 border rounded-md">
+          <a v-if="!!props.company?.linkedin" :href="props.company?.linkedin" class="p-2 border rounded-md"
+             target="_blank">
             <LinkedinIcon class="w-4 h-4"/>
           </a>
           <a v-if="!!props.company?.twitter"
-             :href="props.company?.twitter" target="_blank"
-             class="p-2 border rounded-md">
+             :href="props.company?.twitter" class="p-2 border rounded-md"
+             target="_blank">
             <TwitterIcon class="w-4 h-4"/>
           </a>
         </div>
@@ -59,17 +58,18 @@ const props = defineProps({
     </ItemData>
 
     <UButton v-if="showViewProfileButton"
-             :to="AppRoutes.companyPage(props.company?.slug!)"
-             size="lg"
              :class="['bg-indigo-700','w-full text-center flex justify-center items-center']"
-             square label="View company profile"
+             :to="AppRoutes.companyPage(props.company?.slug!)"
+             label="View company profile"
+             size="lg" square
              variant="solid"/>
 
-    <UButton :to="props.company?.website" target="_blank" size="lg"
-             :class="['w-full text-center flex justify-center items-center']"
-             square
-             :label="`Visit ${props.company?.website}`"
+    <UButton :class="['w-full text-center flex justify-center items-center']" :label="`Visit my website`"
+             :to="props.company?.website"
              color="white"
+             size="lg"
+             square
+             target="_blank"
              variant="solid"/>
   </div>
 </template>

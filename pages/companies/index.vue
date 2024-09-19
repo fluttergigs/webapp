@@ -52,7 +52,7 @@ onMounted(() => {
           Great companies
         </h1>
 
-        <p class="mb-11 text-lg text-gray-900 font-medium">
+        <p class="mb-11 text-lg text-gray-900 font-medium text-center">
           Unleash your work-from-anywhere potential! Explore top remote companies and their cultures, missions, and open
           positions.
         </p>

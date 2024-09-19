@@ -12,6 +12,7 @@ import type {Notification} from "#ui/types";
 import {useUserStore} from "~/stores/user";
 import {Endpoint} from "~/core/network/endpoints";
 import type {HttpClient} from "~/core/network/http_client";
+import {useClipboard} from "@vueuse/core";
 
 export default function useCompanyActions() {
     const {$analytics, $toast} = useNuxtApp()

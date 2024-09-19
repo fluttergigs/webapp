@@ -24,7 +24,7 @@ const props = defineProps({
 
     <div class="flex flex-col items-baseline space-y-3 md:flex-row md:space-x-3 p-2">
 
-      <div class="flex space-between">
+      <div class="flex space-between gap-4 items-center md:gap-0 md:items-start">
         <CompanyLogo :company="company as Company" size="xl"/>
 
         <div v-if="useBreakpoints(breakpointsTailwind).isSmallerOrEqual('md')"

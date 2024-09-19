@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import {Endpoint} from "~/core/network/endpoints";
 import type {Company} from "~/features/companies/company.types";
 import {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider";
@@ -7,6 +7,7 @@ import {stringify} from "qs";
 import CompanyJobs from "~/components/company/CompanyJobs.vue";
 import {useCompanyStore} from "~/stores/company";
 import {storeToRefs} from "pinia";
+import {logDev} from "~/core/helpers/log";
 
 definePageMeta({
   layout: 'main-layout',
@@ -35,7 +36,7 @@ watch(viewedCompanyJobs, (value: string | any[]) => {
       label: `Jobs (${value?.length ?? 0})`
     }
   ]
-})
+}, {deep: true, immediate: true})
 
 const companySlug = ref(useRoute().params.slug)
 
@@ -64,15 +65,10 @@ const {
     } as Company
   }
 })
-if (!data.value) {
-  throw createError({
-    statusCode: 404,
-    statusMessage: 'Page Not Found',
-  })
-}
 
 watch(data, async (value: any) => {
   if (value) {
+    logDev('fetching viewed company jobs', value.id)
     await useCompanyStore().fetchViewedCompanyJobs(data.value.id)
   }
 }, {immediate: true, deep: true,})
@@ -81,15 +77,15 @@ useHead({title: `Flutter Gigs - ${data?.value?.name}`});
 
 onMounted(() => {
   ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.companyPageDetailEntered, {company: data})
+})
 
-  useSeoMeta({
-    title: `Find this company ${data.value?.name} on FlutterGigs`,
-    ogTitle: data.value?.name,
-    description: data.value?.description,
-    ogDescription: data.value?.description,
-    ogImage: data.value?.logo,
-    twitterCard: 'summary_large_image',
-  })
+useSeoMeta({
+  title: `Find this company ${data.value?.name} on FlutterGigs`,
+  ogTitle: () => 'FlutterGigs company page  - ' + data.value?.name,
+  description: () => data.value?.description,
+  ogDescription: () => data.value?.description,
+  ogImage: () => data.value?.logo,
+  twitterCard: 'summary_large_image',
 })
 
 </script>
@@ -99,10 +95,10 @@ onMounted(() => {
     <template v-if="pending">
       <div class="flex items-center justify-center p-52">
         <UButton
-            variant="ghost"
-            size="xl" label=""
             class="bg-transparent text-indigo-700 border-none"
-            loading/>
+            label="" loading
+            size="xl"
+            variant="ghost"/>
       </div>
     </template>
 
@@ -121,11 +117,11 @@ onMounted(() => {
               </p>
             </div>
 
-            <UButton class="invisible md:visible" style="height: fit-content"
-                     @click="useCompanyActions().shareCompany(<Company>data)" size="lg"
-                     icon="i-heroicons-share"
-                     square label="Share company" color="white"
-                     variant="solid"/>
+            <UButton class="invisible md:visible" color="white"
+                     icon="i-heroicons-share" label="Share company"
+                     size="lg"
+                     square style="height: fit-content" variant="solid"
+                     @click.prevent="useCompanyActions().shareCompany(<Company>data)"/>
           </div>
         </div>
         <div class="w-full">
