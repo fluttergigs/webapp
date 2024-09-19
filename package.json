@@ -29,6 +29,9 @@
     "vue-tsc": "^0.40.4",
     "@types/ws": "^8.5.12"
   },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "^4.9.5"
+  },
   "dependencies": {
     "@fullcalendar/core": "^5.11.0",
     "@fullcalendar/daygrid": "^5.11.0",
