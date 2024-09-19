@@ -1,34 +1,45 @@
 <template>
-  <section class="relative bg-hero-gradient">
+  <section class="relative bg-blueGray-50">
     <img
         class="absolute left-1/2 bottom-0 transform"
         src="@/assets/images/gradient6.svg"
         alt=""
     />
     <div class="container px-4 py-16 mx-auto">
-      <div class="flex flex-col -m-8">
-        <h1 class="mb-6 text-5xl md:text-6xl lg:text-6xl font-semibold text-gray-900">
+      <div class="flex flex-col items-center justify-center p-8">
+        <h1 class="mb-6 text-5xl md:text-6xl lg:text-6xl font-bold primary-gradient">
           FlutterGigs
         </h1>
 
-        <p class="mb-11 text-lg text-gray-700 font-medium">
-          Discover the best Flutter and other opportunities at top
+        <p class="mb-11 text-lg text-gray-900 font-medium">
+          Discover the best Flutter opportunities and more at top
           remote companies around the world.
         </p>
       </div>
     </div>
   </section>
 
-  <section class="flex bg-gradient-white px-20 py-14 w-full mx-auto">
+  <section class="flex flex-wrap bg-gradient-white px-20 py-14 w-full mx-auto">
+
     <div class="w-full md:w-1/6">
-      <JobFiltersWidget/>
+      <FiltersWidget/>
 
     </div>
-    <div class="w-full md:w-4/6">
+    <div class="w-full sm:w-5/6 md:w-4/6 my-4 md:my-0">
       <JobOffersList v-if="!!jobFiltersResponse" :jobs="filteredJobs"
-                     :jobs-response="jobFiltersResponse" class="md:mx-8"/>
+                     :jobs-response="jobFiltersResponse" class="md:mx-8">
+        <template #default="{job}">
+
+          <JobCard :job="job" v-if="isMediumScreen"/>
+
+          <JobCardDetailed :job="job" v-else/>
+
+        </template>
+      </JobOffersList>
     </div>
+
   </section>
+
 </template>
 
 <script setup>
@@ -38,28 +49,31 @@ import JobOffersList from "~/components/job/JobOffersList.vue";
 import {AnalyticsEvent} from "~/services/analytics/events";
 import {storeToRefs} from "pinia";
 import {useJobStore} from "~/stores/job";
+import {useMediaQuery} from "@vueuse/core";
 
 definePageMeta({
   layout: 'main-layout',
   keepalive: true,
+  title: 'Browse available Flutter opportunities and more',
 })
 
-useHead({title: `Flutter Gigs - Browse jobs`});
-
+useSeoMeta({
+  title: `FlutterGigs' available jobs`,
+  ogTitle: 'Browse thousands of jobs',
+  description: 'FlutterGigs is the #1 job board in the Flutter community',
+  ogDescription: 'FlutterGigs is the #1 job board in the Flutter community',
+  twitterCard: 'summary_large_image',
+})
 
 const {$analytics} = useNuxtApp()
 const {filteredJobs, jobFiltersResponse} = storeToRefs(useJobStore())
 
+const isMediumScreen = useMediaQuery('(min-width: 768px)')
+
 onMounted(() => {
   $analytics.capture(AnalyticsEvent.findJobOfferPageEntered)
 
-  useSeoMeta({
-    title: `FlutterGigs' available jobs`,
-    ogTitle: 'Browse thousands of jobs',
-    description: 'FlutterGigs is the #1 job board in the Flutter community',
-    ogDescription: 'FlutterGigs is the #1 job board in the Flutter community',
-    twitterCard: 'summary_large_image',
-  })
+
 })
 
 

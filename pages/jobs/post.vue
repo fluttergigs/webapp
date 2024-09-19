@@ -18,17 +18,17 @@
                        v-model="jobCreationData.title" type="text"/>
 
 
-          <LabelledInput label="Job Description *">
-            <UiTipTap @inside-text-clicked="jobStore.showJobDescriptionGenerationModal()"
-                      v-model="jobCreationData.description"
-                      inside-text="Generate description using AI 🚀"/>
-          </LabelledInput>
+          <!--          <LabelledInput label="Job Description *">
+                      <UiTipTap @inside-text-clicked="jobStore.showJobDescriptionGenerationModal()"
+                                v-model="jobCreationData.description"
+                                inside-text="Generate description using AI 🚀"/>
+                    </LabelledInput>-->
 
-          <!--          <CustomInput @inside-text-clicked="jobStore.showJobDescriptionGenerationModal()"
-                                 inside-text="Generate description using AI 🚀"
-                                 name="description"
-                                 label="Job description *"
-                                 v-model="jobCreationData.description" :is-text-area="true"/>-->
+          <CustomInput @inside-text-clicked="jobStore.showJobDescriptionGenerationModal()"
+                       inside-text="Generate description using AI 🚀"
+                       name="description"
+                       label="Job description *"
+                       v-model="jobCreationData.description" :is-text-area="true"/>
 
           <div class="flex space-x-3">
             <!--          job type-->
@@ -137,7 +137,7 @@
 
           <UButton :loading="jobCreation.isLoading"
                    :disabled="!isSubmitButtonEnabled"
-                   @click="()=>postJobOffer(()=> navigateTo(AppRoutes.myJobs))"
+                   @click="()=> handleJobPosting"
                    size="xl"
                    color="indigo"
                    class="bg-indigo-700 flex justify-center items-center"
@@ -175,11 +175,9 @@ import {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider"
 import {AnalyticsEvent} from "~/services/analytics/events";
 import {postJobFormSchema} from "~/core/validations/job.validations";
 import useCompanyActions from "~/composables/useCompanyActions";
-import {AppRoutes} from "~/core/routes";
 
 
-definePageMeta({layout: 'app-layout', middleware: ['auth', 'no-company'],})
-useHead({title: `Flutter Gigs - Post your job`});
+definePageMeta({layout: 'app-layout', middleware: ['auth', 'no-company'], title: 'Post your job',})
 
 const jobStore = useJobStore()
 const {jobCreationData, jobCreation} = storeToRefs(jobStore)
@@ -187,7 +185,7 @@ const hasWorkPermit = ref(false)
 const workPermits = ref([]);
 const {$analytics} = useNuxtApp()
 const canPostJob = ref(false)
-const {postJobOffer} = useCompanyActions()
+const {handleJobPosting} = useCompanyActions()
 
 onMounted(() => {
   ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.jobPostPageEntered,)

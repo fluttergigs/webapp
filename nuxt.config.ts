@@ -1,130 +1,160 @@
+//@ts-ignore
 import path from "path";
-
 
 //@ts-ignore
 export default defineNuxtConfig({
-    experimental: {
-        renderJsonPayloads: false
-    },
-    imports: {
-        dirs: ["core", "stores", "composables", "helpers", "services", "components"]
-    },
-    colorMode: {
-        preference: 'light',
-    },
-    app: {
-        head: {
-            title: "Flutter Gigs",
-            htmlAttrs: {
-                lang: "en",
+        devtools: {
+            enabled: true,
+        },
+        experimental: {
+            renderJsonPayloads: false,
+        },
+        nitro: {
+            experimental: {
+                websocket: true,
             },
-            meta: [
-                {charset: "utf-8"},
-                {
-                    name: "viewport",
-                    content:
-                        "width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no",
-                },
-                {hid: "description", name: "description", content: ""},
-                {name: "format-detection", content: "telephone=no"},
+        },
+
+        app: {
+            keepalive: true,
+        },
+
+        // spaLoadingTemplate: false,
+
+        colorMode: {
+            preference: 'light',
+        },
+        site: {
+            name: 'Flutter Gigs - The #1 Flutter job platform',
+            url: 'https://fluttergigs.com',
+        },
+        sitemap: {
+            sources: ['/api/sitemap'],
+        },
+        imports: {
+            dirs: ["core", "stores", "composables", "components", "services", "features"]
+        },
+        build: {
+            transpile: [
+                'date-fns'
             ],
-            link: [
-                {rel: "icon", type: "image/x-icon", href: "/favicon.png"},
-                {rel: "preconnect", href: "https://fonts.gstatic.com"},
-                {
-                    rel: "stylesheet",
-                    href: "https://fonts.cdnfonts.com/css/general-sans?styles=135312,135310,135313,135303",
-                },
-                {
-                    rel: "stylesheet",
-                    href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap",
-                },
-            ],
+            // transpile: ['components/*', 'pages/*','composables/*'],
+            //@ts-ignore
+            optimization: {
+                runtimeChunk: "single",
+            }
         },
-    },
-    ignore: [
-        "pages/ignore/*"
-    ],
-    css: [
-        "~/assets/css/app.css",
-        "vue-toast-notification/dist/theme-default.css",
-    ],
-    postcss: {
-        plugins: {
-            tailwindcss: {},
-            autoprefixer: {},
-        },
-    },
-    modules: [
-        '@pinia/nuxt',
-        '@pinia-plugin-persistedstate/nuxt',
-        '@nuxtjs/i18n',
-        'nuxt-lodash',
-        // '@nuxtjs/tailwindcss',
-        // 'nuxt-appwrite',
-        '@nuxtjs/strapi',
-        '@nuxt/ui',
-        'nuxt-tiptap-editor'
-    ],
-    runtimeConfig: {
-        strapiEndpoint: "",
-        posthogKey: "",
-        posthogProjectId: "",
-        apiBaseUrl: "",
-        googleGenerativeAiApiKey: "",
-        public: {
-            strapiEndpoint: "",
-            posthogKey: "",
-            posthogProjectId: "",
-            apiBaseUrl: "",
-            googleGenerativeAiApiKey: "",
-        },
-    },
-    tiptap: {
-        prefix: "Tiptap",
-    },
-    strapi: {
-        url: process.env.STRAPI_URL || 'http://localhost:1337',
-        prefix: '/api',
-        version: 'v4',
-        cookie: {},
-        cookieName: 'strapi_jwt'
-    },
-    /*appwrite: {
-        endpoint: process.env.NUXT_APPWRITE_ENDPOINT,
-        project: process.env.NUXT_APPWRITE_PROJECT_ID,
-    },*/
-    i18n: {
-        locales: [
-            {code: "en", file: "en.json"},
-            {code: "fr", file: "fr.json"},
+        ignore: [
+            "pages/ignore/*"
         ],
-        lazy: true,
-        defaultLocale: "fr",
-        strategy: "no_prefix",
-        langDir: "locales/",
-    },
-    plugins: [
-        {src: "~/plugins/tippy", mode: "client"},
-        {src: "~/plugins/vue-easymde", mode: "client"},
-        {src: "~/plugins/vue3-apexcharts", mode: "client"},
-        {src: "~/plugins/store"},
-        {src: "~/plugins/toaster", mode: "client"},
-        {src: "~/plugins/date-format", mode: "all"},
-    ],
-    vite: {
-        // optimizeDeps: { include: ["quill"] },
-        resolve: {
-            alias: {
-                vue: path.resolve('./node_modules/vue', 'dist', 'vue.runtime.esm-bundler.js')
+
+        css: [
+            "~/assets/css/app.css",
+            "vue-toast-notification/dist/theme-default.css",
+        ],
+
+        script: [
+            "~/assets/js/main.js",
+        ],
+
+        postcss: {
+            plugins: {
+                tailwindcss: {},
+                autoprefixer: {},
             },
-            preserveSymlinks: false
         },
-    },
-    router: {
-        options: {linkExactActiveClass: "active"},
-    },
-    routeRules: {
-        "/*": {cors: true},
+
+
+        modules: ['@pinia/nuxt', '@pinia-plugin-persistedstate/nuxt', '@nuxtjs/i18n', 'nuxt-lodash', // '@nuxtjs/tailwindcss',
+            // 'nuxt-appwrite',
+            '@nuxtjs/strapi', '@nuxt/ui', '@sentry/nuxt/module', "@nuxt/image", "@nuxtjs/sitemap"],
+        sentry: {
+            sourceMapsUploadOptions: {
+                org: "evacorp",
+                project: "fluttergigs",
+                authToken: "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",
+            },
+        },
+        image: {
+            quality: 100,
+        },
+
+        runtimeConfig: {
+            public: {
+                strapiEndpoint: "",
+                posthogKey: "",
+                posthogProjectId: "",
+                apiBaseUrl: "",
+                googleGenerativeAiApiKey: "",
+                sentry: {
+                    dsn: '',
+                    environment: ''
+                }
+            },
+        },
+
+        strapi: {
+            //@ts-ignore
+            url: process.env.STRAPI_URL || 'http://localhost:1337',
+            prefix: '/api',
+            version: 'v4',
+            cookie: {},
+            cookieName: 'strapi_jwt'
+        },
+
+        /*appwrite: {
+            endpoint: process.env.NUXT_APPWRITE_ENDPOINT,
+            project: process.env.NUXT_APPWRITE_PROJECT_ID,
+        },*/
+        i18n: {
+            locales: [
+                {code: "en", file: "en.json"},
+                {code: "fr", file: "fr.json"},
+            ],
+            lazy: true,
+            defaultLocale: "en",
+            strategy: "no_prefix",
+            langDir: "locales/",
+        },
+
+        plugins: [
+            {src: "~/plugins/tippy", mode: "client"},
+            {src: "~/plugins/vue-easymde", mode: "client"},
+            {src: "~/plugins/vue3-apexcharts", mode: "client"},
+            {src: "~/plugins/store"},
+            {src: "~/plugins/toaster", mode: "client"},
+            {src: "~/plugins/date-format", mode: "all"},
+        ],
+
+        vite: {
+            // optimizeDeps: { include: ["quill"] },
+            resolve: {
+                alias: {
+                    vue: path.resolve('./node_modules/vue')
+                },
+                preserveSymlinks: false
+            },
+        },
+
+        router: {
+            options: {linkExactActiveClass: "active"},
+        },
+
+        routeRules: {
+            "/*": {
+                cors: true,
+            },
+            /*'/api/!*': {
+                proxy: {
+                    //@ts-ignore
+                    target: process.env.NUXT_PUBLIC_API_BASE_URL,
+                    changeOrigin: true,
+                    rewrite: (path: any) => path.replace(/^\/api/, ''),
+                    secure: false,
+                },
+            },*/
+        },
+
+        compatibilityDate: "2024-08-06"
     }
-});
+);

@@ -1,5 +1,6 @@
 <template>
   <BasicFormContent
+      show-close-button
       title="Join for free"
       description="Create an account to get access thousands of Flutter job offers and Consultants">
 
@@ -16,11 +17,10 @@
           <CustomInput name="password" placeholder="Password" v-model="formInput.password" type="password"/>
         </div>
         <button
-            :disabled="!canSubmit ||user.isLoading"
+            :disabled="!canSubmit || user.isLoading"
             class="primary-button flex items-center justify-center space-x-2"
             type="button"
-            @click.prevent="submit"
-        >
+            @click.prevent="submit(onSuccessfulRegistration)">
           <LoadingSpinnerIcon v-if="user.isLoading" class="text-primary animate-spin"/>
           <span v-else> Create account</span>
 
@@ -36,64 +36,34 @@
 <script setup lang="ts">
 import CustomInput from "~/components/forms/CustomInput.vue";
 import {AppRoutes} from "~/core/routes";
-import {useAuthStore} from "~/stores/auth";
-import {storeToRefs} from "pinia";
 import LoadingSpinnerIcon from "~/components/icons/LoadingSpinnerIcon.vue";
-import {registerFormSchema} from "@/core/validations/auth.validations";
-import {AnalyticsEvent} from "~/services/analytics/events";
 import BasicFormContent from "~/components/ui/BasicFormContent.vue";
-import {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider";
-import {BaseToast} from "~/core/ui/base_toast";
 //@ts-ignore
 import type {Notification} from "#ui/types";
+import {useRegister} from "~/composables/useRegister";
 
-useHead({title: "Flutter Gigs - Authentication"});
+useHead({title: "Flutter Gigs - Create your account"});
+
+useServerSeoMeta({
+  title: 'Flutter Gigs - Create your account',
+  ogTitle: 'Flutter Gigs - Create your account',
+  ogUrl: 'https://fluttergigs.com',
+  ogImage: 'https://fluttergigs.com/fluttergigs-og.png',
+  description: 'Flutter Gigs is a platform to find Flutter framework related job opportunities and more',
+  ogDescription: 'Flutter Gigs is a platform to find Flutter framework related job opportunities and more',
+  ogSiteName: 'Flutter Gigs',
+  twitterCard: 'summary_large_image',
+  twitterSite: '@fluttergigs',
+  twitterTitle: () => `Flutter Gigs - Find the best Flutter opportunities at top remote companies around the world`,
+  twitterDescription: () => 'Flutter Gigs is a platform to find Flutter framework related job opportunities and more',
+  twitterImage: 'https://fluttergigs.com/fluttergigs-og.png',
+})
 
 definePageMeta({
   middleware: ['logged-in'],
-  layout: 'main-layout'
+  title: 'Create your account',
 })
 
-let formInput = ref({
-  email: 'john@gmail.com',
-  password: 'test1234',
-  firstName: 'John',
-  lastName: 'Doe'
-})
-
-const canSubmit = ref(false)
-
-const {$toast, $analytics} = useNuxtApp()
-
-const authStore = useAuthStore()
-
-const {user, returnUrl} = storeToRefs(authStore)
-
-const {register} = authStore
-
-watch(formInput, async () => {
-  canSubmit.value = await registerFormSchema.isValid(formInput.value);
-  //TODO - remove comment later
-  /*if(canSubmit.value){
-    await submit()
-  }*/
-
-}, {deep: true, immediate: true},)
-
-onMounted(() => {
-  ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.registrationPageEntered);
-})
-
-const submit = async () => {
-  try {
-    ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.registrationButtonClicked, formInput.value);
-    await register(formInput.value);
-    ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.successfulRegistration, formInput.value);
-    await useRouter().push({path: !!returnUrl.value ? returnUrl.value : AppRoutes.jobs})
-  } catch (e) {
-    //@ts-ignore
-    ($toast as BaseToast<Notification>).error(user.value.message);
-  }
-}
+const {formInput, canSubmit, user, submit, onSuccessfulRegistration} = useRegister()
 
 </script>

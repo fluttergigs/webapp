@@ -4,7 +4,7 @@
 
       <div class="flex justify-between items-center">
         <h3
-            class="mb-4 text-2xl md:text-4xl font-semibold tracking-px-n leading-tight">
+            class="mb-4 text-xl md:text-3xl font-semibold tracking-px-n leading-tight">
           Your job postings
         </h3>
 
@@ -23,17 +23,41 @@
             <div v-if="item.key === 'all'" class="space-y-3">
               <JobOffersList v-if="!!companyJobsResponse" :jobs="myJobPostings"
                              :jobs-response="companyJobsResponse"
-                             class="my-10"/>
+                             class="my-10">
+                <template #default="{job}">
+
+                  <JobCard :job="job" v-if="isMediumScreen"/>
+
+                  <JobCardDetailed :job="job" v-else/>
+
+                </template>
+              </JobOffersList>
             </div>
             <div v-else-if="item.key === 'active'" class="space-y-3">
               <JobOffersList v-if="!!companyJobsResponse" :jobs="activeJobPostings"
                              :jobs-response="companyJobsResponse"
-                             class="my-10"/>
+                             class="my-10">
+                <template #default="{job}">
+
+                  <JobCard :job="job" v-if="isMediumScreen"/>
+
+                  <JobCardDetailed :job="job" v-else/>
+
+                </template>
+              </JobOffersList>
             </div>
             <div v-else-if="item.key === 'expired'" class="space-y-3">
               <JobOffersList v-if="!!companyJobsResponse" :jobs="expiredJobPostings"
                              :jobs-response="companyJobsResponse"
-                             class="my-10"/>
+                             class="my-10">
+                <template #default="{job}">
+
+                  <JobCard :job="job" v-if="isMediumScreen"/>
+
+                  <JobCardDetailed :job="job" v-else/>
+
+                </template>
+              </JobOffersList>
             </div>
 
           </template>
@@ -52,6 +76,7 @@ import {storeToRefs} from "pinia";
 import {AppRoutes} from "~/core/routes";
 import {AnalyticsEvent} from "~/services/analytics/events";
 import {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider";
+import {useMediaQuery} from "@vueuse/core";
 
 definePageMeta({
   layout: 'app-layout',
@@ -59,10 +84,12 @@ definePageMeta({
   keepalive: true,
 })
 
-useHead({title: "Flutter Gigs - My job postings"});
+useHead({title: "FlutterGigs - My job postings"});
 
 const companyStore = useCompanyStore()
 const {$analytics} = useNuxtApp()
+const isMediumScreen = useMediaQuery('(min-width: 768px)')
+
 
 const tabs = [{
   key: 'all',

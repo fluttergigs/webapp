@@ -10,17 +10,19 @@ import {BaseToast} from "~/core/ui/base_toast";
 //@ts-ignore
 import type {Notification} from "#ui/types";
 import {useUserStore} from "~/stores/user";
-//@ts-ignore
-import {useClipboard} from "@vueuse/core";
-import {stringify} from "qs";
-import {HttpClient} from "~/core/network/http_client";
-import {Endpoint} from "~/core/network/endpoints";
 
 export default function useCompanyActions() {
     const {$analytics, $toast} = useNuxtApp()
     const userStore = useUserStore()
     const jobStore = useJobStore()
-    const handleJobCreation = () => userStore.hasCompanies ? navigateTo(AppRoutes.postJob) : navigateTo(AppRoutes.createCompany)
+    const companyStore = useCompanyStore()
+    const handleJobCreation = () => {
+        if (userStore.hasCompanies) {
+            return navigateTo(AppRoutes.postJob)
+        } else {
+            return navigateTo(AppRoutes.createCompany)
+        }
+    }
 
     const checkCompanyExistenceGuard = () => {
         if (!userStore.hasCompanies) {
@@ -39,23 +41,65 @@ export default function useCompanyActions() {
     }
 
     const postJobOffer = async (onSuccess?: CallbackFunction<JobOfferApiResponse>) => {
+    }
+
+    const createCompany = async (data: CreateCompanyRequest, onSuccess?: CallbackFunction<Company>) => {
         try {
-            ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.loginPageEntered);
-            await jobStore.postJob();
+            (<AppAnalyticsProvider>$analytics).capture(AnalyticsEvent.companyCreationButtonClicked, data);
+            await companyStore.createCompany({data});
+            (<AppAnalyticsProvider>$analytics).capture(AnalyticsEvent.successfulCompanyCreation, data);
+
             if (!!onSuccess) {
                 onSuccess();
             }
+        } catch (e) {
+            ($toast as BaseToast<Notification>).error(<string>companyStore.companyCreation.message)
+        }
+    }
+
+
+    const onSuccessfulPaymentForJobPosting = async (onSuccess?: CallbackFunction<JobOfferApiResponse>) => {
+        let jobCreationData = jobStore.jobCreationData
+        jobCreationData.hasPaid = true
+        jobStore.setJobCreationData(jobCreationData)
+
+        (<AppAnalyticsProvider>$analytics).capture(AnalyticsEvent.successfulJobPostingPayment, jobCreationData);
+
+        await jobStore.postJob();
+
+        if (!!onSuccess) {
+            onSuccess();
+        }
+        ($toast as BaseToast<Notification>).custom({
+            color: 'primary',
+            title: jobStore.jobCreation.message,
+            timeout: 8000,
+            actions: jobStore.jobCreation.isSuccess ? [{
+                label: 'View job',
+                click: () => navigateTo(AppRoutes.jobDetail(jobStore.jobCreation.value.data.attributes.slug))
+            }] : null
+        })
+    }
+
+    const handleJobPosting = async () => {
+        if (jobStore.jobCreationData.hasPaid) {
+            await onSuccessfulPaymentForJobPosting()
+        } else {
+            await payForJobPosting()
+        }
+
+    }
+
+    const payForJobPosting = async () => {
+        try {
+            ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.loginPageEntered);
+
+            const paymentPortal = getPaymentPortalUrlForJobPosting(userStore.user.email)
+
+            window.open(paymentPortal, '_blank');
+
         } finally {
-            //@ts-ignore
-            ($toast as BaseToast<Notification>).custom({
-                color: 'primary',
-                title: jobStore.jobCreation.message,
-                timeout: 8000,
-                actions: jobStore.jobCreation.isSuccess ? [{
-                    label: 'View job',
-                    click: () => navigateTo(AppRoutes.jobDetail(jobStore.jobCreation.value.data.attributes.slug))
-                }] : null
-            })
+
         }
     }
 
@@ -65,13 +109,20 @@ export default function useCompanyActions() {
         return navigateTo(AppRoutes.editJob(job.slug))
     }
 
-    const editJobOffer = async (job: JobOffer | JobEditRequest, onDone?: CallbackFunction<any>) => {
+    const handleJobDuplicate = async (job: JobOffer) => {
+        let jobCreationData = job
+        jobCreationData.applyBefore = new Date(job.applyBefore)
+        jobStore.setJobCreationData(jobCreationData)
+        handleJobCreation()
+    }
+
+    const editJobOffer = async (job: JobOffer | JobOfferEditRequest, onDone?: CallbackFunction<any>) => {
         try {
             ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.jobOfferUpdateButtonClicked, {job: jobStore.jobEditData});
 
             await jobStore.editJobOffer(jobStore.jobEditData as JobOffer);
 
-            ($toast as BaseToast<Notification, number>).custom({
+            ($toast as BaseToast<Notification>).custom({
                 title: jobStore.jobEdit.message, timeout: 8000, actions: [{
                     label: 'View job',
 
@@ -84,7 +135,6 @@ export default function useCompanyActions() {
             }
         } catch (e) {
         } finally {
-            //@ts-ignore
             ($toast as BaseToast<Notification>).custom({
                 color: 'primary',
                 title: jobStore.jobEdit.message,
@@ -97,6 +147,16 @@ export default function useCompanyActions() {
         }
     }
 
+    const hasSocialMedia = (company: Company) => {
+        return !!company.linkedin || !!company.twitter
+    }
+
+    const onCompanyCreationSuccess: CallbackFunction<Company> = async () => {
+        ($toast as BaseToast<Notification>).info(<string>companyStore.companyCreation.message)
+
+        await useAuthStore().fetchUser()
+        navigateTo(AppRoutes.myCompany)
+    }
     const fetchCompaniesJob = async (companyId: number) => {
         const {$http} = useNuxtApp()
 
@@ -114,14 +174,15 @@ export default function useCompanyActions() {
             encodeValuesOnly: true,
         })
         return await (<HttpClient>$http).get(`${Endpoint.jobOffers}?${query}`);
-
-
     }
 
     const hasSocialMedia = (company: Company) => !!company.linkedin || !!company.twitter
 
     return {
+        handleJobEdit,
+        editJobOffer,
         handleJobCreation,
+        handleJobDuplicate,
         hasSocialMedia,
         checkCompanyExistenceGuard,
         postJobOffer,
@@ -129,5 +190,10 @@ export default function useCompanyActions() {
         handleJobEdit,
         shareCompany,
         fetchCompaniesJob,
+        payForJobPosting,
+        handleJobPosting,
+        createCompany,
+        onCompanyCreationSuccess,
+        onSuccessfulPaymentForJobPosting
     };
 }

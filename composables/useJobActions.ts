@@ -17,22 +17,23 @@ import {AnalyticsEvent} from "~/services/analytics/events";
 export default function useJobActions() {
     const {$toast, $analytics} = useNuxtApp();
     const jobStore = useJobStore()
+    const authStore = useAuthStore()
 
     const handleJobBookmark = async (job: JobOffer, onSuccess?: CallbackFunction<any>) => {
         try {
             const userStore = useUserStore()
 
-            if (useAuthStore().isAuthenticated) {
+            if (authStore.isAuthenticated) {
                 userStore.jobToBookmark = job.id;
                 if (isJobBookmarked(job)) {
                     ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.unBookmarkJobOfferClicked, {job});
                     const bookmarkedJob: JobOffer | undefined = useUserStore().bookmarkedJobs?.find((savedJob: JobOffer) => savedJob.id === job.id);
                     await userStore.deleteSavedJob(<DeleteSavedJobOfferRequest>{id: bookmarkedJob?.bookmarkedJob});
-                    ($toast as BaseToast<Notification, number>).info(<string>userStore.bookmarkedJobDelete.message)
+                    ($toast as BaseToast<Notification>).info(<string>userStore.bookmarkedJobDelete.message)
                 } else {
                     ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.bookmarkJobOfferClicked, {job});
-                    await userStore.saveJob({jobOffer: job.id, user: useAuthStore().authUser?.id!});
-                    ($toast as BaseToast<Notification, number>).info(<string>userStore.bookmarkedJobCreation.message)
+                    await userStore.saveJob({jobOffer: job.id, user: authStore.authUser?.id!});
+                    ($toast as BaseToast<Notification>).info(<string>userStore.bookmarkedJobCreation.message)
                 }
 
                 if (onSuccess != null) {
@@ -40,7 +41,17 @@ export default function useJobActions() {
                     return;
                 }
             } else {
-                navigateTo(AppRoutes.login)
+                authStore.returnUrl = AppRoutes.jobDetail(job.slug);
+
+                ($toast as BaseToast<Notification>).custom({
+                    color: 'primary',
+                    title: 'You need to be logged in to bookmark a job offer',
+                    timeout: 8000,
+                    actions: [{
+                        label: 'Login',
+                        click: () => navigateTo(AppRoutes.login)
+                    }]
+                })
             }
         } finally {
 
@@ -52,29 +63,30 @@ export default function useJobActions() {
 
         await jobStore.deleteJob({jobOffer: job.id});
 
-        ($toast as BaseToast<Notification, number>).info(<string>jobStore.jobDelete.message)
+        ($toast as BaseToast<Notification>).info(<string>jobStore.jobDelete.message)
 
         if (onDone != null) {
             onDone()
         }
-        return;
     }
 
     const isJobBookmarked = (job: JobOffer): boolean => useUserStore().bookmarkedJobs?.filter((savedJob: JobOffer) => savedJob.id == job.id).length > 0
 
     const jobBelongsToCompany = (company: Company) =>
-        (useAuthStore().isAuthenticated && useUserStore().myCompany?.id === company.id)
+        (authStore.isAuthenticated && useUserStore().myCompany?.id === company.id)
 
-    const shareJobOffer = async ({slug}: JobOffer) => {
+    const shareJobOffer = async (job: JobOffer) => {
+        ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.jobOfferShareButtonClicked, {job})
+
+
         const {text, copy, copied,} = useClipboard({
-            source: `${location.href}/jobs/${slug}`,
+            source: `${location.href}/jobs/${job.slug}`,
             legacy: true
         })
 
         await copy();
-        ($toast as BaseToast<Notification, number>).info('Job link copied to your clipboard. You can share it :)')
+        ($toast as BaseToast<Notification>).info('Job link copied to your clipboard. You can share it :)')
     }
-
 
 
     const viewDetails = (job: JobOffer) => {
@@ -86,6 +98,12 @@ export default function useJobActions() {
     const jobWorkingPermits = (countries: Country[], job: JobOffer): Country[] => countries.filter(({iso}: Country) => (job.workPermits ?? []).join(' ').includes(iso))
 
     const userFacingWorkingPermits = (countries: Country[]) => `${countries[0].name} ${countries.length > 1 ? `+ ${countries.length - 1} more` : ' only'}`
+
+    const handleJobApply = async (job: JobOffer) => {
+        ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.jobOfferApplyButtonClicked, {job});
+
+        window.open(job.howToApply!, '_blank')
+    }
 
     return {
         shareJobOffer,

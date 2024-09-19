@@ -29,7 +29,7 @@ const props = defineProps({
   }
 })
 
-const {postJobOffer} = useCompanyActions()
+const {payForJobPosting} = useCompanyActions()
 /*const userFacingWorkPermits = computed(() => {
   const countries = props.workPermitCountries.map((country: Country) => country)
 
@@ -63,7 +63,7 @@ const {postJobOffer} = useCompanyActions()
       </div>
     </div>
 
-    <UButton v-if="isCtaVisible" @click="()=>postJobOffer(()=> navigateTo(AppRoutes.myJobs))"
+    <UButton v-if="isCtaVisible" @click="()=>payForJobPosting(()=> navigateTo(AppRoutes.myJobs))"
              :loading="useJobStore().jobCreation.isLoading"
              :disabled="!isCtaEnabled" size="xl" color="indigo"
              class="bg-indigo-700 flex justify-center items-center"

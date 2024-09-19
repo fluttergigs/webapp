@@ -11,10 +11,10 @@ import {
 } from "~/features/companies/company.types";
 import {MultiApiResponse, SingleApiResponse} from "~/core/shared/types";
 import {AppStrings} from "~/core/strings";
-import {useAuthStore} from "~/stores/auth";
 import type {HttpClient} from "~/core/network/http_client";
 //@ts-ignore
 import slugify from "@sindresorhus/slugify";
+import {JobOffer} from "~/features/jobs/job.types";
 import {stringify} from "qs";
 
 //@ts-ignore
@@ -28,7 +28,6 @@ import parseISO from "date-fns/parseISO"
 import {useUserStore} from "~/stores/user";
 import {GenerativeAIProvider} from "~/services/ai/generative_ai_provider";
 import useCompanyActions from "~/composables/useCompanyActions";
-import type {JobOffer} from "~/features/jobs/job.types";
 
 // @ts-ignore
 export const useCompanyStore = defineStore('company', {
@@ -45,12 +44,6 @@ export const useCompanyStore = defineStore('company', {
         searchFilters: <CompanySearchFilters>{},
     }),
     actions: {
-        async setJobSearchFilters(filters: CompanySearchFilters) {
-            this.searchFilters = {
-                ...this.searchFilters,
-                ...filters
-            }
-        },
         hideCompanyDescriptionGenerationModal() {
             this.isCompanyDescriptionGenerationModalOpen = false;
         },

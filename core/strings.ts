@@ -1,5 +1,6 @@
 export class AppStrings {
 
+    static unableToFetchSetting = "Unable to fetch settings"
     static unableToFetchCompanies = "Unable to fetch companies"
 
     static unableToFetchJobs = "Unable to fetch jobs"
@@ -48,6 +49,10 @@ export class AppStrings {
 
     static errorOccurred = "An error occurred. Please try again later!"
 
+    static invalidCredentials = "Invalid credentials. Please try again!"
+
+    static emailAlreadyTaken = "Email already taken. Please try again!"
+
     static jobDescriptionIsReady = "Your job's description is ready"
 
     static companyDescriptionIsReady = "Your company's description is ready"
@@ -60,10 +65,15 @@ export class AppStrings {
 
     static removeJobFromBookmarks = 'Remove this job offer from your bookmarks'
 
-    static  notFoundMessage =  " The page you are looking for is not found! Try something else or go back to homepage."
+    static notFoundMessage = " The page you are looking for is not found! Try something else or go back to homepage."
 
     static errorMessage = "An unexpected error occurred. Please go back to homepage"
 
-    static featureAvailableSoon="Feature will be available soon";
+    static featureAvailableSoon = "Feature will be available soon";
+
+    static unableToFetchLearnCategories = "Unable to fetch learn categories"
+
+    static unableToFetchLearnResources = "Unable to fetch learn resources"
+
 
 }

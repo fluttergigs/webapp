@@ -13,7 +13,7 @@ import SaveJobIconButton from "~/components/job/SaveJobIconButton.vue";
 //@ts-ignore
 import {XCircleIcon} from "@heroicons/vue/24/outline";
 import ConfirmJobDeleteModal from "~/components/job/ConfirmJobDeleteModal.vue";
-import useCompanyActions from "~/composables/useCompanyActions";
+import JobSalaryBox from "~/components/job/JobSalaryBox.vue";
 
 const {data, error} = await useCountries();
 const {jobWorkingPermits} = useJobActions();
@@ -58,12 +58,12 @@ const jobActionItems = [
       useCompanyActions().handleJobEdit(props.job)
     }
   }],
- /* [{
+  [{
     label: 'Duplicate',
     click: () => {
-      //TODO - implement job duplicate
+      useCompanyActions().handleJobDuplicate(props.job)
     }
-  }],*/
+  }],
   [{
     label: 'View',
     click: () => {
@@ -134,13 +134,8 @@ const jobActionItems = [
 
             <span>•</span>
 
-            <div
-                class="inline-flex text-xs items-center
-                space-x-2 rounded-full px-3 py-0.5
-                bg-indigo-700/10 text-indigo-700">
-              <UIcon name="i-heroicons-currency-dollar"/>
-              <span>{{ job?.salaryFrom }} - {{ job?.salaryTo }}/month</span>
-            </div>
+            <JobSalaryBox :job="job"/>
+
           </div>
         </div>
         <div class="flex flex-col">

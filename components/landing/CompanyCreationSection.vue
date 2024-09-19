@@ -10,7 +10,7 @@ const {$analytics} = useNuxtApp()
 const postJob = () => {
   ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.companyPerkPostJobButtonClicked,);
 
-  navigateTo(AppRoutes.postJob)
+  useCompanyActions().handleJobCreation()
 }
 
 const createCompany = () => {
@@ -20,14 +20,14 @@ const createCompany = () => {
 </script>
 
 <template>
-  <section class="relative py-24 bg-blueGray-50">
+  <section class="relative py-24 bg-blueGray-50 overflow-hidden">
     <img
-        class="absolute left-1/2 bottom-0 transform -translate-x-1/2"
+        class="absolute left-1/2 bottom-0 transform translate-x-1/2"
         src="@/assets/images/gradient6.svg"
         alt=""
     />
 
-    <div class="flex w-full space-x-8 px-8 relative z-10 container mx-auto">
+    <div class="flex flex-col md:flex-row space-y-4 md:space-x-8 px-10 md:px-8 relative z-10 container mx-auto">
 
       <div class="w-full md:w-1/3">
         <div class="flex flex-col">
@@ -66,9 +66,7 @@ const createCompany = () => {
             :icon="MegaphoneIcon">
         </CompanyPerk>
       </div>
-
     </div>
-
   </section>
 </template>
 

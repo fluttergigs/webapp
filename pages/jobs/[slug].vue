@@ -1,21 +1,22 @@
-<script setup lang="ts">
+<script setup>
 
 import {useJobStore} from "~/stores/job";
+import {storeToRefs} from "pinia";
 import {Endpoint} from "~/core/network/endpoints";
 import {extractCompanyFromJob} from "~/features/jobs/transformers";
-import type {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider";
 import {AnalyticsEvent} from "~/services/analytics/events";
 import {userFacingCompanySize} from "~/features/companies/transformers";
 import {AppRoutes} from "~/core/routes";
 import useJobActions from '@/composables/useJobActions'
 import {Direction} from "~/core/shared/types";
-import type {SingleApiResponse} from "~/core/shared/types";
 import CompanyInfoCard from "~/components/company/CompanyInfoCard.vue";
 import {stringify} from "qs";
 import WorkingPermits from "~/components/job/WorkingPermits.vue";
 import SaveJobIconButton from "~/components/job/SaveJobIconButton.vue";
-import type {JobOffer} from "~/features/jobs/job.types";
-import type {Company} from "~/features/companies/company.types";
+
+
+// TODO handle mobile responsiveness
+//TODO handle account/dashboard/consultants
 
 definePageMeta({
   layout: 'main-layout',
@@ -24,8 +25,10 @@ definePageMeta({
 
 const {$analytics} = useNuxtApp()
 
+const {currentViewedJob} = storeToRefs(useJobStore())
+
 const company = computed(() => ({
-  ...extractCompanyFromJob(data.value as JobOffer)
+  ...extractCompanyFromJob(data.value)
 }));
 
 const jobSlug = ref(useRoute().params.slug)
@@ -46,39 +49,49 @@ const {
   data,
   error,
   pending
-} = await useFetch(`${useRuntimeConfig().public.apiBaseUrl}${Endpoint.jobOffers}?${query.value}`, {
+} = await useLazyFetch(`${useRuntimeConfig().public.apiBaseUrl}${Endpoint.jobOffers}?${query.value}`, {
   transform: (results) => {
     const job = results.data[0]
     return {
       ...job[`attributes`],
       id: job['id']
-    } as JobOffer
+    }
   }
 })
-if (!data.value) {
+/*if (!data.value) {
   throw createError({
     statusCode: 404,
-    statusMessage: 'Page Not Found',
+    statusMessage: 'Job Not Found',
   })
-}
+}*/
 
-useHead({title: `Flutter Gigs - ${data?.value?.title}`});
+definePageMeta({layout: 'main-layout', title: `FlutterGis job opportunities`,})
+
+useHead({title: `Get this opportunity on FlutterGigs: ${data.value?.title}`});
+
+useServerSeoMeta({
+  title: () => `Flutter Gigs - ${data.value?.title}`,
+  ogUrl: 'https://fluttergigs.com',
+  ogType: 'website',
+  ogLocale: 'en_US',
+  ogTitle: () => `Flutter Gigs - ${data.value?.title}`,
+  ogImage: 'https://fluttergigs.com/fluttergigs-og.png',
+  description: () => data.value?.description,
+  ogDescription: () => data.value?.description,
+  ogSiteName: 'Flutter Gigs - The #1 Flutter job platform',
+  twitterCard: 'summary_large_image',
+  twitterImage: () => data.value?.company?.logo ?? 'https://fluttergigs.com/fluttergigs-og.png',
+  twitterSite: '@fluttergigs',
+  twitterTitle: () => `Flutter Gigs - ${data.value?.title}`,
+  twitterDescription: () => 'Find this opportunity on FlutterGigs:' + data.value?.description,
+})
 
 onMounted(() => {
-  ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.jobOfferDetailEntered, {jobOffer: data})
-
-  useSeoMeta({
-    title: `Find this job ${data.value?.title}on FlutterGigs`,
-    ogTitle: data.value?.title,
-    description: data.value?.description,
-    ogDescription: data.value?.description,
-    ogImage: (data.value?.company as SingleApiResponse<Company>).data.attributes.logo,
-    twitterCard: 'summary_large_image',
-  })
+  ($analytics).capture(AnalyticsEvent.jobOfferDetailEntered, {jobOffer: data})
 })
 
 onBeforeMount(() => {
-  useJobStore().setSelectedJob(<JobOffer>data.value)
+  useJobStore().setSelectedJob(data)
 })
 </script>
 
@@ -96,37 +109,37 @@ onBeforeMount(() => {
 
     <template v-else>
       <section class="bg-blueGray-50 w-full relative">
-        <div class="container px-20 py-6 md:py-14 mx-auto">
-          <CompanyLogo :company="company" size="3xl" class="absolute left-16 top-18"/>
+        <div class="container px-4 md:x-20 py-6 md:py-14 mx-auto">
+          <CompanyLogo :company="company" size="3xl" class="absolute left-[10px] md:left-16 top-[6px] md:top-18"/>
         </div>
       </section>
-      <div class="px-20 py-20">
+      <div class="px-4 md:px-20 py-20">
         <section class="bg-white">
-          <div class="flex flex-col items-start sm:flex-row sm:items-center sm:justify-between">
+          <div class="flex flex-col gap-5 items-start sm:flex-row sm:items-center sm:justify-between">
             <h2 class="text-xl md:text-5xl lg:text-7xl font-bold">
               {{ data?.title }}
             </h2>
 
             <client-only>
-              <div class="flex space-x-2 items-center">
+              <div class="flex flex-wrap space-x-2 items-center my-2">
                 <UButton v-if="useJobActions().jobBelongsToCompany(company)"
-                         @click="useCompanyActions().handleJobEdit(data as JobOffer)" size="lg"
+                         @click="useCompanyActions().handleJobEdit(data)" size="lg"
                          icon="i-heroicons-pencil"
                          square label="Edit job offer" color="white"
                          variant="solid"/>
 
-                <UButton @click="useJobActions().shareJobOffer(<JobOffer>data)" size="lg"
+                <UButton @click="useJobActions().shareJobOffer(data)" size="lg"
                          icon="i-heroicons-share"
                          square label="Share job offer" color="white"
                          variant="solid"/>
 
-                <SaveJobIconButton :job="data as JobOffer" :company="company"/>
+                <SaveJobIconButton :job="data" :company="company"/>
               </div>
             </client-only>
           </div>
 
-          <div class="flex space-x-4 my-2">
-            <a :href="AppRoutes.companyPage(company.slug)" class="text-lg text-gray-900 font-medium">
+          <div class="flex flex-wrap gap-4 my-4">
+            <a :href="AppRoutes.companyPage(company.id)" class="text-lg text-gray-900 font-medium">
               {{ company?.name }}
             </a>
 
@@ -144,24 +157,22 @@ onBeforeMount(() => {
               </a>
             </div>
 
-            <WorkingPermits :countries="jobWorkingPermits(countriesData?.countries??[], data as JobOffer)"/>
+            <WorkingPermits :countries="jobWorkingPermits(countriesData?.countries??[], data)"/>
           </div>
         </section>
 
         <!--      job details-->
         <section class="font-normal flex flex-col my-4 gap-x-16 md:flex-row">
-          <div class="flex flex-col flex-shrink-0 w-full md:max-w-3xl space-y-10">
+          <div class="flex flex-col w-full md:w-4/6 space-y-10">
             <div class="space-y-10 text-gray-900 font-medium">
-              <p class="leading-10">
-                {{ company?.description }}
-              </p>
+              <p class="leading-10">{{ company?.description }}</p>
               <p class="leading-10">{{ data?.description }}</p>
             </div>
             <!--          apply section-->
             <LazyJobApplicationCtaCard class="hidden md:block" :job="data" :company="company"/>
           </div>
 
-          <div class="flex flex-col space-y-9 w-full">
+          <div class="flex flex-col space-y-9 w-full md:w-2/6">
             <JobApplicationCtaCard
                 :layout-direction='Direction.vertical'
                 :job="data"

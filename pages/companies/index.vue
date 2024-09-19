@@ -7,6 +7,16 @@ import type {AppAnalyticsProvider} from "~/services/analytics/app_analytics_prov
 definePageMeta({
   layout: 'main-layout',
   keepalive: true,
+  middleware: [
+    function (to: any, from: any) {
+      if (!useFeatureFlags().isEnabled(AvailableFlags.companiesList)) {
+
+        const {$toast} = useNuxtApp();
+        ($toast as BaseToast<Notification>).info(AppStrings.featureAvailableSoon)
+        return navigateTo(from)
+      }
+    }
+  ]
 })
 
 useHead({title: `Flutter Gigs - Browse companies`});

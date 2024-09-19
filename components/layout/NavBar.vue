@@ -1,19 +1,19 @@
 <template>
-  <section class="overflow-hidden z-50">
-    <div class="flex items-center justify-between py-5 bg-blueGray-50 px-18 sticky">
+  <section class="overflow-hidden z-[2500]">
+    <div class="flex items-center justify-between py-5 bg-blueGray-50 px-4 md:px-18 sticky">
       <div class="w-auto">
         <div class="flex flex-wrap items-center">
           <div class="w-auto mr-14">
             <NuxtLink :to="AppRoutes.welcome">
-              <img src="@/assets/images/logo.svg" alt=""/>
+              <img alt="" class="w-20" src="/logo.webp"/>
             </NuxtLink>
           </div>
           <div class="w-auto hidden lg:block">
             <ul class="flex items-center mr-16">
-              <li class="mr-9 font-medium hover:text-indigo-900" v-for="link in links" :key="link.name">
-                <UChip :show="link.hasOwnProperty('tag')" :text="link['tag']" size="xl" color="green">
+              <li v-for="link in links" :key="link.name" class="mr-9 font-medium hover:text-indigo-900">
+                <UChip :show="link.hasOwnProperty('tag')" :text="link['tag']" color="green" size="xl">
                   <NuxtLink
-                      :class="['font-medium hover:text-indigo-900', {'text-indigo-800 font-bold': useRoute().fullPath === link.path}]"
+                      :class="['font-medium hover:text-indigo-900', {'text-indigo-800': useRoute().fullPath === link.path}]"
                       :to="link.path">{{ link.name }}
                   </NuxtLink>
                 </UChip>
@@ -28,8 +28,8 @@
 
             <ClientOnly>
               <div class="inline-block">
-                <NuxtLink class="font-medium" v-if="!isAuthenticated"
-                          :to="AppRoutes.login">
+                <NuxtLink v-if="!isAuthenticated" :to="AppRoutes.login"
+                          class="font-medium">
                   Login
                 </NuxtLink>
                 <UDropdown v-else :items="accountLinks" :popper="{ placement: 'bottom-start'}">
@@ -43,29 +43,29 @@
             </ClientOnly>
           </div>
           <div class="w-auto hidden lg:block">
-            <UButton color="indigo" block :to="AppRoutes.postJob" size="lg"
-                     class="bg-indigo-700"
-                     square label="Post a job"
+            <UButton :to="AppRoutes.postJob" block class="bg-indigo-700" color="indigo"
                      icon="i-heroicons-megaphone"
+                     label="Post a job" size="lg"
+                     square
                      variant="solid"/>
           </div>
           <div class="w-auto lg:hidden">
             <a href="#">
               <svg
                   class="navbar-burger text-indigo-600"
-                  width="51"
+                  fill="none"
                   height="51"
                   viewbox="0 0 56 56"
-                  fill="none"
+                  width="51"
                   xmlns="http://www.w3.org/2000/svg"
               >
-                <rect width="56" height="56" rx="28" fill="currentColor"></rect>
+                <rect fill="currentColor" height="56" rx="28" width="56"></rect>
                 <path
                     d="M37 32H19M37 24H19"
                     stroke="white"
-                    stroke-width="1.5"
                     stroke-linecap="round"
                     stroke-linejoin="round"
+                    stroke-width="1.5"
                 ></path>
               </svg>
             </a>
@@ -75,45 +75,26 @@
     </div>
     <div class="hidden navbar-menu fixed top-0 left-0 bottom-0 w-4/6 sm:max-w-xs z-50">
       <div class="navbar-backdrop fixed inset-0 bg-gray-800 opacity-80"></div>
-      <nav class="relative z-10 px-9 pt-8 bg-white h-full overflow-y-auto ">
+      <nav class="relative z-10 px-9 pt-8 bg-white h-full overflow-y-auto">
         <div class="flex flex-wrap justify-between h-full">
           <div class="w-full">
             <div class="flex items-center justify-between -m-2">
               <div class="w-auto p-2">
                 <NuxtLink class="inline-block" to="/">
-                  <img src="@/assets/images/logo.svg" alt=""/>
+                  <img alt="" class="w-20" src="/logo.webp"/>
                 </NuxtLink>
               </div>
               <div class="w-auto p-2">
                 <a class="navbar-burger" href="#">
-                  <svg
-                      width="24"
-                      height="24"
-                      viewbox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                        d="M6 18L18 6M6 6L18 18"
-                        stroke="#111827"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    ></path>
-                  </svg>
+                  <BurgerIcon/>
                 </a>
               </div>
             </div>
           </div>
           <div class="flex flex-col justify-center py-16 w-full">
             <ul>
-              <li class="mb-12" v-for="link in links" :key="link.name">
-                <UChip :show="link.hasOwnProperty('tag')" :text="link['tag']" size="xl" color="green">
-                  <NuxtLink
-                      :class="['font-medium hover:text-indigo-900', {'text-indigo-800 font-bold': useRoute().fullPath === link.path}]"
-                      :to="link.path">{{ link.name }}
-                  </NuxtLink>
-                </UChip>
+              <li v-for="link in links" class="mb-12">
+                <NuxtLink :href="link.path" class="font-medium hover:text-indigo-900">{{ link.name }}</NuxtLink>
               </li>
             </ul>
           </div>
@@ -122,8 +103,8 @@
               <div class="w-full mb-3">
                 <ClientOnly>
                   <div class="block">
-                    <NuxtLink class="font-medium" v-if="!isAuthenticated"
-                              :to="AppRoutes.login"
+                    <NuxtLink v-if="!isAuthenticated" :to="AppRoutes.login"
+                              class="font-medium"
                     >
                       Login
                     </NuxtLink>
@@ -139,10 +120,10 @@
                 </ClientOnly>
 
               </div>
-              <UButton color="indigo" :to="AppRoutes.postJob" size="lg"
+              <UButton :to="AppRoutes.postJob" class="bg-indigo-700" color="indigo"
                        icon="i-heroicons-megaphone"
-                       class="bg-indigo-700"
-                       square label="Post a job"
+                       label="Post a job"
+                       size="lg" square
                        variant="solid"/>
             </div>
           </div>
@@ -152,32 +133,45 @@
   </section>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 
 import {AppRoutes} from "~/core/routes";
 import {useAuthStore} from "~/stores/auth";
 import {storeToRefs} from "pinia";
+import {AnalyticsEvent} from "~/services/analytics/events";
 import {AvailableFlags} from "~/services/feature-flag/available_flags";
-import useFeatureFlags from "~/composables/useFeatureFlags";
+import BurgerIcon from "~/components/icons/BurgerIcon.vue";
 
-const links = ref([
+const links = shallowRef([
+  {
+    path: AppRoutes.welcome,
+    name: 'Home',
+    enabled: true
+  },
+  {
+    path: AppRoutes.companies,
+    name: 'Companies',
+    enabled: useFeatureFlags().isEnabled(AvailableFlags.companiesList,)
+  },
   {
     path: AppRoutes.jobs,
     name: 'Jobs',
     isEnabled: true,
   },
   {
-    path: AppRoutes.companies,
-    name: 'Companies',
-    isEnabled: true,
+    path: AppRoutes.hireConsultants,
+    name: 'Consultants',
+    tag: useFeatureFlags().isFeatureEnabled(AvailableFlags.hireConsultants,) ? 'New' : 'Soon',
+    isEnabled: useFeatureFlags().isFeatureEnabled(AvailableFlags.hireConsultants,)
   },
   {
-    path: AppRoutes.consultants,
-    name: 'Consultants',
-    tag: useFeatureFlags().isFeatureEnabled(AvailableFlags.consultants,) ? 'New' : 'Soon',
-    isEnabled: useFeatureFlags().isFeatureEnabled(AvailableFlags.consultants,)
+    path: AppRoutes.learn,
+    name: 'Learn',
+    enabled: true
   },
 ])
+
+const isActive = (path) => useRoute().path === path
 
 const accountLinks = [
   [{
@@ -208,7 +202,10 @@ const accountLinks = [
   [{
     label: 'Logout',
     click: () => {
-      useAuthStore().logout()
+      const {$analytics} = useNuxtApp();
+      ($analytics).capture(AnalyticsEvent.logoutButtonClicked);
+
+      useAuthStore().logout();
     }
   },],
 ]

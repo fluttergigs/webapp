@@ -15,19 +15,19 @@ const findJobs = () => {
 </script>
 
 <template>
-  <section class="relative py-16 bg-blueGray-100">
+  <section class="relative py-16 bg-blueGray-100 overflow-hidden w-full">
     <img
         class="absolute left-1/2 bottom-0 transform translate-x-1/4"
         src="@/assets/images/gradient6.svg"
         alt=""
     />
-    <div class="relative z-10 container px-4 py-8 mx-auto">
+    <div class="relative container sm:px-10 px-4 py-8 mx-auto">
       <p class="mb-6 text-sm text-indigo-600 font-bold uppercase tracking-px">
-        For users
+        For job seekers
       </p>
 
       <div class="md:flex md:justify-between">
-        <div class="md:max-w-3xl">
+        <div class="md:max-w-2xl">
           <h2
               class="mb-5 text-5xl md:text-6xl font-bold font-heading tracking-px-n leading-tight">
             Find your dream Flutter job today
@@ -37,11 +37,12 @@ const findJobs = () => {
             find your dream gig today.
           </p>
         </div>
-        <UButton @click="findJobs" class="bg-indigo-700"
-                 color="indigo" style="height: fit-content" size="xl" label="Find jobs"/>
+        <UButton
+            @click="findJobs" class="bg-indigo-700 w-full md:w-auto"
+            color="indigo" style="height: fit-content" size="xl" label="Find jobs"/>
       </div>
 
-      <div class="flex flex-wrap mb-1.5" v-if="landingPageJobs">
+      <div class="flex flex-wrap my-4 gap-3" v-if="landingPageJobs">
         <JobCardDetailed :job="job" v-for="job in landingPageJobs" :key="job.slug"/>
       </div>
     </div>

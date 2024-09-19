@@ -35,7 +35,7 @@ export interface CompanySearchFilters {
 }
 
 export type CompanyApiResponse = SingleApiResponse<Company>
-export type CreateCompanyRequestProps = { description: string & Omit<Company, 'jobOffers' | 'user'> }
+export type CreateCompanyRequestProps = { description: string & Omit<Company, 'jobOffers' | 'user'> & { user: number } }
 
 export type CreateCompanyRequest = { data: CreateCompanyRequestProps }
 

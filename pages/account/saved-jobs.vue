@@ -3,7 +3,7 @@
     <section class="py-8 px-2 md:py-12 xl:pb-56 bg-white overflow-hidden">
       <div class="flex justify-between items-center">
         <h3
-            class="mb-4 text-2xl md:text-4xl font-semibold tracking-px-n leading-tight">
+            class="mb-4 text-xl md:text-3xl font-semibold tracking-px-n leading-tight">
           Your saved jobs
         </h3>
       </div>
@@ -58,7 +58,7 @@ import {AppRoutes} from "~/core/routes";
 
 definePageMeta({layout: 'app-layout', middleware: ['auth']})
 
-useHead({title: "Flutter Gigs - My saved jobs"});
+useHead({title: "FlutterGigs - My saved jobs"});
 
 const authStore = useAuthStore()
 const userStore = useUserStore()

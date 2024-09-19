@@ -11,7 +11,7 @@
           <div class="w-full sm:w-1/2 lg:w-6/12 p-8">
             <div class="lg:max-w-sm">
               <a class="mb-8 inline-block" href="#">
-                <img src="@/assets/images/logo-light.svg" alt=""/>
+                <img class="w-20" src="/logo-white.webp" alt=""/>
               </a>
               <p class="mb-20 text-gray-400 font-medium leading-relaxed md:max-w-xs">
                 Looking for a job in Flutter development? Check out FlutterGigs - the first Flutter job board! Find your
@@ -88,15 +88,33 @@
             </h3>
             <ul>
               <li class="mb-5">
-                <NuxtLink :to="AppRoutes.jobs" class="text-white hover:text-gray-200 font-medium leading-relaxed">Latest
-                  Flutter Jobs
+                <NuxtLink
+                    class="text-white hover:text-gray-200 font-medium leading-relaxed"
+                    :to="AppRoutes.jobs">Latest Flutter Jobs
                 </NuxtLink>
               </li>
               <li class="mb-5">
                 <a
                     class="text-white hover:text-gray-200 font-medium leading-relaxed"
-                    href="#">Subscribe to job alerts</a
-                >
+                    href="#">Subscribe to job alerts</a>
+              </li>
+            </ul>
+          </div>
+          <div class="w-full sm:w-1/2 lg:w-2/12 p-8">
+            <h3
+                class="mb-8 text-sm text-gray-600 uppercase font-semibold leading-normal tracking-px">
+              HIRE
+            </h3>
+            <ul>
+              <li class="mb-5">
+                <a @click.prevent="useCompanyActions().handleJobCreation()"
+                   class="text-white hover:text-gray-200 font-medium leading-relaxed"
+                   href="#">Post a job</a>
+              </li>
+              <li class="mb-5" v-if="useFeatureFlags().isEnabled(AvailableFlags.hireConsultants)">
+                <a
+                    class="text-white hover:text-gray-200 font-medium leading-relaxed"
+                    href="#">Hire Flutter Consultants</a>
               </li>
             </ul>
           </div>
@@ -104,28 +122,14 @@
             <h3
                 class="mb-8 text-sm text-gray-600 uppercase font-semibold leading-normal tracking-px"
             >
-              HIRE
-            </h3>
-            <ul>
-              <li class="mb-5">
-                <a @click.prevent="useCompanyActions().handleJobCreation()"
-                   class="text-white hover:text-gray-200 font-medium leading-relaxed">Post a job</a>
-              </li>
-              <li class="mb-5">
-                <a class="text-white hover:text-gray-200 font-medium leading-relaxed">Hire Flutter Consultants</a>
-              </li>
-            </ul>
-          </div>
-          <div class="w-full sm:w-1/2 lg:w-2/12 p-8">
-            <h3
-                class="mb-8 text-sm text-gray-600 uppercase font-semibold leading-normal tracking-px">
               Discover
             </h3>
             <ul>
               <li class="mb-5">
-                <a
+                <NuxtLink
                     class="text-white hover:text-gray-200 font-medium leading-relaxed"
-                    href="#">Learning Flutter Resources</a>
+                    :to="AppRoutes.learn">Learning Flutter Resources
+                </NuxtLink>
               </li>
             </ul>
           </div>
@@ -140,5 +144,5 @@
 
 <script setup>
 import useCompanyActions from "~/composables/useCompanyActions";
-import {AppRoutes} from "~/core/routes";
+import {AvailableFlags} from "~/services/feature-flag/available_flags";
 </script>
