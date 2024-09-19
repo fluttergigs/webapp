@@ -1,6 +1,9 @@
 <template>
   <section class="overflow-hidden z-[2500]">
-    <div class="flex items-center justify-between py-5 bg-blueGray-50 px-4 md:px-18 sticky">
+    <div :class="[isHomePage ? 'bg-white' : 'bg-blueGray-50']"
+         class="flex items-center justify-between
+    py-5 bg-blueGray-50 px-4 md:px-18 sticky
+    transition-all ease-in duration-200">
       <div class="w-auto">
         <div class="flex flex-wrap items-center">
           <div class="w-auto mr-14">
@@ -209,6 +212,8 @@ const accountLinks = [
     }
   },],
 ]
+
+const isHomePage = useRoute().path === '/'
 
 const {isAuthenticated} = storeToRefs(useAuthStore())
 

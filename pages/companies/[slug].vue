@@ -54,7 +54,7 @@ const {
   data,
   error,
   pending
-} = await useFetch(`${useRuntimeConfig().public.apiBaseUrl}${Endpoint.companies}?${query.value}`, {
+} = await useLazyFetch(`${useRuntimeConfig().public.apiBaseUrl}${Endpoint.companies}?${query.value}`, {
   key: companySlug.value,
   transform: (results) => {
     const company = results.data[0]
@@ -170,7 +170,7 @@ onMounted(() => {
 <style>
 
 div[role='tablist'] {
-//z-index: 2000; //top: -40px;
+  //z-index: 2000; //top: -40px;
 }
 
 [role='tablist'] button {

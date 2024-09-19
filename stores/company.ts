@@ -50,6 +50,12 @@ export const useCompanyStore = defineStore('company', {
         showCompanyDescriptionGenerationModal() {
             this.isCompanyDescriptionGenerationModalOpen = true;
         },
+        setCompanySearchFilters(filters: CompanySearchFilters) {
+            this.searchFilters = {
+                ...this.searchFilters,
+                ...filters
+            }
+        },
         async generateCompanyDescription(prompt: string) {
             this.companyDescriptionGenerationTask = new Wrapper<String>().toLoading()
             try {
@@ -121,7 +127,7 @@ export const useCompanyStore = defineStore('company', {
         async createCompany(payload: CreateCompanyRequest): Promise<void> {
             try {
                 //@ts-ignore
-                payload.data.slug = slugify(useAuthStore().authUser?.username + payload.data.name)
+                payload.data.slug = slugify('fluttergigs-company' + useAuthStore().authUser?.username + payload.data.name)
                 this.companyCreation = new Wrapper<SingleApiResponse<Company>>().toLoading()
                 const {$http} = useNuxtApp()
                 const response = await (<HttpClient>$http).post(`${Endpoint.companies}`, payload)

@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 
 //@ts-ignore
 import type {PropType} from "@vue/runtime-core";
@@ -19,8 +19,8 @@ const props = defineProps({
 </script>
 
 <template>
-  <UCard @click="navigateTo(AppRoutes.companyPage(company.slug))"
-         :class="['transition-all duration-300 ease-in-out cursor-pointer']">
+  <UCard :class="['transition-all duration-300 ease-in-out cursor-pointer']"
+         @click="navigateTo(AppRoutes.companyPage(company.slug))">
 
     <div class="flex flex-col items-baseline space-y-3 md:flex-row md:space-x-3 p-2">
 
@@ -34,8 +34,8 @@ const props = defineProps({
       </div>
 
       <div class="flex-grow flex-wrap flex flex-col text-gray-600 space-y-2">
-        <h3 class="text-gray-700 text-xl font-medium">{{ company.name }}</h3>
-        <ItemData label="Company Size" :show-label="false">
+        <h3 class="text-xl font-medium primary-gradient">{{ company.name }}</h3>
+        <ItemData :show-label="false" label="Company Size">
           <template #content>
             <div class="flex items-center space-x-1">
               <UIcon class="text-gray-600" name="i-heroicons-building-office"/>

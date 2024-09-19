@@ -1,5 +1,5 @@
 <template>
-  <section class="bg-blueGray-50">
+  <section class="bg-white">
     <div class="overflow-hidden">
       <div class="container py-6 md:py-8 mx-auto">
         <div class="flex flex-wrap justify-center items-center">
@@ -31,32 +31,30 @@
                 Get the best-in-class group mentoring plans and professional benefits for
                 your team
               </p>
-              <div style="width: fit-content" class="flex flex-col sm:flex-row gap-3 my-20 items-start md:items-center">
+              <div class="flex flex-col sm:flex-row gap-3 my-20 items-start md:items-center" style="width: fit-content">
 
                 <UButton
-                    @click="findJobs"
-                    icon="i-heroicons-magnifying-glass-solid"
+                    class="py-5 px-9 rounded-xl flex gap-2 font-medium"
                     color="indigo"
-                    class="py-5 px-9 rounded-xl flex gap-2 font-medium"
-                    label="Find your next job now"/>
+                    icon="i-heroicons-magnifying-glass-solid"
+                    label="Find your next job now"
+                    @click="findJobs"/>
                 <UButton
-                    @click="handleJobCreation"
-                    icon="i-heroicons-megaphone-solid"
-                    color="white"
                     class="py-5 px-9 rounded-xl flex gap-2 font-medium"
-                    label="Post a new Flutter job"/>
+                    color="white"
+                    icon="i-heroicons-megaphone-solid"
+                    label="Post a new Flutter job"
+                    @click="handleJobCreation"/>
               </div>
             </div>
 
           </div>
           <div class="w-full md:w-1/2 p-8">
             <img
-                width="500"
-                height="500"
                 alt=""
                 class="transform hover:-translate-y-16 transition ease-in-out duration-1000"
                 contenteditable="false"
-                src="/header.png"
+                src="/header-jobs.webp"
             />
           </div>
         </div>

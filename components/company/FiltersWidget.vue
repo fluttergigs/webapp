@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 
 import {storeToRefs} from "pinia";
 //@ts-ignore
@@ -7,6 +7,14 @@ import SizeFilter from "~/components/company/SizeFilter.vue";
 
 const companyStore = useCompanyStore()
 const {searchFilters} = storeToRefs(companyStore)
+
+const handleSizeFilter = (value: string) => {
+  companyStore.setCompanySearchFilters({size: value})
+}
+
+const handleKeywordFilter = (value: string) => {
+  companyStore.setCompanySearchFilters({keyword: value})
+}
 
 watchDebounced(
     searchFilters,
@@ -24,8 +32,8 @@ watchDebounced(
       Company Filters
     </p>
     <div class="flex flex-col space-y-6">
-      <CompanyKeywordFilter @filterByKeyword="(value)=> companyStore.setJobSearchFilters({keyword: value})"/>
-      <SizeFilter @filterBySize="(value)=> companyStore.setJobSearchFilters({size: value})"/>
+      <CompanyKeywordFilter @filterByKeyword="handleKeywordFilter"/>
+      <SizeFilter @filterBySize="(value)=> handleSizeFilter(value)"/>
     </div>
   </section>
 </template>
