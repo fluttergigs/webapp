@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 
 import {AppRoutes} from "~/core/routes";
 import {useJobStore} from "~/stores/job";
@@ -17,9 +17,9 @@ const findJobs = () => {
 <template>
   <section class="relative py-16 bg-blueGray-100 overflow-hidden w-full">
     <img
+        alt=""
         class="absolute left-1/2 bottom-0 transform translate-x-1/4"
         src="@/assets/images/gradient6.svg"
-        alt=""
     />
     <div class="relative container sm:px-10 px-4 py-8 mx-auto">
       <p class="mb-6 text-sm text-indigo-600 font-bold uppercase tracking-px">
@@ -38,17 +38,18 @@ const findJobs = () => {
           </p>
         </div>
         <UButton
-            @click="findJobs" class="bg-indigo-700 w-full md:w-auto"
-            color="indigo" style="height: fit-content" size="xl" label="Find jobs"/>
+            class="bg-indigo-700 w-full md:w-auto" color="indigo"
+            label="Find jobs" size="xl" style="height: fit-content" @click="findJobs"/>
       </div>
 
-      <div class="flex flex-wrap my-4 gap-3" v-if="landingPageJobs">
-        <JobCardDetailed :job="job" v-for="job in landingPageJobs" :key="job.slug"/>
+      <div v-if="landingPageJobs" class="flex flex-wrap my-4 gap-3">
+        <JobCardDetailed v-for="job in landingPageJobs" :key="job.slug" :job="job"/>
       </div>
     </div>
   </section>
 </template>
 
 <style scoped>
+
 
 </style>

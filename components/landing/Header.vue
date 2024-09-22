@@ -19,7 +19,7 @@
               </div>
             </div>
 
-            <div class="flex flex-col gap-4 px-2 sm:px-0">
+            <div class="flex flex-col gap-2 md:gap-4 px-2 sm:px-0">
               <h1
                   class="mb-6 text-5xl md:text-7xl lg:text-8xl font-bold
                 leading-none primary-gradient"
@@ -31,7 +31,8 @@
                 Get the best-in-class group mentoring plans and professional benefits for
                 your team
               </p>
-              <div class="flex flex-col sm:flex-row gap-3 my-20 items-start md:items-center" style="width: fit-content">
+              <div class="flex flex-col sm:flex-row gap-3 my-5 md:my-20 items-start md:items-center"
+                   style="width: fit-content">
 
                 <UButton
                     class="py-5 px-9 rounded-xl flex gap-2 font-medium"
