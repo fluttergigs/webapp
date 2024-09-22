@@ -19,7 +19,6 @@ import SaveJobIconButton from "~/components/job/SaveJobIconButton.vue";
 
 definePageMeta({
   layout: 'main-layout',
-  keepalive: true,
 })
 
 const {$analytics} = useNuxtApp()
@@ -87,7 +86,8 @@ useServerSeoMeta({
 })
 
 onMounted(() => {
-  ($analytics).capture(AnalyticsEvent.jobOfferDetailEntered, {jobOffer: data})
+  // if (import.meta.client)
+  ($analytics).capture(AnalyticsEvent.jobOfferDetailEntered, {jobOffer: data ?? {}})
 })
 
 onBeforeMount(() => {
@@ -127,6 +127,7 @@ onBeforeMount(() => {
                          label="Edit job offer"
                          size="lg" square variant="solid"
                          @click="useCompanyActions().handleJobEdit(data)"/>
+                §
 
                 <UButton color="white" icon="i-heroicons-share"
                          label="Share job offer"

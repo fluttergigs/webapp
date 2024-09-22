@@ -31,11 +31,11 @@ export class PosthogClient implements AppAnalytics {
         logDev(`[Analytics] ${event} ${properties?.toString()}`)
 
         if (import.meta.env.MODE !== "development")
-            posthog.capture(event, JSON.stringify(properties || {}));
+            posthog.capture(event, properties)
     }
 
     identifyUser(identifier: string, properties?: any): void {
-        posthog.identify(identifier, JSON.stringify(properties));
+        posthog.identify(identifier, properties);
     }
 
     reset(): void {

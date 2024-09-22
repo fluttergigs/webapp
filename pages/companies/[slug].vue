@@ -11,7 +11,6 @@ import {logDev} from "~/core/helpers/log";
 
 definePageMeta({
   layout: 'main-layout',
-  keepalive: true,
 })
 
 const {viewedCompanyJobs} = storeToRefs(useCompanyStore())
@@ -91,43 +90,43 @@ useSeoMeta({
 </script>
 
 <template>
-  <client-only>
-    <template v-if="pending">
-      <div class="flex items-center justify-center p-52">
-        <UButton
-            class="bg-transparent text-indigo-700 border-none"
-            label="" loading
-            size="xl"
-            variant="ghost"/>
-      </div>
-    </template>
+  <!--  <client-only>-->
+  <template v-if="pending">
+    <div class="flex items-center justify-center p-52">
+      <UButton
+          class="bg-transparent text-indigo-700 border-none"
+          label="" loading
+          size="xl"
+          variant="ghost"/>
+    </div>
+  </template>
 
-    <template v-else>
-      <section class="bg-blueGray-50 w-full relative">
-        <div class="container py-6 md:py-14 px-10 md:px-20">
-          <div class="flex flex-col md:flex-row gap-x-6 items-start md:items-center">
-            <CompanyLogo :company="data as Company" size="3xl"/>
+  <template v-else>
+    <section class="bg-blueGray-50 w-full relative">
+      <div class="container py-6 md:py-14 px-10 md:px-20">
+        <div class="flex flex-col md:flex-row gap-x-6 items-start md:items-center">
+          <CompanyLogo :company="data as Company" size="3xl"/>
 
-            <div class="flex flex-1 flex-col space-y-2 justify-center">
-              <h3 class="text-6xl md:text-7xl font-bold">
-                {{ (data as Company).name }}
-              </h3>
-              <p class="text-gray-500 font-medium leading-relaxed line-clamp-1 overflow-ellipsis">
-                {{ (data as Company).description }}
-              </p>
-            </div>
-
-            <UButton class="invisible md:visible" color="white"
-                     icon="i-heroicons-share" label="Share company"
-                     size="lg"
-                     square style="height: fit-content" variant="solid"
-                     @click.prevent="useCompanyActions().shareCompany(<Company>data)"/>
+          <div class="flex flex-1 flex-col space-y-2 justify-center">
+            <h3 class="text-6xl md:text-7xl font-bold">
+              {{ (data as Company).name }}
+            </h3>
+            <p class="text-gray-500 font-medium leading-relaxed line-clamp-1 overflow-ellipsis">
+              {{ (data as Company).description }}
+            </p>
           </div>
+
+          <UButton class="invisible md:visible" color="white"
+                   icon="i-heroicons-share" label="Share company"
+                   size="lg"
+                   square style="height: fit-content" variant="solid"
+                   @click.prevent="useCompanyActions().shareCompany(<Company>data)"/>
         </div>
-        <div class="w-full">
-          <div>
-            <UTabs :items="tabs"
-                   :ui="{
+      </div>
+      <div class="w-full">
+        <div>
+          <UTabs :items="tabs"
+                 :ui="{
             list: {
               width: 'w-fit',
               background:'bg-transparent',
@@ -141,25 +140,25 @@ useSeoMeta({
                marker: {background: 'bg-transparent', shadow: 'shadow-none'}
             }
           }" class="w-full mt-10">
-              <template #item="{ item }">
-                <div class="w-full bg-white py-8 px-10 md:px-20">
-                  <div v-if="item.key === 'overview'" class="space-y-3">
-                    <CompanyOverview :company="data as Company"/>
-                  </div>
-                  <div v-else-if="item.key === 'jobs'" class="space-y-3">
-                    <CompanyJobs :company="data as Company"/>
-                  </div>
+            <template #item="{ item }">
+              <div class="w-full bg-white py-8 px-10 md:px-20">
+                <div v-if="item.key === 'overview'" class="space-y-3">
+                  <CompanyOverview :company="data as Company"/>
                 </div>
-              </template>
-            </UTabs>
-
-          </div>
+                <div v-else-if="item.key === 'jobs'" class="space-y-3">
+                  <CompanyJobs :company="data as Company"/>
+                </div>
+              </div>
+            </template>
+          </UTabs>
 
         </div>
 
-      </section>
-    </template>
-  </client-only>
+      </div>
+
+    </section>
+  </template>
+  <!--  </client-only>-->
 
 </template>
 
