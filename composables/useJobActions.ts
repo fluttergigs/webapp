@@ -80,7 +80,7 @@ export default function useJobActions() {
 
 
         const {text, copy, copied,} = useClipboard({
-            source: `${location.href}/jobs/${job.slug}`,
+            source: `${location.href}`,
             legacy: true
         })
 
