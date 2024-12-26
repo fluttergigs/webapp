@@ -13,13 +13,12 @@ const headers = {
     "Access-Control-Allow-Headers": "*",
     "Access-Control-Expose-Headers": "*",
 };
-
 //@ts-ignore
 export type Response<T = any> = { data: T, [key: string] }
 
 export class Fetcher implements HttpClient<Response> {
-    private readonly instance;
     readonly baseURL;
+    private readonly instance;
 
     constructor(private readonly fetchOptions?: FetchOptions) {
         ({apiBaseUrl: this.baseURL} = useRuntimeConfig().public);

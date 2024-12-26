@@ -3,17 +3,12 @@ import {FetchContext, FetchResponse} from "ofetch";
 import {useAuthStore} from "~/stores/auth";
 import {logDev} from "~/core/helpers/log";
 
-export type PromiseVoid = Promise<void> | void
+export type PromiseVoid = Promise<void> | void;
 export const $fetchInterceptor = {
     async onRequest(context: FetchContext): Promise<void> {
-        const {
-            isAuthenticated,
-            hasTokenExpired,
-            logout,
-            jwt,
-        } = useAuthStore();
+        const {isAuthenticated, hasTokenExpired, logout, jwt} = useAuthStore();
         if (isAuthenticated) {
-            logDev('INSIDE INTERCEPTOR')
+            logDev("INSIDE INTERCEPTOR");
             if (hasTokenExpired) {
                 // useNuxtApp().$abortController.abort();
                 await logout();
@@ -26,8 +21,9 @@ export const $fetchInterceptor = {
     onRequestError(context: FetchContext & { error: Error }): PromiseVoid {
         console.log("REQUEST ERROR", context.error);
     },
-    async onResponse(context: FetchContext & { response: FetchResponse<ResponseType> }): Promise<void> {
+    async onResponse(
+        context: FetchContext & { response: FetchResponse<ResponseType> }
+    ): Promise<void> {
         const {isAuthenticated, token, logout} = useAuthStore();
-
-    }
+    },
 };

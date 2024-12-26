@@ -2,15 +2,17 @@
 import EventHandlerRequest from "h3";
 
 export default defineEventHandler((event: EventHandlerRequest) => {
-    const server = event.node.res.socket?.server
+  const server = event.node.res.socket?.server;
 
-    if (!!server) {
-        if (!WebSocketManager.getInstance().isInitialized()) {
-            console.log('Initializing WebSocket server from middleware')
-            WebSocketManager.getInstance().initialize(server)
-        }
+  console.log("Initializing WebSocket server from middleware");
+
+  if (!!server) {
+    if (!WebSocketManager.getInstance().isInitialized()) {
+      console.log("Initializing WebSocket server from middleware");
+      WebSocketManager.getInstance().initialize(server);
     }
-})
+  }
+});
 
 /*
 import WebSocket, {WebSocketServer} from "ws"

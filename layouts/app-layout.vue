@@ -2,59 +2,108 @@
   <section class="flex w-full bg-white">
     <!--    xl:flex xl:flex-col-->
     <div
-        :class="['navbar-menu relative z-50 w-full flex flex-col h-full transition-all ease-in',
-        isAppBarShrunk? 'max-w-[70px]': 'max-w-[240px]']">
+      :class="[
+        'navbar-menu relative z-50 flex h-full w-full flex-col transition-all ease-in',
+        isAppBarShrunk ? 'max-w-[70px]' : 'max-w-[240px]',
+      ]"
+    >
       <!--      <div class="navbar-backdrop fixed xl:hidden inset-0 bg-blueGray-50 opacity-10"></div>-->
       <div
-          :class="['flex flex-col items-center inset-0 bg-blueGray-50 border-r fixed transition-all ease-in duration-200 h-full',
-          isAppBarShrunk? 'max-w-[70px]': 'max-w-[240px]']">
-
+        :class="[
+          'fixed inset-0 flex h-full flex-col items-center border-r bg-blueGray-50 transition-all duration-200 ease-in',
+          isAppBarShrunk ? 'max-w-[70px]' : 'max-w-[240px]',
+        ]"
+      >
         <!--        App Logo and menu toggle-->
-        <div class="flex items-center justify-between py-3 my-2 w-full transition-all ease-in duration-200"
-             :class="[isAppBarShrunk? 'px-2': 'px-8']">
-          <img class="w-10" src="/ico.webp" alt="" v-if="isAppBarShrunk"
-               @click="useAppStore().toggleAppBarShrink()">
-          <img class="w-16" src="/logo.webp" alt="" v-else>
+        <div
+          :class="[isAppBarShrunk ? 'px-2' : 'px-8']"
+          class="my-2 flex w-full items-center justify-between py-3 transition-all duration-200 ease-in"
+        >
+          <img
+            v-if="isAppBarShrunk"
+            alt=""
+            class="w-10"
+            src="/ico.webp"
+            @click="useAppStore().toggleAppBarShrink()"
+          />
+          <img v-else alt="" class="w-16" src="/logo.webp" />
           <div class="w-auto" @click="useAppStore().toggleAppBarShrink()">
             <a class="text-neutral-400 hover:text-neutral-500" href="#">
               <!--              <ChevronDoubleRightIcon class="w-2" v-if="isAppBarShrunk"/>-->
-              <ArrowsPointingInIcon class="w-5" v-if="!isAppBarShrunk"/>
+              <ArrowsPointingInIcon v-if="!isAppBarShrunk" class="w-5" />
             </a>
           </div>
         </div>
 
         <!--    App menu-->
-        <div class="flex flex-col justify-between flex-grow mx-4 py-8 overflow-x-hidden overflow-y-auto">
-          <div class="flex flex-col space-y-3 flex-wrap px-7 mb-8 -m-2.5">
-            <div v-for="(linkItems,section, sectionIndex) in groupedLinks" class="my-3">
-              <p v-if="!!section && !isAppBarShrunk" class="w-auto text-xs text-neutral-400 font-medium uppercase mb-2">
+        <div
+          class="mx-4 flex flex-grow flex-col justify-between overflow-y-auto overflow-x-hidden py-8"
+        >
+          <div class="-m-2.5 mb-8 flex flex-col flex-wrap space-y-3 px-7">
+            <div
+              v-for="(linkItems, section, sectionIndex) in groupedLinks"
+              class="my-3"
+            >
+              <p
+                v-if="!!section && !isAppBarShrunk"
+                class="text-neutral-400 mb-2 w-auto text-xs font-medium uppercase"
+              >
                 {{ section }}
               </p>
 
               <div class="flex flex-col space-y-4">
                 <div
-                    :class="['w-auto p-2 flex', useRoute().path===link.path ?'text-indigo-800 bg-indigo-200 rounded-md':'']"
-                    v-for="(link, index) in linkItems">
-
+                  v-for="(link, index) in linkItems"
+                  :class="[
+                    'flex w-auto p-2',
+                    useRoute().path === link.path
+                      ? 'rounded-md bg-indigo-200 text-indigo-800'
+                      : '',
+                  ]"
+                >
                   <div class="flex">
-                    <UTooltip :prevent="!isAppBarShrunk" :open-delay="200" :close-delay="100"
-                              :ui="{background: 'bg-gray-900', color: 'text-white'}"
-                              :text="link.name">
-
-                      <NuxtLink v-if="link.path" :to="link.path"
-                                :class="['flex flex-wrap items-center space-x-3']">
-                        <component :is="link.icon"
-                                   :class="['w-5 h-5 text-gray-600']"/>
-                        <p v-if="!isAppBarShrunk" class="hover:text-neutral-700 font-medium">{{ link.name }}</p>
+                    <UTooltip
+                      :close-delay="100"
+                      :open-delay="200"
+                      :prevent="!isAppBarShrunk"
+                      :text="link.name"
+                      :ui="{ background: 'bg-gray-900', color: 'text-white' }"
+                    >
+                      <NuxtLink
+                        v-if="link.path"
+                        :class="['flex flex-wrap items-center space-x-3']"
+                        :to="link.path"
+                      >
+                        <component
+                          :is="link.icon"
+                          :class="['h-5 w-5 text-gray-600']"
+                        />
+                        <p
+                          v-if="!isAppBarShrunk"
+                          class="hover:text-neutral-700 font-medium"
+                        >
+                          {{ link.name }}
+                        </p>
                       </NuxtLink>
-                      <div v-else @click="link.onClick"
-                           :class="['flex flex-wrap items-center space-x-3 cursor-pointer']">
-                        <component :is="link.icon"
-                                   :class="['w-5 h-5 text-gray-600']"/>
-                        <p v-if="!isAppBarShrunk" class="hover:text-neutral-700 font-medium">{{ link.name }}</p>
+                      <div
+                        v-else
+                        :class="[
+                          'flex cursor-pointer flex-wrap items-center space-x-3',
+                        ]"
+                        @click="link.onClick"
+                      >
+                        <component
+                          :is="link.icon"
+                          :class="['h-5 w-5 text-gray-600']"
+                        />
+                        <p
+                          v-if="!isAppBarShrunk"
+                          class="hover:text-neutral-700 font-medium"
+                        >
+                          {{ link.name }}
+                        </p>
                       </div>
                     </UTooltip>
-
                   </div>
                 </div>
               </div>
@@ -63,17 +112,16 @@
         </div>
       </div>
     </div>
-    <div class="flex flex-1 flex-grow px-1 md:px-6  w-full min-h-screen">
-      <NuxtPage/>
+    <div class="flex min-h-screen w-full flex-1 flex-grow px-1 md:px-6">
+      <NuxtPage />
     </div>
     <client-only>
-      <UNotifications/>
+      <UNotifications />
     </client-only>
   </section>
 </template>
 
 <script setup>
-
 import {
   ArrowLeftEndOnRectangleIcon,
   ArrowsPointingInIcon,
@@ -81,17 +129,16 @@ import {
   BuildingOffice2Icon,
   StarIcon,
   UserIcon,
-} from '@heroicons/vue/24/outline'
-import {AppRoutes} from "~/core/routes";
-import {useCompanyStore} from "~/stores/company";
-import {useSettingStore} from "~/stores/setting";
-import {useAuthStore} from "~/stores/auth";
-import {groupBy} from "lodash"
-import {useJobStore} from "~/stores/job";
-import {useAppStore} from "~/stores/app";
-import {storeToRefs} from "pinia";
-import {AnalyticsEvent} from "~/services/analytics/events";
-
+} from "@heroicons/vue/24/outline";
+import { AppRoutes } from "~/core/routes";
+import { useCompanyStore } from "~/stores/company";
+import { useSettingStore } from "~/stores/setting";
+import { useAuthStore } from "~/stores/auth";
+import { groupBy } from "lodash";
+import { useJobStore } from "~/stores/job";
+import { useAppStore } from "~/stores/app";
+import { storeToRefs } from "pinia";
+import { AnalyticsEvent } from "~/services/analytics/events";
 
 const links = [
   /*{
@@ -102,63 +149,58 @@ const links = [
   {
     icon: BuildingOffice2Icon,
     path: AppRoutes.myCompany,
-    section: 'employer',
-    name: 'My Company'
+    section: "employer",
+    name: "My Company",
   },
   {
     icon: BriefcaseIcon,
     path: AppRoutes.myJobs,
-    section: 'employer',
-    name: 'My Job offers'
+    section: "employer",
+    name: "My Job offers",
   },
   {
     icon: StarIcon,
     section: "user",
     path: AppRoutes.mySavedJobs,
-    name: 'Saved Jobs',
+    name: "Saved Jobs",
   },
   {
     icon: UserIcon,
     section: "user",
     path: AppRoutes.myAccount,
-    name: 'User Settings',
+    name: "User Settings",
   },
   {
     icon: ArrowLeftEndOnRectangleIcon,
     section: "user",
     onClick: () => {
-      const {$analytics} = useNuxtApp();
-      ($analytics).capture(AnalyticsEvent.logoutButtonClicked);
-      useAuthStore().logout()
+      const { $analytics } = useNuxtApp();
+      $analytics.capture(AnalyticsEvent.logoutButtonClicked);
+      useAuthStore().logout();
     },
     // path: AppRoutes.,
-    name: 'Logout',
-  }
-]
+    name: "Logout",
+  },
+];
 
-const {isAppBarShrunk} = storeToRefs(useAppStore())
-const groupedLinks = computed(() => groupBy(links, 'section'))
+const { isAppBarShrunk } = storeToRefs(useAppStore());
+const groupedLinks = computed(() => groupBy(links, "section"));
 
-onBeforeMount(async () => {
-  await Promise.all([
-    useFeatureFlags().loadFlags(),
-    useCompanyStore().fetchCompanies(),
-    useJobStore().fetchJobs(),
-    useSettingStore().fetchSetting(),
-    useAuthStore().fetchUser(),
-    useLearnStore().fetchLearnCategories(),
-    useLearnStore().fetchLearnResources(),
-  ])
-})
+await Promise.all([
+  useFeatureFlags().loadFlags(),
+  useCompanyStore().fetchCompanies(),
+  useJobStore().fetchJobs(),
+  useSettingStore().fetchSetting(),
+  useAuthStore().fetchUser(),
+  useLearnStore().fetchLearnCategories(),
+  useLearnStore().fetchLearnResources(),
+]);
 
 onMounted(() => {
   if (!useAppStore().isAppBarShrunk) {
-    useAppStore().toggleAppBarShrink()
+    useAppStore().toggleAppBarShrink();
   }
-})
-
+});
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
