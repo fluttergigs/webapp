@@ -1,13 +1,9 @@
-import type {Message, Peer} from "crossws";
+import type { Message, Peer } from "crossws";
 
 export default defineWebSocketHandler({
-    open(peer: Peer) {
-        console.log("peer", peer);
-    },
+  open(peer: Peer) {},
 
-    message(peer: Peer, message: Message) {
-    },
+  message(peer: Peer, message: Message) {},
 
-    close(peer: Peer) {
-    },
+  close(peer: Peer) {},
 });
