@@ -20,6 +20,7 @@
 import LayoutNavBar from "~/components/layout/NavBar.vue";
 import { logDev } from "~/core/helpers/log";
 import type { ErrorTrackerProvider } from "~/services/error-tracker/error_tracker_provider";
+import { useWebSocket } from "@vueuse/core";
 
 const { $socket, $errorTracker } = useNuxtApp();
 const authStore = useAuthStore();
@@ -43,41 +44,53 @@ await Promise.all([
 ]);
 
 onMounted(async () => {
-  ($socket as WebSocket).onerror = (error: any) => {
-    logDev("error from websocket", error);
-  };
+  const wsProtocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+  const wsUrl = `${wsProtocol}//${window.location.host}/_ws`;
+  const { status, data, send, open, close } = useWebSocket(wsUrl, {
+    autoReconnect: true,
+    onConnected: (ws) => {
+      logDev("connected to websocket");
+    },
+  });
 
-  ($socket as WebSocket).onmessage = (message: any) => {
-    logDev("data from websocket", message);
-
-    const { type, channel, data } = JSON.parse(message.data);
-
-    logDev("PARSED DATA", { type, channel, data });
-
-    switch (type) {
-      case WebSocketMessageType.MESSAGE:
-        if (channel === WebSocketChannel.PAYMENT) {
-          const { amount, originEmail, paymentEmail, stripeCustomerId } = data;
-          logDev("payment data", {
-            amount,
-            originEmail,
-            paymentEmail,
-            stripeCustomerId,
-          });
-
-          /*if (authStore.isAuthenticated) {
-            if(originEmail === authStore.authUser?.email){
-              useCompanyActions().onSuccessfulPaymentForJobPosting(()=> navigateTo(AppRoutes.myJobs))
-            }
-          }*/
-        }
-        break;
-      default:
-    }
-  };
-
-  ($socket as WebSocket).onclose = function () {
-    logDev("disconnected from websocket");
-  };
+  /*
+       
+ 
+   ($socket as WebSocket).onerror = (error: any) => {
+     logDev("error from websocket", error);
+   };
+ 
+   ($socket as WebSocket).onmessage = (message: any) => {
+     logDev("data from websocket", message);
+ 
+     const { type, channel, data } = JSON.parse(message.data);
+ 
+     logDev("PARSED DATA", { type, channel, data });
+ 
+     switch (type) {
+       case WebSocketMessageType.MESSAGE:
+         if (channel === WebSocketChannel.PAYMENT) {
+           const { amount, originEmail, paymentEmail, stripeCustomerId } = data;
+           logDev("payment data", {
+             amount,
+             originEmail,
+             paymentEmail,
+             stripeCustomerId,
+           });
+ 
+           /!*if (authStore.isAuthenticated) {
+             if(originEmail === authStore.authUser?.email){
+               useCompanyActions().onSuccessfulPaymentForJobPosting(()=> navigateTo(AppRoutes.myJobs))
+             }
+           }*!/
+         }
+         break;
+       default:
+     }
+   };
+ 
+   ($socket as WebSocket).onclose = function () {
+     logDev("disconnected from websocket");
+   };*/
 });
 </script>
