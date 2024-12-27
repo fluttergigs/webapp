@@ -258,5 +258,6 @@ export default function useCompanyActions() {
     createCompany,
     onCompanyCreationSuccess,
     onSuccessfulPaymentForJobPosting,
+    handleJobPostedPayment,
   };
 }
