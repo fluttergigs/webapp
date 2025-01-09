@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 
 import type {Country} from "~/core/shared/types";
 import useCountries from "~/composables/useCountries";
@@ -27,16 +27,16 @@ watch(selected, () => {
 
 <template>
   <client-only>
-    <USelectMenu :ui-menu="{ height: 'h-[200px]'}" v-if="data?.countries.length > 0"
-                 v-model="selected"
-                 size="lg"
-                 :options="data!.countries"
+    <USelectMenu v-if="data?.countries.length > 0" v-model="selected"
+                 :options="data?.countries || []"
                  :placeholder="searchPlaceholder"
-                 value-attribute="iso"
                  :search-attributes="['name']"
-                 searchable
+                 :ui-menu="{ height: 'h-[200px]'}"
                  multiple
-                 option-attribute="name">
+                 option-attribute="name"
+                 searchable
+                 size="lg"
+                 value-attribute="iso">
       <!--    <template #label>
             <span :class="[selected.online ? 'bg-green-400' : 'bg-gray-200', 'inline-block h-2 w-2 flex-shrink-0 rounded-full']" aria-hidden="true" />
             <span class="truncate">{{ selected.name }}</span>

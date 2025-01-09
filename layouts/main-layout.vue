@@ -2,14 +2,14 @@
   <!--  <client-only>-->
   <NuxtErrorBoundary @error="onError">
     <div class="flex h-full flex-col">
-      <LayoutNavBar />
+      <LayoutNavBar/>
       <div class="flex-grow overflow-hidden">
-        <NuxtPage />
+        <NuxtPage/>
       </div>
-      <LayoutFooter />
+      <LayoutFooter/>
 
       <client-only>
-        <UNotifications />
+        <UNotifications/>
       </client-only>
     </div>
   </NuxtErrorBoundary>
@@ -18,15 +18,15 @@
 
 <script lang="ts" setup>
 import LayoutNavBar from "~/components/layout/NavBar.vue";
-import { logDev } from "~/core/helpers/log";
-import type { ErrorTrackerProvider } from "~/services/error-tracker/error_tracker_provider";
-import { useWebSocket } from "@vueuse/core";
+import {logDev} from "~/core/helpers/log";
+import type {ErrorTrackerProvider} from "~/services/error-tracker/error_tracker_provider";
+import {useWebSocket} from "@vueuse/core";
 
-const { $errorTracker } = useNuxtApp();
+const {$errorTracker} = useNuxtApp();
 const authStore = useAuthStore();
 
 await Promise.all([
-  useAuthStore().fetchUser(),
+  useAuthStore().getUser(),
   useJobStore().fetchJobs(),
   useSettingStore().fetchSetting(),
   useLearnStore().fetchLearnCategories(),
@@ -38,14 +38,14 @@ const onError = (error: any) => {
   logDev("error", error);
 
   ($errorTracker as ErrorTrackerProvider).captureException(
-    error,
-    authStore.isAuthenticated ? { ...authStore.authUser } : null
+      error,
+      authStore.isAuthenticated ? {...authStore.authUser} : null
   );
 };
 onMounted(async () => {
   const wsProtocol = window.location.protocol === "https:" ? "wss:" : "ws:";
   const wsUrl = `${wsProtocol}//${window.location.host}/_ws`;
-  const { status, data, send, open, close } = useWebSocket(wsUrl, {
+  const {status, data, send, open, close} = useWebSocket(wsUrl, {
     autoReconnect: true,
     onMessage: (ws, event: MessageEvent) => {
       logDev("data from websocket", event);

@@ -7,6 +7,7 @@ export default async function useCountries() {
         error,
         pending
     } = await useFetch(COUNTRIES_API_ENDPOINT, {
+        mode: "cors",
         transform: (countries) => {
             const result: [Country] = countries.map((country: any) => ({
                 name: country.name.common,
@@ -20,5 +21,5 @@ export default async function useCountries() {
         }
     })
 
-    return { data, error}
+    return {data, error}
 }

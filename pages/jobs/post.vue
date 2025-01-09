@@ -12,10 +12,10 @@
         </h3>
 
         <form class="flex flex-col space-y-8 my-12 w-full">
-          <CustomInput placeholder="eg. Senior Flutter Engineer"
-                       name="jobTitle"
+          <CustomInput v-model="jobCreationData.title"
                        label="Job title *"
-                       v-model="jobCreationData.title" type="text"/>
+                       name="jobTitle"
+                       placeholder="eg. Senior Flutter Engineer" type="text"/>
 
 
           <!--          <LabelledInput label="Job Description *">
@@ -24,25 +24,25 @@
                                 inside-text="Generate description using AI 🚀"/>
                     </LabelledInput>-->
 
-          <CustomInput @inside-text-clicked="jobStore.showJobDescriptionGenerationModal()"
+          <CustomInput v-model="jobCreationData.description"
+                       :is-text-area="true"
                        inside-text="Generate description using AI 🚀"
-                       name="description"
                        label="Job description *"
-                       v-model="jobCreationData.description" :is-text-area="true"/>
+                       name="description" @inside-text-clicked="jobStore.showJobDescriptionGenerationModal()"/>
 
           <div class="flex space-x-3">
             <!--          job type-->
             <div class="flex flex-col space-y-2 w-full">
               <LabelledInput label="Job type *">
                 <USelectMenu
-                    clear-search-on-close
-                    searchable
-                    size="lg"
                     v-model="jobCreationData.workType"
                     :options="workTypeOptions"
-                    placeholder="Select a work type option"
-                    value-attribute="id"
+                    clear-search-on-close
                     option-attribute="label"
+                    placeholder="Select a work type option"
+                    searchable
+                    size="lg"
+                    value-attribute="id"
                 />
               </LabelledInput>
             </div>
@@ -51,14 +51,14 @@
             <div class="flex flex-col space-y-2 w-full">
               <LabelledInput label="Seniority level *">
                 <USelectMenu
-                    clear-search-on-close
-                    searchable
-                    size="lg"
                     v-model="jobCreationData.seniorityLevel"
                     :options="seniorityLevelOptions"
-                    placeholder="Select a seniority level"
-                    value-attribute="id"
+                    clear-search-on-close
                     option-attribute="label"
+                    placeholder="Select a seniority level"
+                    searchable
+                    size="lg"
+                    value-attribute="id"
                 />
               </LabelledInput>
             </div>
@@ -67,14 +67,14 @@
           <div class="flex flex-col space-y-2">
             <LabelledInput label="Remote options *">
               <USelectMenu
-                  clear-search-on-close
-                  searchable
-                  size="lg"
                   v-model="jobCreationData.remoteOptions"
                   :options="remoteOptions"
-                  placeholder="Select your remote options"
-                  value-attribute="id"
+                  clear-search-on-close
                   option-attribute="label"
+                  placeholder="Select your remote options"
+                  searchable
+                  size="lg"
+                  value-attribute="id"
               />
             </LabelledInput>
           </div>
@@ -82,19 +82,19 @@
           <div class="flex flex-col space-y-2">
             <LabelledInput label="Monthly Salary range (USD) *">
               <div class="flex space-x-3">
-                <CustomInput @keydown="checkDigit"
-                             placeholder="2000" name="amount"
-                             :show-label="false" label="From"
-                             class="w-full"
-                             v-model="jobCreationData.salaryFrom"/>
+                <CustomInput v-model="jobCreationData.salaryFrom"
+                             :show-label="false" class="w-full"
+                             label="From" name="amount"
+                             placeholder="2000"
+                             @keydown="checkDigit"/>
 
                 <span class="self-baseline">-</span>
 
-                <CustomInput @keydown="checkDigit" placeholder="8000"
-                             name="amount"
-                             :show-label="false" label="From"
+                <CustomInput v-model="jobCreationData.salaryTo" :show-label="false"
                              class="w-full"
-                             v-model="jobCreationData.salaryTo"/>
+                             label="From" name="amount"
+                             placeholder="8000"
+                             @keydown="checkDigit"/>
               </div>
             </LabelledInput>
           </div>
@@ -102,46 +102,47 @@
           <!--          apply before-->
           <LabelledInput label="Application closes on *">
             <UPopover :popper="{ placement: 'bottom-start' }">
-              <UButton class="w-full" size="xl" color="white"
+              <UButton :label="format(parseISO(jobCreationData.applyBefore, ), 'd MMM, yyy')" class="w-full"
+                       color="white"
                        icon="i-heroicons-calendar-days-20-solid"
-                       :label="format(jobCreationData.applyBefore!, 'd MMM, yyy')"/>
+                       size="xl"/>
 
               <template #panel="{ close }">
-                <DatePicker :min-date="new Date()" color="indigo"
-                            v-model="jobCreationData.applyBefore" @close="close"/>
+                <DatePicker v-model="jobCreationData.applyBefore" :min-date="new Date()"
+                            color="indigo" @close="close"/>
               </template>
             </UPopover>
           </LabelledInput>
 
           <LabelledInput label="Working permits *">
-            <div class="space-y-4">
-              <URadio :ui="{label: 'text-sm font-medium text-black'}"
-                      :value="false" v-model="hasWorkPermit"
+            <div class="flex flex-col gap-4">
+              <URadio v-model="hasWorkPermit"
+                      :ui="{label: 'text-sm font-medium text-black'}" :value="false"
                       label="No working permits required"/>
 
-              <div class="space-y-3">
-                <URadio :ui="{label: 'text-sm font-medium text-black'}"
-                        :value="true" v-model="hasWorkPermit"
+              <div class="flex flex-col gap-3">
+                <URadio v-model="hasWorkPermit"
+                        :ui="{label: 'text-sm font-medium text-black'}" :value="true"
                         label="Must be eligible to work in"/>
                 <WorkPermitSelector @selected-countries="getSelectedCountries"/>
               </div>
             </div>
           </LabelledInput>
 
-          <CustomInput placeholder="eg. https://fluttergigs.com/apply"
-                       name="url"
-                       label="Application method *"
+          <CustomInput v-model="jobCreationData.howToApply"
                        class="w-full"
                        inside-text="Enter an email or application link."
-                       v-model="jobCreationData.howToApply"/>
+                       label="Application method *"
+                       name="url"
+                       placeholder="eg. https://fluttergigs.com/apply"/>
 
-          <UButton :loading="jobCreation.isLoading"
-                   :disabled="!isSubmitButtonEnabled"
-                   @click="()=> handleJobPosting"
-                   size="xl"
-                   color="indigo"
+          <UButton :disabled="!isSubmitButtonEnabled"
+                   :loading="jobCreation.isLoading"
                    class="bg-indigo-700 flex justify-center items-center"
-                   label="Post job for $20"/>
+                   color="indigo"
+                   label="Post your Job for $20"
+                   size="xl"
+                   @click="handleJobPosting"/>
         </form>
       </div>
 
@@ -157,14 +158,14 @@
 
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import {storeToRefs} from "pinia";
 import {useJobStore} from "~/stores/job";
 import CustomInput from "~/components/forms/CustomInput.vue";
 import {remoteOptions, seniorityLevelOptions, workTypeOptions} from "~/core/constants";
 import {checkDigit} from "~/core/utils";
 import 'v-calendar/dist/style.css'
-import {format} from "date-fns";
+import {format, parseISO} from "date-fns";
 import {DatePicker} from "v-calendar";
 import LabelledInput from "~/components/forms/LabelledInput.vue";
 import JobDescriptionGenerationModal from "~/components/job/JobDescriptionGenerationModal.vue";
@@ -176,8 +177,11 @@ import {AnalyticsEvent} from "~/services/analytics/events";
 import {postJobFormSchema} from "~/core/validations/job.validations";
 import useCompanyActions from "~/composables/useCompanyActions";
 
-
-definePageMeta({layout: 'app-layout', middleware: ['auth', 'no-company'], title: 'Post your job',})
+definePageMeta({
+  layout: 'app-layout',
+  middleware: ['auth', 'no-company'],
+  title: 'Post your job',
+})
 
 const jobStore = useJobStore()
 const {jobCreationData, jobCreation} = storeToRefs(jobStore)
@@ -195,8 +199,6 @@ watch(jobCreationData, async () => {
   canPostJob.value = await postJobFormSchema.isValid(jobCreationData.value);
 }, {deep: true, immediate: true},)
 
-const isSubmitButtonEnabled = computed(() => canPostJob.value && !jobCreation.value.isLoading)
-
 watch(jobCreationData, () => {
   if (jobCreationData.value.salaryTo == "") {
     jobCreationData.value.salaryTo = 1
@@ -212,6 +214,8 @@ watch(hasWorkPermit, (value: boolean) => {
     jobCreationData.value.workPermits = null
   }
 })
+
+const isSubmitButtonEnabled = computed(() => canPostJob.value && !jobCreation.value.isLoading)
 
 const getSelectedCountries = (data: {
   countries: [Country]

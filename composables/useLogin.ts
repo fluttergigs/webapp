@@ -1,101 +1,101 @@
-import { storeToRefs } from "pinia";
-import { loginFormSchema } from "~/core/validations/auth.validations";
+import {storeToRefs} from "pinia";
+import {loginFormSchema} from "~/core/validations/auth.validations";
 
-import { useAuthStore } from "~/stores/auth";
-import { AppAnalyticsProvider } from "~/services/analytics/app_analytics_provider";
-import { AnalyticsEvent } from "~/services/analytics/events";
-import { BaseToast } from "~/core/ui/base_toast";
-import { AppRoutes } from "~/core/routes";
-import { LoginData, User } from "~/services/auth/auth.types";
-import type { CallbackFunction } from "~/core/shared/types";
-import { useAnalytics } from "~/composables/useAnalytics";
-import { useUser } from "~/composables/useUser";
+import {useAuthStore} from "~/stores/auth";
+import {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider";
+import {AnalyticsEvent} from "~/services/analytics/events";
+import {BaseToast} from "~/core/ui/base_toast";
+import {AppRoutes} from "~/core/routes";
+import {LoginData, User} from "~/services/auth/auth.types";
+import type {CallbackFunction} from "~/core/shared/types";
+import {useAnalytics} from "~/composables/useAnalytics";
+import {useUser} from "~/composables/useUser";
 
 export const useLogin = () => {
-  const { $toast, $analytics, $errorTracker } = useNuxtApp();
+    const {$toast, $analytics, $errorTracker} = useNuxtApp();
 
-  const authStore = useAuthStore();
+    const authStore = useAuthStore();
 
-  const {
-    user: storeUser,
-    authUser,
-    hasReturnUrl,
-    returnUrl,
-    isFailedLogin,
-    isSuccessfulLogin,
-  } = storeToRefs(authStore);
-  const canSubmit = ref(false);
+    const {
+        user: storeUser,
+        authUser,
+        hasReturnUrl,
+        returnUrl,
+        isFailedLogin,
+        isSuccessfulLogin,
+    } = storeToRefs(authStore);
+    const canSubmit = ref(false);
 
-  const formInput = ref({
-    // email: "john@gmail.com",
-    // password: "test1234",
-    email: "",
-    password: "",
-  } as LoginData);
+    const formInput = ref({
+        // email: "john@gmail.com",
+        // password: "test1234",
+        email: "",
+        password: "",
+    } as LoginData);
 
-  onMounted(() => {
-    ($analytics as AppAnalyticsProvider).capture(
-      AnalyticsEvent.loginPageEntered
-    );
-  });
+    onMounted(() => {
+        ($analytics as AppAnalyticsProvider).capture(
+            AnalyticsEvent.loginPageEntered
+        );
+    });
 
-  watch(
-    formInput,
-    async () => {
-      canSubmit.value = await loginFormSchema.isValid(formInput.value);
+    watch(
+        formInput,
+        async () => {
+            canSubmit.value = await loginFormSchema.isValid(formInput.value);
 
-      //TODO - remove comment later
-      /*if(canSubmit.value){
-                                                    await submit()
-                                                  }*/
-    },
-    { immediate: true, deep: true }
-  );
-
-  const submit = async (onDone?: CallbackFunction<User>) => {
-    try {
-      const loginData = {
-        email: formInput.value.email,
-        password: formInput.value.password,
-      };
-      ($analytics as AppAnalyticsProvider).capture(
-        AnalyticsEvent.loginButtonClicked,
-        loginData
-      );
-      await authStore.login(loginData);
-
-      if (isSuccessfulLogin.value) {
-        onDone?.(authUser.value);
-      }
-    } catch (e) {
-      ($toast as BaseToast<Notification>).error(user.value.message);
-    }
-  };
-
-  const onSuccessfulLogin: CallbackFunction<User> = async (user?: User) => {
-    ($analytics as AppAnalyticsProvider).capture(
-      AnalyticsEvent.successfulLogin
+            //TODO - remove comment later
+            /*if(canSubmit.value){
+                                                          await submit()
+                                                        }*/
+        },
+        {immediate: true, deep: true}
     );
 
-    if (useUserStore().hasCompanies) {
-      navigateTo(hasReturnUrl.value ? returnUrl.value : AppRoutes.myAccount);
-    } else {
-      navigateTo(hasReturnUrl.value ? returnUrl.value : AppRoutes.jobs);
-    }
+    const submit = async (onDone?: CallbackFunction<User>) => {
+        try {
+            const loginData = {
+                email: formInput.value.email,
+                password: formInput.value.password,
+            };
+            ($analytics as AppAnalyticsProvider).capture(
+                AnalyticsEvent.loginButtonClicked,
+                loginData
+            );
+            await authStore.login(loginData);
 
-    await Promise.all([
-      useAnalytics().identifyUser(user),
+            if (isSuccessfulLogin.value) {
+                onDone?.(authUser.value);
+            }
+        } catch (e) {
+            ($toast as BaseToast<Notification>).error(user.value.message);
+        }
+    };
 
-      useUser().fetchUser(),
-    ]);
-  };
+    const onSuccessfulLogin: CallbackFunction<User> = async (user?: User) => {
+        ($analytics as AppAnalyticsProvider).capture(
+            AnalyticsEvent.successfulLogin
+        );
 
-  return {
-    user: storeUser,
-    returnUrl,
-    canSubmit,
-    formInput,
-    submit,
-    onSuccessfulLogin,
-  };
+        if (useUserStore().hasCompanies) {
+            navigateTo(hasReturnUrl.value ? returnUrl.value : AppRoutes.myAccount);
+        } else {
+            navigateTo(hasReturnUrl.value ? returnUrl.value : AppRoutes.jobs);
+        }
+
+        await Promise.all([
+            useAnalytics().identifyUser(user),
+
+            useUser().getUser(),
+        ]);
+    };
+
+    return {
+        user: storeUser,
+        returnUrl,
+        canSubmit,
+        formInput,
+        submit,
+        onSuccessfulLogin,
+    };
 };
