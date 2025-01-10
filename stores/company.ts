@@ -76,6 +76,8 @@ export const useCompanyStore = defineStore('company', {
                 // @ts-ignore
                 this.companyJobsResponse = this.companyJobsResponse.toSuccess(response)
             } catch (e) {
+
+                logDev('fetching companies jobs error', e)
                 this.companyJobsResponse = this.companyJobsResponse.toFailed(AppStrings.unableToFetchJobs)
             }
         },

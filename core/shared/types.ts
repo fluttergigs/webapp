@@ -1,23 +1,22 @@
 export interface BasicApiResponse<T = unknown> {
     data: T,
-
-    [key: string]: any,
-
     error: {
         message: string,
         code: string,
         status: number,
         [key: string]: any
     }
+
+    [key: string]: any,
 }
 
 export interface SingleApiResponse<T> {
-    [key: string]: unknown,
-
     data: {
         id: unknown,
         attributes: T
     }
+
+    [key: string]: unknown,
 }
 
 export interface MultiApiResponse<T> {
@@ -40,6 +39,10 @@ export declare type Country = {
     },
     iso: string,
     [key: string]: any,
+}
+
+export enum PaymentContext {
+    jobPost = "jobPost",
 }
 
 export declare type CallbackFunction<Result, Err extends any> = ((val?: Result) => void) | ((err?: Err) => void);

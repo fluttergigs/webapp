@@ -50,58 +50,10 @@ onMounted(async () => {
     onMessage: (ws, event: MessageEvent) => {
       logDev("data from websocket", event);
     },
+
     onConnected: (ws) => {
       logDev("connected to websocket");
     },
   });
-
-  /*  await Promise.all([
-      useAuthStore().fetchUser(),
-      useJobStore().fetchJobs(),
-      useSettingStore().fetchSetting(),
-      useLearnStore().fetchLearnCategories(),
-      useLearnStore().fetchLearnResources(),
-      useCompanyStore().fetchCompanies(),
-    ]);*/
-
-  /*
-       
- 
-   ($socket as WebSocket).onerror = (error: any) => {
-     logDev("error from websocket", error);
-   };
- 
-   ($socket as WebSocket).onmessage = (message: any) => {
-     logDev("data from websocket", message);
- 
-     const { type, channel, data } = JSON.parse(message.data);
- 
-     logDev("PARSED DATA", { type, channel, data });
- 
-     switch (type) {
-       case WebSocketMessageType.MESSAGE:
-         if (channel === WebSocketChannel.PAYMENT) {
-           const { amount, originEmail, paymentEmail, stripeCustomerId } = data;
-           logDev("payment data", {
-             amount,
-             originEmail,
-             paymentEmail,
-             stripeCustomerId,
-           });
- 
-           /!*if (authStore.isAuthenticated) {
-             if(originEmail === authStore.authUser?.email){
-               useCompanyActions().onSuccessfulPaymentForJobPosting(()=> navigateTo(AppRoutes.myJobs))
-             }
-           }*!/
-         }
-         break;
-       default:
-     }
-   };
- 
-   ($socket as WebSocket).onclose = function () {
-     logDev("disconnected from websocket");
-   };*/
 });
 </script>

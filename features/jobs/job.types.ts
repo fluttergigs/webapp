@@ -1,5 +1,5 @@
 import type {CompanyApiResponse} from "~/features/companies/company.types";
-import {SingleApiResponse} from "~/core/shared/types";
+import {PaymentContext, SingleApiResponse} from "~/core/shared/types";
 import type {UserApiResponse} from "~/features/users/user.types";
 
 export type JobOffer = {
@@ -21,6 +21,15 @@ export type JobOffer = {
     company: CompanyApiResponse | number,
     workPermits: string[] | null,
     bookmarkedJob?: number,
+}
+
+
+export type JobPostPaymentData = {
+    amount: number,
+    originalEmail: string,
+    paymentEmail: string,
+    stripeCustomerId: string,
+    context: PaymentContext.jobPost
 }
 
 export type BookmarkedJobOffer = {

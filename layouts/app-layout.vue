@@ -26,7 +26,7 @@
               src="/ico.webp"
               @click="useAppStore().toggleAppBarShrink()"
           />
-          <img v-else alt="" class="w-16" src="/logo.webp" @click="navigateTo(AppRoutes.welcome)"/>
+          <img v-else alt="" class="w-14" src="/logo.webp" @click="navigateTo(AppRoutes.welcome)"/>
           <div class="w-auto" @click="useAppStore().toggleAppBarShrink()">
             <a class="text-neutral-400 hover:text-neutral-500" href="#">
               <!--              <ChevronDoubleRightIcon class="w-2" v-if="isAppBarShrunk"/>-->
@@ -121,7 +121,7 @@
   </section>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import {
   ArrowLeftEndOnRectangleIcon,
   ArrowsPointingInIcon,
@@ -140,6 +140,9 @@ import {useJobStore} from "~/stores/job";
 import {useAppStore} from "~/stores/app";
 import {storeToRefs} from "pinia";
 import {AnalyticsEvent} from "~/services/analytics/events";
+import {useWebSocket} from "@vueuse/core";
+import {logDev} from "~/core/helpers/log";
+import {PaymentContext} from "~/core/shared/types";
 
 const links = [
   /*{
@@ -207,6 +210,26 @@ onMounted(() => {
   if (!useAppStore().isAppBarShrunk) {
     useAppStore().toggleAppBarShrink();
   }
+
+  const wsProtocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+  const wsUrl = `${wsProtocol}//${window.location.host}/_ws`;
+
+  const {status, data, send, open, close} = useWebSocket(wsUrl, {
+    autoReconnect: true,
+
+    onConnected: (ws) => {
+      logDev("connected to websocket");
+    },
+
+    onMessage: (ws, event: MessageEvent) => {
+      const data = JSON.parse(event.data);
+
+      if (!!data.context && data.context === PaymentContext.jobPost) {
+        useCompanyActions().handleJobPostedPayment(data);
+        useJobStore().fetchJobs();
+      }
+    },
+  });
 });
 </script>
 

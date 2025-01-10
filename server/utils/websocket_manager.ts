@@ -1,16 +1,12 @@
-import {
-  WebSocketChannel,
-  WebSocketMessage,
-  WebSocketMessageType,
-} from "./websocket_types";
-import { logDev } from "~/core/helpers/log";
-import { Data, WebSocketServer } from "ws";
+import {WebSocketChannel,} from "./websocket_types";
+import {Peer} from "crossws";
 
 interface ChannelSubscription {
-  ws: WebSocket;
-  channels: Set<WebSocketChannel>;
+    ws: WebSocket;
+    channels: Set<WebSocketChannel>;
 }
 
+/*
 export class WebSocketManager {
   private static instance: WebSocketManager;
   private wss: WebSocketServer | null = null;
@@ -176,4 +172,49 @@ export class WebSocketManager {
   private sendToClient(ws: WebSocket, message: WebSocketMessage): void {
     ws.send(JSON.stringify(message));
   }
+}
+*/
+
+
+export class WebsocketClientManager {
+    private static instance: WebsocketClientManager;
+    private peers = new Map<string, Peer>()
+
+    private singlePeer: Peer | null = null
+
+    //define singleton constructor
+    private constructor() {
+    }
+
+    get peer(): Peer<any> | null {
+        return this.singlePeer
+    }
+
+    get peersList(): Map<string, Peer> {
+        return this.peers
+    }
+
+    static getInstance(): WebsocketClientManager {
+        if (!WebsocketClientManager.instance) {
+            WebsocketClientManager.instance = new WebsocketClientManager();
+        }
+        return WebsocketClientManager.instance;
+    }
+
+    setPeer(peer: Peer) {
+        this.singlePeer = peer
+    }
+
+    getPeerFromList(clientId: string) {
+        return this.peers.get(clientId)
+    }
+
+    addPeer(clientId: string, ws: Peer) {
+        this.peers.set(clientId, ws)
+    }
+
+    removePeer(clientId: string) {
+        this.peers.delete(clientId)
+    }
+
 }

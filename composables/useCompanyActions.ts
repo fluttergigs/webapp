@@ -3,7 +3,7 @@ import type {Company} from "~/features/companies/company.types";
 import {useJobStore} from "~/stores/job";
 import {AnalyticsEvent} from "~/services/analytics/events";
 import {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider";
-import type {JobOfferApiResponse} from "~/features/jobs/job.types";
+import type {JobOfferApiResponse, JobPostPaymentData} from "~/features/jobs/job.types";
 import {JobOffer} from "~/features/jobs/job.types";
 import type {CallbackFunction} from "~/core/shared/types";
 import {BaseToast} from "~/core/ui/base_toast";
@@ -14,6 +14,7 @@ import {Endpoint} from "~/core/network/endpoints";
 import type {HttpClient} from "~/core/network/http_client";
 import {useClipboard} from "@vueuse/core";
 import {logDev} from "~/core/helpers/log";
+import {stringify} from "qs";
 
 export default function useCompanyActions() {
     const {$analytics, $toast} = useNuxtApp();
@@ -83,7 +84,9 @@ export default function useCompanyActions() {
         let jobCreationData = jobStore.jobCreationData;
         jobCreationData.hasPaid = true;
         jobStore
-            .setJobCreationData(jobCreationData)(<AppAnalyticsProvider>$analytics)
+            .setJobCreationData(jobCreationData);
+
+        (<AppAnalyticsProvider>$analytics)
             .capture(AnalyticsEvent.successfulJobPostingPayment, jobCreationData);
 
         await jobStore.postJob();
@@ -94,7 +97,7 @@ export default function useCompanyActions() {
         ($toast as BaseToast<Notification>).custom({
             color: "primary",
             title: jobStore.jobCreation.message,
-            timeout: 8000,
+            timeout: 20000,
             actions: jobStore.jobCreation.isSuccess
                 ? [
                     {
@@ -226,20 +229,16 @@ export default function useCompanyActions() {
         return await (<HttpClient>$http).get(`${Endpoint.jobOffers}?${query}`);
     };
 
-    const handleJobPostedPayment = async (data) => {
-        const {amount, originEmail, paymentEmail, stripeCustomerId} = data;
-        logDev("payment data", {
-            amount,
-            originEmail,
-            paymentEmail,
-            stripeCustomerId,
-        });
+    const handleJobPostedPayment = async (data: JobPostPaymentData) => {
+        const {originEmail} = data;
+        logDev("payment data", data);
 
         if (authStore.isAuthenticated) {
             if (originEmail === authStore.authUser?.email) {
                 await onSuccessfulPaymentForJobPosting(() =>
                     navigateTo(AppRoutes.myJobs)
                 );
+                await useJobStore().fetchJobs()
             }
         }
     };

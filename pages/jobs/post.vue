@@ -193,6 +193,8 @@ const {handleJobPosting} = useCompanyActions()
 
 onMounted(() => {
   ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.jobPostPageEntered,)
+
+
 })
 
 watch(jobCreationData, async () => {
