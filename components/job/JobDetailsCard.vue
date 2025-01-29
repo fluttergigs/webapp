@@ -18,18 +18,22 @@ const {jobWorkingPermits} = useJobActions();
 </script>
 
 <template>
+
+  <!--  set dynamic padding from property-->
+
+
   <div class="p-6 border rounded-xl space-y-5 flex flex-col">
 
     <h3 class="text-xl font-semibold">About the job</h3>
 
     <ItemData label="Apply Before">
       <template #content>
-        <p class="text-md font-medium" v-date-format="{date:props.job.applyBefore, format:'MMM YYYY, D'}"></p>
+        <p v-date-format="{date:props.job.applyBefore, format:'MMM YYYY, D'}" class="text-md font-medium"></p>
       </template>
     </ItemData>
     <ItemData label="Posted on">
       <template #content>
-        <p class="text-md font-medium" v-date-format="{date:props.job.createdAt, format:'MMM YYYY, D'}"></p>
+        <p v-date-format="{date:props.job.createdAt, format:'MMM YYYY, D'}" class="text-md font-medium"></p>
       </template>
     </ItemData>
     <ItemData :value="userFacingWorkType(props.job?.workType)" label="Job type"/>

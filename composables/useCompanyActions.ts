@@ -33,6 +33,10 @@ export default function useCompanyActions() {
     const checkCompanyExistenceGuard = () => {
         if (!userStore.hasCompanies) {
             return navigateTo(AppRoutes.createCompany);
+        } else {
+            logDev(
+                "User has companies, redirecting to post job offer page"
+            )
         }
     };
 

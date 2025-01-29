@@ -3,20 +3,23 @@
 
 <template>
   <JobDescriptionGenerationModal/>
-  <section class="py-8 px-2 md:py-12 xl:pb-56 bg-white overflow-hidden w-full">
-    <div class="font-normal flex flex-col my-4 gap-x-16 md:flex-row">
-      <div class="flex flex-col gap-y-8 xl:mx-auto w-full">
+  <section class="w-full overflow-hidden bg-white px-2 py-8 md:py-12 xl:pb-56">
+    <div class="my-4 flex flex-col gap-x-16 font-normal md:flex-row">
+      <div class="flex w-full flex-col gap-y-8 xl:mx-auto">
         <h3
-            class="mb-4 text-2xl md:text-4xl font-semibold tracking-px-n leading-tight">
+            class="tracking-px-n mb-4 text-2xl font-semibold leading-tight md:text-4xl"
+        >
           Post your job
         </h3>
 
-        <form class="flex flex-col space-y-8 my-12 w-full">
-          <CustomInput v-model="jobCreationData.title"
-                       label="Job title *"
-                       name="jobTitle"
-                       placeholder="eg. Senior Flutter Engineer" type="text"/>
-
+        <form class="my-12 flex w-full flex-col space-y-8">
+          <CustomInput
+              v-model="jobCreationData.title"
+              label="Job title *"
+              name="jobTitle"
+              placeholder="eg. Senior Flutter Engineer"
+              type="text"
+          />
 
           <!--          <LabelledInput label="Job Description *">
                       <UiTipTap @inside-text-clicked="jobStore.showJobDescriptionGenerationModal()"
@@ -24,15 +27,25 @@
                                 inside-text="Generate description using AI 🚀"/>
                     </LabelledInput>-->
 
-          <CustomInput v-model="jobCreationData.description"
-                       :is-text-area="true"
-                       inside-text="Generate description using AI 🚀"
-                       label="Job description *"
-                       name="description" @inside-text-clicked="jobStore.showJobDescriptionGenerationModal()"/>
+          <LabelledInput label="Job Description *">
+            <client-only>
+              <QuillEditorWrapper
+                  v-model="jobCreationData.description"
+                  placeholder="Write your awesome job description"
+                  @ready="onEditorReady"
+              />
+            </client-only>
+          </LabelledInput>
+
+          <!--          <CustomInput v-model="jobCreationData.description"
+                                 :is-text-area="true"
+                                 inside-text="Generate description using AI 🚀"
+                                 label="Job description *"
+                                 name="description" @inside-text-clicked="jobStore.showJobDescriptionGenerationModal()"/>-->
 
           <div class="flex space-x-3">
             <!--          job type-->
-            <div class="flex flex-col space-y-2 w-full">
+            <div class="flex w-full flex-col space-y-2">
               <LabelledInput label="Job type *">
                 <USelectMenu
                     v-model="jobCreationData.workType"
@@ -48,7 +61,7 @@
             </div>
 
             <!--          seniority level-->
-            <div class="flex flex-col space-y-2 w-full">
+            <div class="flex w-full flex-col space-y-2">
               <LabelledInput label="Seniority level *">
                 <USelectMenu
                     v-model="jobCreationData.seniorityLevel"
@@ -82,19 +95,27 @@
           <div class="flex flex-col space-y-2">
             <LabelledInput label="Monthly Salary range (USD) *">
               <div class="flex space-x-3">
-                <CustomInput v-model="jobCreationData.salaryFrom"
-                             :show-label="false" class="w-full"
-                             label="From" name="amount"
-                             placeholder="2000"
-                             @keydown="checkDigit"/>
+                <CustomInput
+                    v-model="jobCreationData.salaryFrom"
+                    :show-label="false"
+                    class="w-full"
+                    label="From"
+                    name="amount"
+                    placeholder="2000"
+                    @keydown="checkDigit"
+                />
 
                 <span class="self-baseline">-</span>
 
-                <CustomInput v-model="jobCreationData.salaryTo" :show-label="false"
-                             class="w-full"
-                             label="From" name="amount"
-                             placeholder="8000"
-                             @keydown="checkDigit"/>
+                <CustomInput
+                    v-model="jobCreationData.salaryTo"
+                    :show-label="false"
+                    class="w-full"
+                    label="From"
+                    name="amount"
+                    placeholder="8000"
+                    @keydown="checkDigit"
+                />
               </div>
             </LabelledInput>
           </div>
@@ -102,69 +123,91 @@
           <!--          apply before-->
           <LabelledInput label="Application closes on *">
             <UPopover :popper="{ placement: 'bottom-start' }">
-              <UButton :label="format(parseISO(jobCreationData.applyBefore, ), 'd MMM, yyy')" class="w-full"
-                       color="white"
-                       icon="i-heroicons-calendar-days-20-solid"
-                       size="xl"/>
+              <UButton
+                  :label="
+                  format(parseISO(jobCreationData.applyBefore), 'd MMM, yyy')
+                "
+                  class="w-full"
+                  color="white"
+                  icon="i-heroicons-calendar-days-20-solid"
+                  size="xl"
+              />
 
               <template #panel="{ close }">
-                <DatePicker v-model="jobCreationData.applyBefore" :min-date="new Date()"
-                            color="indigo" @close="close"/>
+                <DatePicker
+                    v-model="jobCreationData.applyBefore"
+                    :min-date="new Date()"
+                    color="indigo"
+                    @close="close"
+                />
               </template>
             </UPopover>
           </LabelledInput>
 
           <LabelledInput label="Working permits *">
             <div class="flex flex-col gap-4">
-              <URadio v-model="hasWorkPermit"
-                      :ui="{label: 'text-sm font-medium text-black'}" :value="false"
-                      label="No working permits required"/>
+              <URadio
+                  v-model="hasWorkPermit"
+                  :ui="{ label: 'text-sm font-medium text-black' }"
+                  :value="false"
+                  label="No working permits required"
+              />
 
               <div class="flex flex-col gap-3">
-                <URadio v-model="hasWorkPermit"
-                        :ui="{label: 'text-sm font-medium text-black'}" :value="true"
-                        label="Must be eligible to work in"/>
-                <WorkPermitSelector @selected-countries="getSelectedCountries"/>
+                <URadio
+                    v-model="hasWorkPermit"
+                    :ui="{ label: 'text-sm font-medium text-black' }"
+                    :value="true"
+                    label="Must be eligible to work in"
+                />
+                <WorkPermitSelector
+                    @selected-countries="getSelectedCountries"
+                />
               </div>
             </div>
           </LabelledInput>
 
-          <CustomInput v-model="jobCreationData.howToApply"
-                       class="w-full"
-                       inside-text="Enter an email or application link."
-                       label="Application method *"
-                       name="url"
-                       placeholder="eg. https://fluttergigs.com/apply"/>
+          <CustomInput
+              v-model="jobCreationData.howToApply"
+              class="w-full"
+              inside-text="Enter an email or application link."
+              label="Application method *"
+              name="url"
+              placeholder="eg. https://fluttergigs.com/apply"
+          />
 
-          <UButton :disabled="!isSubmitButtonEnabled"
-                   :loading="jobCreation.isLoading"
-                   class="bg-indigo-700 flex justify-center items-center"
-                   color="indigo"
-                   label="Post your Job for $20"
-                   size="xl"
-                   @click="handleJobPosting"/>
+          <UButton
+              :disabled="!isSubmitButtonEnabled"
+              :loading="jobCreation.isLoading"
+              class="flex items-center justify-center bg-indigo-700"
+              color="indigo"
+              label="Post your Job for $20"
+              size="xl"
+              @click="handleJobPosting"
+          />
         </form>
       </div>
 
-      <div class="hidden lg:flex lg:min-w-[300px] lg:w-[380px] h-full">
-        <div class="flex flex-col h-full w-full relative">
-          <JobCreationPreview :is-cta-enabled="isSubmitButtonEnabled"
-                              :job="jobCreationData"
-                              :work-permit-countries="workPermits"/>
+      <div class="hidden h-full lg:flex lg:w-[380px] lg:min-w-[300px]">
+        <div class="relative flex h-full w-full flex-col">
+          <JobCreationPreview
+              :is-cta-enabled="isSubmitButtonEnabled"
+              :job="jobCreationData"
+              :work-permit-countries="workPermits"
+          />
         </div>
       </div>
     </div>
   </section>
-
 </template>
 
 <script lang="ts" setup>
 import {storeToRefs} from "pinia";
 import {useJobStore} from "~/stores/job";
 import CustomInput from "~/components/forms/CustomInput.vue";
-import {remoteOptions, seniorityLevelOptions, workTypeOptions} from "~/core/constants";
+import {remoteOptions, seniorityLevelOptions, workTypeOptions,} from "~/core/constants";
 import {checkDigit} from "~/core/utils";
-import 'v-calendar/dist/style.css'
+import "v-calendar/dist/style.css";
 import {format, parseISO} from "date-fns";
 import {DatePicker} from "v-calendar";
 import LabelledInput from "~/components/forms/LabelledInput.vue";
@@ -176,63 +219,80 @@ import {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider"
 import {AnalyticsEvent} from "~/services/analytics/events";
 import {postJobFormSchema} from "~/core/validations/job.validations";
 import useCompanyActions from "~/composables/useCompanyActions";
+import QuillEditorWrapper from "~/components/forms/QuillEditorWrapper.vue";
 
 definePageMeta({
-  layout: 'app-layout',
-  middleware: ['auth', 'no-company'],
-  title: 'Post your job',
-})
+  layout: "app-layout",
+  middleware: ["auth", "no-company"],
+  title: "Post your job",
+});
 
-const jobStore = useJobStore()
-const {jobCreationData, jobCreation} = storeToRefs(jobStore)
-const hasWorkPermit = ref(false)
+const jobStore = useJobStore();
+const {jobCreationData, jobCreation} = storeToRefs(jobStore);
+const hasWorkPermit = ref(false);
 const workPermits = ref([]);
-const {$analytics} = useNuxtApp()
-const canPostJob = ref(false)
-const {handleJobPosting} = useCompanyActions()
+const {$analytics} = useNuxtApp();
+const canPostJob = ref(false);
+const {handleJobPosting} = useCompanyActions();
 
 onMounted(() => {
-  ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.jobPostPageEntered,)
+  ($analytics as AppAnalyticsProvider).capture(
+      AnalyticsEvent.jobPostPageEntered
+  );
+});
 
+watch(
+    jobCreationData,
+    async () => {
+      canPostJob.value = await postJobFormSchema.isValid(jobCreationData.value);
+    },
+    {deep: true, immediate: true}
+);
 
-})
+watch(() => jobCreationData.value.description, () => {
+  alert("description ==> " + jobCreationData.value.description);
+});
 
-watch(jobCreationData, async () => {
-  canPostJob.value = await postJobFormSchema.isValid(jobCreationData.value);
-}, {deep: true, immediate: true},)
+watch(
+    jobCreationData,
+    () => {
+      if (jobCreationData.value.salaryTo == "") {
+        jobCreationData.value.salaryTo = 1;
+      }
 
-watch(jobCreationData, () => {
-  if (jobCreationData.value.salaryTo == "") {
-    jobCreationData.value.salaryTo = 1
-  }
-
-  if (jobCreationData.value.salaryFrom == "") {
-    jobCreationData.value.salaryFrom = 1
-  }
-}, {deep: true,})
+      if (jobCreationData.value.salaryFrom == "") {
+        jobCreationData.value.salaryFrom = 1;
+      }
+    },
+    {deep: true}
+);
 
 watch(hasWorkPermit, (value: boolean) => {
   if (!value) {
-    jobCreationData.value.workPermits = null
+    jobCreationData.value.workPermits = null;
   }
-})
+});
 
-const isSubmitButtonEnabled = computed(() => canPostJob.value && !jobCreation.value.isLoading)
+const onEditorReady = () => {
+  logDev("EDITOR READY");
+};
 
-const getSelectedCountries = (data: {
-  countries: [Country]
-}) => {
-  logDev('SELECTED COUNTRIES POST', data)
+const isSubmitButtonEnabled = computed(
+    () => canPostJob.value && !jobCreation.value.isLoading
+);
+
+const getSelectedCountries = (data: { countries: [Country] }) => {
+  logDev("SELECTED COUNTRIES POST", data);
 
   if (!hasWorkPermit.value) {
     hasWorkPermit.value = true;
   }
 
-  workPermits.value = data.countries.map((country) => country)
-  jobCreationData.value.workPermits = workPermits.value.map(({iso}: Country) => iso)
-}
+  workPermits.value = data.countries.map((country) => country);
+  jobCreationData.value.workPermits = workPermits.value.map(
+      ({iso}: Country) => iso
+  );
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

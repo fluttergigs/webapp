@@ -127,7 +127,6 @@ onBeforeMount(() => {
                          label="Edit job offer"
                          size="lg" square variant="solid"
                          @click="useCompanyActions().handleJobEdit(data)"/>
-                §
 
                 <UButton color="white" icon="i-heroicons-share"
                          label="Share job offer"
