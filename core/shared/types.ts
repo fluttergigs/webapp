@@ -45,4 +45,4 @@ export enum PaymentContext {
     jobPost = "jobPost",
 }
 
-export declare type CallbackFunction<Result, Err extends any> = ((val?: Result) => void) | ((err?: Err) => void);
+export declare type CallbackFunction<Result, Err extends any = {}> = ((val?: Result) => void) | ((err?: Err) => void);

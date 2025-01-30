@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 //@ts-ignore
 import type {PropType} from "@vue/runtime-core";
 import type {Company} from "~/features/companies/company.types";
@@ -18,11 +18,11 @@ const props = defineProps({
 
 <template>
   <UAvatar
-      icon="i-heroicons-photo"
+      :alt="props.company?.name + ' logo'"
+      :size="size"
+      :src="company?.logo" :text="props.company?.name?.substring(0,1)!"
       class="border-2 border-white"
-      :alt="company.name + ' logo'" :size="size"
-      :src="company.logo"
-      :text="props.company?.name?.substring(0,1)!"/>
+      icon="i-heroicons-photo"/>
 </template>
 
 <style scoped>

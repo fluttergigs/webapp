@@ -30,6 +30,7 @@ export type JobPostPaymentData = {
     paymentEmail: string,
     stripeCustomerId: string,
     context: PaymentContext.jobPost
+    originEmail: string
 }
 
 export type BookmarkedJobOffer = {

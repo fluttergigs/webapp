@@ -25,7 +25,7 @@
 
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 
 import '@/components/landing/Header.vue'
 import type {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider";
@@ -39,10 +39,7 @@ definePageMeta({
 
 const {$analytics} = useNuxtApp()
 
-
 onMounted(() => {
   ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.learnCategoryPageEntered,);
 })
-
-
 </script>
