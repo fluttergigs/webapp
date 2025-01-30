@@ -44,7 +44,6 @@ export default defineNuxtConfig({
   build: {
     transpile: [
       "date-fns",
-      "@vueup/vue-quill",
       // "quill-delta",
     ],
     // transpile: ['components/*', 'pages/*','composables/*'],
@@ -117,9 +116,9 @@ export default defineNuxtConfig({
   },
 
   /*appwrite: {
-                                endpoint: process.env.NUXT_APPWRITE_ENDPOINT,
-                                project: process.env.NUXT_APPWRITE_PROJECT_ID,
-                            },*/
+                                  endpoint: process.env.NUXT_APPWRITE_ENDPOINT,
+                                  project: process.env.NUXT_APPWRITE_PROJECT_ID,
+                              },*/
   i18n: {
     locales: [
       { code: "en", file: "en.json" },
@@ -167,14 +166,14 @@ export default defineNuxtConfig({
     },
 
     /*'/api/!*': {
-                                                        proxy: {
-                                                            //@ts-ignore
-                                                            target: process.env.NUXT_PUBLIC_API_BASE_URL,
-                                                            changeOrigin: true,
-                                                            rewrite: (path: any) => path.replace(/^\/api/, ''),
-                                                            secure: false,
-                                                        },
-                                                    },*/
+                                                            proxy: {
+                                                                //@ts-ignore
+                                                                target: process.env.NUXT_PUBLIC_API_BASE_URL,
+                                                                changeOrigin: true,
+                                                                rewrite: (path: any) => path.replace(/^\/api/, ''),
+                                                                secure: false,
+                                                            },
+                                                        },*/
   },
 
   compatibilityDate: "2024-08-06",

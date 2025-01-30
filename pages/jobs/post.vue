@@ -2,7 +2,9 @@
 <!--TODO check whether user has selected at least a work permit-->
 
 <template>
-  <JobDescriptionGenerationModal/>
+  <JobDescriptionGenerationModal
+      @successful-generation="handleJobDescriptionGenerated"
+  />
   <section class="w-full overflow-hidden bg-white px-2 py-8 md:py-12 xl:pb-56">
     <div class="my-4 flex flex-col gap-x-16 font-normal md:flex-row">
       <div class="flex w-full flex-col gap-y-8 xl:mx-auto">
@@ -27,7 +29,11 @@
                                 inside-text="Generate description using AI 🚀"/>
                     </LabelledInput>-->
 
-          <LabelledInput label="Job Description *">
+          <LabelledInput
+              inside-text="Generate description using AI 🚀"
+              label="Job Description *"
+              @inside-text-clicked="jobStore.showJobDescriptionGenerationModal()"
+          >
             <client-only>
               <QuillEditorWrapper
                   v-model="jobCreationData.description"
@@ -233,7 +239,7 @@ const hasWorkPermit = ref(false);
 const workPermits = ref([]);
 const {$analytics} = useNuxtApp();
 const canPostJob = ref(false);
-const {handleJobPosting} = useCompanyActions();
+const {handleJobPosting, handleJobDescriptionGenerated} = useCompanyActions();
 
 onMounted(() => {
   ($analytics as AppAnalyticsProvider).capture(
@@ -248,10 +254,6 @@ watch(
     },
     {deep: true, immediate: true}
 );
-
-watch(() => jobCreationData.value.description, () => {
-  alert("description ==> " + jobCreationData.value.description);
-});
 
 watch(
     jobCreationData,
