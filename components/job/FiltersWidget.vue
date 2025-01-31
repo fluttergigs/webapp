@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 
 import WorkTypeFilter from "~/components/job/WorkTypeFilter.vue";
 import SeniorityLevelFilter from "~/components/job/SeniorityLevelFilter.vue";
@@ -9,6 +9,7 @@ import {storeToRefs} from "pinia";
 import {watchDebounced} from "@vueuse/core";
 import WorkPermitSelector from "~/components/job/WorkPermitSelector.vue";
 import type {Country} from "~/core/shared/types";
+import {RemoteOptions, SeniorityLevel, WorkType} from "~/features/jobs/job.types";
 
 const jobStore = useJobStore()
 const {searchFilters} = storeToRefs(jobStore)
@@ -37,11 +38,12 @@ const getSelectedCountries = (data: {
       Job Filters
     </p>
     <div class="flex flex-col space-y-6">
-      <JobKeywordFilter @filterByKeyword="(value)=> jobStore.setJobSearchFilters({keyword: value})"/>
-      <WorkTypeFilter @filterByWorkType="(value)=> jobStore.setJobSearchFilters({workType: value})"/>
+      <JobKeywordFilter @filterByKeyword="(value: string) => jobStore.setJobSearchFilters({keyword: value})"/>
+      <WorkTypeFilter @filterByWorkType="(value: WorkType) => jobStore.setJobSearchFilters({workType: value})"/>
       <SeniorityLevelFilter
-          @filterBySeniorityLevel="(value)=> jobStore.setJobSearchFilters({seniorityLevel: value})"/>
-      <RemoteOptionsFilter @filterByRemoteOptions="(value)=> jobStore.setJobSearchFilters({remoteOption: value})"/>
+          @filterBySeniorityLevel="(value: SeniorityLevel) => jobStore.setJobSearchFilters({seniorityLevel: value})"/>
+      <RemoteOptionsFilter
+          @filterByRemoteOptions="(value: RemoteOptions) => jobStore.setJobSearchFilters({remoteOption: value})"/>
       <WorkPermitSelector @selected-countries="getSelectedCountries"/>
     </div>
   </section>
