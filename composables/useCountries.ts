@@ -7,7 +7,6 @@ const countriesKey = "countries"
 
 export default async function useCountries() {
     const countries = useStorage(countriesKey, () => [])
-
     if (countries.length > 0) {
         return {data: countries, error: null}
     }
@@ -18,7 +17,7 @@ export default async function useCountries() {
     } = await useFetch(COUNTRIES_API_ENDPOINT, {
         key: "countries",
         mode: "cors",
-        default: () => [],
+        default: () => ({countries: []}),
 
         transform: (countries) => {
             const result: [Country] = countries.map((country: any) => ({

@@ -144,5 +144,6 @@
 
 <script setup>
 import useCompanyActions from "~/composables/useCompanyActions";
+import {AppRoutes} from "~/core/routes";
 import {AvailableFlags} from "~/services/feature-flag/available_flags";
 </script>
