@@ -28,14 +28,20 @@ const {filteredCompanies, companyFiltersResponse} = storeToRefs(useCompanyStore(
 
 onMounted(() => {
   ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.findCompanyPageEntered);
+})
 
-  useSeoMeta({
-    title: `FlutterGigs' available companies`,
-    ogTitle: 'Browse thousands of companies',
-    description: 'FlutterGigs is the #1 job board in the Flutter community',
-    ogDescription: 'FlutterGigs is the #1 job board in the Flutter community',
-    twitterCard: 'summary_large_image',
-  })
+useServerSeoMeta({
+  title: `FlutterGigs' awesome companies`,
+  ogTitle: 'Browse thousands of companies',
+  ogImage: 'https://fluttergigs.com/fluttergigs-og.png',
+  ogSiteName: "Flutter Gigs - The #1 Flutter job platform",
+  description: 'FlutterGigs is the #1 job board in the Flutter community',
+  ogDescription: 'FlutterGigs is the #1 job board in the Flutter community',
+  twitterCard: 'summary_large_image',
+  twitterImage: 'https://fluttergigs.com/fluttergigs-og.png',
+  twitterSite: "@fluttergigs",
+  twitterTitle: `Flutter Gigs - The #1 Flutter job platform`,
+  twitterDescription: 'Find the best Flutter companies around the world.',
 })
 </script>
 

@@ -24,8 +24,8 @@ export class AppAnalyticsProvider {
      * @param event
      * @param properties
      */
-    capture(event: AnalyticsEvent, properties?: Object) {
-        logDev(`[Analytics] ${event} ${properties}`)
+    capture(event: AnalyticsEvent, properties?: any) {
+        logDev(`[Analytics] ${event} ${properties?.toString()}`);
         this.client.captureEvent(event, properties);
 
         return this.client;

@@ -1,18 +1,18 @@
 <template>
 
   <BasicFormContent
+      description="Login and get access to thousands of opportunities"
       show-close-button
-      title="Welcome Back"
-      description="Login and get access to thousands of opportunities">
+      title="Welcome Back">
 
     <template #form>
       <form class="space-y-4">
         <div class="block mb-5">
-          <CustomInput name="email" placeholder="Email address" v-model="formInput.email" type="email"/>
+          <CustomInput v-model="formInput.email" name="email" placeholder="Email address" type="email"/>
         </div>
         <div class="block mb-5">
-          <CustomInput name="password" placeholder="Password" v-model="formInput.password" type="password"
-                       inside-text="Forgot Password?"/>
+          <CustomInput v-model="formInput.password" inside-text="Forgot Password?" name="password" placeholder="Password"
+                       type="password"/>
         </div>
         <button
             :disabled="!canSubmit ||user.isLoading"
@@ -25,27 +25,41 @@
         </button>
         <p class="font-medium">
           <span>Don’t have an account?</span>
-          <NuxtLink class="ml-2 text-indigo-600 hover:text-indigo-700" :to="AppRoutes.register">Create free account
+          <NuxtLink :to="AppRoutes.register" class="ml-2 text-indigo-600 hover:text-indigo-700">Create free account
           </NuxtLink>
         </p>
       </Form>
     </template>
   </BasicFormContent>
 </template>
-<script setup lang="ts">
+<script lang="ts" setup>
 import CustomInput from "~/components/forms/CustomInput.vue";
 import {AppRoutes} from "~/core/routes";
 import LoadingSpinnerIcon from "~/components/icons/LoadingSpinnerIcon.vue";
-import {Form} from 'vee-validate'
 import BasicFormContent from "~/components/ui/BasicFormContent.vue";
 //@ts-ignore
 import type {Notification} from "#ui/types";
 import {useLogin} from "~/composables/useLogin";
 
+useHead({title: "Flutter Gigs - Login"});
 
 definePageMeta({
   middleware: ['logged-in'],
   title: 'Login',
+})
+
+useServerSeoMeta({
+  title: `FlutterGigs - Login`,
+  ogTitle: 'FlutterGigs - Login',
+  ogImage: 'https://fluttergigs.com/fluttergigs-og.png',
+  ogSiteName: "Flutter Gigs - The #1 Flutter job platform",
+  description: 'Login and get access to thousands of opportunities',
+  ogDescription: 'Login and get access to thousands of opportunities',
+  twitterCard: 'summary_large_image',
+  twitterImage: 'https://fluttergigs.com/fluttergigs-og.png',
+  twitterSite: "@fluttergigs",
+  twitterTitle: `Flutter Gigs - The #1 Flutter job platform`,
+  twitterDescription: 'Login and get access to thousands of opportunities',
 })
 
 const {formInput, canSubmit, user, submit, onSuccessfulLogin} = useLogin()

@@ -4,10 +4,12 @@ import type {Company} from "~/features/companies/company.types";
 import {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider";
 import {AnalyticsEvent} from "~/services/analytics/events";
 import {stringify} from "qs";
-import CompanyJobs from "~/components/company/CompanyJobs.vue";
+import CompanyJobs from "@/components/company/CompanyJobs.vue";
 import {useCompanyStore} from "~/stores/company";
 import {storeToRefs} from "pinia";
 import {logDev} from "~/core/helpers/log";
+import {marked} from "marked";
+import {htmlToText} from "html-to-text";
 
 definePageMeta({
   layout: "main-layout",
@@ -33,7 +35,7 @@ const query = ref(
     )
 );
 
-const {data, error, status} = await useLazyFetch(
+const {data: company, error, status} = await useLazyFetch(
     `${useRuntimeConfig().public.apiBaseUrl}${Endpoint.companies}?${query.value}`,
     {
       key: companySlug.value,
@@ -80,32 +82,37 @@ watch(
 
 
 watch(
-    data,
+    company,
     async (value: any) => {
       if (value) {
         logDev("fetching viewed company jobs", value.id);
-        await useCompanyStore().fetchViewedCompanyJobs(data.value.id);
+        await useCompanyStore().fetchViewedCompanyJobs(company.value.id);
       }
     },
     {immediate: true, deep: true}
 );
 
-useHead({title: `Flutter Gigs - ${data?.value?.name}`});
+useHead({title: `Flutter Gigs - ${company?.value?.name}`});
 
 onMounted(() => {
   ($analytics as AppAnalyticsProvider).capture(
       AnalyticsEvent.companyPageDetailEntered,
-      {company: data.value}
+      {company: company.value}
   );
 });
 
-useSeoMeta({
-  title: `Find this company ${data.value?.name} on FlutterGigs`,
-  ogTitle: () => "FlutterGigs company page  - " + data.value?.name,
-  description: () => data.value?.description,
-  ogDescription: () => data.value?.description,
-  ogImage: () => data.value?.logo,
+useServerSeoMeta({
+  title: `Find this company ${company.value?.name} on FlutterGigs`,
+  ogTitle: () => `FlutterGigs company page  - ${company.value?.name}`,
+  description: () => htmlToText(company.value?.description, {wordwrap: 100}),
+  ogDescription: () => htmlToText(company.value?.description, {wordwrap: 100}),
+  ogImage: () => company.value?.logo ?? "https://fluttergigs.com/fluttergigs-og.png",
+  twitterImage: "https://fluttergigs.com/fluttergigs-og.png",
   twitterCard: "summary_large_image",
+  ogSiteName: "Flutter Gigs - The #1 Flutter job platform",
+  twitterSite: "@fluttergigs",
+  twitterTitle: () => `FlutterGigs company page  - ${company.value?.name}`,
+  twitterDescription: () => htmlToText(company.value?.description, {wordwrap: 100}),
 });
 </script>
 
@@ -129,16 +136,15 @@ useSeoMeta({
         <div
             class="flex flex-col items-start gap-x-6 md:flex-row md:items-center"
         >
-          <CompanyLogo :company="data as Company" size="3xl"/>
+          <CompanyLogo :company="company as Company" size="3xl"/>
 
           <div class="flex flex-1 flex-col justify-center space-y-2">
             <h3 class="text-6xl font-bold md:text-7xl">
-              {{ (data as Company)?.name }}
-            </h3>
+              company </h3>
             <p
                 class="line-clamp-1 overflow-ellipsis font-medium leading-relaxed text-gray-500"
+                v-html="company?.description?.isMarkdown()? marked(company.description): company?.description"
             >
-              {{ (data as Company)?.description }}
             </p>
           </div>
 
@@ -151,7 +157,7 @@ useSeoMeta({
               square
               style="height: fit-content"
               variant="solid"
-              @click.prevent="useCompanyActions().shareCompany(<Company>data)"
+              @click.prevent="useCompanyActions().shareCompany(<Company>company)"
           />
         </div>
       </div>
@@ -176,13 +182,13 @@ useSeoMeta({
             }"
               class="mt-10 w-full"
           >
-            <template v-if="!!data" #item="{ item }">
+            <template v-if="!!company" #item="{ item }">
               <div class="w-full bg-white px-10 py-8 md:px-20">
                 <div v-if="item.key === 'overview'" class="space-y-3">
-                  <CompanyOverview :company="data as Company"/>
+                  <CompanyOverview :company="company as Company"/>
                 </div>
                 <div v-else-if="item.key === 'jobs'" class="space-y-3">
-                  <CompanyJobs :company="data as Company"/>
+                  <CompanyJobs :company="company as Company"/>
                 </div>
               </div>
             </template>

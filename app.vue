@@ -5,7 +5,7 @@
   </NuxtLayout>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 
 useHead({
   title: `Flutter Gigs, The #1 Flutter job platform - ${useRoute().meta.title ?? "Flutter Gigs"}`,
@@ -97,9 +97,9 @@ useSeoMeta({
   twitterUrl: 'https://fluttergigs.com',
   twitterDomain: 'https://fluttergigs.com',
   twitterSite: '@fluttergigs',
-  twitterTitle: () => `FlutterGigs - Find the best Flutter opportunities at top remote companies around the world`,
-  twitterDescription: () => 'FlutterGigs is a platform to find Flutter framework related job opportunities and more',
-  twitterImage: () => 'https://fluttergigs.com/fluttergigs-og.png',
+  twitterTitle: `FlutterGigs - Find the best Flutter opportunities at top remote companies around the world`,
+  twitterDescription: 'FlutterGigs is a platform to find Flutter framework related job opportunities and more',
+  twitterImage: 'https://fluttergigs.com/fluttergigs-og.png',
 })
 </script>
 

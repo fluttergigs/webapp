@@ -37,6 +37,20 @@ definePageMeta({
   title: 'Find the best resources to advance your Flutter skills',
 })
 
+useServerSeoMeta({
+  title: 'FlutterGigs - Find the best resources to advance your Flutter skills',
+  description: 'Discover the best resources to hone your skills',
+  ogTitle: 'Find the best resources to advance your Flutter skills',
+  ogDescription: 'Discover the best resources to hone your skills',
+  ogImage: 'https://fluttergigs.com/fluttergigs-og.png',
+  twitterImage: 'https://fluttergigs.com/fluttergigs-og.png',
+  twitterCard: 'summary_large_image',
+  ogSiteName: 'Flutter Gigs - The #1 Flutter job platform',
+  twitterSite: '@fluttergigs',
+  twitterTitle: 'Find the best resources to advance your Flutter skills',
+  twitterDescription: 'Discover the best resources to hone your skills',
+})
+
 const {$analytics} = useNuxtApp()
 
 onMounted(() => {

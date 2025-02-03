@@ -1,4 +1,5 @@
 import {defineStore} from "pinia";
+// @ts-ignore
 import {Endpoint} from "~/core/network/endpoints";
 import {Wrapper} from "~/core/wrapper";
 import {logDev} from "~/core/helpers/log";
@@ -231,12 +232,12 @@ export const useJobStore = defineStore('job', {
             state.jobListResponse?.value?.data?.map((item: { [x: string]: any; }) => ({
                 ...item['attributes'],
                 id: item['id']
-            })),
+            })).reverse(),
         currentViewedJob: (state) => state.selectedJob.value,
         filteredJobs: (state) => state.jobFiltersResponse?.value?.data?.map((item: { [x: string]: any; }) => ({
             ...item['attributes'],
             id: item['id']
-        })),
+        })).reverse(),
         landingPageJobs: state => {
             const jobs = useJobStore().jobs as JobOffer[]
             return jobs?.length > MAX_LANDING_PAGE_JOBS ? jobs?.slice(0, MAX_LANDING_PAGE_JOBS - 1) : jobs;

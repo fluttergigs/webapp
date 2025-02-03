@@ -13,6 +13,7 @@ import {stringify} from "qs";
 import WorkingPermits from "~/components/job/WorkingPermits.vue";
 import SaveJobIconButton from "~/components/job/SaveJobIconButton.vue";
 import {marked} from "marked";
+import {htmlToText} from "html-to-text";
 
 // TODO handle mobile responsiveness
 //TODO handle account/dashboard/consultants
@@ -26,7 +27,7 @@ const {$analytics} = useNuxtApp();
 const {currentViewedJob} = storeToRefs(useJobStore());
 
 const company = computed(() => ({
-  ...extractCompanyFromJob(data.value),
+  ...extractCompanyFromJob(jobOffer.value),
 }));
 
 const jobSlug = ref(useRoute().params.slug);
@@ -48,7 +49,7 @@ const query = ref(
     )
 );
 
-const {data, error, status} = await useLazyFetch(
+const {data: jobOffer, error, status} = await useLazyFetch(
     `${useRuntimeConfig().public.apiBaseUrl}${Endpoint.jobOffers}?${query.value}`,
     {
       key: jobSlug.value,
@@ -64,7 +65,7 @@ const {data, error, status} = await useLazyFetch(
 
 const pending = computed(() => status.value === "pending");
 
-/*if (!data.value) {
+/*if (!jobOffer.value) {
   throw createError({
     statusCode: 404,
     statusMessage: 'Job Not Found',
@@ -76,36 +77,36 @@ definePageMeta({
   title: `FlutterGis job opportunities`,
 });
 
-useHead({title: `Get this opportunity on FlutterGigs: ${data.value?.title}`});
+useHead({title: `Get this opportunity on FlutterGigs: ${jobOffer.value?.title}`});
 
 useServerSeoMeta({
-  title: () => `Flutter Gigs - ${data.value?.title}`,
+  title: () => `Flutter Gigs - ${jobOffer.value?.title}`,
+  ogTitle: () => `Flutter Gigs - ${jobOffer.value?.title}`,
   ogUrl: "https://fluttergigs.com",
   ogType: "website",
   ogLocale: "en_US",
-  ogTitle: () => `Flutter Gigs - ${data.value?.title}`,
   ogImage: "https://fluttergigs.com/fluttergigs-og.png",
-  description: () => data.value?.description,
-  ogDescription: () => data.value?.description,
+  description: () => htmlToText(jobOffer.value?.description, {wordwrap: 130}),
+  ogDescription: () => htmlToText(jobOffer.value?.description, {wordwrap: 130}),
   ogSiteName: "Flutter Gigs - The #1 Flutter job platform",
   twitterCard: "summary_large_image",
   twitterImage: () =>
-      data.value?.company?.logo ?? "https://fluttergigs.com/fluttergigs-og.png",
+      jobOffer.value?.company?.logo ?? "https://fluttergigs.com/fluttergigs-og.png",
   twitterSite: "@fluttergigs",
-  twitterTitle: () => `Flutter Gigs - ${data.value?.title}`,
+  twitterTitle: () => `Flutter Gigs - ${jobOffer.value?.title}`,
   twitterDescription: () =>
-      "Find this opportunity on FlutterGigs:" + data.value?.description,
+      `Find this opportunity on FlutterGigs: ${htmlToText(jobOffer.value?.title, {wordwrap: 130})}`,
 });
 
 onMounted(() => {
   // if (import.meta.client)
   $analytics.capture(AnalyticsEvent.jobOfferDetailEntered, {
-    jobOffer: data.value ?? {},
+    jobOffer: jobOffer.value ?? {},
   });
 });
 
 onBeforeMount(() => {
-  useJobStore().setSelectedJob(data.value ?? {});
+  useJobStore().setSelectedJob(jobOffer.value ?? {});
 });
 </script>
 
@@ -139,7 +140,7 @@ onBeforeMount(() => {
               class="flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:justify-between"
           >
             <h2 class="text-xl font-bold md:text-5xl lg:text-7xl">
-              {{ data?.title }}
+              {{ jobOffer?.title }}
             </h2>
 
             <client-only>
@@ -152,7 +153,7 @@ onBeforeMount(() => {
                     size="lg"
                     square
                     variant="solid"
-                    @click="useCompanyActions().handleJobEdit(data)"
+                    @click="useCompanyActions().handleJobEdit(jobOffer)"
                 />
 
                 <UButton
@@ -162,10 +163,10 @@ onBeforeMount(() => {
                     size="lg"
                     square
                     variant="solid"
-                    @click="useJobActions().shareJobOffer(data)"
+                    @click="useJobActions().shareJobOffer(jobOffer)"
                 />
 
-                <SaveJobIconButton :company="company" :job="data"/>
+                <SaveJobIconButton :company="company" :job="jobOffer"/>
               </div>
             </client-only>
           </div>
@@ -198,7 +199,7 @@ onBeforeMount(() => {
 
             <WorkingPermits
                 :countries="
-                jobWorkingPermits(countriesData?.countries ?? [], data)
+                jobWorkingPermits(countriesData?.countries ?? [], jobOffer)
               "
             />
           </div>
@@ -210,12 +211,12 @@ onBeforeMount(() => {
             <div class="space-y-10 font-medium text-gray-900">
               <p class="leading-10">{{ company?.description }}</p>
               <p class="leading-10"
-                 v-html="data?.description?.isMarkdown()? marked(data.description): data?.description"></p>
+                 v-html="jobOffer?.description?.isMarkdown()? marked(jobOffer.description): jobOffer?.description"></p>
             </div>
             <!--          apply section-->
             <LazyJobApplicationCtaCard
                 :company="company"
-                :job="data"
+                :job="jobOffer"
                 class="hidden md:block"
             />
           </div>
@@ -223,11 +224,11 @@ onBeforeMount(() => {
           <div class="flex w-full flex-col space-y-9 md:w-2/6">
             <JobApplicationCtaCard
                 :company="company"
-                :job="data"
+                :job="jobOffer"
                 :layout-direction="Direction.vertical"
             />
 
-            <JobDetailsCard :job="data"/>
+            <JobDetailsCard :job="jobOffer"/>
 
             <CompanyInfoCard :company="company"/>
           </div>
