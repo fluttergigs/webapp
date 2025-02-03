@@ -87,8 +87,6 @@ useSeoMeta({
   ogTitle: 'FlutterGigs - The #1 Flutter jobs platform',
   ogImage: 'https://fluttergigs.com/fluttergigs-og.png',
   ogUrl: 'https://fluttergigs.com',
-  ogType: 'website',
-  ogLocale: 'en_US',
   ogLogo: 'https://fluttergigs.com/ico.png',
   description: 'FlutterGigs is a platform to find Flutter framework related job opportunities and more',
   ogDescription: 'FlutterGigs is a platform to find Flutter framework related job opportunities and more',

@@ -103,12 +103,12 @@ onMounted(() => {
 
 useServerSeoMeta({
   title: `Find this company ${company.value?.name} on FlutterGigs`,
-  ogTitle: () => `FlutterGigs company page  - ${company.value?.name}`,
+  ogTitle: () => `FlutterGigs company page - ${company.value?.name}`,
   description: () => htmlToText(company.value?.description, {wordwrap: 100}),
   ogDescription: () => htmlToText(company.value?.description, {wordwrap: 100}),
   ogImage: () => company.value?.logo ?? "https://fluttergigs.com/fluttergigs-og.png",
   twitterImage: "https://fluttergigs.com/fluttergigs-og.png",
-  twitterCard: "summary_large_image",
+  twitterCard: "summary",
   ogSiteName: "Flutter Gigs - The #1 Flutter job platform",
   twitterSite: "@fluttergigs",
   twitterTitle: () => `FlutterGigs company page  - ${company.value?.name}`,

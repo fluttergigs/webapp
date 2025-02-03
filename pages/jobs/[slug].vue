@@ -83,20 +83,19 @@ useServerSeoMeta({
   title: () => `Flutter Gigs - ${jobOffer.value?.title}`,
   ogTitle: () => `Flutter Gigs - ${jobOffer.value?.title}`,
   ogUrl: "https://fluttergigs.com",
-  ogType: "website",
-  ogLocale: "en_US",
+  ogLogo: 'https://fluttergigs.com/ico.png',
   ogImage: "https://fluttergigs.com/fluttergigs-og.png",
   description: () => htmlToText(jobOffer.value?.description, {wordwrap: 130}),
   ogDescription: () => htmlToText(jobOffer.value?.description, {wordwrap: 130}),
   ogSiteName: "Flutter Gigs - The #1 Flutter job platform",
-  twitterCard: "summary_large_image",
+  twitterCard: "summary",
   twitterImage: () =>
       jobOffer.value?.company?.logo ?? "https://fluttergigs.com/fluttergigs-og.png",
   twitterSite: "@fluttergigs",
   twitterTitle: () => `Flutter Gigs - ${jobOffer.value?.title}`,
   twitterDescription: () =>
       `Find this opportunity on FlutterGigs: ${htmlToText(jobOffer.value?.title, {wordwrap: 130})}`,
-});
+},);
 
 onMounted(() => {
   // if (import.meta.client)
