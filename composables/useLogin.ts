@@ -8,7 +8,6 @@ import {BaseToast} from "~/core/ui/base_toast";
 import {AppRoutes} from "~/core/routes";
 import {LoginData, User} from "~/services/auth/auth.types";
 import type {CallbackFunction} from "~/core/shared/types";
-import {useAnalytics} from "~/composables/useAnalytics";
 import {useUser} from "~/composables/useUser";
 
 export const useLogin = () => {
@@ -84,8 +83,6 @@ export const useLogin = () => {
         }
 
         await Promise.all([
-            useAnalytics().identifyUser(user),
-
             useUser().getUser(),
         ]);
     };

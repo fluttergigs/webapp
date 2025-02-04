@@ -64,7 +64,7 @@
     "nuxt-appwrite": "^1.0.3",
     "path": "^0.12.7",
     "pinia": "^2.0.22",
-    "posthog-js": "^1.160.3",
+    "posthog-js": "^1.215.2",
     "sweetalert2": "^11.5.1",
     "swiper": "^8.4.4",
     "tippy.vue": "^3.2.1",
