@@ -78,8 +78,7 @@ export default function useJobActions() {
     const shareJobOffer = async (job: JobOffer) => {
         ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.jobOfferShareButtonClicked, {job})
 
-
-        const {text, copy, copied,} = useClipboard({
+        const {copy} = useClipboard({
             source: `${location.href}`,
             legacy: true
         })
@@ -102,7 +101,26 @@ export default function useJobActions() {
     const handleJobApply = async (job: JobOffer) => {
         ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.jobOfferApplyButtonClicked, {job});
 
-        window.open(job.howToApply!, '_blank')
+        if (authStore.isAuthenticated) {
+            window.open(job.howToApply!, '_blank')
+        } else {
+            authStore.setReturnUrl(AppRoutes.jobDetail(job.slug))
+
+            ($toast as BaseToast<Notification>).custom({
+                color: 'primary',
+                title: 'You need an account to apply for a job offer',
+                timeout: 12000,
+                actions: [{
+                    label: 'Login',
+                    click: () => navigateTo(AppRoutes.login)
+                }, {
+                    label: 'Register',
+                    click: () => navigateTo(AppRoutes.register)
+                }]
+            })
+        }
+
+
     }
 
     return {
