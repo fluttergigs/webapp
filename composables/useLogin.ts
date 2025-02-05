@@ -64,10 +64,14 @@ export const useLogin = () => {
             await authStore.login(loginData);
 
             if (isSuccessfulLogin.value) {
+                ($analytics as AppAnalyticsProvider).capture(
+                    AnalyticsEvent.successfulLogin,
+                    loginData,
+                );
                 onDone?.(authUser.value);
             }
         } catch (e) {
-            ($toast as BaseToast<Notification>).error(user.value.message);
+            ($toast as BaseToast<Notification>).error(storeUser.value.message);
         }
     };
 

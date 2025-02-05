@@ -100,7 +100,7 @@ useServerSeoMeta({
 onMounted(() => {
   // if (import.meta.client)
   $analytics.capture(AnalyticsEvent.jobOfferDetailEntered, {
-    jobOffer: jobOffer.value ?? {},
+    job: jobOffer.value ?? {},
   });
 });
 

@@ -10,11 +10,12 @@ export class PosthogClient implements AppAnalytics {
             const {public: {posthogKey}} = useRuntimeConfig();
 
             const posthogClient = posthog.init(posthogKey, {
-                capture_pageleave: false,
+                capture_pageleave: true,
                 capture_pageview: true,
                 name: "Flutter Gigs",
                 debug: import.meta.env.MODE === "development",
                 advanced_disable_decide: import.meta.env.MODE === "development",
+                person_profiles: 'always',
                 api_host: "https://us.i.posthog.com",
                 loaded: (posthog: any) => {
                     // posthog.debug(import.meta.env.MODE === "development");
@@ -30,8 +31,8 @@ export class PosthogClient implements AppAnalytics {
     captureEvent(event: AnalyticsEvent, properties?: any): void {
         logDev(`[Analytics] ${event} ${properties?.toString()}`)
 
-        if (import.meta.env.MODE !== "development")
-            posthog.capture(event, properties)
+        // if (import.meta.env.MODE !== "development")
+        posthog.capture(event, properties)
     }
 
     identifyUser(identifier: string, properties?: any): void {
