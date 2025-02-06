@@ -45,7 +45,7 @@ export default function useJobActions() {
 
                 ($toast as BaseToast<Notification>).custom({
                     color: 'primary',
-                    title: 'You need to be logged in to bookmark a job offer',
+                    title: 'You need to be logged-in to bookmark a job offer',
                     timeout: 8000,
                     actions: [{
                         label: 'Login',

@@ -21,7 +21,7 @@
     </div>
   </section>
 
-  <section class="mx-auto flex w-full flex-wrap bg-gradient-white px-20 py-14">
+  <section class="mx-auto flex w-full flex-wrap bg-gradient-white px-6 py-6 sm:px-12 md:px-20 md:py-14">
     <div class="w-full md:w-1/6">
       <FiltersWidget/>
     </div>
