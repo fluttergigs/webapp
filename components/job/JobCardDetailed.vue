@@ -37,7 +37,7 @@ const company = computed(() => ({
         <div class="flex h-full flex-col justify-between">
           <div class="mb-16 flex flex-col gap-3">
             <h3
-                class="text-md mb-4 line-clamp-1 font-heading font-bold leading-snug sm:line-clamp-2 sm:text-xl"
+                class="text-base mb-4 line-clamp-1 font-heading font-bold leading-snug sm:line-clamp-2 sm:text-xl"
             >
               {{ job.title }}
             </h3>
