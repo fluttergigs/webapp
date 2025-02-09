@@ -84,7 +84,6 @@ const ogImageUrl = computed(() =>
 useSeoMeta({
   title: () => `Flutter Gigs - ${jobOffer.value?.title}`,
   ogTitle: () => `Flutter Gigs - ${jobOffer.value?.title}`,
-
   ogUrl: "https://fluttergigs.com",
   ogLogo: 'https://fluttergigs.com/ico.png',
   // ogImageUrl: () => `/api/generate_job_offer_og_image?title=${jobOffer.value?.title}&companyName=${company.value?.name}&companyLogo=${company.value?.logo}`,

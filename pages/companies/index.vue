@@ -30,10 +30,10 @@ onMounted(() => {
   ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.findCompanyPageEntered);
 })
 
-useServerSeoMeta({
+useSeoMeta({
   title: `FlutterGigs' awesome companies`,
   ogTitle: 'Browse thousands of companies',
-  ogImage: 'https://fluttergigs.com/fluttergigs-og.png',
+  ogImageUrl: 'https://fluttergigs.com/fluttergigs-og.png',
   ogSiteName: "Flutter Gigs - The #1 Flutter job platform",
   description: 'FlutterGigs is the #1 job board in the Flutter community',
   ogDescription: 'FlutterGigs is the #1 job board in the Flutter community',

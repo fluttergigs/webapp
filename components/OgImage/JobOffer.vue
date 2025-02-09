@@ -11,7 +11,7 @@ const jobOffer = defineProps<Partial<JobOffer>>()
 <template>
   <div class="relative">
     <OgPreview/>
-    <p class="absolute top-[80px] left-[300px] text-5xl font-bold leading-4 max-w-sm text-white">
+    <p class="absolute top-[75px] left-[300px] text-7xl font-bold !leading-[18px] max-w-xl text-white">
       {{ jobOffer.title }}
     </p>
   </div>
