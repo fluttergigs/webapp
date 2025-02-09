@@ -37,7 +37,7 @@ definePageMeta({
   title: 'Find the best resources to advance your Flutter skills',
 })
 
-useServerSeoMeta({
+useSeoMeta({
   title: 'FlutterGigs - Find the best resources to advance your Flutter skills',
   description: 'Discover the best resources to hone your skills',
   ogTitle: 'Find the best resources to advance your Flutter skills',

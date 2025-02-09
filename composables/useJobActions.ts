@@ -87,11 +87,11 @@ export default function useJobActions() {
         ($toast as BaseToast<Notification>).info('Job link copied to your clipboard. You can share it :)')
     }
 
-
     const viewDetails = (job: JobOffer) => {
         ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.jobOfferClicked, {job});
         jobStore.findJobById(job)
-        navigateTo(AppRoutes.jobDetail(job.slug))
+
+        navigateTo(`${AppRoutes.jobDetail(job.slug)}`)
     }
 
     const jobWorkingPermits = (countries: Country[], job: JobOffer): Country[] => countries.filter(({iso}: Country) => (job.workPermits ?? []).join(' ').includes(iso))

@@ -25,12 +25,12 @@ export default defineNuxtConfig({
         preference: "light",
     },
     site: {
-        name: "Flutter Gigs - The #1 Flutter job platform",
+        name: "Flutter Gigs - The #1 Flutter jobs platform",
         url: "https://fluttergigs.com",
     },
-    sitemap: {
+    /*sitemap: {
         sources: ["/api/sitemap"],
-    },
+    },*/
     imports: {
         dirs: [
             "core",
@@ -42,6 +42,8 @@ export default defineNuxtConfig({
         ],
     },
     build: {
+        optimizeCSS: true,
+        extractCSS: true,
         transpile: [
             "date-fns",
             // "quill-delta",
@@ -71,14 +73,13 @@ export default defineNuxtConfig({
     modules: [
         "@pinia/nuxt",
         "@pinia-plugin-persistedstate/nuxt",
-        "@nuxtjs/i18n",
-        "nuxt-lodash", // '@nuxtjs/tailwindcss',
-        // 'nuxt-appwrite',
+        "@nuxtjs/i18n", // '@nuxtjs/tailwindcss',
+        "nuxt-lodash", // 'nuxt-appwrite',
         "@nuxtjs/strapi",
         "@nuxt/ui",
         "@sentry/nuxt/module",
         "@nuxt/image",
-        "@nuxtjs/sitemap",
+        "nuxt-og-image"
     ],
     sentry: {
         sourceMapsUploadOptions: {

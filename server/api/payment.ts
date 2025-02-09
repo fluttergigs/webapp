@@ -5,6 +5,7 @@ import {WebsocketClientManager} from "~/server/utils/websocket_manager"; //@ts-i
 
 //@ts-ignore
 export default defineEventHandler(async (event: EventHandlerRequest) => {
+
     const paymentData = await readBody(event);
 
     try {

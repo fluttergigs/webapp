@@ -101,7 +101,7 @@ onMounted(() => {
   );
 });
 
-useServerSeoMeta({
+useSeoMeta({
   title: `Find this company ${company.value?.name} on FlutterGigs`,
   ogTitle: () => `FlutterGigs company page - ${company.value?.name}`,
   description: () => htmlToText(company.value?.description, {wordwrap: 100}),

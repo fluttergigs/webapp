@@ -12,7 +12,7 @@
               <div class="w-auto p-3">
                 <div
                     class="flex items-center justify-center w-20 h-20 bg-indigo-100 rounded-full">
-                  <img src="@/assets/images/chat.svg" alt=""/>
+                  <img alt="" src="@/assets/images/chat.svg"/>
                 </div>
               </div>
               <div class="flex-1 p-3">
@@ -30,7 +30,7 @@
                 <div
                     class="flex items-center justify-center w-20 h-20 bg-indigo-100 rounded-full"
                 >
-                  <img src="@/assets/images/layers.svg" alt=""/>
+                  <img alt="" src="@/assets/images/layers.svg"/>
                 </div>
               </div>
               <div class="flex-1 p-3">
@@ -48,7 +48,7 @@
                 <div
                     class="flex items-center justify-center w-20 h-20 bg-indigo-100 rounded-full"
                 >
-                  <img src="@/assets/images/replace.svg" alt=""/>
+                  <img alt="" src="@/assets/images/replace.svg"/>
                 </div>
               </div>
               <div class="flex-1 p-3">
@@ -164,7 +164,7 @@
     </section>-->
 </template>
 
-<script setup>
+<script lang="ts" setup>
 
 import '@/components/landing/Header.vue'
 import UserSection from "~/components/landing/UserSection.vue";
@@ -176,6 +176,4 @@ definePageMeta({
   layout: 'main-layout',
   title: 'The #1 Flutter job platform in the world',
 })
-
-
 </script>

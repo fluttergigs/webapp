@@ -1,8 +1,7 @@
-import {Endpoint} from "~/core/network/endpoints";
-import {logDev} from "~/core/helpers/log";
 //@ts-ignore
 import {EventHandlerRequest} from "h3";
 
+/*
 
 export default defineSitemapEventHandler(async (e: EventHandlerRequest) => {
     const {apiBaseUrl} = useRuntimeConfig();
@@ -23,4 +22,4 @@ export default defineSitemapEventHandler(async (e: EventHandlerRequest) => {
             lastmod: job.attributes.updatedAt ?? job.attributes.createdAt,
         };
     });
-});
+});*/

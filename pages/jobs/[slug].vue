@@ -15,7 +15,6 @@ import SaveJobIconButton from "~/components/job/SaveJobIconButton.vue";
 import {marked} from "marked";
 import {htmlToText} from "html-to-text";
 
-// TODO handle mobile responsiveness
 //TODO handle account/dashboard/consultants
 
 definePageMeta({
@@ -23,13 +22,10 @@ definePageMeta({
 });
 
 const {$analytics} = useNuxtApp();
-
 const {currentViewedJob} = storeToRefs(useJobStore());
-
 const company = computed(() => ({
   ...extractCompanyFromJob(jobOffer.value),
 }));
-
 const jobSlug = ref(useRoute().params.slug);
 
 const {data: countriesData, error: countriesError} = await useCountries();
@@ -60,7 +56,8 @@ const {data: jobOffer, error, status} = await useLazyFetch(
           id: job["id"],
         };
       },
-    }
+      pending: false,
+    },
 );
 
 const pending = computed(() => status.value === "pending");
@@ -79,23 +76,33 @@ definePageMeta({
 
 useHead({title: `Get this opportunity on FlutterGigs: ${jobOffer.value?.title}`});
 
-useServerSeoMeta({
+const ogImageUrl = computed(() =>
+    `/api/generate_job_offer_og_image?title=${jobOffer.value?.title}&companyName=${company.value?.name}&companyLogo=${company.value?.logo}`);
+
+// const ogImageUrl = `/api/payment`;
+
+useSeoMeta({
   title: () => `Flutter Gigs - ${jobOffer.value?.title}`,
   ogTitle: () => `Flutter Gigs - ${jobOffer.value?.title}`,
+
   ogUrl: "https://fluttergigs.com",
   ogLogo: 'https://fluttergigs.com/ico.png',
-  ogImage: "https://fluttergigs.com/fluttergigs-og.png",
-  description: () => htmlToText(jobOffer.value?.description, {wordwrap: 130}),
-  ogDescription: () => htmlToText(jobOffer.value?.description, {wordwrap: 130}),
+  // ogImageUrl: () => `/api/generate_job_offer_og_image?title=${jobOffer.value?.title}&companyName=${company.value?.name}&companyLogo=${company.value?.logo}`,
+  description: () => htmlToText(jobOffer.value?.description?.substring(0, 100), {wordwrap: 130}),
+  ogDescription: () => htmlToText(jobOffer.value?.description?.substring(0, 100), {wordwrap: 130}),
   ogSiteName: "Flutter Gigs - The #1 Flutter job platform",
-  twitterCard: "summary",
+  twitterCard: "summary",/*
   twitterImage: () =>
-      jobOffer.value?.company?.logo ?? "https://fluttergigs.com/fluttergigs-og.png",
+      jobOffer.value?.company?.logo ?? "https://fluttergigs.com/fluttergigs-og.png",*/
   twitterSite: "@fluttergigs",
   twitterTitle: () => `Flutter Gigs - ${jobOffer.value?.title}`,
   twitterDescription: () =>
-      `Find this opportunity on FlutterGigs: ${htmlToText(jobOffer.value?.title, {wordwrap: 130})}`,
-},);
+      `Find this opportunity on FlutterGigs: ${htmlToText(jobOffer.value?.title?.substring(0, 100), {wordwrap: 130})}`,
+});
+
+defineOgImageComponent('JobOffer', {
+  ...jobOffer.value,
+},)
 
 onMounted(() => {
   // if (import.meta.client)

@@ -61,7 +61,8 @@ useSeoMeta({
   ogTitle: "Browse thousands of jobs",
   description: "FlutterGigs is the #1 job board in the Flutter community",
   ogDescription: "FlutterGigs is the #1 job board in the Flutter community",
-  twitterCard: "summary_large_image",
+  twitterCard: "summary",
+  twitterDescription: "FlutterGigs is the #1 job board in the Flutter community",
   ogImage: "https://fluttergigs.com/fluttergigs-og.png",
   twitterImage: "https://fluttergigs.com/fluttergigs-og.png",
 });
