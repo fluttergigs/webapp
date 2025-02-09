@@ -8,10 +8,10 @@
 <script lang="ts" setup>
 
 useHead({
-  title: `Flutter Gigs, The #1 Flutter job platform - ${useRoute().meta.title ?? "Flutter Gigs"}`,
   htmlAttrs: {
     lang: 'en'
   },
+
   meta: [
     {
       name: 'description',

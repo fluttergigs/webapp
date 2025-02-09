@@ -74,8 +74,6 @@ definePageMeta({
   title: `FlutterGis job opportunities`,
 });
 
-useHead({title: `Get this opportunity on FlutterGigs: ${jobOffer.value?.title}`});
-
 const ogImageUrl = computed(() =>
     `/api/generate_job_offer_og_image?title=${jobOffer.value?.title}&companyName=${company.value?.name}&companyLogo=${company.value?.logo}`);
 
@@ -91,6 +89,7 @@ useSeoMeta({
   ogDescription: () => htmlToText(jobOffer.value?.description?.substring(0, 100), {wordwrap: 130}),
   ogSiteName: "Flutter Gigs - The #1 Flutter job platform",
   twitterCard: "summary",/*
+
   twitterImage: () =>
       jobOffer.value?.company?.logo ?? "https://fluttergigs.com/fluttergigs-og.png",*/
   twitterSite: "@fluttergigs",

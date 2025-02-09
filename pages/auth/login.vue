@@ -11,7 +11,8 @@
           <CustomInput v-model="formInput.email" name="email" placeholder="Email address" type="email"/>
         </div>
         <div class="block mb-5">
-          <CustomInput v-model="formInput.password" inside-text="Forgot Password?" name="password" placeholder="Password"
+          <CustomInput v-model="formInput.password" inside-text="Forgot Password?" name="password"
+                       placeholder="Password"
                        type="password"/>
         </div>
         <button
@@ -41,16 +42,14 @@ import BasicFormContent from "~/components/ui/BasicFormContent.vue";
 import type {Notification} from "#ui/types";
 import {useLogin} from "~/composables/useLogin";
 
-useHead({title: "Flutter Gigs - Login"});
-
 definePageMeta({
   middleware: ['logged-in'],
   title: 'Login',
 })
 
-useServerSeoMeta({
-  title: `FlutterGigs - Login`,
-  ogTitle: 'FlutterGigs - Login',
+useSeoMeta({
+  title: `FlutterGigs - The #1 Flutter jobs platform in the world`,
+  ogTitle: 'FlutterGigs - The #1 Flutter jobs platform in the world',
   ogImage: 'https://fluttergigs.com/fluttergigs-og.png',
   ogSiteName: "Flutter Gigs - The #1 Flutter job platform",
   description: 'Login and get access to thousands of opportunities',

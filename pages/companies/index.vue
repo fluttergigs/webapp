@@ -21,8 +21,6 @@ definePageMeta({
   ]
 })
 
-useHead({title: `Flutter Gigs - Browse companies`});
-
 const {$analytics} = useNuxtApp()
 const {filteredCompanies, companyFiltersResponse} = storeToRefs(useCompanyStore())
 

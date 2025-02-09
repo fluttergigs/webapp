@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import BasicFormContent from "~/components/ui/BasicFormContent.vue";
 import {AppRoutes} from "~/core/routes";
 import {Form} from "vee-validate";
@@ -12,9 +12,8 @@ import {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider"
 import {useUserStore} from "~/stores/user";
 import type {CreateCompanyRequest} from "~/features/companies/company.types";
 
-useHead({title: "Flutter Gigs - Company creation"});
 
-useServerSeoMeta({
+useSeoMeta({
   title: 'Flutter Gigs - Create your company',
   ogTitle: 'Flutter Gigs - Create your company',
   ogUrl: 'https://fluttergigs.com',
@@ -71,34 +70,34 @@ const submit = async () => {
 </script>
 
 <template>
-  <BasicFormContent :show-close-button="true" title="Create your company"
-                    description="Create your company to start posting job offers to attract talented Flutter engineers">
+  <BasicFormContent :show-close-button="true" description="Create your company to start posting job offers to attract talented Flutter engineers"
+                    title="Create your company">
 
     <template #form>
       <form class="space-y-4">
         <div class="flex space-x-4 mb-5 w-full">
-          <CustomInput class="w-1/2" name="name" placeholder="Company name" v-model="formInput.name"/>
-          <CustomInput class="w-1/2" name="url"
-                       label="Website" :show-label="false" placeholder="Your website"
-                       v-model="formInput.website"/>
+          <CustomInput v-model="formInput.name" class="w-1/2" name="name" placeholder="Company name"/>
+          <CustomInput v-model="formInput.website" :show-label="false"
+                       class="w-1/2" label="Website" name="url"
+                       placeholder="Your website"/>
         </div>
         <div class="block mb-5">
-          <CustomInput name="email" placeholder="Company email" v-model="formInput.email" type="email"
+          <CustomInput v-model="formInput.email" name="email" placeholder="Company email" type="email"
           />
         </div>
 
         <div class="block mb-5">
-          <CustomInput name="url"
-                       label="Logo"
-                       :show-label="false" placeholder="Company's logo"
-                       v-model="formInput.logo" type="text"
-                       inside-text="Paste your company logo's link"/>
+          <CustomInput v-model="formInput.logo"
+                       :show-label="false"
+                       inside-text="Paste your company logo's link" label="Logo"
+                       name="url" placeholder="Company's logo"
+                       type="text"/>
         </div>
         <div class="block mb-5">
-          <CustomInput :is-text-area="true" name="description" placeholder="Company's description"
-                       v-model="formInput.description"
-                       type="text"
-                       inside-text="Describe your company"/>
+          <CustomInput v-model="formInput.description" :is-text-area="true" inside-text="Describe your company"
+                       name="description"
+                       placeholder="Company's description"
+                       type="text"/>
         </div>
         <button
             :disabled="!canSubmit ||companyStore.companyCreation.isLoading"

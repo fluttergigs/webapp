@@ -42,11 +42,10 @@ import BasicFormContent from "~/components/ui/BasicFormContent.vue";
 import type {Notification} from "#ui/types";
 import {useRegister} from "~/composables/useRegister";
 
-useHead({title: "Flutter Gigs - Create your account"});
 
 useServerSeoMeta({
-  title: 'Flutter Gigs - Create your account',
-  ogTitle: 'Flutter Gigs - Create your account',
+  title: `FlutterGigs - The #1 Flutter jobs platform in the world`,
+  ogTitle: 'FlutterGigs - The #1 Flutter jobs platform in the world',
   ogUrl: 'https://fluttergigs.com',
   ogImage: 'https://fluttergigs.com/fluttergigs-og.png',
   description: 'Flutter Gigs is a platform to find Flutter framework related job opportunities and more',

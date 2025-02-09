@@ -57,7 +57,7 @@ definePageMeta({
 });
 
 useSeoMeta({
-  title: `FlutterGigs' available jobs`,
+  title: `FlutterGigs - The #1 Job Board in the Flutter community`,
   ogTitle: "Browse thousands of jobs",
   description: "FlutterGigs is the #1 job board in the Flutter community",
   ogDescription: "FlutterGigs is the #1 job board in the Flutter community",
