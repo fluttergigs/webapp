@@ -13,7 +13,7 @@ const jobOfferTitle = computed(() => jobOffer.title.length > 85 ? `${jobOffer.ti
   <div class="relative">
     <OgPreview/>
     <div class="max-w-2xl h-[270px] absolute top-[80px] left-[305px]">
-      <p class="text-7xl font-bold !leading-[20px] text-white">
+      <p class="text-7xl font-bold !leading-[32px] text-white">
         {{ jobOfferTitle }}
       </p>
     </div>
