@@ -53,7 +53,7 @@ useHead({
 })
 
 useSeoMeta({
-  title: () => 'FlutterGigs - The #1 Flutter jobs platform',
+  title: 'FlutterGigs - The #1 Flutter jobs platform',
   ogTitle: 'FlutterGigs - The #1 Flutter jobs platform',
   // ogImage: 'https://fluttergigs.com/fluttergigs-og.png',
   ogUrl: 'https://fluttergigs.com',
@@ -68,6 +68,10 @@ useSeoMeta({
   twitterTitle: `FlutterGigs - Find the best Flutter opportunities at top remote companies around the world`,
   twitterDescription: 'FlutterGigs is a platform to find Flutter framework related job opportunities and more',
   // twitterImage: 'https://fluttergigs.com/fluttergigs-og.png',
+})
+
+defineOgImage({
+  url: 'https://fluttergigs.com/fluttergigs-og.png',
 })
 </script>
 
