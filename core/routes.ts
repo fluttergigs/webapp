@@ -8,6 +8,7 @@ export class AppRoutes {
     static jobs = '/jobs/'
     static companies = '/companies/';
     static hireConsultants = '/consultants'
+    static fluppets = "/fluppets"
     static learn = '/learn'
     static myJobs = '/account/jobs'
     static myAccount = '/account/user'
