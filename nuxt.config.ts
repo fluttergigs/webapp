@@ -115,6 +115,14 @@ export default defineNuxtConfig({
         cookie: {},
         cookieName: "strapi_jwt",
     },
+    ogImage: {
+        fonts: [
+            // will load the Noto Sans font from Google fonts
+            'Outfit:700',
+            'Noto+Sans:700',
+            'Work+Sans:ital:400'
+        ]
+    },
 
     /*appwrite: {
                                     endpoint: process.env.NUXT_APPWRITE_ENDPOINT,

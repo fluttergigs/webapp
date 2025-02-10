@@ -104,7 +104,7 @@ export default function useJobActions() {
         if (authStore.isAuthenticated) {
             window.open(job.howToApply!, '_blank')
         } else {
-            authStore.setReturnUrl(AppRoutes.jobDetail(job.slug))
+            authStore.setReturnUrl(AppRoutes.jobDetail(job.slug) as string);
 
             ($toast as BaseToast<Notification>).custom({
                 color: 'primary',

@@ -100,7 +100,11 @@ useSeoMeta({
 
 defineOgImageComponent('JobOffer', {
   ...jobOffer.value,
-},)
+}, {
+  fonts: [
+    'Outfit:700',
+  ],
+})
 
 onMounted(() => {
   // if (import.meta.client)

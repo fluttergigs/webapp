@@ -4,10 +4,28 @@
 
 
 @layer components {
+    :root {
+        --font-primary: 'Outfit', sans-serif !important;
+        --font-body: 'Manrope', 'Inter', sans-serif !important;
+    }
+
+    ::selection {
+        background-color: #4f46e5
+    }
 
     html {
         @apply scroll-smooth antialiased;
     }
+
+
+    div, p, section, * {
+        font-family: var(--font-body);
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        font-family: var(--font-primary);
+    }
+
 
     section {
         z-index: 0;
