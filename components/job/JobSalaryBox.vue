@@ -12,12 +12,12 @@ const props = defineProps({
 </script>
 
 <template>
-  <div class="inline-flex text-[12px] items-center
-                space-x-2 rounded-full px-3 py-1.5
+  <div class="inline-flex text-[14px] items-center
+                space-x-2 rounded-full px-3 py-2
                 bg-indigo-700/10 text-indigo-700 font-medium"
        style="width: fit-content">
     <UIcon name="i-heroicons-currency-dollar"/>
-    <span v-if="props.job.salaryFrom">${{ props.job?.salaryFrom }} - {{ props.job?.salaryTo }}/month</span>
+    <span v-if="props.job.salaryFrom">(${{ props.job?.salaryFrom }} to {{ props.job?.salaryTo }})/month</span>
     <span v-else> N/A</span>
   </div>
 </template>
