@@ -128,11 +128,9 @@
 
           <!--          apply before-->
           <LabelledInput label="Application closes on *">
-            <UPopover :popper="{ placement: 'bottom-start' }">
+            <UPopover :popper="{ placement: 'bottom-start', }">
               <UButton
-                  :label="
-                  format(parseISO(jobCreationData.applyBefore), 'd MMM, yyy')
-                "
+                  :label="format(new Date(jobCreationData.applyBefore), 'd MMMM, yyy')"
                   class="w-full"
                   color="white"
                   icon="i-heroicons-calendar-days-20-solid"
@@ -142,9 +140,12 @@
               <template #panel="{ close }">
                 <DatePicker
                     v-model="jobCreationData.applyBefore"
+                    :is-range="false"
+                    :is-required="true"
                     :min-date="new Date()"
                     color="indigo"
                     @close="close"
+                    @update:model-value="close"
                 />
               </template>
             </UPopover>
@@ -214,7 +215,7 @@ import CustomInput from "~/components/forms/CustomInput.vue";
 import {remoteOptions, seniorityLevelOptions, workTypeOptions,} from "~/core/constants";
 import {checkDigit} from "~/core/utils";
 import "v-calendar/dist/style.css";
-import {format, parseISO} from "date-fns";
+import {format} from "date-fns";
 import {DatePicker} from "v-calendar";
 import LabelledInput from "~/components/forms/LabelledInput.vue";
 import JobDescriptionGenerationModal from "~/components/job/JobDescriptionGenerationModal.vue";
