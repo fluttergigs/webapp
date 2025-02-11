@@ -7,28 +7,28 @@
     <!--    <client-only>-->
     <div class="relative">
       <slot name="insideText">
-        <div class="absolute right-4 bottom-0.5 transform -translate-y-1/2">
-          <a @click="$emit('insideTextClicked')"
-             class="text-[10px] text-indigo-600 hover:text-indigo-700 font-medium cursor-pointer">{{ insideText }}</a>
+        <div class="absolute right-4 bottom-0.5 transform">
+          <a class="text-[10px] text-indigo-600 hover:text-indigo-700 font-medium cursor-pointer"
+             @click="$emit('insideTextClicked')">{{ insideText }}</a>
         </div>
       </slot>
 
       <textarea
-          rows="5"
-          v-model="fieldValue"
           v-if="isTextArea"
+          v-model="fieldValue"
           :class="['custom-input !text-black',isDisabled? 'disabled:opacity-50 cursor-not-allowed':'']"
           :disabled="isDisabled"
           :name="name"
-          :placeholder="placeholder">
+          :placeholder="placeholder"
+          rows="5">
 
           </textarea>
-      <input v-model="fieldValue" v-else
+      <input v-else v-model="fieldValue"
              :class="['custom-input !text-black',isDisabled? 'disabled:opacity-50 cursor-not-allowed':'']"
-             :type="type"
-             :name="name"
              :disabled="isDisabled"
+             :name="name"
              :placeholder="placeholder"
+             :type="type"
       />
 
     </div>

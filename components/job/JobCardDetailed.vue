@@ -32,7 +32,7 @@ const company = computed(() => ({
   >
     <div class="group">
       <div
-          class="h-full rounded-xl border bg-white bg-opacity-80 p-8 transition-all duration-200 ease-in group-hover:border-gray-300 group-hover:shadow-xl"
+          class="h-full rounded-xl border bg-white bg-opacity-80 p-6 transition-all duration-200 ease-in group-hover:border-gray-300 group-hover:shadow-xl"
       >
         <div class="flex h-full flex-col justify-between">
           <div class="mb-16 flex flex-col gap-3">

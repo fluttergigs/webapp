@@ -218,7 +218,7 @@ onBeforeMount(() => {
           <div class="flex w-full flex-col space-y-10 md:w-4/6">
             <div class="space-y-10 font-medium text-gray-900">
               <p class="leading-10">{{ company?.description }}</p>
-              <p class="leading-10"
+              <p class="leading-[48px]"
                  v-html="jobOffer?.description?.isMarkdown()? marked(jobOffer.description): jobOffer?.description"></p>
             </div>
             <!--          apply section-->

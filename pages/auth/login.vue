@@ -11,9 +11,16 @@
           <CustomInput v-model="formInput.email" name="email" placeholder="Email address" type="email"/>
         </div>
         <div class="block mb-5">
-          <CustomInput v-model="formInput.password" inside-text="Forgot Password?" name="password"
-                       placeholder="Password"
-                       type="password"/>
+          <CustomInput v-model="formInput.password" :type="passwordFieldType"
+                       inside-text="Forgot Password?" name="password"
+                       placeholder="Password">
+            <template #insideText>
+              <div class="absolute right-4 bottom-4 transform" @click="togglePasswordVisibility">
+                <EyeSlashIcon v-if="isPasswordVisible" class="w-4"/>
+                <EyeIcon v-else class="w-4"/>
+              </div>
+            </template>
+          </CustomInput>
         </div>
         <button
             :disabled="!canSubmit ||user.isLoading"
@@ -34,6 +41,8 @@
   </BasicFormContent>
 </template>
 <script lang="ts" setup>
+
+import {EyeIcon, EyeSlashIcon} from "@heroicons/vue/16/solid";
 import CustomInput from "~/components/forms/CustomInput.vue";
 import {AppRoutes} from "~/core/routes";
 import LoadingSpinnerIcon from "~/components/icons/LoadingSpinnerIcon.vue";
@@ -41,6 +50,7 @@ import BasicFormContent from "~/components/ui/BasicFormContent.vue";
 //@ts-ignore
 import type {Notification} from "#ui/types";
 import {useLogin} from "~/composables/useLogin";
+import {useFields} from "~/composables/useFields";
 
 definePageMeta({
   middleware: ['logged-in'],
@@ -61,5 +71,6 @@ useSeoMeta({
   twitterDescription: 'Login and get access to thousands of opportunities',
 })
 
-const {formInput, canSubmit, user, submit, onSuccessfulLogin} = useLogin()
+const {formInput, canSubmit, user, submit, onSuccessfulLogin,} = useLogin()
+const {isPasswordVisible, togglePasswordVisibility, passwordFieldType} = useFields()
 </script>
