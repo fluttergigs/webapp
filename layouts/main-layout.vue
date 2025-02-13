@@ -4,7 +4,10 @@
     <div class="flex h-full flex-col">
       <LayoutNavBar/>
       <div class="flex-grow overflow-hidden">
-        <NuxtPage/>
+
+        <div class="relative">
+          <NuxtPage/>
+        </div>
       </div>
       <LayoutFooter/>
 

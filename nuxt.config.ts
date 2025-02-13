@@ -17,10 +17,11 @@ export default defineNuxtConfig({
 
     app: {
         keepalive: true,
+        pageTransition: {name: 'page', mode: 'out-in', appear: true,},
+        // layoutTransition: {name: 'layout', mode: 'out-in', appear: true,}
     },
 
     // spaLoadingTemplate: false,
-
     colorMode: {
         preference: "light",
     },
@@ -114,6 +115,14 @@ export default defineNuxtConfig({
         version: "v4",
         cookie: {},
         cookieName: "strapi_jwt",
+    },
+    ogImage: {
+        fonts: [
+            // will load the Noto Sans font from Google fonts
+            'Outfit:700',
+            'Noto+Sans:700',
+            'Work+Sans:ital:400'
+        ]
     },
 
     /*appwrite: {

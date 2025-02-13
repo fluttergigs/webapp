@@ -39,11 +39,11 @@ const {jobWorkingPermits} = useJobActions();
     <ItemData :value="userFacingWorkType(props.job?.workType)" label="Job type"/>
     <ItemData :value="userFacingSeniorityLevel(props.job?.seniorityLevel)" label="Experience Level"/>
     <ItemData :value="userFacingRemoteOptions(props.job?.remoteOptions)" label="Remote options"/>
-    <ItemData label="Salary range">
+    <ItemData label="Salary range (Monthly)">
       <template #content>
         <div class="inline-flex items-center space-x-2 font-medium text-md">
           <UIcon name="i-heroicons-currency-dollar"/>
-          <span>{{ props.job?.salaryFrom }} - {{ props.job?.salaryTo }}/month</span>
+          <span>{{ props.job?.salaryFrom }} to {{ props.job?.salaryTo }}</span>
         </div>
       </template>
     </ItemData>

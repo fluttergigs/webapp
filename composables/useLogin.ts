@@ -12,7 +12,6 @@ import {useUser} from "~/composables/useUser";
 
 export const useLogin = () => {
     const {$toast, $analytics, $errorTracker} = useNuxtApp();
-
     const authStore = useAuthStore();
 
     const {

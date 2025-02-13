@@ -8,10 +8,10 @@
 <script lang="ts" setup>
 
 useHead({
-  title: `Flutter Gigs, The #1 Flutter job platform - ${useRoute().meta.title ?? "Flutter Gigs"}`,
   htmlAttrs: {
     lang: 'en'
   },
+
   meta: [
     {
       name: 'description',
@@ -47,7 +47,12 @@ useHead({
     {
       rel: "stylesheet",
       prefetch: true,
-      href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap",
+      href: "https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap",
+    },
+    {
+      rel: "stylesheet",
+      prefetch: true,
+      href: "https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap",
     },
   ],
 })
@@ -77,7 +82,21 @@ defineOgImage({
 
 <style>
 
-.slide-left-enter-active,
+.page-enter-active, .page-leave-active {
+  transition: all 0.35s;
+}
+
+.page-enter-active, .page-leave-active {
+  opacity: 1;
+  transform: translate(0px, 0px);
+}
+
+.page-enter-from, .page-leave-to {
+  opacity: 0;
+  transform: translate(0px, 20px);
+}
+
+/*.slide-left-enter-active,
 .slide-left-leave-active,
 .slide-right-enter-active,
 .slide-right-leave-active {
@@ -102,6 +121,6 @@ defineOgImage({
 .slide-right-leave-to {
   opacity: 0;
   transform: translate(50px, 0);
-}
+}*/
 
 </style>

@@ -1,74 +1,76 @@
 <template>
-  <div class="flex flex-col w-full">
-    <section class="py-8 px-2 md:py-12 xl:pb-56 bg-white overflow-hidden">
+  <main>
+    <div class="flex flex-col w-full">
+      <section class="py-8 px-2 md:py-12 xl:pb-56 bg-white overflow-hidden">
 
-      <div class="flex justify-between items-center">
-        <h3
-            class="mb-4 text-xl md:text-3xl font-semibold tracking-px-n leading-tight">
-          Your job postings
-        </h3>
+        <div class="flex justify-between items-center">
+          <h3
+              class="mb-4 text-xl md:text-3xl font-semibold tracking-px-n leading-tight">
+            Your job postings
+          </h3>
 
-        <UButton color="indigo" :padded=false @click="postJob"
-                 icon="i-heroicons-megaphone"
-                 :class="['bg-indigo-700 px-2 py-1 sm:px-4 md:py-3']"
-                 square label="Post a job"
-                 variant="solid"/>
-      </div>
+          <UButton :class="['bg-indigo-700 px-2 py-1 sm:px-4 md:py-3']" :padded=false color="indigo"
+                   icon="i-heroicons-megaphone"
+                   label="Post a job"
+                   square variant="solid"
+                   @click="postJob"/>
+        </div>
 
 
-      <keep-alive>
-        <UTabs :items="tabs" class="w-full my-12">
-          <template #item="{ item }">
+        <keep-alive>
+          <UTabs :items="tabs" class="w-full my-12">
+            <template #item="{ item }">
 
-            <div v-if="item.key === 'all'" class="space-y-3">
-              <JobOffersList v-if="!!companyJobsResponse" :jobs="myJobPostings"
-                             :jobs-response="companyJobsResponse"
-                             class="my-10">
-                <template #default="{job}">
+              <div v-if="item.key === 'all'" class="space-y-3">
+                <JobOffersList v-if="!!companyJobsResponse" :jobs="myJobPostings"
+                               :jobs-response="companyJobsResponse"
+                               class="my-10">
+                  <template #default="{job}">
 
-                  <JobCard :job="job" v-if="isMediumScreen"/>
+                    <JobCard v-if="isMediumScreen" :job="job"/>
 
-                  <JobCardDetailed :job="job" v-else/>
+                    <JobCardDetailed v-else :job="job"/>
 
-                </template>
-              </JobOffersList>
-            </div>
-            <div v-else-if="item.key === 'active'" class="space-y-3">
-              <JobOffersList v-if="!!companyJobsResponse" :jobs="activeJobPostings"
-                             :jobs-response="companyJobsResponse"
-                             class="my-10">
-                <template #default="{job}">
+                  </template>
+                </JobOffersList>
+              </div>
+              <div v-else-if="item.key === 'active'" class="space-y-3">
+                <JobOffersList v-if="!!companyJobsResponse" :jobs="activeJobPostings"
+                               :jobs-response="companyJobsResponse"
+                               class="my-10">
+                  <template #default="{job}">
 
-                  <JobCard :job="job" v-if="isMediumScreen"/>
+                    <JobCard v-if="isMediumScreen" :job="job"/>
 
-                  <JobCardDetailed :job="job" v-else/>
+                    <JobCardDetailed v-else :job="job"/>
 
-                </template>
-              </JobOffersList>
-            </div>
-            <div v-else-if="item.key === 'expired'" class="space-y-3">
-              <JobOffersList v-if="!!companyJobsResponse" :jobs="expiredJobPostings"
-                             :jobs-response="companyJobsResponse"
-                             class="my-10">
-                <template #default="{job}">
+                  </template>
+                </JobOffersList>
+              </div>
+              <div v-else-if="item.key === 'expired'" class="space-y-3">
+                <JobOffersList v-if="!!companyJobsResponse" :jobs="expiredJobPostings"
+                               :jobs-response="companyJobsResponse"
+                               class="my-10">
+                  <template #default="{job}">
 
-                  <JobCard :job="job" v-if="isMediumScreen"/>
+                    <JobCard v-if="isMediumScreen" :job="job"/>
 
-                  <JobCardDetailed :job="job" v-else/>
+                    <JobCardDetailed v-else :job="job"/>
 
-                </template>
-              </JobOffersList>
-            </div>
+                  </template>
+                </JobOffersList>
+              </div>
 
-          </template>
-        </UTabs>
-      </keep-alive>
-    </section>
-  </div>
+            </template>
+          </UTabs>
+        </keep-alive>
+      </section>
+    </div>
 
+  </main>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 //@ts-ignore
 import {useAuthStore} from "~/stores/auth";
 import {useCompanyStore} from "~/stores/company";

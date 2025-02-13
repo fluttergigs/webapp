@@ -1,28 +1,30 @@
 <template>
 
-  <section class="py-20 bg-blueGray-50">
-    <div class="flex flex-col gap-4 overflow-hidden">
-      <div class="container px-4 mx-auto flex justify-center items-center">
-        <div class="flex flex-col justify-center max-w-2xl">
-          <h3 class="text-2xl md:text-7xl font-semibold primary-gradient">
-            Best resources for your skills
-          </h3>
+  <main>
+    <section class="py-20 bg-blueGray-50">
+      <div class="flex flex-col gap-4 overflow-hidden">
+        <div class="container px-4 mx-auto flex justify-center items-center">
+          <div class="flex flex-col justify-center max-w-2xl">
+            <h3 class="text-2xl md:text-7xl font-semibold primary-gradient">
+              Best resources for your skills
+            </h3>
 
-          <p class="text-sm md:text-md">Discover the best resources to hone your skills</p>
+            <p class="text-sm md:text-md">Discover the best resources to hone your skills</p>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="py-20 px-10 bg-white">
-    <div class="flex flex-col gap-4 overflow-hidden">
-      <client-only>
-        <LearnCategories/>
-        <LearnResources/>
-      </client-only>
-    </div>
-  </section>
+    <section class="py-20 px-10 bg-white">
+      <div class="flex flex-col gap-4 overflow-hidden">
+        <client-only>
+          <LearnCategories/>
+          <LearnResources/>
+        </client-only>
+      </div>
+    </section>
 
+  </main>
 </template>
 
 <script lang="ts" setup>
@@ -42,7 +44,7 @@ useSeoMeta({
   description: 'Discover the best resources to hone your skills',
   ogTitle: 'Find the best resources to advance your Flutter skills',
   ogDescription: 'Discover the best resources to hone your skills',
-  ogImage: 'https://fluttergigs.com/fluttergigs-og.png',
+  ogImageUrl: 'https://fluttergigs.com/fluttergigs-og.png',
   twitterImage: 'https://fluttergigs.com/fluttergigs-og.png',
   twitterCard: 'summary_large_image',
   ogSiteName: 'Flutter Gigs - The #1 Flutter job platform',

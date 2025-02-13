@@ -20,7 +20,7 @@ export const useRegister = () => {
         firstName: "",
         lastName: "",
     } as RegistrationData);
-
+    
     const canSubmit = ref(false);
 
     const {$toast, $analytics} = useNuxtApp();
