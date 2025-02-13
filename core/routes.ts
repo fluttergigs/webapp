@@ -17,6 +17,8 @@ export class AppRoutes {
     static alerts = '/alerts'
     static dashboard = '/dashboard'
     static createCompany = '/companies/create'
+    static privacy = '/privacy';
+    static terms = '/terms';
 
     static jobDetail = (slug: string): string => `/jobs/${slug}`;
 

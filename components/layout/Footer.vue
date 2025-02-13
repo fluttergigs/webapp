@@ -6,7 +6,7 @@
         src="@/assets/images/gradient4.svg"
     />
     <div class="relative z-10 container mx-auto">
-      <div class="pb-24 border-b border-gray-900">
+      <div class="pb-24 border-b border-gray-900 text-white">
         <div class="flex flex-wrap">
           <div class="w-full sm:w-1/2 lg:w-6/12 p-8">
             <div class="lg:max-w-sm">
@@ -104,6 +104,15 @@
               </li>
             </ul>
           </div>
+        </div>
+
+        <div class="flex gap-5 p-2 justify-center font-medium">
+          <NuxtLink :to="AppRoutes.privacy">
+            <span>Privacy</span>
+          </NuxtLink>
+          <NuxtLink :to="AppRoutes.terms">
+            <span>Terms</span>
+          </NuxtLink>
         </div>
       </div>
       <p class="py-5 text-sm text-gray-300 font-medium text-center leading-normal">
