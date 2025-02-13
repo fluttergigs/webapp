@@ -19,16 +19,7 @@
               </p>
               <div class="flex flex-wrap -m-1.5">
                 <div class="w-auto p-1.5">
-                  <a href="#">
-                    <div
-                        class="flex items-center justify-center w-9 h-9 border border-gray-800 hover:border-gray-900 rounded-full"
-                    >
-                      <FacebookIcon/>
-                    </div>
-                  </a>
-                </div>
-                <div class="w-auto p-1.5">
-                  <a href="#">
+                  <a href="x.com/fluttergigs" target="_blank">
                     <div
                         class="flex items-center justify-center w-9 h-9 border border-gray-800 hover:border-gray-900 rounded-full"
                     >
@@ -36,15 +27,28 @@
                     </div>
                   </a>
                 </div>
-                <div class="w-auto p-1.5">
-                  <a href="#">
-                    <div
-                        class="flex items-center justify-center w-9 h-9 border border-gray-800 hover:border-gray-900 rounded-full"
-                    >
-                      <InstagramIcon/>
-                    </div>
-                  </a>
-                </div>
+                <!--
+                                <div class="w-auto p-1.5">
+                                  <a href="#">
+                                    <div
+                                        class="flex items-center justify-center w-9 h-9 border border-gray-800 hover:border-gray-900 rounded-full"
+                                    >
+                                      <FacebookIcon/>
+                                    </div>
+                                  </a>
+                                </div>
+                -->
+                <!--
+                                <div class="w-auto p-1.5">
+                                  <a href="#">
+                                    <div
+                                        class="flex items-center justify-center w-9 h-9 border border-gray-800 hover:border-gray-900 rounded-full"
+                                    >
+                                      <InstagramIcon/>
+                                    </div>
+                                  </a>
+                                </div>
+                -->
               </div>
             </div>
           </div>
@@ -113,7 +117,5 @@
 import useCompanyActions from "~/composables/useCompanyActions";
 import {AppRoutes} from "~/core/routes";
 import {AvailableFlags} from "~/services/feature-flag/available_flags";
-import FacebookIcon from "~/components/icons/FacebookIcon.vue";
 import AltTwitterIcon from "~/components/icons/AltTwitterIcon.vue";
-import InstagramIcon from "~/components/icons/InstagramIcon.vue";
 </script>
