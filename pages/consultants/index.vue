@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 
 import {AvailableFlags} from "~/services/feature-flag/available_flags";
 import type {BaseToast} from "~/core/ui/base_toast";
@@ -22,6 +22,9 @@ definePageMeta({
 </script>
 
 <template>
+  <main>
+
+  </main>
 
 </template>
 

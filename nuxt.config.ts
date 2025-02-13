@@ -17,10 +17,11 @@ export default defineNuxtConfig({
 
     app: {
         keepalive: true,
+        pageTransition: {name: 'page', mode: 'out-in', appear: true,},
+        // layoutTransition: {name: 'layout', mode: 'out-in', appear: true,}
     },
 
     // spaLoadingTemplate: false,
-
     colorMode: {
         preference: "light",
     },

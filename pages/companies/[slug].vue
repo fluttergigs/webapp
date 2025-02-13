@@ -117,55 +117,56 @@ useSeoMeta({
 </script>
 
 <template>
-  <!--  <client-only>-->
-  <template v-if="pending">
-    <div class="flex items-center justify-center p-52">
-      <UButton
-          class="border-none bg-transparent text-indigo-700"
-          label=""
-          loading
-          size="xl"
-          variant="ghost"
-      />
-    </div>
-  </template>
-
-  <template v-else>
-    <section class="relative w-full bg-blueGray-50">
-      <div class="container px-10 py-6 md:px-20 md:py-14">
-        <div
-            class="flex flex-col items-start gap-x-6 md:flex-row md:items-center"
-        >
-          <CompanyLogo :company="company as Company" size="3xl"/>
-
-          <div class="flex flex-1 flex-col justify-center space-y-2">
-            <h3 class="text-6xl font-bold md:text-7xl">
-              company </h3>
-            <p
-                class="line-clamp-1 overflow-ellipsis font-medium leading-relaxed text-gray-500"
-                v-html="company?.description?.isMarkdown()? marked(company.description): company?.description"
-            >
-            </p>
-          </div>
-
-          <UButton
-              class="invisible md:visible"
-              color="white"
-              icon="i-heroicons-share"
-              label="Share company"
-              size="lg"
-              square
-              style="height: fit-content"
-              variant="solid"
-              @click.prevent="useCompanyActions().shareCompany(<Company>company)"
-          />
-        </div>
+  <main>
+    <!--  <client-only>-->
+    <template v-if="pending">
+      <div class="flex items-center justify-center p-52">
+        <UButton
+            class="border-none bg-transparent text-indigo-700"
+            label=""
+            loading
+            size="xl"
+            variant="ghost"
+        />
       </div>
-      <div class="w-full">
-        <div>
-          <UTabs
-              :items="tabs"
-              :ui="{
+    </template>
+
+    <template v-else>
+      <section class="relative w-full bg-blueGray-50">
+        <div class="container px-10 py-6 md:px-20 md:py-14">
+          <div
+              class="flex flex-col items-start gap-x-6 md:flex-row md:items-center"
+          >
+            <CompanyLogo :company="company as Company" size="3xl"/>
+
+            <div class="flex flex-1 flex-col justify-center space-y-2">
+              <h3 class="text-6xl font-bold md:text-7xl">
+                company </h3>
+              <p
+                  class="line-clamp-1 overflow-ellipsis font-medium leading-relaxed text-gray-500"
+                  v-html="company?.description?.isMarkdown()? marked(company.description): company?.description"
+              >
+              </p>
+            </div>
+
+            <UButton
+                class="invisible md:visible"
+                color="white"
+                icon="i-heroicons-share"
+                label="Share company"
+                size="lg"
+                square
+                style="height: fit-content"
+                variant="solid"
+                @click.prevent="useCompanyActions().shareCompany(<Company>company)"
+            />
+          </div>
+        </div>
+        <div class="w-full">
+          <div>
+            <UTabs
+                :items="tabs"
+                :ui="{
               list: {
                 width: 'w-fit',
                 background: 'bg-transparent',
@@ -180,24 +181,25 @@ useSeoMeta({
                 marker: { background: 'bg-transparent', shadow: 'shadow-none' },
               },
             }"
-              class="mt-10 w-full"
-          >
-            <template v-if="!!company" #item="{ item }">
-              <div class="w-full bg-white px-10 py-8 md:px-20">
-                <div v-if="item.key === 'overview'" class="space-y-3">
-                  <CompanyOverview :company="company as Company"/>
+                class="mt-10 w-full"
+            >
+              <template v-if="!!company" #item="{ item }">
+                <div class="w-full bg-white px-10 py-8 md:px-20">
+                  <div v-if="item.key === 'overview'" class="space-y-3">
+                    <CompanyOverview :company="company as Company"/>
+                  </div>
+                  <div v-else-if="item.key === 'jobs'" class="space-y-3">
+                    <CompanyJobs :company="company as Company"/>
+                  </div>
                 </div>
-                <div v-else-if="item.key === 'jobs'" class="space-y-3">
-                  <CompanyJobs :company="company as Company"/>
-                </div>
-              </div>
-            </template>
-          </UTabs>
+              </template>
+            </UTabs>
+          </div>
         </div>
-      </div>
-    </section>
-  </template>
-  <!--  </client-only>-->
+      </section>
+    </template>
+    <!--  </client-only>-->
+  </main>
 </template>
 
 <style>

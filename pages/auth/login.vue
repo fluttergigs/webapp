@@ -1,44 +1,46 @@
 <template>
 
-  <BasicFormContent
-      description="Login and get access to thousands of opportunities"
-      show-close-button
-      title="Welcome Back">
+  <main>
+    <BasicFormContent
+        description="Login and get access to thousands of opportunities"
+        show-close-button
+        title="Welcome Back">
 
-    <template #form>
-      <form class="space-y-4">
-        <div class="block mb-5">
-          <CustomInput v-model="formInput.email" name="email" placeholder="Email address" type="email"/>
-        </div>
-        <div class="block mb-5">
-          <CustomInput v-model="formInput.password" :type="passwordFieldType"
-                       inside-text="Forgot Password?" name="password"
-                       placeholder="Password">
-            <template #insideText>
-              <div class="absolute right-4 bottom-4 transform" @click="togglePasswordVisibility">
-                <EyeSlashIcon v-if="isPasswordVisible" class="w-4"/>
-                <EyeIcon v-else class="w-4"/>
-              </div>
-            </template>
-          </CustomInput>
-        </div>
-        <button
-            :disabled="!canSubmit ||user.isLoading"
-            class="primary-button flex items-center justify-center space-x-2"
-            type="button"
-            @click.prevent="()=> submit(onSuccessfulLogin)">
-          <LoadingSpinnerIcon v-if="user.isLoading" class="text-primary animate-spin"/>
-          <span v-else> Sign In</span>
+      <template #form>
+        <form class="space-y-4">
+          <div class="block mb-5">
+            <CustomInput v-model="formInput.email" name="email" placeholder="Email address" type="email"/>
+          </div>
+          <div class="block mb-5">
+            <CustomInput v-model="formInput.password" :type="passwordFieldType"
+                         inside-text="Forgot Password?" name="password"
+                         placeholder="Password">
+              <template #insideText>
+                <div class="absolute right-4 bottom-4 transform" @click="togglePasswordVisibility">
+                  <EyeSlashIcon v-if="isPasswordVisible" class="w-4"/>
+                  <EyeIcon v-else class="w-4"/>
+                </div>
+              </template>
+            </CustomInput>
+          </div>
+          <button
+              :disabled="!canSubmit ||user.isLoading"
+              class="primary-button flex items-center justify-center space-x-2"
+              type="button"
+              @click.prevent="()=> submit(onSuccessfulLogin)">
+            <LoadingSpinnerIcon v-if="user.isLoading" class="text-primary animate-spin"/>
+            <span v-else> Sign In</span>
 
-        </button>
-        <p class="font-medium">
-          <span>Don’t have an account?</span>
-          <NuxtLink :to="AppRoutes.register" class="ml-2 text-indigo-600 hover:text-indigo-700">Create free account
-          </NuxtLink>
-        </p>
-      </Form>
-    </template>
-  </BasicFormContent>
+          </button>
+          <p class="font-medium">
+            <span>Don’t have an account?</span>
+            <NuxtLink :to="AppRoutes.register" class="ml-2 text-indigo-600 hover:text-indigo-700">Create free account
+            </NuxtLink>
+          </p>
+        </Form>
+      </template>
+    </BasicFormContent>
+  </main>
 </template>
 <script lang="ts" setup>
 

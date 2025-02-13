@@ -70,48 +70,53 @@ const submit = async () => {
 </script>
 
 <template>
-  <BasicFormContent :show-close-button="true" description="Create your company to start posting job offers to attract talented Flutter engineers"
-                    title="Create your company">
 
-    <template #form>
-      <form class="space-y-4">
-        <div class="flex space-x-4 mb-5 w-full">
-          <CustomInput v-model="formInput.name" class="w-1/2" name="name" placeholder="Company name"/>
-          <CustomInput v-model="formInput.website" :show-label="false"
-                       class="w-1/2" label="Website" name="url"
-                       placeholder="Your website"/>
-        </div>
-        <div class="block mb-5">
-          <CustomInput v-model="formInput.email" name="email" placeholder="Company email" type="email"
-          />
-        </div>
+  <main>
+    <BasicFormContent :show-close-button="true"
+                      description="Create your company to start posting job offers to attract talented Flutter engineers"
+                      title="Create your company">
 
-        <div class="block mb-5">
-          <CustomInput v-model="formInput.logo"
-                       :show-label="false"
-                       inside-text="Paste your company logo's link" label="Logo"
-                       name="url" placeholder="Company's logo"
-                       type="text"/>
-        </div>
-        <div class="block mb-5">
-          <CustomInput v-model="formInput.description" :is-text-area="true" inside-text="Describe your company"
-                       name="description"
-                       placeholder="Company's description"
-                       type="text"/>
-        </div>
-        <button
-            :disabled="!canSubmit ||companyStore.companyCreation.isLoading"
-            class="primary-button flex items-center justify-center space-x-2"
-            type="button"
-            @click.prevent="submit">
-          <LoadingSpinnerIcon v-if="companyStore.companyCreation.isLoading" class="text-primary animate-spin"/>
-          <span v-else> Create my company</span>
+      <template #form>
+        <form class="space-y-4">
+          <div class="flex space-x-4 mb-5 w-full">
+            <CustomInput v-model="formInput.name" class="w-1/2" name="name" placeholder="Company name"/>
+            <CustomInput v-model="formInput.website" :show-label="false"
+                         class="w-1/2" label="Website" name="url"
+                         placeholder="Your website"/>
+          </div>
+          <div class="block mb-5">
+            <CustomInput v-model="formInput.email" name="email" placeholder="Company email" type="email"
+            />
+          </div>
 
-        </button>
-      </Form>
+          <div class="block mb-5">
+            <CustomInput v-model="formInput.logo"
+                         :show-label="false"
+                         inside-text="Paste your company logo's link" label="Logo"
+                         name="url" placeholder="Company's logo"
+                         type="text"/>
+          </div>
+          <div class="block mb-5">
+            <CustomInput v-model="formInput.description" :is-text-area="true" inside-text="Describe your company"
+                         name="description"
+                         placeholder="Company's description"
+                         type="text"/>
+          </div>
+          <button
+              :disabled="!canSubmit ||companyStore.companyCreation.isLoading"
+              class="primary-button flex items-center justify-center space-x-2"
+              type="button"
+              @click.prevent="submit">
+            <LoadingSpinnerIcon v-if="companyStore.companyCreation.isLoading" class="text-primary animate-spin"/>
+            <span v-else> Create my company</span>
 
-    </template>
-  </BasicFormContent>
+          </button>
+        </Form>
+
+      </template>
+    </BasicFormContent>
+
+  </main>
 
 </template>
 

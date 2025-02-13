@@ -2,158 +2,162 @@
 <!--TODO check whether user has selected at least a work permit-->
 
 <template>
-  <JobDescriptionGenerationModal @successful-generation="successfulGeneration"/>
-  <section class="py-8 px-2 md:py-12 xl:pb-56 bg-white overflow-hidden w-full">
-    <div class="font-normal flex flex-col my-4 gap-x-16 md:flex-row">
-      <div class="flex flex-col gap-y-8 xl:mx-auto w-full">
-        <h3
-            class="mb-4 text-2xl md:text-4xl font-semibold tracking-px-n leading-tight">
-          Edit your job
-        </h3>
 
-        <form class="flex flex-col space-y-8 my-12 w-full">
-          <CustomInput is-disabled placeholder="eg. Senior Flutter Engineer"
-                       name="jobTitle"
-                       label="Job title *"
-                       v-model="jobEditData.title" type="text"/>
+  <main>
+
+    <JobDescriptionGenerationModal @successful-generation="successfulGeneration"/>
+    <section class="py-8 px-2 md:py-12 xl:pb-56 bg-white overflow-hidden w-full">
+      <div class="font-normal flex flex-col my-4 gap-x-16 md:flex-row">
+        <div class="flex flex-col gap-y-8 xl:mx-auto w-full">
+          <h3
+              class="mb-4 text-2xl md:text-4xl font-semibold tracking-px-n leading-tight">
+            Edit your job
+          </h3>
+
+          <form class="flex flex-col space-y-8 my-12 w-full">
+            <CustomInput v-model="jobEditData.title" is-disabled
+                         label="Job title *"
+                         name="jobTitle"
+                         placeholder="eg. Senior Flutter Engineer" type="text"/>
 
 
-          <!--          <LabelledInput label="Job Description *">
-                      <UiTipTap @inside-text-clicked="jobStore.showJobDescriptionGenerationModal()"
-                                v-model="jobEditData.description"
-                                inside-text="Generate description using AI 🚀"/>
-                    </LabelledInput>-->
+            <!--          <LabelledInput label="Job Description *">
+                        <UiTipTap @inside-text-clicked="jobStore.showJobDescriptionGenerationModal()"
+                                  v-model="jobEditData.description"
+                                  inside-text="Generate description using AI 🚀"/>
+                      </LabelledInput>-->
 
-          <CustomInput @inside-text-clicked="jobStore.showJobDescriptionGenerationModal()"
-                       inside-text="Generate description using AI 🚀"
-                       name="description"
-                       label="Job description *"
-                       v-model="jobEditData.description" :is-text-area="true"/>
+            <CustomInput v-model="jobEditData.description"
+                         :is-text-area="true"
+                         inside-text="Generate description using AI 🚀"
+                         label="Job description *"
+                         name="description" @inside-text-clicked="jobStore.showJobDescriptionGenerationModal()"/>
 
-          <div class="flex space-x-3">
-            <!--          job type-->
-            <div class="flex flex-col space-y-2 w-full">
-              <LabelledInput label="Job type *">
+            <div class="flex space-x-3">
+              <!--          job type-->
+              <div class="flex flex-col space-y-2 w-full">
+                <LabelledInput label="Job type *">
+                  <USelectMenu
+                      v-model="jobEditData.workType"
+                      :options="workTypeOptions"
+                      clear-search-on-close
+                      option-attribute="label"
+                      placeholder="Select a work type option"
+                      searchable
+                      size="lg"
+                      value-attribute="id"
+                  />
+                </LabelledInput>
+              </div>
+
+              <!--          seniority level-->
+              <div class="flex flex-col space-y-2 w-full">
+                <LabelledInput label="Seniority level *">
+                  <USelectMenu
+                      v-model="jobEditData.seniorityLevel"
+                      :options="seniorityLevelOptions"
+                      clear-search-on-close
+                      option-attribute="label"
+                      placeholder="Select a seniority level"
+                      searchable
+                      size="lg"
+                      value-attribute="id"
+                  />
+                </LabelledInput>
+              </div>
+            </div>
+            <!--          remote options-->
+            <div class="flex flex-col space-y-2">
+              <LabelledInput label="Remote options *">
                 <USelectMenu
+                    v-model="jobEditData.remoteOptions"
+                    :options="remoteOptions"
                     clear-search-on-close
+                    option-attribute="label"
+                    placeholder="Select your remote options"
                     searchable
                     size="lg"
-                    v-model="jobEditData.workType"
-                    :options="workTypeOptions"
-                    placeholder="Select a work type option"
                     value-attribute="id"
-                    option-attribute="label"
                 />
               </LabelledInput>
             </div>
+            <!--          base salary-->
+            <div class="flex flex-col space-y-2">
+              <LabelledInput label="Monthly Salary range (USD) *">
+                <div class="flex space-x-3">
+                  <CustomInput v-model="jobEditData.salaryFrom"
+                               :show-label="false" class="w-full"
+                               label="From" name="amount"
+                               placeholder="2000"
+                               @keydown="checkDigit"/>
 
-            <!--          seniority level-->
-            <div class="flex flex-col space-y-2 w-full">
-              <LabelledInput label="Seniority level *">
-                <USelectMenu
-                    clear-search-on-close
-                    searchable
-                    size="lg"
-                    v-model="jobEditData.seniorityLevel"
-                    :options="seniorityLevelOptions"
-                    placeholder="Select a seniority level"
-                    value-attribute="id"
-                    option-attribute="label"
-                />
+                  <span class="self-baseline">-</span>
+
+                  <CustomInput v-model="jobEditData.salaryTo" :show-label="false"
+                               class="w-full"
+                               label="From" name="amount"
+                               placeholder="8000"
+                               @keydown="checkDigit"/>
+                </div>
               </LabelledInput>
             </div>
-          </div>
-          <!--          remote options-->
-          <div class="flex flex-col space-y-2">
-            <LabelledInput label="Remote options *">
-              <USelectMenu
-                  clear-search-on-close
-                  searchable
-                  size="lg"
-                  v-model="jobEditData.remoteOptions"
-                  :options="remoteOptions"
-                  placeholder="Select your remote options"
-                  value-attribute="id"
-                  option-attribute="label"
-              />
+
+            <!--          apply before-->
+            <LabelledInput label="Application closes on *">
+              <UPopover :popper="{ placement: 'bottom-start' }">
+                <UButton :label="format(new Date(jobEditData.applyBefore), 'd MMM, yyy')" class="w-full" color="white"
+                         icon="i-heroicons-calendar-days-20-solid"
+                         size="xl"/>
+
+                <template #panel="{ close }">
+                  <DatePicker v-model="jobEditData.applyBefore" :min-date="new Date()"
+                              color="indigo" @close="close"/>
+                </template>
+              </UPopover>
             </LabelledInput>
-          </div>
-          <!--          base salary-->
-          <div class="flex flex-col space-y-2">
-            <LabelledInput label="Monthly Salary range (USD) *">
-              <div class="flex space-x-3">
-                <CustomInput @keydown="checkDigit"
-                             placeholder="2000" name="amount"
-                             :show-label="false" label="From"
-                             class="w-full"
-                             v-model="jobEditData.salaryFrom"/>
 
-                <span class="self-baseline">-</span>
+            <LabelledInput label="Working permits *">
+              <div class="space-y-4">
+                <URadio v-model="hasWorkPermit"
+                        :ui="{label: 'text-sm font-medium text-black'}" :value="false"
+                        label="No working permits required"/>
 
-                <CustomInput @keydown="checkDigit" placeholder="8000"
-                             name="amount"
-                             :show-label="false" label="From"
-                             class="w-full"
-                             v-model="jobEditData.salaryTo"/>
+                <div class="space-y-3">
+                  <URadio v-model="hasWorkPermit"
+                          :ui="{label: 'text-sm font-medium text-black'}" :value="true"
+                          label="Must be eligible to work in"/>
+                  <WorkPermitSelector @selected-countries="getSelectedCountries"/>
+                </div>
               </div>
             </LabelledInput>
+
+            <CustomInput v-model="jobEditData.howToApply"
+                         class="w-full"
+                         inside-text="Enter an email or application link."
+                         label="Application method *"
+                         name="url"
+                         placeholder="eg. https://fluttergigs.com/apply"/>
+
+            <UButton :disabled="!isSubmitButtonEnabled"
+                     :loading="jobEdit.isLoading"
+                     class="bg-indigo-700 flex justify-center items-center"
+                     color="indigo"
+                     label="Save changes"
+                     size="xl"
+                     @click="()=>editJobOffer(jobEditData)"/>
+          </form>
+        </div>
+
+        <div class="hidden lg:flex lg:min-w-[280px] lg:w-[380px] h-full">
+          <div class="flex flex-col h-full w-full relative">
+            <JobCreationPreview :is-cta-visible="false"
+                                :job="jobEditData"
+                                :work-permit-countries="workPermits"/>
           </div>
-
-          <!--          apply before-->
-          <LabelledInput label="Application closes on *">
-            <UPopover :popper="{ placement: 'bottom-start' }">
-              <UButton class="w-full" size="xl" color="white"
-                       icon="i-heroicons-calendar-days-20-solid"
-                       :label="format(new Date(jobEditData.applyBefore), 'd MMM, yyy')"/>
-
-              <template #panel="{ close }">
-                <DatePicker :min-date="new Date()" color="indigo"
-                            v-model="jobEditData.applyBefore" @close="close"/>
-              </template>
-            </UPopover>
-          </LabelledInput>
-
-          <LabelledInput label="Working permits *">
-            <div class="space-y-4">
-              <URadio :ui="{label: 'text-sm font-medium text-black'}"
-                      :value="false" v-model="hasWorkPermit"
-                      label="No working permits required"/>
-
-              <div class="space-y-3">
-                <URadio :ui="{label: 'text-sm font-medium text-black'}"
-                        :value="true" v-model="hasWorkPermit"
-                        label="Must be eligible to work in"/>
-                <WorkPermitSelector @selected-countries="getSelectedCountries"/>
-              </div>
-            </div>
-          </LabelledInput>
-
-          <CustomInput placeholder="eg. https://fluttergigs.com/apply"
-                       name="url"
-                       label="Application method *"
-                       class="w-full"
-                       inside-text="Enter an email or application link."
-                       v-model="jobEditData.howToApply"/>
-
-          <UButton :loading="jobEdit.isLoading"
-                   :disabled="!isSubmitButtonEnabled"
-                   @click="()=>editJobOffer(jobEditData)"
-                   size="xl"
-                   color="indigo"
-                   class="bg-indigo-700 flex justify-center items-center"
-                   label="Save changes"/>
-        </form>
-      </div>
-
-      <div class="hidden lg:flex lg:min-w-[280px] lg:w-[380px] h-full">
-        <div class="flex flex-col h-full w-full relative">
-          <JobCreationPreview :is-cta-visible="false"
-                              :job="jobEditData"
-                              :work-permit-countries="workPermits"/>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </main>
 </template>
 
 <script setup>

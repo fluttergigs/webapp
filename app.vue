@@ -82,7 +82,21 @@ defineOgImage({
 
 <style>
 
-.slide-left-enter-active,
+.page-enter-active, .page-leave-active {
+  transition: all 0.35s;
+}
+
+.page-enter-active, .page-leave-active {
+  opacity: 1;
+  transform: translate(0px, 0px);
+}
+
+.page-enter-from, .page-leave-to {
+  opacity: 0;
+  transform: translate(0px, 20px);
+}
+
+/*.slide-left-enter-active,
 .slide-left-leave-active,
 .slide-right-enter-active,
 .slide-right-leave-active {
@@ -107,6 +121,6 @@ defineOgImage({
 .slide-right-leave-to {
   opacity: 0;
   transform: translate(50px, 0);
-}
+}*/
 
 </style>
