@@ -4,11 +4,26 @@ definePageMeta({
   layout: 'main-layout',
   title: "Privacy and policy",
 })
+
+useSeoMeta({
+  title: 'FlutterGigs - Privacy Policy',
+  ogTitle: 'FlutterGigs - Privacy Policy',
+  ogUrl: 'https://fluttergigs.com',
+  ogLogo: 'https://fluttergigs.com/ico.png',
+  description: 'FlutterGigs is a platform to find Flutter framework related job opportunities and more',
+  ogDescription: 'FlutterGigs is a platform to find Flutter framework related job opportunities and more',
+  ogSiteName: 'FlutterGigs - The #1 Flutter jobs platform',
+  twitterCard: 'summary_large_image',
+  twitterUrl: 'https://fluttergigs.com',
+  twitterDomain: 'https://fluttergigs.com',
+  twitterSite: '@fluttergigs',
+  twitterTitle: `FlutterGigs - Find the best Flutter opportunities at top remote companies around the world`,
+  twitterDescription: 'Privacy Policy',
+})
 </script>
 
 <template>
-
-  <main class="flex-1 relative"><!--[-->
+  <main class="flex-1">
     <div class="container mx-auto px-4 py-12 max-w-4xl"><h1 class="text-3xl font-heading font-bold mb-8">
       Privacy Policy</h1>
       <div class="space-y-8">
@@ -67,8 +82,7 @@ definePageMeta({
               class="text-primary hover:underline" href="mailto:privacy@fluttergigs.com">privacy@fluttergigs.com</a></p>
         </section>
       </div>
-    </div><!--]-->
-    <div class="fixed top-4 right-4 z-50 flex flex-col gap-2" data-v-a25db662=""><!--[--><!--]--></div>
+    </div>
   </main>
 </template>
 
