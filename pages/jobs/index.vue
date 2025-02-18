@@ -68,8 +68,8 @@ useSeoMeta({
   ogDescription: "FlutterGigs is the #1 job board in the Flutter community",
   twitterCard: "summary",
   twitterDescription: "FlutterGigs is the #1 job board in the Flutter community",
-  ogImageUrl: "https://fluttergigs.com/fluttergigs-og.png",
-  twitterImage: "https://fluttergigs.com/fluttergigs-og.png",
+  ogImageUrl: "https://fluttergigs.com/fluttergigs-og-1.png",
+  twitterImage: "https://fluttergigs.com/fluttergigs-og-1.png",
 });
 
 const {$analytics} = useNuxtApp();
