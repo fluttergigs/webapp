@@ -2,7 +2,7 @@
   <section class="z-[2500] overflow-hidden">
     <div
         :class="[isHomePage ? 'bg-white' : 'bg-blueGray-50']"
-        class="sticky flex items-center justify-between bg-blueGray-50 px-4 py-5 transition-all duration-200 ease-in md:px-18"
+        class="sticky flex items-center justify-between bg-blueGray-50 px-6 py-5 transition-all duration-200 ease-in md:px-18"
     >
       <div class="w-auto">
         <div class="flex flex-wrap items-center">
@@ -15,6 +15,7 @@
             <ul class="mr-16 flex items-center">
               <li
                   v-for="link in links"
+                  v-if="link?.isEnabled ?? true"
                   :key="link.name"
                   class="mr-9 font-medium hover:text-indigo-900"
               >
@@ -126,7 +127,9 @@
           </div>
           <div class="flex w-full flex-col justify-center py-16">
             <ul>
-              <li v-for="link in links" class="mb-12">
+              <li v-for="link in links" v-if="link?.isEnabled ?? true"
+                  class="mb-12"
+              >
                 <a
                     :href="link.path"
                     class="font-medium hover:text-indigo-900"
@@ -195,17 +198,15 @@ const links = shallowRef([
   {
     path: AppRoutes.welcome,
     name: "Home",
-    enabled: true,
   },
   {
     path: AppRoutes.companies,
     name: "Companies",
-    enabled: useFeatureFlags().isEnabled(AvailableFlags.companiesList),
+    isEnabled: useFeatureFlags().isEnabled(AvailableFlags.companiesList),
   },
   {
     path: AppRoutes.jobs,
     name: "Jobs",
-    isEnabled: true,
   },
   {
     path: AppRoutes.hireConsultants,
@@ -213,7 +214,6 @@ const links = shallowRef([
     tag: useFeatureFlags().isEnabled(AvailableFlags.hireConsultants)
         ? "New"
         : "Soon",
-    isEnabled: useFeatureFlags().isEnabled(AvailableFlags.hireConsultants),
   },
   {
     path: AppRoutes.fluppets,
@@ -221,12 +221,11 @@ const links = shallowRef([
     tag: useFeatureFlags().isEnabled(AvailableFlags.fluppets)
         ? "New"
         : "Soon",
-    isEnabled: useFeatureFlags().isEnabled(AvailableFlags.fluppets),
   },
   {
     path: AppRoutes.learn,
     name: "Learn",
-    enabled: true,
+    isEnabled: true,
   },
 ]);
 

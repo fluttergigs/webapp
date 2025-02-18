@@ -5,18 +5,20 @@ import {AnalyticsEvent} from "~/services/analytics/events";
 import type {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider";
 import CompanyFiltersWidget from "~/components/company/FiltersWidget.vue";
 import CompanyList from "~/components/company/CompanyList.vue";
+import type {BaseToast} from "~/core/ui/base_toast";
+import {AvailableFlags} from "~/services/feature-flag/available_flags";
 
 definePageMeta({
   layout: 'main-layout',
   keepalive: true,
   middleware: [
     function (to: any, from: any) {
-      /* if (!useFeatureFlags().isEnabled(AvailableFlags.companiesList)) {
+      if (!useFeatureFlags().isEnabled(AvailableFlags.companiesList)) {
 
-         const {$toast} = useNuxtApp();
-         ($toast as BaseToast<Notification>).info(AppStrings.featureAvailableSoon)
-         return navigateTo(from)
-       }*/
+        const {$toast} = useNuxtApp();
+        ($toast as BaseToast<Notification>).info(AppStrings.featureAvailableSoon)
+        return navigateTo(from)
+      }
     }
   ]
 })

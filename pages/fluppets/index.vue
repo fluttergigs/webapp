@@ -10,7 +10,7 @@ definePageMeta({
       if (!useFeatureFlags().isEnabled(AvailableFlags.fluppets)) {
 
         const {$toast} = useNuxtApp();
-        ($toast as BaseToast<Notification, number>).info(AppStrings.featureAvailableSoon)
+        ($toast as BaseToast<Notification>).info(AppStrings.featureAvailableSoon)
         return navigateTo(from)
       }
     }

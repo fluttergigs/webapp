@@ -3,5 +3,5 @@ export enum AvailableFlags {
     hireConsultants = "hire-consultants",
     learn = "learn",
     companiesList = "companies-list",
-    fluppets = "fluppets"
+    fluppets = "fluppets",
 }
