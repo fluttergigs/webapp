@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <main class="w-full">
     <div class="flex flex-col w-full">
       <client-only>
         <section class="py-8 px-10 md:py-12 xl:pb-56 bg-white overflow-hidden">

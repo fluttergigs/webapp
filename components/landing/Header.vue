@@ -64,7 +64,7 @@
                 alt=""
                 class="transform transition duration-1000 ease-in-out hover:-translate-y-16"
                 contenteditable="false"
-                src="/header-jobs.webp"
+                src="/landing-heaader.webp"
             />
           </div>
         </div>

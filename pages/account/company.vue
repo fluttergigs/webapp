@@ -2,7 +2,7 @@
 
 <template>
 
-  <main>
+  <main class="w-full">
     <CompanyDescriptionGenerationModal @on-generate="({result})=> formInput.description = result"/>
     <div class="flex flex-col w-full">
       <section class="py-8 px-2 md:py-12 xl:pb-56 bg-white overflow-hidden">
