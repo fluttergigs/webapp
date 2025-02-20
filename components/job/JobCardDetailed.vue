@@ -26,8 +26,8 @@ const company = computed(() => ({
 </script>
 
 <template>
+  <!--      class="cursor-pointer sm:w-1/2 xl:w-1/3 2xl:w-1/4"-->
   <div
-      class="w-full cursor-pointer sm:w-1/2 xl:w-1/3 2xl:w-1/4"
       @click="useJobActions().viewDetails(job!)"
   >
     <div class="group">
@@ -37,7 +37,7 @@ const company = computed(() => ({
         <div class="flex h-full flex-col justify-between">
           <div class="mb-16 flex flex-col gap-3">
             <h3
-                class="text-base mb-4 line-clamp-1 font-heading font-bold leading-snug sm:line-clamp-2 sm:text-xl"
+                class="text-base mb-4 line-clamp-1 font-heading font-bold leading-snug sm:line-clamp-2 md:text-xl"
             >
               {{ job.title }}
             </h3>
