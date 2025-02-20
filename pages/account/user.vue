@@ -2,7 +2,7 @@
   <main class="w-full">
     <div class="flex flex-col w-full">
       <client-only>
-        <section class="py-8 px-10 md:py-12 xl:pb-56 bg-white overflow-hidden">
+        <section class="py-8 px-3 sm:px-10 md:py-12 xl:pb-56 bg-white overflow-hidden">
           <h3
               class="mb-4 text-xl md:text-3xl font-semibold tracking-px-n leading-tight">
             Your Settings
