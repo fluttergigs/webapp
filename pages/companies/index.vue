@@ -16,8 +16,11 @@ definePageMeta({
       if (!useFeatureFlags().isEnabled(AvailableFlags.companiesList)) {
 
         const {$toast} = useNuxtApp();
-        ($toast as BaseToast<Notification>).info(AppStrings.featureAvailableSoon)
-        return navigateTo(from)
+
+        if ($toast) {
+          ($toast as BaseToast<Notification>).info(AppStrings.featureAvailableSoon)
+        }
+        return navigateTo(AppRoutes.welcome)
       }
     }
   ]

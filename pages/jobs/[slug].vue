@@ -139,7 +139,7 @@ onBeforeMount(() => {
             <CompanyLogo
                 :company="company"
                 class="absolute left-[10px] top-[6px] md:left-16 md:top-18"
-                size="3xl"
+                size="4xl"
             />
           </div>
         </section>
