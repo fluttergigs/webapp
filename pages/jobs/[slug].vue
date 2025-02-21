@@ -139,7 +139,7 @@ onBeforeMount(() => {
             <CompanyLogo
                 :company="company"
                 class="absolute left-[10px] top-[6px] md:left-16 md:top-18"
-                size="4xl"
+                size="3xl"
             />
           </div>
         </section>
@@ -148,18 +148,18 @@ onBeforeMount(() => {
             <div
                 class="flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:justify-between"
             >
-              <h2 class="text-xl font-bold md:text-5xl lg:text-7xl">
+              <h2 class="text-2xl font-bold md:text-5xl lg:text-7xl">
                 {{ jobOffer?.title }}
               </h2>
 
               <client-only>
-                <div class="my-2 flex flex-wrap items-center space-x-2">
+                <div class="my-2 md:my-0 flex flex-wrap justify-center items-center space-x-3 space-y-1 md:space-y-0">
                   <UButton
                       v-if="useJobActions().jobBelongsToCompany(company)"
                       color="white"
                       icon="i-heroicons-pencil"
                       label="Edit job offer"
-                      size="lg"
+                      size="xl"
                       square
                       variant="solid"
                       @click="useCompanyActions().handleJobEdit(jobOffer)"
@@ -169,7 +169,7 @@ onBeforeMount(() => {
                       color="white"
                       icon="i-heroicons-share"
                       label="Share job offer"
-                      size="lg"
+                      size="xl"
                       square
                       variant="solid"
                       @click="useJobActions().shareJobOffer(jobOffer)"
@@ -180,7 +180,7 @@ onBeforeMount(() => {
               </client-only>
             </div>
 
-            <div class="my-4 flex flex-wrap gap-4">
+            <div class="my-4 flex flex-wrap gap-4 items-center">
               <a
                   :href="AppRoutes.companyPage(company.slug)"
                   class="text-lg font-bold text-gray-900"
@@ -215,10 +215,13 @@ onBeforeMount(() => {
           </section>
 
           <!--      job details-->
-          <section class="my-4 flex flex-col gap-x-16 font-normal md:flex-row">
+          <section class="my-4 flex flex-col gap-2 gap-x-16 font-normal md:flex-row">
             <div class="flex w-full flex-col space-y-10 md:w-4/6">
-              <div class="space-y-10 font-medium text-gray-900">
+              <div class="space-y-6 md:space-y-10 font-medium text-gray-900">
                 <p class="leading-10">{{ company?.description }}</p>
+
+                <hr>
+
                 <p class="leading-[24px] md:leading-[40px]"
                    v-html="jobOffer?.description?.isMarkdown()? marked(jobOffer.description): jobOffer?.description"></p>
               </div>

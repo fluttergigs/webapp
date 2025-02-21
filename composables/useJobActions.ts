@@ -32,7 +32,7 @@ export default function useJobActions() {
                     ($toast as BaseToast<Notification>).info(<string>userStore.bookmarkedJobDelete.message)
                 } else {
                     ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.bookmarkJobOfferClicked, {job});
-                    await userStore.saveJob({jobOffer: job.id, user: authStore.authUser?.id!});
+                    await userStore.saveJob({jobOffer: job.id, user: authStore.authUser?.id});
                     ($toast as BaseToast<Notification>).info(<string>userStore.bookmarkedJobCreation.message)
                 }
 

@@ -3,8 +3,8 @@ import * as yup from "yup";
 
 export const registerFormSchema = yup.object({
     email: yup.string().required().email().label('email'),
-    firstName: yup.string().required().min(2),
-    lastName: yup.string().required().min(2),
+    firstName: yup.string().optional(),
+    lastName: yup.string().optional(),
     password: yup.string().required().min(5).label('password'),
 });
 

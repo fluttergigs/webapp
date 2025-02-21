@@ -9,11 +9,13 @@
       <template #form>
         <form class="space-y-4">
           <div class="block mb-5">
-            <CustomInput v-model="formInput.email" name="email" placeholder="Email address" type="email"/>
+            <CustomInput v-model="formInput.email" autocomplete="username" name="email" placeholder="Email address"
+                         type="email"/>
           </div>
           <div class="block mb-5">
             <CustomInput v-model="formInput.password" :type="passwordFieldType"
-                         inside-text="Forgot Password?" name="password"
+                         autocomplete="current-password" inside-text="Forgot Password?"
+                         name="password"
                          placeholder="Password">
               <template #insideText>
                 <div class="absolute right-4 bottom-4 transform" @click="togglePasswordVisibility">

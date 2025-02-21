@@ -26,7 +26,7 @@ const {jobWorkingPermits} = useJobActions();
 
     <h3 class="text-xl font-semibold">About the job</h3>
 
-    <ItemData label="Apply Before">
+    <ItemData v-if="props.job.applyBefore" label="Apply Before">
       <template #content>
         <p v-date-format="{date:props.job.applyBefore, format:'MMM YYYY, D'}" class="text-md font-medium"></p>
       </template>
@@ -43,7 +43,8 @@ const {jobWorkingPermits} = useJobActions();
       <template #content>
         <div class="inline-flex items-center space-x-2 font-medium text-md">
           <UIcon name="i-heroicons-currency-dollar"/>
-          <span>{{ props.job?.salaryFrom }} to {{ props.job?.salaryTo }}</span>
+          <span v-if="props.job.salaryFrom">{{ props.job?.salaryFrom }} to {{ props.job?.salaryTo ?? '-' }}</span>
+          <span v-else>N/A</span>
         </div>
       </template>
     </ItemData>

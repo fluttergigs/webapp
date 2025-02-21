@@ -22,7 +22,7 @@ const props = defineProps({
     <h4 v-if="showLabel" class="text-sm text-gray-600">{{ props.label }}</h4>
 
     <slot name="content">
-      <p class="text-md font-medium">{{ props.value }}
+      <p class="text-md font-medium">{{ props?.value ?? 'N/A' }}
       </p>
     </slot>
   </div>

@@ -20,7 +20,8 @@
           :disabled="isDisabled"
           :name="name"
           :placeholder="placeholder"
-          rows="5">
+          rows="5"
+          v-bind="$attrs">
 
           </textarea>
       <input v-else v-model="fieldValue"
@@ -29,6 +30,7 @@
              :name="name"
              :placeholder="placeholder"
              :type="type"
+             v-bind="$attrs"
       />
 
     </div>

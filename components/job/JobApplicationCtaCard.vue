@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 
 
 import {Direction} from "~/core/shared/types";
@@ -24,7 +24,7 @@ const {handleJobApply} = useJobActions()
 </script>
 
 <template>
-  <section class="bg-blueGray-100 px-4 py-6 md:mt-4 rounded-xl">
+  <section class="bg-blueGray-100 px-4 py-6 mt-2 md:mt-4 rounded-xl">
     <div
         :class="['flex justify-between items-start', props.layoutDirection=== Direction.vertical? 'flex-col space-y-6':'']">
       <div class="space-y-2">
@@ -34,10 +34,12 @@ const {handleJobApply} = useJobActions()
         </p>
       </div>
 
-      <UButton @click="handleJobApply(props.job)" size="lg"
-               :class="['bg-indigo-700',props.layoutDirection=== Direction.vertical?'w-full text-center flex justify-center items-center':'' ]"
-               square label="Apply now" color="primary"
-               variant="solid"/>
+      <UButton
+          :class="['bg-indigo-700',props.layoutDirection=== Direction.vertical?'w-full text-center flex justify-center items-center':'' ]"
+          color="primary"
+          label="Get the opportunity"
+          size="xl" square variant="solid"
+          @click="handleJobApply(props.job)"/>
     </div>
   </section>
 

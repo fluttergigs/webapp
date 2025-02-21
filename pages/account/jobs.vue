@@ -111,9 +111,9 @@ onMounted(() => {
   ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.myJobsPageEntered);
 })
 
-onBeforeMount(() => {
-  companyStore.fetchMyJobs()
-})
+// onM(() => {
+companyStore.fetchMyJobs()
+// })
 
 const postJob = () => {
   ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.postJobOfferButtonClicked,);

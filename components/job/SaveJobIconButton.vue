@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 
 //@ts-ignore
 import {StarIcon} from "@heroicons/vue/24/solid";
@@ -33,16 +33,16 @@ const onBookmarkClick = () => {
 
 <template>
   <!--  todo change to false-->
-  <UTooltip v-if="!useJobActions().jobBelongsToCompany(props.company)" :open-delay="200" :close-delay="100"
-            :ui="{background: 'bg-gray-900', color: 'text-white'}"
-            :text="isBookmarked? AppStrings.removeJobFromBookmarks:AppStrings.saveJobOffer">
+  <UTooltip v-if="!useJobActions().jobBelongsToCompany(props.company)" :close-delay="100" :open-delay="200"
+            :text="isBookmarked? AppStrings.removeJobFromBookmarks:AppStrings.saveJobOffer"
+            :ui="{background: 'bg-gray-900', color: 'text-white'}">
 
     <div v-if="useUserStore().isHandlingBookmark && useUserStore().jobToBookmark === props.job.id">
-      <UButton loading color="indigo" variant="ghost"/>
+      <UButton color="indigo" loading variant="ghost"/>
     </div>
-    <div v-else @click.capture.stop="()=> onBookmarkClick()"
-         :class="['cursor-pointer w-7 h-7 transition-all duration-300 ease-in-out',
-         isBookmarked? 'text-yellow-500 hover:text-yellow-400': 'text-gray-300 hover:text-yellow-500']">
+    <div v-else :class="['cursor-pointer w-8 h-8 transition-all duration-300 ease-in-out',
+         isBookmarked? 'text-yellow-500 hover:text-yellow-400': 'text-gray-300 hover:text-yellow-500']"
+         @click.capture.stop="()=> onBookmarkClick()">
 
       <slot name="icon">
         <StarIcon/>

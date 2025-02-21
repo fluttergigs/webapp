@@ -19,7 +19,7 @@
               </p>
               <div class="flex flex-wrap -m-1.5">
                 <div class="w-auto p-1.5">
-                  <a href="x.com/fluttergigs" target="_blank">
+                  <a href="https://x.com/fluttergigs" target="_blank">
                     <div
                         class="flex items-center justify-center w-9 h-9 border border-gray-800 hover:border-gray-900 rounded-full"
                     >

@@ -17,6 +17,10 @@ export class Wrapper<Type extends Object = {}> {
         this.message = errorMessage ?? "";
     }
 
+    get isInitial(): boolean {
+        return this.status === Status.initial;
+    }
+
     get isLoading(): boolean {
         return this.status === Status.loading;
     }

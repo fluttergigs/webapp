@@ -70,8 +70,12 @@ export const useCompanyStore = defineStore('company', {
             }
         },
         async fetchMyJobs() {
+            if (!useUserStore().myCompany) {
+                return;
+            }
             this.companyJobsResponse = new Wrapper<MultiApiResponse<JobOffer>>().toLoading()
             try {
+
                 const response = await useCompanyActions().fetchCompaniesJob(useUserStore().myCompany?.id as number,)
                 // @ts-ignore
                 this.companyJobsResponse = this.companyJobsResponse.toSuccess(response)

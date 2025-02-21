@@ -6,6 +6,8 @@ import LinkedinIcon from "~/components/icons/LinkedinIcon.vue";
 import ItemData from "~/components/job/ItemData.vue";
 import {userFacingCompanySize} from "~/features/companies/transformers";
 import TwitterIcon from "~/components/icons/TwitterIcon.vue";
+import {useFeatureFlags} from "~/composables/useFeatureFlags";
+import {AvailableFlags} from "~/services/feature-flag/available_flags";
 
 //@ts-ignore
 const props = defineProps({
@@ -19,10 +21,16 @@ const props = defineProps({
       }
     }
 )
+
+const isCompanyFeatureEnabled = ref(false)
+
+onMounted(() => {
+  isCompanyFeatureEnabled.value = useFeatureFlags().isEnabled(AvailableFlags.companiesList)
+})
 </script>
 
 <template>
-  <div class="p-6 border rounded-xl space-y-5 flex flex-col" style="height: fit-content">
+  <div v-if="isCompanyFeatureEnabled" class="p-6 border rounded-xl space-y-5 flex flex-col" style="height: fit-content">
     <div class="flex space-x-2 items-center">
       <CompanyLogo :company="company as Company"/>
       <span class="text-lg text-gray-900 font-medium">

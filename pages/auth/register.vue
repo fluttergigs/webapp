@@ -7,15 +7,17 @@
 
       <template #form>
         <form class="flex flex-col space-y-4">
-          <div class="flex space-x-4 mb-5 w-full">
-            <CustomInput v-model="formInput.firstName" class="w-1/2" name="firstName" placeholder="First name"/>
-            <CustomInput v-model="formInput.lastName" class="w-1/2" name="lastName" placeholder="Last name"/>
+          <!--          <div class="flex space-x-4 mb-5 w-full">
+                      <CustomInput v-model="formInput.firstName" class="w-1/2" name="firstName" placeholder="First name"/>
+                      <CustomInput v-model="formInput.lastName" class="w-1/2" name="lastName" placeholder="Last name"/>
+                    </div>-->
+          <div class="block mb-5">
+            <CustomInput v-model="formInput.email" autocomplete="username" name="email" placeholder="Email address"
+                         type="email"/>
           </div>
           <div class="block mb-5">
-            <CustomInput v-model="formInput.email" name="email" placeholder="Email address" type="email"/>
-          </div>
-          <div class="block mb-5">
-            <CustomInput v-model="formInput.password" name="password" placeholder="Password" type="password"/>
+            <CustomInput v-model="formInput.password" autocomplete="new-password" name="password" placeholder="Password"
+                         type="password"/>
           </div>
           <button
               :disabled="!canSubmit || user.isLoading"

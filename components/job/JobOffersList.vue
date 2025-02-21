@@ -24,7 +24,7 @@ const props = defineProps({
           <slot name="error">
             <div class="flex flex-col items-center space-y-2">
               <p>Unable to fetch jobs in the list</p>
-              <img class="w-96 h-96" alt="Empty job results" src="@/assets/images/emptyJobFiltersResult.svg"/>
+              <img alt="Empty job results" class="w-96 h-96" src="@/assets/images/emptyJobFiltersResult.svg"/>
             </div>
           </slot>
           <slot name="ctaError">
@@ -32,25 +32,7 @@ const props = defineProps({
         </div>
 
       </template>
-      <template v-else-if="props.jobsResponse.isSuccess">
 
-        <div class="flex flex-col items-center justify-center" v-if="props.jobs.length <= 0">
-          <slot name="noData">
-            <div class="flex flex-col items-center space-y-2">
-              <p>No jobs found in the list</p>
-              <img class="w-96 h-96" alt="Empty job results" src="@/assets/images/emptyJobFiltersResult.svg"/>
-            </div>
-          </slot>
-          <slot name="cta">
-          </slot>
-        </div>
-
-        <template v-else>
-          <slot v-for="job in props.jobs" :job="job" :key="job.slug">
-            <JobCard :job="job" :key="job.slug"/>
-          </slot>
-        </template>
-      </template>
       <div v-else-if="props.jobsResponse.isLoading">
         <slot name="loader">
           <div v-for="_ in defaultShimmerListItemsCount">
@@ -58,6 +40,27 @@ const props = defineProps({
           </div>
         </slot>
       </div>
+
+
+      <template v-else>
+        <div v-if="props.jobs.length === 0" class="flex flex-col items-center justify-center">
+          <slot name="noData">
+            <div class="flex flex-col items-center space-y-2">
+              <p>No jobs found in the list</p>
+              <img alt="Empty job results" class="w-96 h-96" src="@/assets/images/emptyJobFiltersResult.svg"/>
+            </div>
+          </slot>
+          <slot name="cta">
+          </slot>
+        </div>
+
+        <template v-else>
+          <slot v-for="job in props.jobs" :key="job.slug" :job="job">
+            <JobCard :key="job.slug" :job="job"/>
+          </slot>
+        </template>
+      </template>
+
     </client-only>
   </div>
 </template>
