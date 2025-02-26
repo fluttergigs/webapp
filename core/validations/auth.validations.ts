@@ -13,6 +13,11 @@ export const loginFormSchema = yup.object({
     password: yup.string().required().min(5).label('password'),
 });
 
+
+export const passwordForgetSchema = yup.object({
+    email: yup.string().required().email().label('email'),
+});
+
 export const updateUserFormSchema = yup.object({
     email: yup.string().required().email().label('email'),
     username: yup.string().required().label('username'),

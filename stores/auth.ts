@@ -24,6 +24,7 @@ export const useAuthStore = defineStore("auth", {
         updateUser: new Wrapper<SingleApiResponse<User>>().toInitial(),
         fetchUser: new Wrapper<User>().toInitial(),
         changePassword: new Wrapper<SingleApiResponse<User>>().toInitial(),
+        forgetPassword: new Wrapper<{}>().toInitial(),
         deleteAccount: new Wrapper().toInitial(),
         jwt: "",
         isProcessing: false,
@@ -195,6 +196,25 @@ export const useAuthStore = defineStore("auth", {
                 throw e;
             }
         },
+
+
+        async forgotPassword(email: string) {
+            try {
+                const {$auth} = useNuxtApp();
+
+                this.forgetPassword = new Wrapper().toLoading();
+
+                await (<AuthProvider>$auth).forgotPassword({email});
+
+                this.forgetPassword = this.forgetPassword.toSuccess({}, AppStrings.passwordResetEmailSent);
+
+            } catch (e) {
+                //@ts-ignore
+                this.forgetPassword = this.forgetPassword.toFailed(AppStrings.failedToSendPasswordResetEmail);
+            }
+        },
+
+
         async getUser() {
             const {$auth, $analytics, $errorTracker} = useNuxtApp();
             try {
@@ -224,6 +244,9 @@ export const useAuthStore = defineStore("auth", {
         },
     },
     getters: {
+        isHandlingForgotPassword: (state) => state.forgetPassword.isLoading,
+        isPasswordForgetSuccessful: (state) => state.forgetPassword.isSuccess,
+        isPasswordForgetFailed: (state) => state.forgetPassword.isFailure,
         isUserFetching: (state) => state.fetchUser.isLoading,
         isUserFetched: (state) => state.fetchUser.isSuccess,
         isUserFetchFailed: (state) => state.fetchUser.isFailure,

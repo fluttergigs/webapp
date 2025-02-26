@@ -39,10 +39,6 @@
             <NuxtLink :to="AppRoutes.register" class="ml-2 text-indigo-600 hover:text-indigo-700">Create free account
             </NuxtLink>
           </p>
-          <p class="font-medium">
-            <span>Forgot your password?</span>
-            <NuxtLink :to="AppRoutes.forgotPassword" class="ml-2 text-red-600 hover:text-red-700">Reset it</NuxtLink>
-          </p>
         </Form>
       </template>
     </BasicFormContent>
@@ -62,7 +58,7 @@ import {useFields} from "~/composables/useFields";
 
 definePageMeta({
   middleware: ['logged-in'],
-  title: 'Login',
+  title: 'Password reset',
 })
 
 useSeoMeta({

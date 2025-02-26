@@ -3,7 +3,7 @@ import {storeToRefs} from "pinia";
 export function useUser() {
     const authStore = useAuthStore();
 
-    const {isUserFetched, authUser} = storeToRefs(authStore);
+    const {isUserFetched, authUser, isHandlingForgotPassword} = storeToRefs(authStore);
 
     const getUser = async () => {
         await authStore.getUser();

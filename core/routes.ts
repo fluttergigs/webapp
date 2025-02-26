@@ -21,6 +21,9 @@ export class AppRoutes {
     static privacy = '/privacy';
     static terms = '/terms';
 
+    static resetPassword = '/auth/reset-password'
+    static forgotPassword = '/auth/forgot-password'
+
     static jobDetail = (slug: string): string => `/jobs/${slug}`;
 
     static companyPage = (slug: string): string => `/companies/${slug}`;

@@ -1,5 +1,7 @@
 import {AuthService} from "~/services/auth/auth.base.service";
-import {LoginData, RegistrationData, ResetPasswordData} from "~/services/auth/auth.types";
+import {LoginData, RegistrationData} from "~/services/auth/auth.types";
+//@ts-ignore
+import type {StrapiForgotPasswordData, StrapiResetPasswordData} from "@nuxtjs/strapi/dist/runtime/types";
 
 
 export class AuthProvider {
@@ -29,8 +31,12 @@ export class AuthProvider {
         return await this.authService.fetchUser();
     }
 
-    async resetPassword(data: ResetPasswordData) {
-        await this.authService.resetPassword(data);
+    async resetPassword(data: StrapiResetPasswordData) {
+        await this.authService.resetPassword<StrapiResetPasswordData>(data);
+    }
+
+    async forgotPassword(data: StrapiForgotPasswordData) {
+        await this.authService.forgotPassword<StrapiForgotPasswordData>(data);
     }
 
 }

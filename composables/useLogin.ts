@@ -1,3 +1,4 @@
+//@ts-ignore
 import {storeToRefs} from "pinia";
 import {loginFormSchema} from "~/core/validations/auth.validations";
 

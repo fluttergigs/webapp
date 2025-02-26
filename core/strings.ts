@@ -75,5 +75,7 @@ export class AppStrings {
 
     static unableToFetchLearnResources = "Unable to fetch learn resources"
 
+    static failedToSendPasswordResetEmail = "Failed to send password reset email. Please try again later"
 
+    static passwordResetEmailSent = "Password reset email has been sent to your email address"
 }
