@@ -2,11 +2,13 @@ import {useAuthStore} from "~/stores/auth";
 import {type ForgetPasswordData} from "~/services/auth/auth.types";
 //@ts-ignore
 import {storeToRefs} from "pinia";
-import {passwordForgetSchema} from "~/core/validations/auth.validations";
+import {passwordForgetSchema, passwordResetSchema} from "~/core/validations/auth.validations";
 import type {CallbackFunction} from "~/core/shared/types";
 import {BaseToast} from "~/core/ui/base_toast";
 import {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider";
 import {AnalyticsEvent} from "~/services/analytics/events";
+//@ts-ignore
+import type {StrapiForgotPasswordData} from "@nuxtjs/strapi/dist/runtime/types";
 
 export const usePasswordReset = () => {
     const authStore = useAuthStore();
@@ -15,13 +17,23 @@ export const usePasswordReset = () => {
         email: "",
     } as ForgetPasswordData);
 
+    const resetPasswordDataInput = ref({
+        code: "",
+        password: "",
+        passwordConfirmation: "",
+    });
+
     const canSubmitForgetPasswordForm = ref(false);
+    const canSubmitResetPasswordForm = ref(false);
 
     const {
         forgetPassword,
         isPasswordForgetFailed,
         isPasswordForgetSuccessful,
-        isHandlingForgotPassword
+        isHandlingForgotPassword,
+        isHandlingPasswordReset,
+        isPasswordResetFailed,
+        isPasswordResetSuccessful,
     } = storeToRefs(authStore);
 
     watch(
@@ -32,20 +44,28 @@ export const usePasswordReset = () => {
         {immediate: true, deep: true}
     );
 
-    const submitPasswordForget = async (onDone?: CallbackFunction<void>) => {
+    watch(
+        resetPasswordDataInput,
+        async () => {
+            canSubmitResetPasswordForm.value = await passwordResetSchema.isValid(resetPasswordDataInput.value);
+        },
+        {immediate: true, deep: true}
+    )
 
-        const {$toast, $analytics, $errorTracker} = useNuxtApp();
+    const submitPasswordForgetForm = async (onDone?: CallbackFunction<void>) => {
+
+        const {$toast, $analytics} = useNuxtApp();
         ($analytics as AppAnalyticsProvider).capture(
             AnalyticsEvent.passwordForgetFormButtonClicked,
-            {email: passwordForgetDataInput.value.email}
+            passwordForgetDataInput.value
         );
-        
-        await authStore.forgotPassword(passwordForgetDataInput.value.email);
+
+        await authStore.forgotPassword<StrapiForgotPasswordData>(passwordForgetDataInput.value);
 
         if (isPasswordForgetSuccessful.value) {
             ($analytics as AppAnalyticsProvider).capture(
                 AnalyticsEvent.passwordForgetSuccessful,
-                {email: passwordForgetDataInput.value.email}
+                passwordForgetDataInput.value
             );
 
             ($toast as BaseToast<Notification>).success(<string>forgetPassword.value.message);
@@ -58,7 +78,38 @@ export const usePasswordReset = () => {
 
             ($analytics as AppAnalyticsProvider).capture(
                 AnalyticsEvent.passwordForgetFailed,
-                {email: passwordForgetDataInput.value.email}
+                passwordForgetDataInput.value
+            );
+        }
+    }
+
+
+    const submitPasswordResetForm = async (onDone?: CallbackFunction<void>) => {
+        const {$toast, $analytics} = useNuxtApp();
+        ($analytics as AppAnalyticsProvider).capture(
+            AnalyticsEvent.passwordResetButtonClicked,
+            resetPasswordDataInput.value
+        );
+
+        await authStore.resetPassword(resetPasswordDataInput.value);
+
+        if (isPasswordResetSuccessful.value) {
+            ($analytics as AppAnalyticsProvider).capture(
+                AnalyticsEvent.passwordResetSuccessful,
+                resetPasswordDataInput.value
+            );
+
+            ($toast as BaseToast<Notification>).success(<string>forgetPassword.value.message);
+
+            onDone && onDone();
+        }
+
+        if (isPasswordResetFailed.value) {
+            ($toast as BaseToast<Notification>).error(<string>forgetPassword.value.message);
+
+            ($analytics as AppAnalyticsProvider).capture(
+                AnalyticsEvent.passwordResetFailed,
+                resetPasswordDataInput.value
             );
         }
     }
@@ -67,6 +118,12 @@ export const usePasswordReset = () => {
         passwordForgetDataInput,
         isHandlingForgotPassword,
         canSubmitForgetPasswordForm,
-        submitPasswordForget,
+        canSubmitResetPasswordForm,
+        isHandlingPasswordReset,
+        isPasswordResetFailed,
+        isPasswordResetSuccessful,
+        resetPasswordDataInput,
+        submitPasswordForgetForm,
+        submitPasswordResetForm,
     }
 };

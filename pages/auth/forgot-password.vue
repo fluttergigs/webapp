@@ -17,7 +17,7 @@
               :disabled="isHandlingForgotPassword || !canSubmitForgetPasswordForm"
               class="primary-button flex items-center justify-center space-x-2"
               type="button"
-              @click.prevent="submitPasswordForget">
+              @click.prevent="submitPasswordForgetForm">
             <LoadingSpinnerIcon v-if="isHandlingForgotPassword" class="text-primary animate-spin"/>
             <span v-else> Send password reset email</span>
           </button>
@@ -64,7 +64,7 @@ useSeoMeta({
 
 const {
   passwordForgetDataInput,
-  submitPasswordForget,
+  submitPasswordForgetForm,
   isHandlingForgotPassword,
   canSubmitForgetPasswordForm,
 } = usePasswordReset()

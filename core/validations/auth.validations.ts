@@ -18,6 +18,12 @@ export const passwordForgetSchema = yup.object({
     email: yup.string().required().email().label('email'),
 });
 
+export const passwordResetSchema = yup.object({
+    password: yup.string().required().min(8).label('password'),
+    passwordConfirmation: yup.string().oneOf([yup.ref('password'), null], 'Passwords must match'),
+    code: yup.string().required().label('code'),
+})
+
 export const updateUserFormSchema = yup.object({
     email: yup.string().required().email().label('email'),
     username: yup.string().required().label('username'),

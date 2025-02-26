@@ -2,21 +2,17 @@
 
   <main>
     <BasicFormContent
-        description="Login and get access to thousands of opportunities"
+        description="Reset your password"
         show-close-button
         title="Welcome Back">
 
       <template #form>
         <form class="space-y-4">
           <div class="block mb-5">
-            <CustomInput v-model="formInput.email" autocomplete="username" name="email" placeholder="Email address"
-                         type="email"/>
-          </div>
-          <div class="block mb-5">
-            <CustomInput v-model="formInput.password" :type="passwordFieldType"
-                         autocomplete="current-password" inside-text="Forgot Password?"
+            <CustomInput v-model="resetPasswordDataInput.password" :type="passwordFieldType"
+                         autocomplete="new-password"
                          name="password"
-                         placeholder="Password">
+                         placeholder="Your new Password">
               <template #insideText>
                 <div class="absolute right-4 bottom-4 transform" @click="togglePasswordVisibility">
                   <EyeSlashIcon v-if="isPasswordVisible" class="w-4"/>
@@ -25,20 +21,22 @@
               </template>
             </CustomInput>
           </div>
+
+          <div class="block mb-5">
+            <CustomInput v-model="resetPasswordDataInput.passwordConfirmation" :type="passwordFieldType"
+                         autocomplete="new-password"
+                         name="confirmPassword"
+                         placeholder="Confirm your Password"/>
+          </div>
           <button
-              :disabled="!canSubmit ||user.isLoading"
+              :disabled="!canSubmitResetPasswordForm || isHandlingPasswordReset"
               class="primary-button flex items-center justify-center space-x-2"
               type="button"
-              @click.prevent="()=> submit(onSuccessfulLogin)">
-            <LoadingSpinnerIcon v-if="user.isLoading" class="text-primary animate-spin"/>
-            <span v-else> Sign In</span>
+              @click.prevent="()=> submitPasswordResetForm(() => navigateTo(AppRoutes.login))">
+            <LoadingSpinnerIcon v-if="isHandlingPasswordReset" class="text-primary animate-spin"/>
+            <span v-else> Reset my password</span>
 
           </button>
-          <p class="font-medium">
-            <span>Don’t have an account?</span>
-            <NuxtLink :to="AppRoutes.register" class="ml-2 text-indigo-600 hover:text-indigo-700">Create free account
-            </NuxtLink>
-          </p>
         </Form>
       </template>
     </BasicFormContent>
@@ -53,17 +51,32 @@ import LoadingSpinnerIcon from "~/components/icons/LoadingSpinnerIcon.vue";
 import BasicFormContent from "~/components/ui/BasicFormContent.vue";
 //@ts-ignore
 import type {Notification} from "#ui/types";
-import {useLogin} from "~/composables/useLogin";
 import {useFields} from "~/composables/useFields";
+import type {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider";
+import {AnalyticsEvent} from "~/services/analytics/events";
 
 definePageMeta({
-  middleware: ['logged-in'],
+  middleware: ['logged-in', (to: any, from: any) => {
+
+    if (!useRoute().query.code) {
+      return navigateTo(AppRoutes.login)
+    }
+
+  }],
+
   title: 'Password reset',
 })
 
+onMounted(() => {
+      (useNuxtApp().$analytics as AppAnalyticsProvider).capture(AnalyticsEvent.passwordForgetPageEntered);
+
+      resetPasswordDataInput.value.code = useRoute().query.code as string
+    }
+)
+
 useSeoMeta({
-  title: `FlutterGigs - The #1 Flutter jobs platform in the world`,
-  ogTitle: 'FlutterGigs - The #1 Flutter jobs platform in the world',
+  title: `FlutterGigs - Reset your password`,
+  ogTitle: 'FlutterGigs - Reset your password',
   ogImage: 'https://fluttergigs.com/fluttergigs-og.png',
   ogSiteName: "Flutter Gigs - The #1 Flutter job platform",
   description: 'Login and get access to thousands of opportunities',
@@ -75,6 +88,11 @@ useSeoMeta({
   twitterDescription: 'Login and get access to thousands of opportunities',
 })
 
-const {formInput, canSubmit, user, submit, onSuccessfulLogin,} = useLogin()
+const {
+  canSubmitResetPasswordForm,
+  isHandlingPasswordReset,
+  submitPasswordResetForm,
+  resetPasswordDataInput
+} = usePasswordReset()
 const {isPasswordVisible, togglePasswordVisibility, passwordFieldType} = useFields()
 </script>

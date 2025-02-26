@@ -31,12 +31,12 @@ export class AuthProvider {
         return await this.authService.fetchUser();
     }
 
-    async resetPassword(data: StrapiResetPasswordData) {
-        await this.authService.resetPassword<StrapiResetPasswordData>(data);
+    async resetPassword<T>(data: T) {
+        await this.authService.resetPassword<T>(data);
     }
 
-    async forgotPassword(data: StrapiForgotPasswordData) {
-        await this.authService.forgotPassword<StrapiForgotPasswordData>(data);
+    async forgotPassword<T>(data: T) {
+        await this.authService.forgotPassword<T>(data);
     }
 
 }

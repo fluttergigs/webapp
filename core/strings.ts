@@ -78,4 +78,8 @@ export class AppStrings {
     static failedToSendPasswordResetEmail = "Failed to send password reset email. Please try again later"
 
     static passwordResetEmailSent = "Password reset email has been sent to your email address"
+
+    static passwordResetFailed = "Password reset failed. Please try again later"
+
+    static passwordResetSuccessful = "Password has been reset successfully. You can now login with your new password"
 }

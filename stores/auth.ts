@@ -25,6 +25,7 @@ export const useAuthStore = defineStore("auth", {
         fetchUser: new Wrapper<User>().toInitial(),
         changePassword: new Wrapper<SingleApiResponse<User>>().toInitial(),
         forgetPassword: new Wrapper<{}>().toInitial(),
+        resetPassword: new Wrapper<{}>().toInitial(),
         deleteAccount: new Wrapper().toInitial(),
         jwt: "",
         isProcessing: false,
@@ -198,19 +199,32 @@ export const useAuthStore = defineStore("auth", {
         },
 
 
-        async forgotPassword(email: string) {
+        async forgotPassword<T>(data: T) {
             try {
                 const {$auth} = useNuxtApp();
 
                 this.forgetPassword = new Wrapper().toLoading();
 
-                await (<AuthProvider>$auth).forgotPassword({email});
+                await (<AuthProvider>$auth).forgotPassword<T>(data);
 
                 this.forgetPassword = this.forgetPassword.toSuccess({}, AppStrings.passwordResetEmailSent);
 
             } catch (e) {
                 //@ts-ignore
                 this.forgetPassword = this.forgetPassword.toFailed(AppStrings.failedToSendPasswordResetEmail);
+            }
+        },
+
+        async resetPassword<T>(data: T) {
+            try {
+                const {$auth} = useNuxtApp();
+                this.resetPassword = new Wrapper().toLoading();
+                await ($auth as AuthProvider).resetPassword<T>(data);
+                this.resetPassword = this.resetPassword.toSuccess({}, AppStrings.passwordResetSuccessful);
+            } catch (e) {
+                //@ts-ignore
+                this.forgetPassword = this.forgetPassword.toFailed(AppStrings.passwordResetFailed);
+
             }
         },
 
@@ -247,6 +261,9 @@ export const useAuthStore = defineStore("auth", {
         isHandlingForgotPassword: (state) => state.forgetPassword.isLoading,
         isPasswordForgetSuccessful: (state) => state.forgetPassword.isSuccess,
         isPasswordForgetFailed: (state) => state.forgetPassword.isFailure,
+        isHandlingPasswordReset: (state) => state.resetPassword.isLoading,
+        isPasswordResetSuccessful: (state) => state.resetPassword.isSuccess,
+        isPasswordResetFailed: (state) => state.resetPassword.isFailure,
         isUserFetching: (state) => state.fetchUser.isLoading,
         isUserFetched: (state) => state.fetchUser.isSuccess,
         isUserFetchFailed: (state) => state.fetchUser.isFailure,

@@ -100,7 +100,7 @@ const validators = {
   firstName: yup.string().required().min(2).label(hasLabel ? props.label : 'First name'),
   username: yup.string().required().min(2).label(hasLabel ? props.label : 'Username'),
   //TODO - change password min length to 8
-  password: yup.string().required().min(5).label(hasLabel ? props.label : 'Password'),
+  password: yup.string().required().min(8).label(hasLabel ? props.label : 'Password'),
 
   //TODO - check confirm password match
   confirmPassword: yup.string().label(hasLabel ? props.label : 'Confirm password')
