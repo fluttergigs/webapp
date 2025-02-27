@@ -31,7 +31,7 @@
                   class="primary-gradient mb-6 text-5xl font-bold leading-tight md:text-7xl lg:text-8xl"
                   contenteditable="false"
               >
-                The #1 Flutter Job Board in his Ecosystem<br/>
+                The #1 Flutter Job Board in its Ecosystem<br/>
               </h1>
 
               <p class="mb-11 text-lg font-medium text-gray-900 md:max-w-md">
@@ -64,7 +64,7 @@
                 alt=""
                 class="transform transition duration-1000 ease-in-out hover:-translate-y-16"
                 contenteditable="false"
-                src="/landing-heaader.webp"
+                src="/landing-header.webp"
             />
           </div>
         </div>
