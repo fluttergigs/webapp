@@ -17,7 +17,7 @@
                       :to="AppRoutes.jobs"
                       class="text-sm"
                       contenteditable="false"
-                  >Find the best Flutter gigs from all around the world!
+                  >Get the best Flutter opportunities from all around the world!
                   </NuxtLink>
                 </div>
                 <div class="w-auto p-1">
