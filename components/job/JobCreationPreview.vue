@@ -6,10 +6,10 @@ import type {PropType} from "@vue/runtime-core";
 import type {Country} from "~/core/shared/types";
 import {useJobStore} from "~/stores/job";
 import useCompanyActions from "~/composables/useCompanyActions";
-import {AppRoutes} from "~/core/routes";
 import WorkingPermits from "~/components/job/WorkingPermits.vue";
 import {useUserStore} from "~/stores/user";
 import type {Company} from "~/features/companies/company.types";
+import {useJobPost} from "~/composables/useJobPost";
 
 //@ts-ignore
 const props = defineProps({
@@ -63,11 +63,11 @@ const {payForJobPosting} = useCompanyActions()
       </div>
     </div>
 
-    <UButton v-if="isCtaVisible" @click="()=>payForJobPosting(()=> navigateTo(AppRoutes.myJobs))"
+    <UButton v-if="isCtaVisible" @click="()=>payForJobPosting()"
              :loading="useJobStore().jobCreation.isLoading"
              :disabled="!isCtaEnabled" size="xl" color="indigo"
              class="bg-indigo-700 flex justify-center items-center"
-             label="Post job for $20"/>
+             :label="useJobPost().jobPostCtaLabel"/>
   </div>
 </template>
 

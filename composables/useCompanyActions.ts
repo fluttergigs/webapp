@@ -119,7 +119,7 @@ export default function useCompanyActions() {
     };
 
     const handleJobPosting = async () => {
-        if (jobStore.jobCreationData.hasPaid) {
+        if (jobStore.jobCreationData.hasPaid || (userStore.myCompany?.hasFreeJobPosts ?? false)) {
             await onSuccessfulPaymentForJobPosting();
         } else {
             await payForJobPosting();
@@ -208,7 +208,7 @@ export default function useCompanyActions() {
             <string>companyStore.companyCreation.message
         );
 
-        await useAuthStore().fetchUser();
+        useUser().getUser()
         navigateTo(AppRoutes.myCompany);
     };
     const fetchCompaniesJob = async (companyId: number) => {
@@ -237,13 +237,17 @@ export default function useCompanyActions() {
         const {originEmail} = data;
         logDev("payment data", data);
 
-        if (authStore.isAuthenticated) {
-            if (originEmail === authStore.authUser?.email) {
-                await onSuccessfulPaymentForJobPosting(() =>
-                    navigateTo(AppRoutes.myJobs)
-                );
-                await useJobStore().fetchJobs();
-            }
+        if (authStore.isAuthenticated && originEmail === authStore.authUser?.email) {
+            await onSuccessfulPaymentForJobPosting(async function () {
+                    return navigateTo(AppRoutes.myJobs);
+                }
+            );
+            await Promise.all(
+                [
+                    useUser().getUser(),
+                    useJobStore().fetchJobs(),
+                ]
+            );
         }
     };
 

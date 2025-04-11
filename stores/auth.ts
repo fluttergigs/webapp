@@ -285,6 +285,7 @@ export const useAuthStore = defineStore("auth", {
             `${useAuthStore().authUser?.firstName ?? ""} ${
                 useAuthStore().authUser?.lastName ?? ""
             }`,
+        displayName: (state) => state.userFullName || state.user.username,
         hasReturnUrl: (state) => !!state.returnUrl || state.returnUrl !== "",
     },
     persist: {

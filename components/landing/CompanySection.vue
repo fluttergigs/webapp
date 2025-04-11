@@ -85,6 +85,9 @@ const postJob = () => {
                   Post a job now for only $20
                 </button>
               </div>
+              <p class="my-3 text-sm text-center primary-gradient font-semibold uppercase tracking-p">
+                First job post is free!
+              </p>
             </div>
           </div>
         </div>

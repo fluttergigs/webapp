@@ -18,6 +18,7 @@ export interface Company {
     linkedin: string,
     twitter: string,
     slug: string,
+    hasFreeJobPosts: boolean
 
     [key: string]: any,
 }

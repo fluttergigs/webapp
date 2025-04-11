@@ -79,9 +79,8 @@ const submit = async () => {
       <template #form>
         <form class="space-y-4">
           <div class="flex space-x-4 mb-5 w-full">
-            <CustomInput v-model="formInput.name" class="w-1/2" name="name" placeholder="Company name"/>
-            <CustomInput v-model="formInput.website" :show-label="false"
-                         class="w-1/2" label="Website" name="url"
+            <CustomInput class="w-full" v-model="formInput.name" name="name" placeholder="Company name"/>
+            <CustomInput class="w-full" v-model="formInput.website" :show-label="false" label="Website" name="url"
                          placeholder="Your website"/>
           </div>
           <div class="block mb-5">

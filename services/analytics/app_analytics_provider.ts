@@ -24,9 +24,9 @@ export class AppAnalyticsProvider {
      * @param event
      * @param properties
      */
-    capture(event: AnalyticsEvent, properties?: any) {
+    capture(event: AnalyticsEvent, properties: any = {}) {
         logDev(`[Analytics] ${event} ${properties?.toString()}`);
-        this.client.captureEvent(event, properties);
+        this.client.captureEvent(event, properties ?? {});
 
         return this.client;
     }
@@ -36,7 +36,7 @@ export class AppAnalyticsProvider {
      * @param identifier
      * @param properties
      */
-    identify(identifier: string, properties?: Object) {
+    identify(identifier: string, properties: Object = {}) {
         this.client.identifyUser(identifier, properties);
         return this.client;
     }

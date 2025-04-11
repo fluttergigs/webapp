@@ -119,8 +119,6 @@ export default function useJobActions() {
                 }]
             })
         }
-
-
     }
 
     return {

@@ -57,8 +57,8 @@
                     :popper="{ placement: 'bottom-start' }"
                 >
                   <div class="flex items-center justify-center">
-                    <span class="text-sm font-medium">
-                      {{ useAuthStore().userFullName.toUpperCase() }}
+                    <span class="text-sm primary-gradient font-bold">
+                     {{ useAuthStore().user.value.username }}
                     </span>
                     <UIcon name="i-heroicons-chevron-down-20-solid"/>
                   </div>
@@ -158,9 +158,9 @@
                         :popper="{ placement: 'bottom-start' }"
                     >
                       <div class="flex items-center justify-center">
-                        <span class="font-medium">
-                          {{ useAuthStore().userFullName.toUpperCase() }}
-                        </span>
+                       <span class="text-sm primary-gradient font-bold">
+                     {{ useAuthStore().user.value.username }}
+                    </span>
                         <UIcon name="i-heroicons-chevron-down-20-solid"/>
                       </div>
                     </UDropdown>

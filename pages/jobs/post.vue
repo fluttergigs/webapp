@@ -191,7 +191,7 @@
                 :loading="jobCreation.isLoading"
                 class="flex items-center justify-center bg-indigo-700"
                 color="indigo"
-                label="Post your Job for $20"
+                :label="useJobPost().jobPostCtaLabel"
                 size="xl"
                 @click="handleJobPosting"
             />
@@ -231,6 +231,7 @@ import {AnalyticsEvent} from "~/services/analytics/events";
 import {postJobFormSchema} from "~/core/validations/job.validations";
 import useCompanyActions from "~/composables/useCompanyActions";
 import QuillEditorWrapper from "~/components/forms/QuillEditorWrapper.vue";
+import {useJobPost} from "~/composables/useJobPost";
 
 definePageMeta({
   layout: "app-layout",
