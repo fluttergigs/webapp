@@ -31,6 +31,10 @@ export class Endpoint {
     static get learnResources() {
         return '/learn-resources'
     }
+
+    static jobOffersBySlug(slug: string) {
+        return `/job-offers/find-by-slug/${slug}`
+    }
 }
 
 export class ApiEndpoint {

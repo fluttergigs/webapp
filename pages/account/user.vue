@@ -7,7 +7,7 @@
               class="mb-4 text-xl md:text-3xl font-semibold tracking-px-n leading-tight">
             Your Settings
           </h3>
-          <p class="text-md md:text-xl">👋, <b class="text-indigo-500">{{ useAuthStore().userFullName }}</b>!
+          <p class="text-md md:text-xl">👋, <b class="text-indigo-500">{{ useAuthStore().user.value.username }}</b>!
             Make changes to your account here</p>
 
           <UTabs :items="tabs" class="w-full my-12" @change="onChange">

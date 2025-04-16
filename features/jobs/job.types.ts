@@ -35,13 +35,11 @@ export type JobPostPaymentData = {
 
 export type BookmarkedJobOffer = {
     id: number,
-    attributes: {
-        jobOffer: JobOfferApiResponse,
-        user: UserApiResponse,
-    }
+    jobOffer: JobOfferApiResponse,
+    user: UserApiResponse,
 }
 
-export type JobCreationRequest = Partial<Omit<JobOffer, 'id' | 'isFeatured' | 'createdAt' | 'updatedAt'>> & {
+export type JobCreationRequest = Partial<Omit<JobOffer, 'id' | 'isFeatured' | 'createdAt' | 'updatedAt' | 'slug'>> & {
     hasPaid: boolean
 }
 
@@ -49,7 +47,7 @@ export type JobOfferEditRequest = Partial<JobOffer>
 
 export type JobOfferApiResponse = SingleApiResponse<JobOffer>
 
-export type SaveJobOfferRequest = { user: number, jobOffer: number }
+export type SaveJobOfferRequest = { jobOffer: number }
 
 export type JobOfferDeleteRequest = { jobOffer: number }
 

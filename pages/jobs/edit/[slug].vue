@@ -177,13 +177,12 @@ import {AnalyticsEvent} from "~/services/analytics/events";
 import {editJobFormSchema,} from "~/core/validations/job.validations";
 import useCompanyActions from "~/composables/useCompanyActions";
 import useJobActions from "~/composables/useJobActions";
-import {extractCompanyFromJob} from "~/features/jobs/transformers";
 
 definePageMeta({
   layout: 'app-layout',
   middleware: ['auth', 'no-company'],
   function() {
-    if (!useJobActions().jobBelongsToCompany(extractCompanyFromJob(useJobStore().jobEditData.company))) {
+    if (!useJobActions().jobBelongsToCompany(useJobStore().jobEditData.company)) {
       return abortNavigation()
     }
   },

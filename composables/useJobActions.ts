@@ -32,7 +32,9 @@ export default function useJobActions() {
                     ($toast as BaseToast<Notification>).info(<string>userStore.bookmarkedJobDelete.message)
                 } else {
                     ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.bookmarkJobOfferClicked, {job});
-                    await userStore.saveJob({jobOffer: job.id, user: authStore.authUser?.id});
+                    await userStore.saveJob({
+                        jobOffer: job.id
+                    });
                     ($toast as BaseToast<Notification>).info(<string>userStore.bookmarkedJobCreation.message)
                 }
 
@@ -89,7 +91,7 @@ export default function useJobActions() {
 
     const viewDetails = (job: JobOffer) => {
         ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.jobOfferClicked, {job});
-        jobStore.findJobById(job)
+        // jobStore.findJobById(job)
 
         navigateTo(`${AppRoutes.jobDetail(job.slug)}`)
     }

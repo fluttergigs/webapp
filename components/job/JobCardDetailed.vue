@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type {JobOffer} from "~/features/jobs/job.types";
 import {RemoteOptions} from "~/features/jobs/job.types";
-import {extractCompanyFromJob, userFacingRemoteOptions, userFacingWorkType,} from "~/features/jobs/transformers";
+import {userFacingRemoteOptions, userFacingWorkType,} from "~/features/jobs/transformers";
 import WorkingPermits from "~/components/job/WorkingPermits.vue";
 import useJobActions from "~/composables/useJobActions";
 import JobSalaryBox from "~/components/job/JobSalaryBox.vue";
@@ -20,9 +20,6 @@ const {jobWorkingPermits} = useJobActions();
 
 const isJobSidePanelOpen = ref(false);
 
-const company = computed(() => ({
-  ...extractCompanyFromJob(props.job),
-}));
 </script>
 
 <template>
@@ -32,7 +29,7 @@ const company = computed(() => ({
   >
     <div class="group">
       <div
-          class="h-full rounded-xl border bg-white bg-opacity-80 p-6 transition-all duration-200 ease-in group-hover:border-gray-300 group-hover:shadow-xl"
+          class="cursor-pointer h-full rounded-xl border bg-white bg-opacity-80 p-6 transition-all duration-200 ease-in group-hover:border-gray-300 group-hover:shadow-xl"
       >
         <div class="flex h-full flex-col justify-between">
           <div class="mb-16 flex flex-col gap-3">

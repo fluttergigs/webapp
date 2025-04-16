@@ -2,12 +2,14 @@ import {COUNTRIES_API_ENDPOINT} from "~/core/constants";
 import {Country} from "~/core/shared/types";
 
 import {useStorage} from '@vueuse/core'
+import {logDev} from "~/core/helpers/log";
 
 const countriesKey = "countries"
 
 export default async function useCountries() {
     const countries = useStorage(countriesKey, () => [])
-    if (countries.length > 0) {
+
+    if (countries.value.length > 0) {
         return {data: countries, error: null}
     }
 
@@ -17,8 +19,8 @@ export default async function useCountries() {
     } = await useFetch(COUNTRIES_API_ENDPOINT, {
         key: "countries",
         mode: "cors",
-        default: () => ({countries: []}),
 
+        default: () => ({countries: []}),
         transform: (countries) => {
             const result: [Country] = countries.map((country: any) => ({
                 name: country.name.common,
@@ -26,11 +28,11 @@ export default async function useCountries() {
                 iso: country.cca3,
             }));
 
-            useStorage("countries", result)
+            logDev('countries result', result)
 
-            return {
-                countries: result,
-            }
+            localStorage.setItem(countriesKey, JSON.stringify(result))
+
+            return result
         }
     })
 

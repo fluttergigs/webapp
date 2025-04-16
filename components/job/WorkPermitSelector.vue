@@ -13,12 +13,13 @@ const props = defineProps({
   }
 })
 
-const {data, error} = await useCountries();
+const {data: countries, error} = await useCountries();
+
 //@ts-ignore
 const emits = defineEmits(['selectedCountries'])
 
 watch(selected, () => {
-  const selectedCountries = data.value?.countries.filter(({iso}: Country) => selected.value.join(' ').includes(iso))
+  const selectedCountries = countries.value.filter(({iso}: Country) => selected.value.join(' ').includes(iso))
   emits("selectedCountries", {countries: selectedCountries})
 }, {
   deep: true,
@@ -27,8 +28,8 @@ watch(selected, () => {
 
 <template>
   <client-only>
-    <USelectMenu v-if="data?.countries.length > 0" v-model="selected"
-                 :options="data?.countries || []"
+    <USelectMenu v-if="countries.length > 0" v-model="selected"
+                 :options="countries || []"
                  :placeholder="searchPlaceholder"
                  :search-attributes="['name']"
                  :ui-menu="{ height: 'h-[200px]'}"

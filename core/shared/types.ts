@@ -11,19 +11,13 @@ export interface BasicApiResponse<T = unknown> {
 }
 
 export interface SingleApiResponse<T> {
-    data: {
-        id: unknown,
-        attributes: T
-    }
+    data: T,
 
     [key: string]: unknown,
 }
 
 export interface MultiApiResponse<T> {
-    data: {
-        id: unknown,
-        attributes: T
-    }[]
+    data: T[]
 }
 
 export enum Direction {

@@ -5,7 +5,6 @@ import {AnalyticsEvent} from "~/services/analytics/events";
 import type {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider";
 import CompanyFiltersWidget from "~/components/company/FiltersWidget.vue";
 import CompanyList from "~/components/company/CompanyList.vue";
-import type {BaseToast} from "~/core/ui/base_toast";
 import {AvailableFlags} from "~/services/feature-flag/available_flags";
 
 definePageMeta({

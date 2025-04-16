@@ -34,7 +34,7 @@ export const useSettingStore = defineStore('setting', {
         }
     },
     getters: {
-        getSettingExtras: (state) => state['setting']['value']['attributes']['extras'] ?? {},
+        getSettingExtras: (state) => state['setting']['value']['extras'] ?? {},
         getAppName: (state) => useSettingStore().getSettingExtras['appName'] ?? APP_NAME,
         isMaintenanceMode: (state) => useSettingStore().getSettingExtras['maintenanceMode'] ?? false,
     },

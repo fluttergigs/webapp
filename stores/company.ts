@@ -226,24 +226,10 @@ export const useCompanyStore = defineStore('company', {
     },
     getters: {
         //@ts-ignore
-        companies: (state) => state.companyListResponse?.value?.data?.map((item: { [x: string]: any; }) => ({
-            ...item['attributes'],
-            id: item['id']
-        })),
-        filteredCompanies: (state) => state.companyFiltersResponse?.value?.data?.map((item: { [x: string]: any; }) => ({
-            ...item['attributes'],
-            id: item['id']
-        })),
-        myJobPostings: (state) => state.companyJobsResponse?.value?.data?.map((item: { [x: string]: any; }) => ({
-            ...item['attributes'],
-            id: item['id']
-        })),
-        viewedCompanyJobs: (state) => state.viewedCompanyJobsResponse?.value?.data?.map((item: {
-            [x: string]: any;
-        }) => ({
-            ...item['attributes'],
-            id: item['id']
-        })),
+        companies: (state) => state.companyListResponse?.value?.data ?? [],
+        filteredCompanies: (state) => state.companyFiltersResponse?.value?.data ?? [],
+        myJobPostings: (state) => state.companyJobsResponse?.value?.data ?? [],
+        viewedCompanyJobs: (state) => state.viewedCompanyJobsResponse?.value?.data ?? [],
         expiredJobPostings: state => useCompanyStore().myJobPostings?.filter((job: JobOffer) => isBefore(parseISO(job.applyBefore), new Date())),
         activeJobPostings: state => useCompanyStore().myJobPostings?.filter((job: JobOffer) => isAfter(parseISO(job.applyBefore), new Date())),
     },

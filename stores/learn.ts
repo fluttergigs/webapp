@@ -47,18 +47,8 @@ export const useLearnStore = defineStore('learn', {
         },
     },
     getters: {
-        getLearnCategories: (state) => state.fetchLearnCategoriesProcess.value?.data?.map((item: {
-            [x: string]: any;
-        }) => ({
-            ...item['attributes'],
-            id: item['id']
-        })) as LearnCategory[],
-        getLearnResources: (state) => state.fetchLearnResourcesProcess.value?.data?.map((item: {
-            [x: string]: any;
-        }) => ({
-            ...item['attributes'],
-            id: item['id']
-        })) as LearnResource[],
+        getLearnCategories: (state) => (state.fetchLearnCategoriesProcess.value?.data ?? []) as LearnCategory[],
+        getLearnResources: (state) => (state.fetchLearnResourcesProcess.value?.data ?? []) as LearnResource[],
         getSelectedCategory: (state) => state.selectedCategory.value as LearnCategory,
     },
 })

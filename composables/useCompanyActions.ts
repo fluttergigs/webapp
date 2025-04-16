@@ -40,7 +40,7 @@ export default function useCompanyActions() {
     };
 
     const shareCompany = async ({slug}: Company) => {
-        const {text, copy, copied} = useClipboard({
+        const {copy} = useClipboard({
             source: `${location.href}/companies/${slug}`,
             legacy: true,
         });
@@ -109,7 +109,7 @@ export default function useCompanyActions() {
                         click: () =>
                             navigateTo(
                                 AppRoutes.jobDetail(
-                                    jobStore.jobCreation.value.data.attributes.slug
+                                    jobStore.jobCreation.value.slug
                                 )
                             ),
                     },
@@ -208,8 +208,7 @@ export default function useCompanyActions() {
             <string>companyStore.companyCreation.message
         );
 
-        useUser().getUser()
-        navigateTo(AppRoutes.myCompany);
+        return navigateTo(AppRoutes.myCompany);
     };
     const fetchCompaniesJob = async (companyId: number) => {
         const {$http} = useNuxtApp();

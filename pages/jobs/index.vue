@@ -54,6 +54,7 @@ import {AnalyticsEvent} from "~/services/analytics/events";
 import {storeToRefs} from "pinia";
 import {useJobStore} from "~/stores/job";
 import {useMediaQuery} from "@vueuse/core";
+import {useUserStore} from "~/stores/user";
 
 definePageMeta({
   layout: "main-layout",
@@ -77,8 +78,10 @@ const {filteredJobs, jobFiltersResponse} = storeToRefs(useJobStore());
 
 const isMediumScreen = useMediaQuery("(min-width: 768px)");
 
-onMounted(() => {
+onMounted(async () => {
   $analytics.capture(AnalyticsEvent.findJobOfferPageEntered);
+
+  await useUserStore().fetchBookmarkedJobOffers()
 });
 </script>
 

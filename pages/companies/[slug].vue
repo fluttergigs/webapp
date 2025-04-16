@@ -39,13 +39,7 @@ const {data: company, error, status} = await useLazyFetch(
     `${useRuntimeConfig().public.apiBaseUrl}${Endpoint.companies}?${query.value}`,
     {
       key: companySlug.value,
-      transform: (results) => {
-        const company = results.data[0];
-        return {
-          ...company[`attributes`],
-          id: company["id"],
-        } as Company;
-      },
+      transform: (results) => results.data[0],
     }
 );
 

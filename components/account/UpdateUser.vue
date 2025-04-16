@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 
 import LoadingSpinnerIcon from "~/components/icons/LoadingSpinnerIcon.vue";
 import CustomInput from "~/components/forms/CustomInput.vue";
@@ -47,21 +47,21 @@ const submit = async () => {
 
   <form class="flex flex-col space-y-4 my-12 mr-8">
     <div class="block mb-5">
-      <CustomInput name="username" :is-disabled="true" label="Username"
-                   v-model="formInput.username" type="text"/>
+      <CustomInput v-model="formInput.username" :is-disabled="true" label="Username"
+                   name="username" type="text"/>
     </div>
     <div class="flex space-x-4 mb-5 w-full">
-      <CustomInput class="w-1/2" name="firstName" label="First name"
-                   v-model="formInput.firstName"/>
-      <CustomInput class="w-1/2" name="lastName" label="Last name" v-model="formInput.lastName"/>
+      <CustomInput v-model="formInput.firstName" class="w-full" label="First name"
+                   name="firstName"/>
+      <CustomInput v-model="formInput.lastName" class="w-full" label="Last name" name="lastName"/>
     </div>
     <div class="block mb-5">
-      <CustomInput name="email" :is-disabled="true" label="Email" v-model="formInput.email"
+      <CustomInput v-model="formInput.email" :is-disabled="true" label="Email" name="email"
                    type="email"/>
     </div>
     <div class="block mb-5">
-      <CustomInput :is-text-area="true" name="bio" label="Bio" placeholder="Your bio tells about yourself"
-                   v-model="formInput.bio"
+      <CustomInput v-model="formInput.bio" :is-text-area="true" label="Bio" name="bio"
+                   placeholder="Your bio tells about yourself"
                    type="text"/>
     </div>
 

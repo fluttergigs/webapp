@@ -1,15 +1,12 @@
 <script setup>
 import {useJobStore} from "~/stores/job";
-import {storeToRefs} from "pinia";
 import {Endpoint} from "~/core/network/endpoints";
-import {extractCompanyFromJob} from "~/features/jobs/transformers";
 import {AnalyticsEvent} from "~/services/analytics/events";
 import {userFacingCompanySize} from "~/features/companies/transformers";
 import {AppRoutes} from "~/core/routes";
 import useJobActions from "@/composables/useJobActions";
 import {Direction} from "~/core/shared/types";
 import CompanyInfoCard from "~/components/company/CompanyInfoCard.vue";
-import {stringify} from "qs";
 import WorkingPermits from "~/components/job/WorkingPermits.vue";
 import SaveJobIconButton from "~/components/job/SaveJobIconButton.vue";
 import {marked} from "marked";
@@ -22,40 +19,17 @@ definePageMeta({
 });
 
 const {$analytics} = useNuxtApp();
-const {currentViewedJob} = storeToRefs(useJobStore());
-const company = computed(() => ({
-  ...extractCompanyFromJob(jobOffer.value),
-}));
+const company = computed(() => jobOffer.value.company);
 const jobSlug = ref(useRoute().params.slug);
 
 const {data: countriesData, error: countriesError} = await useCountries();
 const {jobWorkingPermits} = useJobActions();
 
-const query = ref(
-    stringify(
-        {
-          populate: "*",
-          filters: {
-            slug: {
-              $eq: jobSlug.value,
-            },
-          },
-        },
-        {encodeValuesOnly: true}
-    )
-);
-
 const {data: jobOffer, error, status} = await useLazyFetch(
-    `${useRuntimeConfig().public.apiBaseUrl}${Endpoint.jobOffers}?${query.value}`,
+    `${useRuntimeConfig().public.apiBaseUrl}${Endpoint.jobOffersBySlug(jobSlug.value)}`,
     {
       key: jobSlug.value,
-      transform: (results) => {
-        const job = results.data[0];
-        return {
-          ...job[`attributes`],
-          id: job["id"],
-        };
-      },
+      transform: (result) => result.data,
       pending: false,
     },
 );
@@ -74,10 +48,6 @@ definePageMeta({
   title: `FlutterGis job opportunities`,
 });
 
-const ogImageUrl = computed(() =>
-    `/api/generate_job_offer_og_image?title=${jobOffer.value?.title}&companyName=${company.value?.name}&companyLogo=${company.value?.logo}`);
-
-// const ogImageUrl = `/api/payment`;
 
 useSeoMeta({
   title: () => `Flutter Gigs - ${jobOffer.value?.title}`,

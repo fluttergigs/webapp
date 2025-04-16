@@ -1,25 +1,21 @@
 <script lang="ts" setup>
 import ArrowBackIcon from "~/components/icons/ArrowBackIcon.vue";
-import {
-  extractCompanyFromJob,
-  userFacingRemoteOptions,
-  userFacingWorkType,
-} from "~/features/jobs/transformers";
-import { AppRoutes } from "~/core/routes";
-import { userFacingCompanySize } from "~/features/companies/transformers";
+import {userFacingRemoteOptions, userFacingWorkType,} from "~/features/jobs/transformers";
+import {AppRoutes} from "~/core/routes";
+import {userFacingCompanySize} from "~/features/companies/transformers";
 import useJobActions from "~/composables/useJobActions";
 
-import type { JobOffer } from "~/features/jobs/job.types";
-import { RemoteOptions } from "~/features/jobs/job.types";
+import type {JobOffer} from "~/features/jobs/job.types";
+import {RemoteOptions} from "~/features/jobs/job.types";
 import WorkingPermits from "~/components/job/WorkingPermits.vue";
 import SaveJobIconButton from "~/components/job/SaveJobIconButton.vue";
 //@ts-ignore
-import { XCircleIcon } from "@heroicons/vue/24/outline";
+import {XCircleIcon} from "@heroicons/vue/24/outline";
 import ConfirmJobDeleteModal from "~/components/job/ConfirmJobDeleteModal.vue";
 import JobSalaryBox from "~/components/job/JobSalaryBox.vue";
 
-const { data, error } = await useCountries();
-const { jobWorkingPermits } = useJobActions();
+const {data, error} = await useCountries();
+const {jobWorkingPermits} = useJobActions();
 
 const modal = useModal();
 //@ts-ignore
@@ -32,7 +28,7 @@ const props = defineProps({
 const isJobSidePanelOpen = ref(false);
 
 const company = computed(() => ({
-  ...extractCompanyFromJob(props.job),
+  ...props.job.company,
 }));
 
 const isActionItemsOpen = ref(false);
@@ -96,35 +92,35 @@ const jobActionItems = [
 <!--TODO remove deleted job offer from saved jobs-->
 <template>
   <!--  @click.stop="useJobActions().viewDetails(props.job)"-->
-  <div class="relative" @click.self.prevent>
+  <div class="relative cursor-pointer" @click.self.prevent>
     <div
-      v-if="useJobActions().jobBelongsToCompany(company)"
-      class="absolute right-[29px] top-[12px]"
-      @click.self.capture="toggleJobActionItems"
+        v-if="useJobActions().jobBelongsToCompany(company)"
+        class="absolute right-[29px] top-[12px]"
+        @click.self.capture="toggleJobActionItems"
     >
       <UDropdown
-        v-model:open="isActionItemsOpen"
-        :items="jobActionItems"
-        :popper="{ placement: 'bottom-start' }"
+          v-model:open="isActionItemsOpen"
+          :items="jobActionItems"
+          :popper="{ placement: 'bottom-start' }"
       >
         <div class="flex items-center justify-center">
-          <UIcon class="ml-5 text-2xl" name="i-heroicons-ellipsis-horizontal" />
+          <UIcon class="ml-5 text-2xl" name="i-heroicons-ellipsis-horizontal"/>
         </div>
       </UDropdown>
     </div>
 
     <UCard
-      :class="[
+        :class="[
         'cursor-pointer transition-all duration-300 ease-in-out',
         useJobActions().jobBelongsToCompany(company)
           ? ''
           : 'hover:translate-x-1.5',
       ]"
-      @click="useJobActions().viewDetails(props.job)"
+        @click="useJobActions().viewDetails(props.job)"
     >
       <div class="relative flex items-center justify-between">
         <div class="absolute bottom-[-20px] right-[3.5px]">
-          <SaveJobIconButton :company="company" :job="job" />
+          <SaveJobIconButton :company="company" :job="job"/>
         </div>
         <div class="flex flex-grow flex-col space-y-1.5">
           <div class="flex w-full justify-between">
@@ -134,14 +130,14 @@ const jobActionItems = [
           </div>
           <div class="flex space-x-3 text-sm">
             <h4
-              class="text-sm font-medium text-gray-900"
-              @click="() => navigateTo(AppRoutes.companyPage(company.slug))"
+                class="text-sm font-medium text-gray-900"
+                @click="() => navigateTo(AppRoutes.companyPage(company.slug))"
             >
               {{ company?.name }}
             </h4>
 
             <div class="flex items-center space-x-1">
-              <UIcon class="text-gray-600" name="i-heroicons-user-group" />
+              <UIcon class="text-gray-600" name="i-heroicons-user-group"/>
               <span class="font-medium text-black">
                 {{ userFacingCompanySize(company?.size) }}
               </span>
@@ -151,33 +147,33 @@ const jobActionItems = [
           <!--        options-->
           <div class="flex items-center space-x-3 text-sm">
             <WorkingPermits
-              :countries="jobWorkingPermits(data?.countries??[], job as JobOffer)"
+                :countries="jobWorkingPermits(data?.countries??[], job as JobOffer)"
             />
 
             <span
-              class="rounded-full border border-gray-500/30 px-3 py-0.5 text-xs"
+                class="rounded-full border border-gray-500/30 px-3 py-0.5 text-xs"
             >
               {{ userFacingRemoteOptions(job?.remoteOptions as RemoteOptions) }}
             </span>
 
             <!--            <span>•</span>-->
             <span
-              class="rounded-full border border-gray-500/30 px-3 py-0.5 text-xs"
+                class="rounded-full border border-gray-500/30 px-3 py-0.5 text-xs"
             >
               {{ userFacingWorkType(job?.workType) }}
             </span>
 
             <!--            <span>•</span>-->
 
-            <JobSalaryBox :job="job" />
+            <JobSalaryBox :job="job"/>
           </div>
         </div>
         <div class="flex flex-col">
           <div
-            class="flex h-8 w-8 cursor-pointer items-center justify-center self-end justify-self-end rounded-full bg-indigo-600"
-            @click.capture.stop="isJobSidePanelOpen = true"
+              class="flex h-8 w-8 cursor-pointer items-center justify-center self-end justify-self-end rounded-full bg-indigo-600"
+              @click.capture.stop="isJobSidePanelOpen = true"
           >
-            <ArrowBackIcon class="h-3 rotate-180 text-white shadow-lg" />
+            <ArrowBackIcon class="h-3 rotate-180 text-white shadow-lg"/>
           </div>
         </div>
       </div>
@@ -185,17 +181,17 @@ const jobActionItems = [
   </div>
 
   <USlideover
-    v-model="isJobSidePanelOpen"
-    :ui="{ overlay: { background: 'bg-gray-200/60 dark:bg-gray-800/75' } }"
+      v-model="isJobSidePanelOpen"
+      :ui="{ overlay: { background: 'bg-gray-200/60 dark:bg-gray-800/75' } }"
   >
     <div class="relative p-4">
       <XCircleIcon
-        class="absolute right-4 top-2 w-8 cursor-pointer text-blueGray-900"
-        @click="isJobSidePanelOpen = false"
+          class="absolute right-4 top-2 w-8 cursor-pointer text-blueGray-900"
+          @click="isJobSidePanelOpen = false"
       />
 
       <div class="my-4 flex-1 p-4">
-        <JobDetailsCard :job="job" />
+        <JobDetailsCard :job="job"/>
       </div>
     </div>
   </USlideover>

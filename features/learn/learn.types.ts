@@ -13,6 +13,7 @@ export interface LearnCategory {
     id: number,
     title: string,
     description: string,
+    slug: string,
     resources: LearnResource[]
 }
 

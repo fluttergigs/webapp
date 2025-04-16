@@ -32,7 +32,7 @@ export function useLearn() {
 
     const getSelectedCategoryResources = computed(() => {
         if (getSelectedCategory.value) {
-            return getLearnResources.value?.filter(resource => resource.category.data['attributes']['slug'] === getSelectedCategory.value.slug)
+            return getLearnResources.value?.filter(resource => resource.category.slug === getSelectedCategory.value.slug)
         }
         return []
     })

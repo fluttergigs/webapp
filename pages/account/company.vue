@@ -15,18 +15,18 @@
 
         <form class="flex flex-col space-y-6 my-12 mr-8">
           <div class="flex space-x-4 mb-5 w-full">
-            <CustomInput v-model="formInput.name" class="w-1/2" label="Company name" name="name"
+            <CustomInput v-model="formInput.name" class="w-full" label="Company name" name="name"
                          placeholder="Name"/>
-            <CustomInput v-model="formInput.email" :is-disabled="true" class="w-1/2" label="Email" name="email"
+            <CustomInput v-model="formInput.email" :is-disabled="true" class="w-full" label="Email" name="email"
                          type="email"/>
           </div>
           <div class="block mb-5">
             <CustomInput v-model="formInput.website" label="Website" name="url" placeholder="Website"/>
           </div>
           <div class="flex space-x-4 mb-5 w-full">
-            <CustomInput v-model="formInput.linkedin" class="w-1/2" label="Linkedin"
+            <CustomInput v-model="formInput.linkedin" class="w-full" label="Linkedin"
                          name="url"/>
-            <CustomInput v-model="formInput.twitter" class="w-1/2" label="Twitter"
+            <CustomInput v-model="formInput.twitter" class="w-full" label="Twitter"
                          name="url"/>
           </div>
           <div class="block mb-5">
@@ -106,7 +106,7 @@ const {$analytics, $toast} = useNuxtApp()
 
 const formInput = ref({
   email: userStore.myCompany?.email ?? userStore.authUser?.email,
-  user: authStore.authUser?.id,
+  // user: authStore.authUser?.id,
   name: userStore.myCompany?.name,
   website: userStore.myCompany?.website,
   logo: userStore.myCompany?.logo,
@@ -123,8 +123,10 @@ watch(formInput, async () => {
 
 }, {deep: true, immediate: true},)
 
-onMounted(() => {
+onMounted(async () => {
   (<AppAnalyticsProvider>$analytics).capture(AnalyticsEvent.companyUpdatePageEntered);
+
+  await useUser().getUser()
 })
 
 const submit = async () => {

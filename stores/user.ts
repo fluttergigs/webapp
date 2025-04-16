@@ -13,7 +13,6 @@ import isBefore from "date-fns/isBefore";
 import parseISO from "date-fns/parseISO";
 // @ts-ignore
 import isAfter from "date-fns/isAfter";
-import {stringify} from "qs";
 import {useAuthStore} from "~/stores/auth";
 
 //@ts-ignore
@@ -53,23 +52,10 @@ export const useUserStore = defineStore('user', {
 
         async fetchBookmarkedJobOffers(): Promise<void> {
             try {
-                const query = stringify({
-                    populate: ['jobOffer.company', 'user'],
-                    filters: {
-                        user: {
-                            id: {
-                                $eq: useAuthStore().authUser?.id!,
-                            }
-                        },
-                    },
-                    sort: 'createdAt:desc',
-                }, {
-                    encodeValuesOnly: true,
-                })
                 // @ts-ignore
                 this.bookmarkedJobsListResponse = new Wrapper<MultiApiResponse<BookmarkedJobOffer>>().toLoading()
                 const {$http} = useNuxtApp()
-                const response = await (<HttpClient>$http).get(`${Endpoint.bookmarkedJobOffers}?${query}`)
+                const response = await (<HttpClient>$http).get(`${Endpoint.bookmarkedJobOffers}`)
                 // @ts-ignore
                 this.bookmarkedJobsListResponse = this.bookmarkedJobsListResponse.toSuccess(response)
             } catch (e) {
@@ -81,13 +67,7 @@ export const useUserStore = defineStore('user', {
     getters: {
         activeBookmarkedJobs: state => useUserStore().bookmarkedJobs?.filter((job: JobOffer) => isAfter(parseISO(job.applyBefore), new Date())),
 
-        bookmarkedJobs(state): JobOffer[] {
-            return state.bookmarkedJobsListResponse?.value?.data?.map((savedJob: any) => ({
-                ...savedJob.attributes.jobOffer.data?.attributes,
-                id: savedJob.attributes.jobOffer.data?.id,
-                bookmarkedJob: savedJob.id,
-            })).filter((job: { id: any; })=> !!job.id);
-        },
+        bookmarkedJobs: (state) => state.bookmarkedJobsListResponse?.value?.data ?? [],
 
         companies: state => useAuthStore().authUser?.companies ?? [],
 

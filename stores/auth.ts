@@ -135,6 +135,7 @@ export const useAuthStore = defineStore("auth", {
                 (<ErrorTrackerProvider>$errorTracker).setUser(null);
                 await (<AuthProvider>$auth).logout();
                 this.user = new Wrapper().toInitial();
+                this.setReturnUrl('')
                 this.setToken("");
                 await useRouter().push({path: AppRoutes.login});
             } catch (error) {

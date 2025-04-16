@@ -29,7 +29,7 @@ const props = defineProps({
 
         <div v-if="useBreakpoints(breakpointsTailwind).isSmallerOrEqual('md')"
              class="visible md:invisible">
-          {{ company.jobOffers.data.length }} jobs
+          {{ company.jobOffers.length }} jobs
         </div>
       </div>
 
@@ -46,7 +46,7 @@ const props = defineProps({
         <p class="line-clamp-[10] overflow-ellipsis">{{ company.description }}</p>
       </div>
 
-      <div class="invisible md:visible">{{ company.jobOffers.data.length }} jobs</div>
+      <div class="invisible md:visible">{{ company.jobOffers.length }} jobs</div>
     </div>
   </UCard>
 
