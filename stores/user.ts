@@ -78,5 +78,22 @@ export const useUserStore = defineStore('user', {
         hasCompanies: (state) => (useUserStore().companies.length > 0),
 
         myCompany: (state) => useUserStore().hasCompanies ? useUserStore().companies[0] : null,
+
+
+        educations: (state) => {
+            const educations = useUserStore().authUser?.educations ?? []
+            return educations.filter((education: {
+                endDate: string
+            }) => isAfter(parseISO(education.endDate), new Date()))
+        },
+        hasEducations: (state) => useUserStore().educations.length > 0,
+        employments: (state) => {
+            const employments = useUserStore().authUser?.employments ?? []
+            return employments.filter((employment: {
+                endDate: string
+            }) => isAfter(parseISO(employment.endDate), new Date()))
+        },
+        hasEmployments: (state) => useUserStore().employments.length > 0,
+
     },
 })
