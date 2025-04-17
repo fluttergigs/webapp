@@ -28,6 +28,7 @@ export const enum AnalyticsEvent {
     companyUpdateButtonClicked = "company_update_button_clicked",
     successfulCompanyUpdate = "successful_company_update",
     userAccountPageEntered = "user_account_page_entered",
+    consultantProfilePageEntered = "consultant_profile_page_entered",
     myJobsPageEntered = "my_jobs_page_entered",
     mySavedJobsPageEntered = "my_saved_jobs_page_entered",
     userUpdateButtonClicked = "user_update_button_clicked",

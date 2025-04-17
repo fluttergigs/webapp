@@ -20,6 +20,7 @@ export class AppRoutes {
     static createCompany = '/companies/create'
     static privacy = '/privacy';
     static terms = '/terms';
+    static consultantProfile = '/account/consultant-profile'
 
     static resetPassword = '/auth/reset-password'
     static forgotPassword = '/auth/forgot-password'

@@ -4,14 +4,14 @@
     <div
         :class="[
         'navbar-menu relative z-50 flex h-full w-full flex-col transition-all ease-in',
-        isAppBarShrunk ? 'max-w-[70px]' : 'max-w-[240px]',
+        isAppBarShrunk ? 'max-w-[70px]' : 'max-w-[260px]',
       ]"
     >
       <!--      <div class="navbar-backdrop fixed xl:hidden inset-0 bg-blueGray-50 opacity-10"></div>-->
       <div
           :class="[
           'fixed inset-0 flex h-full flex-col items-center border-r bg-blueGray-50 transition-all duration-200 ease-in',
-          isAppBarShrunk ? 'max-w-[70px]' : 'max-w-[240px]',
+          isAppBarShrunk ? 'max-w-[70px]' : 'max-w-[260px]',
         ]"
       >
         <!--        App Logo and menu toggle-->
@@ -42,7 +42,7 @@
           <div class="-m-2.5 mb-8 flex flex-col flex-wrap space-y-3 px-7">
             <div
                 v-for="(linkItems, section, sectionIndex) in groupedLinks"
-                class="my-3"
+                class="my-2"
             >
               <p
                   v-if="!!section && !isAppBarShrunk"
@@ -76,7 +76,7 @@
                       >
                         <component
                             :is="link.icon"
-                            :class="['h-5 w-5 text-gray-600']"
+                            :class="['h-6 w-6 text-gray-600']"
                         />
                         <p
                             v-if="!isAppBarShrunk"
@@ -127,10 +127,11 @@ import {
   ArrowsPointingInIcon,
   BriefcaseIcon,
   BuildingOffice2Icon,
+  CogIcon,
   MegaphoneIcon,
   StarIcon,
   UserIcon,
-} from "@heroicons/vue/24/outline";
+} from "@heroicons/vue/24/solid";
 import {AppRoutes} from "~/core/routes";
 import {useCompanyStore} from "~/stores/company";
 import {useSettingStore} from "~/stores/setting";
@@ -150,6 +151,12 @@ const links = [
     path: '/dashboard',
     name: 'Dashboard'
   },*/
+  {
+    icon: UserIcon,
+    path: AppRoutes.consultantProfile,
+    section: "user",
+    name: "My Profile",
+  },
   {
     icon: BuildingOffice2Icon,
     path: AppRoutes.myCompany,
@@ -175,7 +182,7 @@ const links = [
     name: "Saved Jobs",
   },
   {
-    icon: UserIcon,
+    icon: CogIcon,
     section: "user",
     path: AppRoutes.myAccount,
     name: "User Settings",

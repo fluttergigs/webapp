@@ -234,7 +234,13 @@ const isActive = (path: string) => useRoute().path === path;
 const accountLinks = [
   [
     {
-      label: "User Profile",
+      label: "Profile",
+      click: () => {
+        navigateTo(AppRoutes.consultantProfile);
+      },
+    },
+    {
+      label: "Account",
       click: () => {
         navigateTo(AppRoutes.myAccount);
       },

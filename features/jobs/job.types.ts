@@ -71,7 +71,8 @@ export enum WorkType {
     partTime = 'part-time',
     freelance = 'freelance',
     contract = 'contract',
-    internship = 'internship'
+    internship = 'internship',
+    selfEmployed = 'self-employed',
 }
 
 export interface JobSearchFilters {

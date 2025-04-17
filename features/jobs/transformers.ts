@@ -1,5 +1,4 @@
-import {JobOffer, RemoteOptions, SeniorityLevel, WorkType} from "~/features/jobs/job.types";
-import type {Company, CompanyApiResponse} from "~/features/companies/company.types";
+import {RemoteOptions, SeniorityLevel, WorkType} from "~/features/jobs/job.types";
 
 export function userFacingWorkType(workType: WorkType) {
     switch (workType) {
@@ -13,6 +12,8 @@ export function userFacingWorkType(workType: WorkType) {
             return 'Internship';
         case WorkType.partTime:
             return 'Part time'
+        case WorkType.selfEmployed:
+            return 'Self employed';
         default:
             return WorkType.fullTime;
     }
@@ -45,8 +46,3 @@ export function userFacingSeniorityLevel(level: SeniorityLevel) {
             return SeniorityLevel.medium;
     }
 }
-
-export const extractCompanyFromJob = (job: JobOffer) => <Company>({
-    ...(job?.company as CompanyApiResponse)?.data['attributes'],
-    id: (job?.company as CompanyApiResponse)?.data['id']
-});
