@@ -5,12 +5,12 @@
 
   <main>
 
-    <JobDescriptionGenerationModal @successful-generation="successfulGeneration"/>
+    <JobDescriptionGenerationModal @successful-generation="successfulGeneration" />
     <section class="py-8 px-2 md:py-12 xl:pb-56 bg-white overflow-hidden w-full">
       <div class="font-normal flex flex-col my-4 gap-x-16 md:flex-row">
         <div class="flex flex-col gap-y-8 xl:mx-auto w-full">
           <h3
-              class="mb-4 text-2xl md:text-4xl font-semibold tracking-px-n leading-tight">
+            class="mb-4 text-2xl md:text-4xl font-semibold tracking-px-n leading-tight">
             Edit your job
           </h3>
 
@@ -18,7 +18,7 @@
             <CustomInput v-model="jobEditData.title" is-disabled
                          label="Job title *"
                          name="jobTitle"
-                         placeholder="eg. Senior Flutter Engineer" type="text"/>
+                         placeholder="eg. Senior Flutter Engineer" type="text" />
 
 
             <!--          <LabelledInput label="Job Description *">
@@ -31,21 +31,21 @@
                          :is-text-area="true"
                          inside-text="Generate description using AI 🚀"
                          label="Job description *"
-                         name="description" @inside-text-clicked="jobStore.showJobDescriptionGenerationModal()"/>
+                         name="description" @inside-text-clicked="jobStore.showJobDescriptionGenerationModal()" />
 
             <div class="flex space-x-3">
               <!--          job type-->
               <div class="flex flex-col space-y-2 w-full">
                 <LabelledInput label="Job type *">
                   <USelectMenu
-                      v-model="jobEditData.workType"
-                      :options="workTypeOptions"
-                      clear-search-on-close
-                      option-attribute="label"
-                      placeholder="Select a work type option"
-                      searchable
-                      size="lg"
-                      value-attribute="id"
+                    v-model="jobEditData.workType"
+                    :options="workTypeOptions"
+                    clear-search-on-close
+                    option-attribute="label"
+                    placeholder="Select a work type option"
+                    searchable
+                    size="lg"
+                    value-attribute="id"
                   />
                 </LabelledInput>
               </div>
@@ -54,14 +54,14 @@
               <div class="flex flex-col space-y-2 w-full">
                 <LabelledInput label="Seniority level *">
                   <USelectMenu
-                      v-model="jobEditData.seniorityLevel"
-                      :options="seniorityLevelOptions"
-                      clear-search-on-close
-                      option-attribute="label"
-                      placeholder="Select a seniority level"
-                      searchable
-                      size="lg"
-                      value-attribute="id"
+                    v-model="jobEditData.seniorityLevel"
+                    :options="seniorityLevelOptions"
+                    clear-search-on-close
+                    option-attribute="label"
+                    placeholder="Select a seniority level"
+                    searchable
+                    size="lg"
+                    value-attribute="id"
                   />
                 </LabelledInput>
               </div>
@@ -70,14 +70,14 @@
             <div class="flex flex-col space-y-2">
               <LabelledInput label="Remote options *">
                 <USelectMenu
-                    v-model="jobEditData.remoteOptions"
-                    :options="remoteOptions"
-                    clear-search-on-close
-                    option-attribute="label"
-                    placeholder="Select your remote options"
-                    searchable
-                    size="lg"
-                    value-attribute="id"
+                  v-model="jobEditData.remoteOptions"
+                  :options="remoteOptions"
+                  clear-search-on-close
+                  option-attribute="label"
+                  placeholder="Select your remote options"
+                  searchable
+                  size="lg"
+                  value-attribute="id"
                 />
               </LabelledInput>
             </div>
@@ -89,7 +89,7 @@
                                :show-label="false" class="w-full"
                                label="From" name="amount"
                                placeholder="2000"
-                               @keydown="checkDigit"/>
+                               @keydown="checkDigit" />
 
                   <span class="self-baseline">-</span>
 
@@ -97,7 +97,7 @@
                                class="w-full"
                                label="From" name="amount"
                                placeholder="8000"
-                               @keydown="checkDigit"/>
+                               @keydown="checkDigit" />
                 </div>
               </LabelledInput>
             </div>
@@ -107,11 +107,11 @@
               <UPopover :popper="{ placement: 'bottom-start' }">
                 <UButton :label="format(new Date(jobEditData.applyBefore), 'd MMM, yyy')" class="w-full" color="white"
                          icon="i-heroicons-calendar-days-20-solid"
-                         size="xl"/>
+                         size="xl" />
 
                 <template #panel="{ close }">
                   <DatePicker v-model="jobEditData.applyBefore" :min-date="new Date()"
-                              color="indigo" @close="close"/>
+                              color="indigo" @close="close" />
                 </template>
               </UPopover>
             </LabelledInput>
@@ -120,13 +120,13 @@
               <div class="space-y-4">
                 <URadio v-model="hasWorkPermit"
                         :ui="{label: 'text-sm font-medium text-black'}" :value="false"
-                        label="No working permits required"/>
+                        label="No working permits required" />
 
                 <div class="space-y-3">
                   <URadio v-model="hasWorkPermit"
                           :ui="{label: 'text-sm font-medium text-black'}" :value="true"
-                          label="Must be eligible to work in"/>
-                  <WorkPermitSelector @selected-countries="getSelectedCountries"/>
+                          label="Must be eligible to work in" />
+                  <WorkPermitSelector @selected-countries="getSelectedCountries" />
                 </div>
               </div>
             </LabelledInput>
@@ -136,7 +136,7 @@
                          inside-text="Enter an email or application link."
                          label="Application method *"
                          name="url"
-                         placeholder="eg. https://fluttergigs.com/apply"/>
+                         placeholder="eg. https://fluttergigs.com/apply" />
 
             <UButton :disabled="!isSubmitButtonEnabled"
                      :loading="jobEdit.isLoading"
@@ -144,7 +144,7 @@
                      color="indigo"
                      label="Save changes"
                      size="xl"
-                     @click="()=>editJobOffer(jobEditData)"/>
+                     @click="()=>editJobOffer(jobEditData)" />
           </form>
         </div>
 
@@ -152,7 +152,7 @@
           <div class="flex flex-col h-full w-full relative">
             <JobCreationPreview :is-cta-visible="false"
                                 :job="jobEditData"
-                                :work-permit-countries="workPermits"/>
+                                :work-permit-countries="workPermits" />
           </div>
         </div>
       </div>
@@ -161,88 +161,88 @@
 </template>
 
 <script setup>
-import {storeToRefs} from "pinia";
-import {useJobStore} from "~/stores/job";
-import CustomInput from "~/components/forms/CustomInput.vue";
-import {remoteOptions, seniorityLevelOptions, workTypeOptions} from "~/core/constants";
-import {checkDigit} from "~/core/utils";
-import 'v-calendar/dist/style.css'
-import {format} from "date-fns";
-import {DatePicker} from "v-calendar";
-import LabelledInput from "~/components/forms/LabelledInput.vue";
-import JobDescriptionGenerationModal from "~/components/job/JobDescriptionGenerationModal.vue";
-import WorkPermitSelector from "~/components/job/WorkPermitSelector.vue";
-import {logDev} from "~/core/helpers/log";
-import {AnalyticsEvent} from "~/services/analytics/events";
-import {editJobFormSchema,} from "~/core/validations/job.validations";
-import useCompanyActions from "~/composables/useCompanyActions";
-import useJobActions from "~/composables/useJobActions";
+  import { storeToRefs } from 'pinia';
+  import { useJobStore } from '~/stores/job';
+  import CustomInput from '~/components/forms/CustomInput.vue';
+  import { remoteOptions, seniorityLevelOptions, workTypeOptions } from '~/core/constants';
+  import { checkDigit } from '~/core/utils';
+  import 'v-calendar/dist/style.css';
+  import { format } from 'date-fns';
+  import { DatePicker } from 'v-calendar';
+  import LabelledInput from '~/components/forms/LabelledInput.vue';
+  import JobDescriptionGenerationModal from '~/components/job/JobDescriptionGenerationModal.vue';
+  import WorkPermitSelector from '~/components/job/WorkPermitSelector.vue';
+  import { logDev } from '~/core/helpers/log';
+  import { AnalyticsEvent } from '~/services/analytics/events';
+  import { editJobFormSchema } from '~/core/validations/job.validations';
+  import useCompanyActions from '~/composables/useCompanyActions';
+  import useJobActions from '~/composables/useJobActions';
 
-definePageMeta({
-  layout: 'app-layout',
-  middleware: ['auth', 'no-company'],
-  function() {
-    if (!useJobActions().jobBelongsToCompany(useJobStore().jobEditData.company)) {
-      return abortNavigation()
+  definePageMeta({
+    layout: 'app-layout',
+    middleware: ['auth', 'no-company'],
+    function() {
+      if (!useJobActions().jobBelongsToCompany(useJobStore().jobEditData.company)) {
+        return abortNavigation();
+      }
+    },
+  });
+
+
+  const jobStore = useJobStore();
+  const { jobEditData, jobEdit } = storeToRefs(jobStore);
+
+  const hasWorkPermit = ref(false);
+  const workPermits = ref([]);
+  const { $analytics } = useNuxtApp();
+  const canEditJob = ref(false);
+  const { editJobOffer } = useCompanyActions();
+
+  onMounted(() => {
+    ($analytics).capture(AnalyticsEvent.jobEditPageEntered);
+    useHead({ title: `Flutter Gigs - Edit your job offer: ${jobEditData?.value?.title}` });
+
+  });
+
+  watch(jobEditData, async () => {
+    canEditJob.value = await editJobFormSchema.isValid(jobEditData.value);
+  }, { deep: true, immediate: true });
+
+  const isSubmitButtonEnabled = computed(() => {
+    const canSubmit = canEditJob.value && !jobEdit.value.isLoading;
+    return (hasWorkPermit.value && workPermits.value.length === 0) ? false : canSubmit;
+  });
+
+  watch(jobEditData, () => {
+    if (jobEditData.value.salaryTo == '') {
+      jobEditData.value.salaryTo = 1;
     }
-  },
-})
 
+    if (jobEditData.value.salaryFrom == '') {
+      jobEditData.value.salaryFrom = 1;
+    }
+  }, { deep: true });
 
-const jobStore = useJobStore()
-const {jobEditData, jobEdit} = storeToRefs(jobStore)
+  watch(hasWorkPermit, (value) => {
+    if (!value) {
+      jobEditData.value.workPermits = null;
+    }
+  });
 
-const hasWorkPermit = ref(false)
-const workPermits = ref([]);
-const {$analytics} = useNuxtApp()
-const canEditJob = ref(false)
-const {editJobOffer} = useCompanyActions()
+  const getSelectedCountries = (data) => {
+    logDev('SELECTED COUNTRIES POST', data);
 
-onMounted(() => {
-  ($analytics).capture(AnalyticsEvent.jobEditPageEntered,)
-  useHead({title: `Flutter Gigs - Edit your job offer: ${jobEditData?.value?.title}`,});
+    if (!hasWorkPermit.value) {
+      hasWorkPermit.value = true;
+    }
 
-})
+    workPermits.value = data.countries.map((country) => country);
+    jobEditData.value.workPermits = workPermits.value.map(({ iso }) => iso);
+  };
 
-watch(jobEditData, async () => {
-  canEditJob.value = await editJobFormSchema.isValid(jobEditData.value);
-}, {deep: true, immediate: true},)
-
-const isSubmitButtonEnabled = computed(() => {
-  const canSubmit = canEditJob.value && !jobEdit.value.isLoading;
-  return (hasWorkPermit.value && workPermits.value.length === 0) ? false : canSubmit;
-})
-
-watch(jobEditData, () => {
-  if (jobEditData.value.salaryTo == "") {
-    jobEditData.value.salaryTo = 1
-  }
-
-  if (jobEditData.value.salaryFrom == "") {
-    jobEditData.value.salaryFrom = 1
-  }
-}, {deep: true})
-
-watch(hasWorkPermit, (value) => {
-  if (!value) {
-    jobEditData.value.workPermits = null
-  }
-})
-
-const getSelectedCountries = (data) => {
-  logDev('SELECTED COUNTRIES POST', data)
-
-  if (!hasWorkPermit.value) {
-    hasWorkPermit.value = true;
-  }
-
-  workPermits.value = data.countries.map((country) => country)
-  jobEditData.value.workPermits = workPermits.value.map(({iso}) => iso)
-}
-
-const successfulGeneration = (result) => {
-  jobEditData.value.description = result
-}
+  const successfulGeneration = (result) => {
+    jobEditData.value.description = result;
+  };
 </script>
 
 <style scoped>

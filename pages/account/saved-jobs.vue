@@ -4,7 +4,7 @@
       <section class="py-8 px-2 md:py-12 xl:pb-56 bg-white overflow-hidden">
         <div class="flex justify-between items-center">
           <h3
-              class="mb-4 text-xl md:text-3xl font-semibold tracking-px-n leading-tight">
+            class="mb-4 text-xl md:text-3xl font-semibold tracking-px-n leading-tight">
             Your saved jobs
           </h3>
         </div>
@@ -19,7 +19,7 @@
                                class="my-10">
 
                   <template #cta>
-                    <UButton :to="AppRoutes.jobs" label="Browse available jobs"/>
+                    <UButton :to="AppRoutes.jobs" label="Browse available jobs" />
                   </template>
                 </JobOffersList>
               </div>
@@ -28,7 +28,7 @@
                                :jobs-response="bookmarkedJobsListResponse"
                                class="my-10">
                   <template #cta>
-                    <UButton :to="AppRoutes.jobs" label="Browse available jobs"/>
+                    <UButton :to="AppRoutes.jobs" label="Browse available jobs" />
                   </template>
                 </JobOffersList>
               </div>
@@ -37,7 +37,7 @@
                                :jobs-response="bookmarkedJobsListResponse"
                                class="my-10">
                   <template #cta>
-                    <UButton :to="AppRoutes.jobs" label="Browse available jobs"/>
+                    <UButton :to="AppRoutes.jobs" label="Browse available jobs" />
                   </template>
                 </JobOffersList>
               </div>
@@ -51,43 +51,48 @@
 </template>
 
 <script setup>
-import {useAuthStore} from "~/stores/auth";
-import {storeToRefs} from "pinia";
-import {AnalyticsEvent} from "~/services/analytics/events";
-import {useUserStore} from "~/stores/user";
-import {AppRoutes} from "~/core/routes";
+  import { useAuthStore } from '~/stores/auth';
+  import { storeToRefs } from 'pinia';
+  import { AnalyticsEvent } from '~/services/analytics/events';
+  import { useUserStore } from '~/stores/user';
+  import { AppRoutes } from '~/core/routes';
 
-definePageMeta({layout: 'app-layout', middleware: ['auth']})
+  definePageMeta({ layout: 'app-layout', middleware: ['auth'] });
 
-useHead({title: "FlutterGigs - My saved jobs"});
+  useHead({ title: 'FlutterGigs - My saved jobs' });
 
-const authStore = useAuthStore()
-const userStore = useUserStore()
-const {$analytics} = useNuxtApp()
+  const authStore = useAuthStore();
+  const userStore = useUserStore();
+  const { $analytics } = useNuxtApp();
 
-const tabs = [{
-  key: 'all',
-  label: 'All',
-  description: 'All your saved jobs'
-}, {
-  key: 'active',
-  label: 'Active',
-  description: 'Active saved jobs'
-}, {
-  key: 'expired',
-  label: 'Expired',
-  description: 'Expired saved jobs'
-}]
+  const tabs = [{
+    key: 'all',
+    label: 'All',
+    description: 'All your saved jobs',
+  }, {
+    key: 'active',
+    label: 'Active',
+    description: 'Active saved jobs',
+  }, {
+    key: 'expired',
+    label: 'Expired',
+    description: 'Expired saved jobs',
+  }];
 
-onMounted(() => {
-  $analytics.capture(AnalyticsEvent.mySavedJobsPageEntered);
-})
+  onMounted(() => {
+    $analytics.capture(AnalyticsEvent.mySavedJobsPageEntered);
+  });
 
-onBeforeMount(() => {
-  userStore.fetchBookmarkedJobOffers()
-})
+  onBeforeMount(() => {
+    userStore.fetchBookmarkedJobOffers();
+  });
 
-const {activeBookmarkedJobs, expiredBookmarkedJobs, bookmarkedJobs, bookmarkedJobsListResponse} = storeToRefs(userStore)
+  const {
+    activeBookmarkedJobs,
+    expiredBookmarkedJobs,
+    bookmarkedJobs,
+    bookmarkedJobsListResponse,
+  } = storeToRefs(userStore);
 </script>
 
 <style scoped>

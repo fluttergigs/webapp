@@ -18,8 +18,8 @@
     <section class="py-20 px-10 bg-white">
       <div class="flex flex-col gap-4 overflow-hidden">
         <client-only>
-          <LearnCategories/>
-          <LearnResources/>
+          <LearnCategories />
+          <LearnResources />
         </client-only>
       </div>
     </section>
@@ -29,33 +29,33 @@
 
 <script lang="ts" setup>
 
-import '@/components/landing/Header.vue'
-import type {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider";
-import {AnalyticsEvent} from "~/services/analytics/events";
-import LearnResources from "~/components/learn/resources.vue";
+  import '@/components/landing/Header.vue';
+  import type { AppAnalyticsProvider } from '~/services/analytics/app_analytics_provider';
+  import { AnalyticsEvent } from '~/services/analytics/events';
+  import LearnResources from '~/components/learn/resources.vue';
 
-definePageMeta({
-  layout: 'main-layout',
-  title: 'Find the best resources to advance your Flutter skills',
-})
+  definePageMeta({
+    layout: 'main-layout',
+    title: 'Find the best resources to advance your Flutter skills',
+  });
 
-useSeoMeta({
-  title: 'FlutterGigs - Find the best resources to advance your Flutter skills',
-  description: 'Discover the best resources to hone your skills',
-  ogTitle: 'Find the best resources to advance your Flutter skills',
-  ogDescription: 'Discover the best resources to hone your skills',
-  ogImageUrl: "https://fluttergigs.com/fluttergigs-og-1.png",
-  twitterImage: "https://fluttergigs.com/fluttergigs-og-1.png",
-  twitterCard: 'summary_large_image',
-  ogSiteName: 'Flutter Gigs - The #1 Flutter job platform',
-  twitterSite: '@fluttergigs',
-  twitterTitle: 'Find the best resources to advance your Flutter skills',
-  twitterDescription: 'Discover the best resources to hone your skills',
-})
+  useSeoMeta({
+    title: 'FlutterGigs - Find the best resources to advance your Flutter skills',
+    description: 'Discover the best resources to hone your skills',
+    ogTitle: 'Find the best resources to advance your Flutter skills',
+    ogDescription: 'Discover the best resources to hone your skills',
+    ogImageUrl: 'https://fluttergigs.com/fluttergigs-og-1.png',
+    twitterImage: 'https://fluttergigs.com/fluttergigs-og-1.png',
+    twitterCard: 'summary_large_image',
+    ogSiteName: 'Flutter Gigs - The #1 Flutter job platform',
+    twitterSite: '@fluttergigs',
+    twitterTitle: 'Find the best resources to advance your Flutter skills',
+    twitterDescription: 'Discover the best resources to hone your skills',
+  });
 
-const {$analytics} = useNuxtApp()
+  const { $analytics } = useNuxtApp();
 
-onMounted(() => {
-  ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.learnCategoryPageEntered,);
-})
+  onMounted(() => {
+    ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.learnCategoryPageEntered);
+  });
 </script>

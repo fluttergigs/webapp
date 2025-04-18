@@ -121,12 +121,12 @@
       </div>-->
 
   <div class="relative">
-    <TiptapEditorContent class="custom-input caret-black" :editor="editor"/>
+    <TiptapEditorContent :editor="editor" class="custom-input caret-black" />
 
     <slot name="insideText">
       <div class="absolute right-4 bottom-0.5 transform -translate-y-1/2">
-        <a @click="$emit('insideTextClicked')"
-           class="text-[10px] text-indigo-600 hover:text-indigo-700 font-medium cursor-pointer">{{ insideText }}</a>
+        <a class="text-[10px] text-indigo-600 hover:text-indigo-700 font-medium cursor-pointer"
+           @click="$emit('insideTextClicked')">{{ insideText }}</a>
       </div>
     </slot>
   </div>
@@ -134,32 +134,32 @@
 
 <script setup>
 
-const props = defineProps({
-  insideText: {
-    type: String,
-    default: "",
-  }
-})
+  const props = defineProps({
+    insideText: {
+      type: String,
+      default: '',
+    },
+  });
 
-const emits = defineEmits(['insideTextClicked'])
+  const emits = defineEmits(['insideTextClicked']);
 
-const editor = useEditor({
-  extensions: [
-    TiptapStarterKit.configure({
-      codeBlock: false, //to avoid duplication issues,
-    }),
-  ],
-});
+  const editor = useEditor({
+    extensions: [
+      TiptapStarterKit.configure({
+        codeBlock: false, //to avoid duplication issues,
+      }),
+    ],
+  });
 </script>
 
 <style scoped>
 
-.tiptap *:focus, .tiptap *:focus-within {
-  border: none;
-  outline: none;
-}
+  .tiptap *:focus, .tiptap *:focus-within {
+    border: none;
+    outline: none;
+  }
 
-.ProseMirror-focused {
-  border: none !important;
-}
+  .ProseMirror-focused {
+    border: none !important;
+  }
 </style>

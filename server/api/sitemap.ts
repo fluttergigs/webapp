@@ -1,5 +1,5 @@
 //@ts-ignore
-import {EventHandlerRequest} from "h3";
+import { EventHandlerRequest } from 'h3';
 
 /*
 

@@ -1,16 +1,16 @@
 //@ts-ignore
-import { FetchOptions } from "ofetch";
-import { $fetchInterceptor } from "~/core/network/interceptor";
-import type { HttpClient } from "~/core/network/http_client";
-import { HttpMethod } from "~/core/network/http_client";
+import { FetchOptions } from 'ofetch';
+import { $fetchInterceptor } from '~/core/network/interceptor';
+import type { HttpClient } from '~/core/network/http_client';
+import { HttpMethod } from '~/core/network/http_client';
 
 const headers = {
-  Accept: "*/*",
-  "Access-Control-Allow-Methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Credentials": "true",
-  "Access-Control-Allow-Headers": "*",
-  "Access-Control-Expose-Headers": "*",
+  Accept: '*/*',
+  'Access-Control-Allow-Methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Credentials': 'true',
+  'Access-Control-Allow-Headers': '*',
+  'Access-Control-Expose-Headers': '*',
 };
 //@ts-ignore
 export type Response<T = any> = { data: T; [key: string] };
@@ -54,7 +54,7 @@ export class Fetcher implements HttpClient<Response> {
   async post(
     url: String,
     payload: Record<string, any>,
-    config?: Record<any, any>
+    config?: Record<any, any>,
   ): Promise<Response> {
     return await this.instance(this.baseURL + url, {
       method: HttpMethod.POST,
@@ -66,7 +66,7 @@ export class Fetcher implements HttpClient<Response> {
   async put(
     url: String,
     payload: Record<string, any>,
-    config?: Record<any, any>
+    config?: Record<any, any>,
   ): Promise<Response> {
     return await this.instance(this.baseURL + url, {
       method: HttpMethod.PUT,

@@ -1,18 +1,13 @@
-import type { AvailableFlags } from "~/services/feature-flag/available_flags";
-import type { FeatureFlag } from "~/services/feature-flag/feature_flag";
-import { FeatureFlagProvider } from "~/services/feature-flag/feature_flag_provider";
+import type { FeatureFlag } from '~/services/feature-flag/FeatureFlag';
+import { FeatureFlagProvider } from '~/services/feature-flag/FeatureFlagProvider';
+import type { AvailableFlags } from '~/services/feature-flag/available_flags';
 
 export function useFeatureFlags() {
   const { $featureFlags } = useNuxtApp();
 
-  const isEnabled = (
-    flag: AvailableFlags,
-    defaultValue: boolean = false
-  ): boolean => {
+  const isEnabled = (flag: AvailableFlags, defaultValue: boolean = false): boolean => {
     if (import.meta.client) {
-      return (
-        ($featureFlags as FeatureFlagProvider)?.isEnabled(flag) ?? defaultValue
-      );
+      return ($featureFlags as FeatureFlagProvider)?.isEnabled(flag) ?? defaultValue;
     }
     return false;
   };

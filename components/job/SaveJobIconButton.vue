@@ -1,34 +1,34 @@
 <script lang="ts" setup>
 
-//@ts-ignore
-import {StarIcon} from "@heroicons/vue/24/solid";
-import type {JobOffer} from "~/features/jobs/job.types";
-import type {Company} from "~/features/companies/company.types";
-import useJobActions from "~/composables/useJobActions";
-import {AppStrings} from "~/core/strings";
-import {useUserStore} from "~/stores/user";
+  //@ts-ignore
+  import { StarIcon } from '@heroicons/vue/24/solid';
+  import type { JobOffer } from '~/features/jobs/job.types';
+  import type { Company } from '~/features/companies/company.types';
+  import useJobActions from '~/composables/useJobActions';
+  import { AppStrings } from '~/core/strings';
+  import { useUserStore } from '~/stores/user';
 
-//@ts-ignore
-const props = defineProps({
-  job: {
-    type: Object as PropType<JobOffer>,
-  },
-  company: {
-    type: Object as PropType<Company>
-  }
-})
-
-const {handleJobBookmark, isJobBookmarked} = useJobActions()
-
-const isBookmarked = computed(() => isJobBookmarked(props.job))
-
-const onBookmarkClick = () => {
-  handleJobBookmark(props.job, async () => {
-    if (useUserStore().bookmarkedJobDelete.isSuccess || useUserStore().bookmarkedJobCreation.isSuccess) {
-      await useUserStore().fetchBookmarkedJobOffers()
-    }
+  //@ts-ignore
+  const props = defineProps({
+    job: {
+      type: Object as PropType<JobOffer>,
+    },
+    company: {
+      type: Object as PropType<Company>,
+    },
   });
-}
+
+  const { handleJobBookmark, isJobBookmarked } = useJobActions();
+
+  const isBookmarked = computed(() => isJobBookmarked(props.job));
+
+  const onBookmarkClick = () => {
+    handleJobBookmark(props.job, async () => {
+      if (useUserStore().bookmarkedJobDelete.isSuccess || useUserStore().bookmarkedJobCreation.isSuccess) {
+        await useUserStore().fetchBookmarkedJobOffers();
+      }
+    });
+  };
 </script>
 
 <template>
@@ -38,14 +38,14 @@ const onBookmarkClick = () => {
             :ui="{background: 'bg-gray-900', color: 'text-white'}">
 
     <div v-if="useUserStore().isHandlingBookmark && useUserStore().jobToBookmark === props.job.id">
-      <UButton color="indigo" loading variant="ghost"/>
+      <UButton color="indigo" loading variant="ghost" />
     </div>
     <div v-else :class="['cursor-pointer w-8 h-8 transition-all duration-300 ease-in-out',
          isBookmarked? 'text-yellow-500 hover:text-yellow-400': 'text-gray-300 hover:text-yellow-500']"
          @click.capture.stop="()=> onBookmarkClick()">
 
       <slot name="icon">
-        <StarIcon/>
+        <StarIcon />
       </slot>
     </div>
   </UTooltip>

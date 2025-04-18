@@ -1,4 +1,4 @@
-import {AnalyticsEvent} from "~/services/analytics/events";
+import { AnalyticsEvent } from '~/services/analytics/events';
 
 export abstract class AppAnalytics {
 

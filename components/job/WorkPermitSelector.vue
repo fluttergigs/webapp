@@ -1,29 +1,29 @@
 <script lang="ts" setup>
 
-import type {Country} from "~/core/shared/types";
-import useCountries from "~/composables/useCountries";
+  import type { Country } from '~/core/shared/types';
+  import useCountries from '~/composables/useCountries';
 
-const selected = ref([])
+  const selected = ref([]);
 
-//@ts-ignore
-const props = defineProps({
-  searchPlaceholder: {
-    type: String,
-    default: 'Select the work permit for this job'
-  }
-})
+  //@ts-ignore
+  const props = defineProps({
+    searchPlaceholder: {
+      type: String,
+      default: 'Select the work permit for this job',
+    },
+  });
 
-const {data: countries, error} = await useCountries();
+  const { data: countries, error } = await useCountries();
 
-//@ts-ignore
-const emits = defineEmits(['selectedCountries'])
+  //@ts-ignore
+  const emits = defineEmits(['selectedCountries']);
 
-watch(selected, () => {
-  const selectedCountries = countries.value.filter(({iso}: Country) => selected.value.join(' ').includes(iso))
-  emits("selectedCountries", {countries: selectedCountries})
-}, {
-  deep: true,
-})
+  watch(selected, () => {
+    const selectedCountries = countries.value.filter(({ iso }: Country) => selected.value.join(' ').includes(iso));
+    emits('selectedCountries', { countries: selectedCountries });
+  }, {
+    deep: true,
+  });
 </script>
 
 <template>

@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 
 </script>
 
@@ -7,9 +7,9 @@
        @click="useRouter().go(-1)">
 
     <UButton
-        icon="i-heroicons-x-circle"
-        color="indigo" variant="ghost"
-        size="2xl"
+      color="indigo"
+      icon="i-heroicons-x-circle" size="2xl"
+      variant="ghost"
     />
   </div>
 

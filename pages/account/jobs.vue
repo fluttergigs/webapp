@@ -5,7 +5,7 @@
 
         <div class="flex justify-between items-center">
           <h3
-              class="mb-4 text-xl md:text-3xl font-semibold tracking-px-n leading-tight">
+            class="mb-4 text-xl md:text-3xl font-semibold tracking-px-n leading-tight">
             Your job postings
           </h3>
 
@@ -13,7 +13,7 @@
                    icon="i-heroicons-megaphone"
                    label="Post a job"
                    square variant="solid"
-                   @click="postJob"/>
+                   @click="postJob" />
         </div>
 
 
@@ -27,9 +27,9 @@
                                class="my-10">
                   <template #default="{job}">
 
-                    <JobCard v-if="isMediumScreen" :job="job"/>
+                    <JobCard v-if="isMediumScreen" :job="job" />
 
-                    <JobCardDetailed v-else :job="job"/>
+                    <JobCardDetailed v-else :job="job" />
 
                   </template>
                 </JobOffersList>
@@ -40,9 +40,9 @@
                                class="my-10">
                   <template #default="{job}">
 
-                    <JobCard v-if="isMediumScreen" :job="job"/>
+                    <JobCard v-if="isMediumScreen" :job="job" />
 
-                    <JobCardDetailed v-else :job="job"/>
+                    <JobCardDetailed v-else :job="job" />
 
                   </template>
                 </JobOffersList>
@@ -53,9 +53,9 @@
                                class="my-10">
                   <template #default="{job}">
 
-                    <JobCard v-if="isMediumScreen" :job="job"/>
+                    <JobCard v-if="isMediumScreen" :job="job" />
 
-                    <JobCardDetailed v-else :job="job"/>
+                    <JobCardDetailed v-else :job="job" />
 
                   </template>
                 </JobOffersList>
@@ -71,56 +71,56 @@
 </template>
 
 <script lang="ts" setup>
-//@ts-ignore
-import {useAuthStore} from "~/stores/auth";
-import {useCompanyStore} from "~/stores/company";
-import {storeToRefs} from "pinia";
-import {AppRoutes} from "~/core/routes";
-import {AnalyticsEvent} from "~/services/analytics/events";
-import {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider";
-import {useMediaQuery} from "@vueuse/core";
+  //@ts-ignore
+  import { useAuthStore } from '~/stores/auth';
+  import { useCompanyStore } from '~/stores/company';
+  import { storeToRefs } from 'pinia';
+  import { AppRoutes } from '~/core/routes';
+  import { AnalyticsEvent } from '~/services/analytics/events';
+  import { AppAnalyticsProvider } from '~/services/analytics/app_analytics_provider';
+  import { useMediaQuery } from '@vueuse/core';
 
-definePageMeta({
-  layout: 'app-layout',
-  middleware: ['auth', 'no-company'],
-  keepalive: true,
-})
+  definePageMeta({
+    layout: 'app-layout',
+    middleware: ['auth', 'no-company'],
+    keepalive: true,
+  });
 
-useHead({title: "FlutterGigs - My job postings"});
+  useHead({ title: 'FlutterGigs - My job postings' });
 
-const companyStore = useCompanyStore()
-const {$analytics} = useNuxtApp()
-const isMediumScreen = useMediaQuery('(min-width: 768px)')
+  const companyStore = useCompanyStore();
+  const { $analytics } = useNuxtApp();
+  const isMediumScreen = useMediaQuery('(min-width: 768px)');
 
 
-const tabs = [{
-  key: 'all',
-  label: 'All',
-  description: 'All your job postings'
-}, {
-  key: 'active',
-  label: 'Active',
-  description: 'Active job postings'
-}, {
-  key: 'expired',
-  label: 'Expired',
-  description: 'Expired job postings'
-}]
+  const tabs = [{
+    key: 'all',
+    label: 'All',
+    description: 'All your job postings',
+  }, {
+    key: 'active',
+    label: 'Active',
+    description: 'Active job postings',
+  }, {
+    key: 'expired',
+    label: 'Expired',
+    description: 'Expired job postings',
+  }];
 
-onMounted(() => {
-  ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.myJobsPageEntered);
-})
+  onMounted(() => {
+    ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.myJobsPageEntered);
+  });
 
-// onM(() => {
-companyStore.fetchMyJobs()
-// })
+  // onM(() => {
+  companyStore.fetchMyJobs();
+  // })
 
-const postJob = () => {
-  ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.postJobOfferButtonClicked,);
+  const postJob = () => {
+    ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.postJobOfferButtonClicked);
 
-  navigateTo(AppRoutes.postJob)
-}
-const {myJobPostings, expiredJobPostings, activeJobPostings, companyJobsResponse} = storeToRefs(companyStore)
+    navigateTo(AppRoutes.postJob);
+  };
+  const { myJobPostings, expiredJobPostings, activeJobPostings, companyJobsResponse } = storeToRefs(companyStore);
 </script>
 
 <style scoped>

@@ -1,91 +1,91 @@
 <script setup>
-import {useJobStore} from "~/stores/job";
-import {Endpoint} from "~/core/network/endpoints";
-import {AnalyticsEvent} from "~/services/analytics/events";
-import {userFacingCompanySize} from "~/features/companies/transformers";
-import {AppRoutes} from "~/core/routes";
-import useJobActions from "@/composables/useJobActions";
-import {Direction} from "~/core/shared/types";
-import CompanyInfoCard from "~/components/company/CompanyInfoCard.vue";
-import WorkingPermits from "~/components/job/WorkingPermits.vue";
-import SaveJobIconButton from "~/components/job/SaveJobIconButton.vue";
-import {marked} from "marked";
-import {htmlToText} from "html-to-text";
+  import { useJobStore } from '~/stores/job';
+  import { Endpoint } from '~/core/network/endpoints';
+  import { AnalyticsEvent } from '~/services/analytics/events';
+  import { userFacingCompanySize } from '~/features/companies/transformers';
+  import { AppRoutes } from '~/core/routes';
+  import useJobActions from '@/composables/useJobActions';
+  import { Direction } from '~/core/shared/types';
+  import CompanyInfoCard from '~/components/company/CompanyInfoCard.vue';
+  import WorkingPermits from '~/components/job/WorkingPermits.vue';
+  import SaveJobIconButton from '~/components/job/SaveJobIconButton.vue';
+  import { marked } from 'marked';
+  import { htmlToText } from 'html-to-text';
 
-//TODO handle account/dashboard/consultants
+  //TODO handle account/dashboard/consultants
 
-definePageMeta({
-  layout: "main-layout",
-});
+  definePageMeta({
+    layout: 'main-layout',
+  });
 
-const {$analytics} = useNuxtApp();
-const company = computed(() => jobOffer.value.company);
-const jobSlug = ref(useRoute().params.slug);
+  const { $analytics } = useNuxtApp();
+  const company = computed(() => jobOffer.value.company);
+  const jobSlug = ref(useRoute().params.slug);
 
-const {data: countriesData, error: countriesError} = await useCountries();
-const {jobWorkingPermits} = useJobActions();
+  const { data: countriesData, error: countriesError } = await useCountries();
+  const { jobWorkingPermits } = useJobActions();
 
-const {data: jobOffer, error, status} = await useLazyFetch(
+  const { data: jobOffer, error, status } = await useLazyFetch(
     `${useRuntimeConfig().public.apiBaseUrl}${Endpoint.jobOffersBySlug(jobSlug.value)}`,
     {
       key: jobSlug.value,
       transform: (result) => result.data,
       pending: false,
     },
-);
+  );
 
-const pending = computed(() => status.value === "pending");
+  const pending = computed(() => status.value === 'pending');
 
-/*if (!jobOffer.value) {
-  throw createError({
-    statusCode: 404,
-    statusMessage: 'Job Not Found',
-  })
-}*/
+  /*if (!jobOffer.value) {
+    throw createError({
+      statusCode: 404,
+      statusMessage: 'Job Not Found',
+    })
+  }*/
 
-definePageMeta({
-  layout: "main-layout",
-  title: `FlutterGis job opportunities`,
-});
+  definePageMeta({
+    layout: 'main-layout',
+    title: `FlutterGis job opportunities`,
+  });
 
 
-useSeoMeta({
-  title: () => `Flutter Gigs - ${jobOffer.value?.title}`,
-  ogTitle: () => `Flutter Gigs - ${jobOffer.value?.title}`,
-  ogUrl: "https://fluttergigs.com",
-  ogLogo: 'https://fluttergigs.com/ico.png',
-  // ogImageUrl: () => `/api/generate_job_offer_og_image?title=${jobOffer.value?.title}&companyName=${company.value?.name}&companyLogo=${company.value?.logo}`,
-  description: () => htmlToText(jobOffer.value?.description?.substring(0, 100), {wordwrap: 130}),
-  ogDescription: () => htmlToText(jobOffer.value?.description?.substring(0, 100), {wordwrap: 130}),
-  ogSiteName: "Flutter Gigs - The #1 Flutter job platform",
-  twitterCard: "summary",/*
+  useSeoMeta({
+    title: () => `Flutter Gigs - ${jobOffer.value?.title}`,
+    ogTitle: () => `Flutter Gigs - ${jobOffer.value?.title}`,
+    ogUrl: 'https://fluttergigs.com',
+    ogLogo: 'https://fluttergigs.com/ico.png',
+    // ogImageUrl: () => `/api/generate_job_offer_og_image?title=${jobOffer.value?.title}&companyName=${company.value?.name}&companyLogo=${company.value?.logo}`,
+    description: () => htmlToText(jobOffer.value?.description?.substring(0, 100), { wordwrap: 130 }),
+    ogDescription: () => htmlToText(jobOffer.value?.description?.substring(0, 100), { wordwrap: 130 }),
+    ogSiteName: 'Flutter Gigs - The #1 Flutter job platform',
+    twitterCard: 'summary',/*
 
   twitterImage: () =>
       jobOffer.value?.company?.logo ?? "https://fluttergigs.com/fluttergigs-og.png",*/
-  twitterSite: "@fluttergigs",
-  twitterTitle: () => `Flutter Gigs - ${jobOffer.value?.title}`,
-  twitterDescription: () =>
-      `Find this opportunity on FlutterGigs: ${htmlToText(jobOffer.value?.title?.substring(0, 100), {wordwrap: 130})}`,
-});
-
-defineOgImageComponent('JobOffer', {
-  ...jobOffer.value,
-}, {
-  fonts: [
-    'Outfit:700',
-  ],
-})
-
-onMounted(() => {
-  // if (import.meta.client)
-  $analytics.capture(AnalyticsEvent.jobOfferDetailEntered, {
-    job: jobOffer.value ?? {},
+    twitterSite: '@fluttergigs',
+    twitterTitle: () => `Flutter Gigs - ${jobOffer.value?.title}`,
+    twitterDescription: () =>
+      `Find this opportunity on FlutterGigs: ${htmlToText(jobOffer.value?.title?.substring(0, 100), { wordwrap: 130 })}`,
   });
-});
 
-onBeforeMount(() => {
-  useJobStore().setSelectedJob(jobOffer.value ?? {});
-});
+  defineOgImageComponent('JobOffer', {
+    ...jobOffer.value,
+  }, {
+    fonts: [
+      'Outfit:700',
+    ],
+  });
+
+  onMounted(() => {
+    // if (import.meta.client)
+    $analytics.capture(AnalyticsEvent.jobOfferDetailEntered, {
+      job: jobOffer.value ?? {},
+    });
+  });
+
+  onBeforeMount(() => {
+    useJobStore().setSelectedJob(jobOffer.value ?? {});
+  });
 </script>
 
 <template>
@@ -94,11 +94,11 @@ onBeforeMount(() => {
       <template v-if="pending">
         <div class="flex items-center justify-center p-52">
           <UButton
-              class="border-none bg-transparent text-indigo-700"
-              label=""
-              loading
-              size="xl"
-              variant="ghost"
+            class="border-none bg-transparent text-indigo-700"
+            label=""
+            loading
+            size="xl"
+            variant="ghost"
           />
         </div>
       </template>
@@ -107,16 +107,16 @@ onBeforeMount(() => {
         <section class="relative w-full bg-blueGray-50">
           <div class="md:x-20 container mx-auto px-4 py-6 md:py-14">
             <CompanyLogo
-                :company="company"
-                class="absolute left-[10px] top-[6px] md:left-16 md:top-18"
-                size="3xl"
+              :company="company"
+              class="absolute left-[10px] top-[6px] md:left-16 md:top-18"
+              size="3xl"
             />
           </div>
         </section>
         <div class="px-4 py-20 md:px-20">
           <section class="bg-white">
             <div
-                class="flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:justify-between"
+              class="flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:justify-between"
             >
               <h2 class="text-2xl font-bold md:text-5xl lg:text-7xl">
                 {{ jobOffer?.title }}
@@ -125,59 +125,59 @@ onBeforeMount(() => {
               <client-only>
                 <div class="my-2 md:my-0 flex flex-wrap justify-center items-center space-x-3 space-y-1 md:space-y-0">
                   <UButton
-                      v-if="useJobActions().jobBelongsToCompany(company)"
-                      color="white"
-                      icon="i-heroicons-pencil"
-                      label="Edit job offer"
-                      size="xl"
-                      square
-                      variant="solid"
-                      @click="useCompanyActions().handleJobEdit(jobOffer)"
+                    v-if="useJobActions().jobBelongsToCompany(company)"
+                    color="white"
+                    icon="i-heroicons-pencil"
+                    label="Edit job offer"
+                    size="xl"
+                    square
+                    variant="solid"
+                    @click="useCompanyActions().handleJobEdit(jobOffer)"
                   />
 
                   <UButton
-                      color="white"
-                      icon="i-heroicons-share"
-                      label="Share job offer"
-                      size="xl"
-                      square
-                      variant="solid"
-                      @click="useJobActions().shareJobOffer(jobOffer)"
+                    color="white"
+                    icon="i-heroicons-share"
+                    label="Share job offer"
+                    size="xl"
+                    square
+                    variant="solid"
+                    @click="useJobActions().shareJobOffer(jobOffer)"
                   />
 
-                  <SaveJobIconButton :company="company" :job="jobOffer"/>
+                  <SaveJobIconButton :company="company" :job="jobOffer" />
                 </div>
               </client-only>
             </div>
 
             <div class="my-4 flex flex-wrap gap-4 items-center">
               <a
-                  :href="AppRoutes.companyPage(company.slug)"
-                  class="text-lg font-bold text-gray-900"
+                :href="AppRoutes.companyPage(company.slug)"
+                class="text-lg font-bold text-gray-900"
               >
                 {{ company?.name }}
               </a>
 
               <div class="flex items-center space-x-1">
-                <UIcon class="text-gray-600" name="i-heroicons-building-office"/>
+                <UIcon class="text-gray-600" name="i-heroicons-building-office" />
                 <span class="font-medium text-black">
                 {{ userFacingCompanySize(company?.size) }}
               </span>
               </div>
 
               <div class="flex items-center space-x-1">
-                <UIcon class="text-gray-600" name="i-heroicons-link"/>
+                <UIcon class="text-gray-600" name="i-heroicons-link" />
                 <a
-                    :href="company?.website"
-                    class="font-medium text-black"
-                    target="_blank"
+                  :href="company?.website"
+                  class="font-medium text-black"
+                  target="_blank"
                 >
                   Website
                 </a>
               </div>
 
               <WorkingPermits
-                  :countries="
+                :countries="
                 jobWorkingPermits(countriesData?.countries ?? [], jobOffer)
               "
               />
@@ -197,22 +197,22 @@ onBeforeMount(() => {
               </div>
               <!--          apply section-->
               <LazyJobApplicationCtaCard
-                  :company="company"
-                  :job="jobOffer"
-                  class="hidden md:block"
+                :company="company"
+                :job="jobOffer"
+                class="hidden md:block"
               />
             </div>
 
             <div class="flex w-full flex-col space-y-9 md:w-2/6">
               <JobApplicationCtaCard
-                  :company="company"
-                  :job="jobOffer"
-                  :layout-direction="Direction.vertical"
+                :company="company"
+                :job="jobOffer"
+                :layout-direction="Direction.vertical"
               />
 
-              <JobDetailsCard :job="jobOffer"/>
+              <JobDetailsCard :job="jobOffer" />
 
-              <CompanyInfoCard :company="company"/>
+              <CompanyInfoCard :company="company" />
             </div>
           </section>
         </div>

@@ -1,22 +1,22 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 
-const searchKeyword = ref('')
-//@ts-ignore
-const emits = defineEmits(['filterByKeyword'])
-watch(searchKeyword, ()=>{
-  emits('filterByKeyword', searchKeyword.value)
-},)
+  const searchKeyword = ref('');
+  //@ts-ignore
+  const emits = defineEmits(['filterByKeyword']);
+  watch(searchKeyword, () => {
+    emits('filterByKeyword', searchKeyword.value);
+  });
 
 </script>
 
 <template>
-  <UInput color="white"
-          v-model="searchKeyword"
-          icon="i-heroicons-magnifying-glass-20-solid"
-          size="md"
+  <UInput v-model="searchKeyword"
           :trailing="false"
-          variant="outline"
-          placeholder="Search..."/>
+          color="white"
+          icon="i-heroicons-magnifying-glass-20-solid"
+          placeholder="Search..."
+          size="md"
+          variant="outline" />
 </template>
 
 <style scoped>

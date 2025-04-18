@@ -1,18 +1,18 @@
 <script setup>
 
-const props = defineProps({
-  label: {
-    type: String,
-    required: true,
-  },
-  value: {
-    type: String,
-  },
-  showLabel: {
-    type: Boolean,
-    default: true,
-  }
-})
+  const props = defineProps({
+    label: {
+      type: String,
+      required: true,
+    },
+    value: {
+      type: String,
+    },
+    showLabel: {
+      type: Boolean,
+      default: true,
+    },
+  });
 
 </script>
 

@@ -1,12 +1,12 @@
-<script setup lang="ts">
-import {useLearn} from "~/composables/useLearn";
+<script lang="ts" setup>
+  import { useLearn } from '~/composables/useLearn';
 
-const {
-  getLearnCategories,
-  getSelectedCategory,
-  isFetchingLearnCategories,
-  handleLearnCategoryClick,
-} = useLearn()
+  const {
+    getLearnCategories,
+    getSelectedCategory,
+    isFetchingLearnCategories,
+    handleLearnCategoryClick,
+  } = useLearn();
 
 </script>
 
@@ -14,15 +14,15 @@ const {
   <client-only>
     <div class="flex flex-wrap gap-3 justify-center items-center">
 
-      <USkeleton v-for="item in 4" :key="item" class="w-[90px] h-6 rounded-sm bg-gray-200"
-                 v-if="isFetchingLearnCategories"/>
+      <USkeleton v-for="item in 4" v-if="isFetchingLearnCategories" :key="item"
+                 class="w-[90px] h-6 rounded-sm bg-gray-200" />
 
       <UButton v-for="category in getLearnCategories" v-else
                :key="category.slug"
-               :label="category.title"
                :color="category.slug === getSelectedCategory?.slug ? 'primary' : 'gray'"
+               :label="category.title"
                class="primary-button px-4 max-w-[180px]"
-               @click="handleLearnCategoryClick(category)"/>
+               @click="handleLearnCategoryClick(category)" />
     </div>
   </client-only>
 

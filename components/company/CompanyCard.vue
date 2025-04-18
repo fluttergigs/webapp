@@ -1,21 +1,21 @@
 <script lang="ts" setup>
 
-//@ts-ignore
-import type {PropType} from "@vue/runtime-core";
-import type {Company} from "~/features/companies/company.types";
-import {AppRoutes} from "~/core/routes";
-import {userFacingCompanySize} from "~/features/companies/transformers";
-import ItemData from "~/components/job/ItemData.vue";
-//@ts-ignore
-import {breakpointsTailwind, useBreakpoints} from '@vueuse/core'
+  //@ts-ignore
+  import type { PropType } from '@vue/runtime-core';
+  import type { Company } from '~/features/companies/company.types';
+  import { AppRoutes } from '~/core/routes';
+  import { userFacingCompanySize } from '~/features/companies/transformers';
+  import ItemData from '~/components/job/ItemData.vue';
+  //@ts-ignore
+  import { breakpointsTailwind, useBreakpoints } from '@vueuse/core';
 
-//@ts-ignore
-const props = defineProps({
-  company: {
-    type: Object as PropType<Company>,
-    required: true,
-  }
-})
+  //@ts-ignore
+  const props = defineProps({
+    company: {
+      type: Object as PropType<Company>,
+      required: true,
+    },
+  });
 </script>
 
 <template>
@@ -25,7 +25,7 @@ const props = defineProps({
     <div class="flex flex-col items-baseline space-y-3 md:flex-row md:space-x-3 p-2">
 
       <div class="flex space-between gap-4 items-center md:gap-0 md:items-start">
-        <CompanyLogo :company="company as Company" size="xl"/>
+        <CompanyLogo :company="company as Company" size="xl" />
 
         <div v-if="useBreakpoints(breakpointsTailwind).isSmallerOrEqual('md')"
              class="visible md:invisible">
@@ -38,7 +38,7 @@ const props = defineProps({
         <ItemData :show-label="false" label="Company Size">
           <template #content>
             <div class="flex items-center space-x-1">
-              <UIcon class="text-gray-600" name="i-heroicons-building-office"/>
+              <UIcon class="text-gray-600" name="i-heroicons-building-office" />
               <span class="text-black text-xl">{{ userFacingCompanySize(company?.size) }}</span>
             </div>
           </template>

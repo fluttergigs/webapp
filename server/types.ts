@@ -1,5 +1,5 @@
 export type GenerateJobOfferOpenGraphImageParams = {
-    title: string;
-    companyLogo?: string;
-    companyName: string;
+  title: string;
+  companyLogo?: string;
+  companyName: string;
 }

@@ -1,16 +1,16 @@
 <script lang="ts" setup>
-//@ts-ignore
-const props = defineProps({
-  label: {
-    type: String,
-  },
-  insideText: {
-    type: String,
-    default: "",
-  },
-});
+  //@ts-ignore
+  const props = defineProps({
+    label: {
+      type: String,
+    },
+    insideText: {
+      type: String,
+      default: '',
+    },
+  });
 
-const emits = defineEmits(["insideTextClicked"]);
+  const emits = defineEmits(['insideTextClicked']);
 </script>
 
 <template>
@@ -28,7 +28,7 @@ const emits = defineEmits(["insideTextClicked"]);
             <a
               class="cursor-pointer text-[12px] font-medium text-indigo-600 hover:text-indigo-700"
               @click="$emit('insideTextClicked')"
-              >{{ insideText }}</a
+            >{{ insideText }}</a
             >
           </div>
         </slot>

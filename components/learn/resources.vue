@@ -1,7 +1,7 @@
-<script setup lang="ts">
-import ResourceCard from "~/components/learn/ResourceCard.vue";
+<script lang="ts" setup>
+  import ResourceCard from '~/components/learn/ResourceCard.vue';
 
-const {getSelectedCategoryResources, isFetchingLearnResources,} = useLearn()
+  const { getSelectedCategoryResources, isFetchingLearnResources } = useLearn();
 
 </script>
 
@@ -11,13 +11,13 @@ const {getSelectedCategoryResources, isFetchingLearnResources,} = useLearn()
     <div v-if="getSelectedCategoryResources?.length === 0">
       <div class="flex flex-col items-center space-y-2">
         <p>No resources found in the category</p>
-        <img class="w-96 h-96" alt="Empty job results" src="@/assets/images/emptyJobFiltersResult.svg"/>
+        <img alt="Empty job results" class="w-96 h-96" src="@/assets/images/emptyJobFiltersResult.svg" />
       </div>
     </div>
 
     <template v-else-if="isFetchingLearnResources">
       <div v-for="_ in 4" class="flex flex-col items-center space-y-2">
-        <USkeleton class="w-56 h-52 rounded-md bg-gray-200"/>
+        <USkeleton class="w-56 h-52 rounded-md bg-gray-200" />
       </div>
     </template>
 
@@ -26,7 +26,7 @@ const {getSelectedCategoryResources, isFetchingLearnResources,} = useLearn()
            :key="resource.id"
            class="w-1/3 md:w-1/6 justify-start">
 
-        <ResourceCard :resource="resource"/>
+        <ResourceCard :resource="resource" />
       </div>
     </template>
   </div>

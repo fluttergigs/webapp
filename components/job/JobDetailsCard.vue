@@ -1,20 +1,20 @@
 <script setup>
 
-import ItemData from "~/components/job/ItemData.vue";
-import {userFacingRemoteOptions, userFacingSeniorityLevel, userFacingWorkType} from "~/features/jobs/transformers";
-import WorkingPermits from "~/components/job/WorkingPermits.vue";
-import useJobActions from "~/composables/useJobActions";
+  import ItemData from '~/components/job/ItemData.vue';
+  import { userFacingRemoteOptions, userFacingSeniorityLevel, userFacingWorkType } from '~/features/jobs/transformers';
+  import WorkingPermits from '~/components/job/WorkingPermits.vue';
+  import useJobActions from '~/composables/useJobActions';
 
-const props = defineProps({
-  job: {
-    type: Object,
-    required: true,
-  }
-})
+  const props = defineProps({
+    job: {
+      type: Object,
+      required: true,
+    },
+  });
 
 
-const {data, error} = await useCountries();
-const {jobWorkingPermits} = useJobActions();
+  const { data, error } = await useCountries();
+  const { jobWorkingPermits } = useJobActions();
 </script>
 
 <template>
@@ -36,24 +36,24 @@ const {jobWorkingPermits} = useJobActions();
         <p v-date-format="{date:props.job.createdAt, format:'MMM YYYY, D'}" class="text-md font-medium"></p>
       </template>
     </ItemData>
-    <ItemData :value="userFacingWorkType(props.job?.workType)" label="Job type"/>
-    <ItemData :value="userFacingSeniorityLevel(props.job?.seniorityLevel)" label="Experience Level"/>
-    <ItemData :value="userFacingRemoteOptions(props.job?.remoteOptions)" label="Remote options"/>
+    <ItemData :value="userFacingWorkType(props.job?.workType)" label="Job type" />
+    <ItemData :value="userFacingSeniorityLevel(props.job?.seniorityLevel)" label="Experience Level" />
+    <ItemData :value="userFacingRemoteOptions(props.job?.remoteOptions)" label="Remote options" />
     <ItemData label="Salary range (Monthly)">
       <template #content>
         <div class="inline-flex items-center space-x-2 font-medium text-md">
-          <UIcon name="i-heroicons-currency-dollar"/>
+          <UIcon name="i-heroicons-currency-dollar" />
           <span v-if="props.job.salaryFrom">{{ props.job?.salaryFrom }} to {{ props.job?.salaryTo ?? '-' }}</span>
           <span v-else>N/A</span>
         </div>
       </template>
     </ItemData>
 
-    <UDivider class="my-2"/>
+    <UDivider class="my-2" />
 
     <ItemData label="Location requirements">
       <template #content>
-        <WorkingPermits :countries="jobWorkingPermits(data?.countries??[], props.job)"/>
+        <WorkingPermits :countries="jobWorkingPermits(data?.countries??[], props.job)" />
       </template>
     </ItemData>
 

@@ -11,52 +11,53 @@
               <p class="text-lg text-gray-600 font-medium leading-normal md:max-w-md">
                 {{ errorMessage }}</p>
             </div>
-            <div @click="handleError"
-                 class="cursor-pointer
-                  inline-flex space-x-2 items-center text-center font-semibold text-indigo-600">
-              <ArrowLeftIcon class="text-indigo-700 w-4"/>
+            <div class="cursor-pointer
+                  inline-flex space-x-2 items-center text-center font-semibold text-indigo-600"
+                 @click="handleError">
+              <ArrowLeftIcon class="text-indigo-700 w-4" />
               <span>Go Back to Homepage</span>
             </div>
           </div>
         </div>
         <div class="w-full md:w-1/2 p-8 self-end">
-          <img class="mx-auto transform hover:-translate-x-4 transition ease-in-out duration-1000"
-               src="@/assets/images/error.png" alt="">
+          <img alt=""
+               class="mx-auto transform hover:-translate-x-4 transition ease-in-out duration-1000"
+               src="@/assets/images/error.png">
         </div>
       </div>
     </div>
   </section>
 </template>
 
-<script setup lang="ts">
-//@ts-ignore
-import {ArrowLeftIcon} from "@heroicons/vue/24/solid";
+<script lang="ts" setup>
+  //@ts-ignore
+  import { ArrowLeftIcon } from '@heroicons/vue/24/solid';
 
-import {logDev} from "~/core/helpers/log";
-import {AnalyticsEvent} from "~/services/analytics/events";
-import {AppRoutes} from "~/core/routes";
-import {AppStrings} from "~/core/strings";
-//@ts-ignore
-import type {NuxtError} from "#app";
-import type {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider";
+  import { logDev } from '~/core/helpers/log';
+  import { AnalyticsEvent } from '~/services/analytics/events';
+  import { AppRoutes } from '~/core/routes';
+  import { AppStrings } from '~/core/strings';
+  //@ts-ignore
+  import type { NuxtError } from '#app';
+  import type { AppAnalyticsProvider } from '~/services/analytics/app_analytics_provider';
 
-useHead({title: "FlutterGigs - Error "});
+  useHead({ title: 'FlutterGigs - Error ' });
 
-//@ts-ignore
-const props = defineProps({
-  error: Object as () => NuxtError
-});
+  //@ts-ignore
+  const props = defineProps({
+    error: Object as () => NuxtError,
+  });
 
-onMounted(() => {
-  logDev("ERROR MESSAGE", props.error?.message);
-  logDev("ERROR STACK", props.error?.stack);
-  logDev("ERROR STATUS CODE", props.error?.statusCode);
+  onMounted(() => {
+    logDev('ERROR MESSAGE', props.error?.message);
+    logDev('ERROR STACK', props.error?.stack);
+    logDev('ERROR STATUS CODE', props.error?.statusCode);
 
-  if (import.meta.env.MODE !== "development") {
-    (useNuxtApp().$analytics as AppAnalyticsProvider).capture(AnalyticsEvent.error, props.error);
-  }
-});
+    if (import.meta.env.MODE !== 'development') {
+      (useNuxtApp().$analytics as AppAnalyticsProvider).capture(AnalyticsEvent.error, props.error);
+    }
+  });
 
-const handleError = () => clearError({redirect: AppRoutes.welcome});
-const errorMessage = computed(() => true ? props.error?.statusCode === 404 ? AppStrings.notFoundMessage : AppStrings.errorMessage : props.error?.message);
+  const handleError = () => clearError({ redirect: AppRoutes.welcome });
+  const errorMessage = computed(() => true ? props.error?.statusCode === 404 ? AppStrings.notFoundMessage : AppStrings.errorMessage : props.error?.message);
 </script>

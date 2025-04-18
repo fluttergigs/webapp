@@ -1,16 +1,16 @@
 <script lang="ts" setup>
-//@ts-ignore
-import type {PropType} from "@vue/runtime-core";
-import type {Company} from "~/features/companies/company.types";
+  //@ts-ignore
+  import type { PropType } from '@vue/runtime-core';
+  import type { Company } from '~/features/companies/company.types';
 
-//@ts-ignore
-const props = defineProps({
+  //@ts-ignore
+  const props = defineProps({
       company: {
         type: Object as PropType<Company>,
         required: true,
       },
-    }
-)
+    },
+  );
 </script>
 
 <template>
@@ -28,7 +28,7 @@ const props = defineProps({
     </div>
 
     <CompanyInfoCard :company="company"
-                     :show-view-profile-button="false" class="w-full"/>
+                     :show-view-profile-button="false" class="w-full" />
   </div>
 </template>
 

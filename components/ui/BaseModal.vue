@@ -1,14 +1,14 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 
-//@ts-ignore
-const props = defineProps({
-  headerTitle: {
-    type: String,
-  },
-  body: {
-    type: String,
-  }
-})
+  //@ts-ignore
+  const props = defineProps({
+    headerTitle: {
+      type: String,
+    },
+    body: {
+      type: String,
+    },
+  });
 
 </script>
 

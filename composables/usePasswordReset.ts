@@ -1,129 +1,129 @@
-import {useAuthStore} from "~/stores/auth";
-import {type ForgetPasswordData} from "~/services/auth/auth.types";
+import { useAuthStore } from '~/stores/auth';
+import { type ForgetPasswordData } from '~/services/auth/auth.types';
 //@ts-ignore
-import {storeToRefs} from "pinia";
-import {passwordForgetSchema, passwordResetSchema} from "~/core/validations/auth.validations";
-import type {CallbackFunction} from "~/core/shared/types";
-import {BaseToast} from "~/core/ui/base_toast";
-import {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider";
-import {AnalyticsEvent} from "~/services/analytics/events";
+import { storeToRefs } from 'pinia';
+import { passwordForgetSchema, passwordResetSchema } from '~/core/validations/auth.validations';
+import type { CallbackFunction } from '~/core/shared/types';
+import { BaseToast } from '~/core/ui/base_toast';
+import { AppAnalyticsProvider } from '~/services/analytics/app_analytics_provider';
+import { AnalyticsEvent } from '~/services/analytics/events';
 //@ts-ignore
-import type {StrapiForgotPasswordData} from "@nuxtjs/strapi/dist/runtime/types";
+import type { StrapiForgotPasswordData } from '@nuxtjs/strapi/dist/runtime/types';
 
 export const usePasswordReset = () => {
-    const authStore = useAuthStore();
+  const authStore = useAuthStore();
 
-    const passwordForgetDataInput = ref({
-        email: "",
-    } as ForgetPasswordData);
+  const passwordForgetDataInput = ref({
+    email: '',
+  } as ForgetPasswordData);
 
-    const resetPasswordDataInput = ref({
-        code: "",
-        password: "",
-        passwordConfirmation: "",
-    });
+  const resetPasswordDataInput = ref({
+    code: '',
+    password: '',
+    passwordConfirmation: '',
+  });
 
-    const canSubmitForgetPasswordForm = ref(false);
-    const canSubmitResetPasswordForm = ref(false);
+  const canSubmitForgetPasswordForm = ref(false);
+  const canSubmitResetPasswordForm = ref(false);
 
-    const {
-        forgetPassword,
-        isPasswordForgetFailed,
-        isPasswordForgetSuccessful,
-        isHandlingForgotPassword,
-        isHandlingPasswordReset,
-        isPasswordResetFailed,
-        isPasswordResetSuccessful,
-    } = storeToRefs(authStore);
+  const {
+    forgetPassword,
+    isPasswordForgetFailed,
+    isPasswordForgetSuccessful,
+    isHandlingForgotPassword,
+    isHandlingPasswordReset,
+    isPasswordResetFailed,
+    isPasswordResetSuccessful,
+  } = storeToRefs(authStore);
 
-    watch(
-        passwordForgetDataInput,
-        async () => {
-            canSubmitForgetPasswordForm.value = await passwordForgetSchema.isValid(passwordForgetDataInput.value);
-        },
-        {immediate: true, deep: true}
+  watch(
+    passwordForgetDataInput,
+    async () => {
+      canSubmitForgetPasswordForm.value = await passwordForgetSchema.isValid(passwordForgetDataInput.value);
+    },
+    { immediate: true, deep: true },
+  );
+
+  watch(
+    resetPasswordDataInput,
+    async () => {
+      canSubmitResetPasswordForm.value = await passwordResetSchema.isValid(resetPasswordDataInput.value);
+    },
+    { immediate: true, deep: true },
+  );
+
+  const submitPasswordForgetForm = async (onDone?: CallbackFunction<void>) => {
+
+    const { $toast, $analytics } = useNuxtApp();
+    ($analytics as AppAnalyticsProvider).capture(
+      AnalyticsEvent.passwordForgetFormButtonClicked,
+      passwordForgetDataInput.value,
     );
 
-    watch(
-        resetPasswordDataInput,
-        async () => {
-            canSubmitResetPasswordForm.value = await passwordResetSchema.isValid(resetPasswordDataInput.value);
-        },
-        {immediate: true, deep: true}
-    )
+    await authStore.forgotPassword<StrapiForgotPasswordData>(passwordForgetDataInput.value);
 
-    const submitPasswordForgetForm = async (onDone?: CallbackFunction<void>) => {
+    if (isPasswordForgetSuccessful.value) {
+      ($analytics as AppAnalyticsProvider).capture(
+        AnalyticsEvent.passwordForgetSuccessful,
+        passwordForgetDataInput.value,
+      );
 
-        const {$toast, $analytics} = useNuxtApp();
-        ($analytics as AppAnalyticsProvider).capture(
-            AnalyticsEvent.passwordForgetFormButtonClicked,
-            passwordForgetDataInput.value
-        );
+      ($toast as BaseToast<Notification>).success(<string>forgetPassword.value.message);
 
-        await authStore.forgotPassword<StrapiForgotPasswordData>(passwordForgetDataInput.value);
-
-        if (isPasswordForgetSuccessful.value) {
-            ($analytics as AppAnalyticsProvider).capture(
-                AnalyticsEvent.passwordForgetSuccessful,
-                passwordForgetDataInput.value
-            );
-
-            ($toast as BaseToast<Notification>).success(<string>forgetPassword.value.message);
-
-            onDone && onDone();
-        }
-
-        if (isPasswordForgetFailed.value) {
-            ($toast as BaseToast<Notification>).error(<string>forgetPassword.value.message);
-
-            ($analytics as AppAnalyticsProvider).capture(
-                AnalyticsEvent.passwordForgetFailed,
-                passwordForgetDataInput.value
-            );
-        }
+      onDone && onDone();
     }
 
+    if (isPasswordForgetFailed.value) {
+      ($toast as BaseToast<Notification>).error(<string>forgetPassword.value.message);
 
-    const submitPasswordResetForm = async (onDone?: CallbackFunction<void>) => {
-        const {$toast, $analytics} = useNuxtApp();
-        ($analytics as AppAnalyticsProvider).capture(
-            AnalyticsEvent.passwordResetButtonClicked,
-            resetPasswordDataInput.value
-        );
+      ($analytics as AppAnalyticsProvider).capture(
+        AnalyticsEvent.passwordForgetFailed,
+        passwordForgetDataInput.value,
+      );
+    }
+  };
 
-        await authStore.resetPassword(resetPasswordDataInput.value);
 
-        if (isPasswordResetSuccessful.value) {
-            ($analytics as AppAnalyticsProvider).capture(
-                AnalyticsEvent.passwordResetSuccessful,
-                resetPasswordDataInput.value
-            );
+  const submitPasswordResetForm = async (onDone?: CallbackFunction<void>) => {
+    const { $toast, $analytics } = useNuxtApp();
+    ($analytics as AppAnalyticsProvider).capture(
+      AnalyticsEvent.passwordResetButtonClicked,
+      resetPasswordDataInput.value,
+    );
 
-            ($toast as BaseToast<Notification>).success(<string>forgetPassword.value.message);
+    await authStore.resetPassword(resetPasswordDataInput.value);
 
-            onDone && onDone();
-        }
+    if (isPasswordResetSuccessful.value) {
+      ($analytics as AppAnalyticsProvider).capture(
+        AnalyticsEvent.passwordResetSuccessful,
+        resetPasswordDataInput.value,
+      );
 
-        if (isPasswordResetFailed.value) {
-            ($toast as BaseToast<Notification>).error(<string>forgetPassword.value.message);
+      ($toast as BaseToast<Notification>).success(<string>forgetPassword.value.message);
 
-            ($analytics as AppAnalyticsProvider).capture(
-                AnalyticsEvent.passwordResetFailed,
-                resetPasswordDataInput.value
-            );
-        }
+      onDone && onDone();
     }
 
-    return {
-        passwordForgetDataInput,
-        isHandlingForgotPassword,
-        canSubmitForgetPasswordForm,
-        canSubmitResetPasswordForm,
-        isHandlingPasswordReset,
-        isPasswordResetFailed,
-        isPasswordResetSuccessful,
-        resetPasswordDataInput,
-        submitPasswordForgetForm,
-        submitPasswordResetForm,
+    if (isPasswordResetFailed.value) {
+      ($toast as BaseToast<Notification>).error(<string>forgetPassword.value.message);
+
+      ($analytics as AppAnalyticsProvider).capture(
+        AnalyticsEvent.passwordResetFailed,
+        resetPasswordDataInput.value,
+      );
     }
+  };
+
+  return {
+    passwordForgetDataInput,
+    isHandlingForgotPassword,
+    canSubmitForgetPasswordForm,
+    canSubmitResetPasswordForm,
+    isHandlingPasswordReset,
+    isPasswordResetFailed,
+    isPasswordResetSuccessful,
+    resetPasswordDataInput,
+    submitPasswordForgetForm,
+    submitPasswordResetForm,
+  };
 };

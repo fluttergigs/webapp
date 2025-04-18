@@ -1,25 +1,25 @@
 <script lang="ts" setup>
 
-definePageMeta({
-  layout: 'main-layout',
-  title: "Privacy and policy",
-})
+  definePageMeta({
+    layout: 'main-layout',
+    title: 'Privacy and policy',
+  });
 
-useSeoMeta({
-  title: 'FlutterGigs - Privacy Policy',
-  ogTitle: 'FlutterGigs - Privacy Policy',
-  ogUrl: 'https://fluttergigs.com',
-  ogLogo: 'https://fluttergigs.com/ico.png',
-  description: 'FlutterGigs is a platform to find Flutter framework related job opportunities and more',
-  ogDescription: 'FlutterGigs is a platform to find Flutter framework related job opportunities and more',
-  ogSiteName: 'FlutterGigs - The #1 Flutter jobs platform',
-  twitterCard: 'summary_large_image',
-  twitterUrl: 'https://fluttergigs.com',
-  twitterDomain: 'https://fluttergigs.com',
-  twitterSite: '@fluttergigs',
-  twitterTitle: `FlutterGigs - Find the best Flutter opportunities at top remote companies around the world`,
-  twitterDescription: 'Privacy Policy',
-})
+  useSeoMeta({
+    title: 'FlutterGigs - Privacy Policy',
+    ogTitle: 'FlutterGigs - Privacy Policy',
+    ogUrl: 'https://fluttergigs.com',
+    ogLogo: 'https://fluttergigs.com/ico.png',
+    description: 'FlutterGigs is a platform to find Flutter framework related job opportunities and more',
+    ogDescription: 'FlutterGigs is a platform to find Flutter framework related job opportunities and more',
+    ogSiteName: 'FlutterGigs - The #1 Flutter jobs platform',
+    twitterCard: 'summary_large_image',
+    twitterUrl: 'https://fluttergigs.com',
+    twitterDomain: 'https://fluttergigs.com',
+    twitterSite: '@fluttergigs',
+    twitterTitle: `FlutterGigs - Find the best Flutter opportunities at top remote companies around the world`,
+    twitterDescription: 'Privacy Policy',
+  });
 </script>
 
 <template>
@@ -79,7 +79,7 @@ useSeoMeta({
         </section>
         <section><h2 class="text-2xl font-heading font-semibold  mb-4">Contact us</h2>
           <p class="leading-relaxed"> If you have any questions about this Privacy Policy, please contact us at <a
-              class="text-primary hover:underline" href="mailto:privacy@fluttergigs.com">privacy@fluttergigs.com</a></p>
+            class="text-primary hover:underline" href="mailto:privacy@fluttergigs.com">privacy@fluttergigs.com</a></p>
         </section>
       </div>
     </div>

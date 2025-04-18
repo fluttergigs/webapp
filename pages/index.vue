@@ -1,9 +1,9 @@
 <template>
 
   <main>
-    <LazyLandingHeader/>
+    <LazyLandingHeader />
 
-    <UserSection/>
+    <UserSection />
 
     <section class="py-20 bg-blueGray-100">
       <div class="container px-4 mx-auto">
@@ -13,8 +13,8 @@
               <div class="flex flex-wrap items-center m-3">
                 <div class="w-auto p-3">
                   <div
-                      class="flex items-center justify-center w-20 h-20 bg-indigo-100 rounded-full">
-                    <img alt="" src="@/assets/images/chat.svg"/>
+                    class="flex items-center justify-center w-20 h-20 bg-indigo-100 rounded-full">
+                    <img alt="" src="@/assets/images/chat.svg" />
                   </div>
                 </div>
                 <div class="flex-1 p-3">
@@ -30,9 +30,9 @@
               <div class="flex flex-wrap items-center m-3">
                 <div class="w-auto p-3">
                   <div
-                      class="flex items-center justify-center w-20 h-20 bg-indigo-100 rounded-full"
+                    class="flex items-center justify-center w-20 h-20 bg-indigo-100 rounded-full"
                   >
-                    <img alt="" src="@/assets/images/layers.svg"/>
+                    <img alt="" src="@/assets/images/layers.svg" />
                   </div>
                 </div>
                 <div class="flex-1 p-3">
@@ -48,9 +48,9 @@
               <div class="flex flex-wrap items-center m-3">
                 <div class="w-auto p-3">
                   <div
-                      class="flex items-center justify-center w-20 h-20 bg-indigo-100 rounded-full"
+                    class="flex items-center justify-center w-20 h-20 bg-indigo-100 rounded-full"
                   >
-                    <img alt="" src="@/assets/images/replace.svg"/>
+                    <img alt="" src="@/assets/images/replace.svg" />
                   </div>
                 </div>
                 <div class="flex-1 p-3">
@@ -65,11 +65,11 @@
       </div>
     </section>
 
-    <SecondaryUserSection/>
+    <SecondaryUserSection />
 
-    <CompanySection/>
+    <CompanySection />
 
-    <CompanyCreationSection/>
+    <CompanyCreationSection />
     <!--  <section class="relative pt-32 pb-24 bg-white">
         <img
             class="absolute bottom-0 left-1/2 transform -translate-x-1/2"
@@ -169,30 +169,30 @@
 
 <script lang="ts" setup>
 
-import '@/components/landing/Header.vue'
-import UserSection from "~/components/landing/UserSection.vue";
-import SecondaryUserSection from "~/components/landing/SecondaryUserSection.vue";
-import CompanySection from "~/components/landing/CompanySection.vue";
-import CompanyCreationSection from "~/components/landing/CompanyCreationSection.vue";
+  import '@/components/landing/Header.vue';
+  import UserSection from '~/components/landing/UserSection.vue';
+  import SecondaryUserSection from '~/components/landing/SecondaryUserSection.vue';
+  import CompanySection from '~/components/landing/CompanySection.vue';
+  import CompanyCreationSection from '~/components/landing/CompanyCreationSection.vue';
 
-definePageMeta({
-  layout: 'main-layout',
-  title: 'The #1 Flutter job platform in the world',
-})
+  definePageMeta({
+    layout: 'main-layout',
+    title: 'The #1 Flutter job platform in the world',
+  });
 
-useSeoMeta({
-  title: 'FlutterGigs - The #1 Flutter jobs platform',
-  ogTitle: 'FlutterGigs - The #1 Flutter jobs platform',
-  ogUrl: 'https://fluttergigs.com',
-  ogLogo: 'https://fluttergigs.com/ico.png',
-  description: 'FlutterGigs is a platform to find Flutter framework related job opportunities and more',
-  ogDescription: 'FlutterGigs is a platform to find Flutter framework related job opportunities and more',
-  ogSiteName: 'FlutterGigs - The #1 Flutter jobs platform',
-  twitterCard: 'summary_large_image',
-  twitterUrl: 'https://fluttergigs.com',
-  twitterDomain: 'https://fluttergigs.com',
-  twitterSite: '@fluttergigs',
-  twitterTitle: `FlutterGigs - Find the best Flutter opportunities at top remote companies around the world`,
-  twitterDescription: 'FlutterGigs is a platform to find Flutter framework related job opportunities and more',
-})
+  useSeoMeta({
+    title: 'FlutterGigs - The #1 Flutter jobs platform',
+    ogTitle: 'FlutterGigs - The #1 Flutter jobs platform',
+    ogUrl: 'https://fluttergigs.com',
+    ogLogo: 'https://fluttergigs.com/ico.png',
+    description: 'FlutterGigs is a platform to find Flutter framework related job opportunities and more',
+    ogDescription: 'FlutterGigs is a platform to find Flutter framework related job opportunities and more',
+    ogSiteName: 'FlutterGigs - The #1 Flutter jobs platform',
+    twitterCard: 'summary_large_image',
+    twitterUrl: 'https://fluttergigs.com',
+    twitterDomain: 'https://fluttergigs.com',
+    twitterSite: '@fluttergigs',
+    twitterTitle: `FlutterGigs - Find the best Flutter opportunities at top remote companies around the world`,
+    twitterDescription: 'FlutterGigs is a platform to find Flutter framework related job opportunities and more',
+  });
 </script>

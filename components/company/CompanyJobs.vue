@@ -1,24 +1,24 @@
 <script lang="ts" setup>
 
-//@ts-ignore
-import type {PropType} from "@vue/runtime-core";
-import type {Company} from "~/features/companies/company.types";
-import JobOffersList from "~/components/job/JobOffersList.vue";
-import {storeToRefs} from "pinia";
-import {useCompanyStore} from "~/stores/company";
-import {useMediaQuery} from "@vueuse/core";
+  //@ts-ignore
+  import type { PropType } from '@vue/runtime-core';
+  import type { Company } from '~/features/companies/company.types';
+  import JobOffersList from '~/components/job/JobOffersList.vue';
+  import { storeToRefs } from 'pinia';
+  import { useCompanyStore } from '~/stores/company';
+  import { useMediaQuery } from '@vueuse/core';
 
-//@ts-ignore
-const props = defineProps({
+  //@ts-ignore
+  const props = defineProps({
       company: {
         type: Object as PropType<Company>,
         required: true,
       },
-    }
-)
+    },
+  );
 
-const {viewedCompanyJobs, viewedCompanyJobsResponse} = storeToRefs(useCompanyStore())
-const isMediumScreen = useMediaQuery('(min-width: 768px)')
+  const { viewedCompanyJobs, viewedCompanyJobsResponse } = storeToRefs(useCompanyStore());
+  const isMediumScreen = useMediaQuery('(min-width: 768px)');
 
 </script>
 
@@ -36,16 +36,16 @@ const isMediumScreen = useMediaQuery('(min-width: 768px)')
 
           <template #default="{job}">
 
-            <JobCard v-if="isMediumScreen" :job="job"/>
+            <JobCard v-if="isMediumScreen" :job="job" />
 
-            <JobCardDetailed v-else :job="job"/>
+            <JobCardDetailed v-else :job="job" />
           </template>
         </JobOffersList>
       </div>
 
     </div>
     <CompanyInfoCard :company="company"
-                     :show-view-profile-button="false" class="w-full"/>
+                     :show-view-profile-button="false" class="w-full" />
   </div>
 </template>
 
