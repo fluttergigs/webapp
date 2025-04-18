@@ -72,12 +72,15 @@
     </div>
 
     <button
-      :disabled="!canSubmit || authStore.updateUser.isLoading"
+      :disabled="!canSubmit || authStore.$updateUser.isLoading"
       class="primary-button flex items-center justify-center space-x-2 m-auto max-w-xs"
       type="button"
       @click.prevent="submit"
     >
-      <LoadingSpinnerIcon v-if="authStore.updateUser.isLoading" class="text-primary animate-spin" />
+      <LoadingSpinnerIcon
+        v-if="authStore.$updateUser.isLoading"
+        class="text-primary animate-spin"
+      />
       <span v-else> Save changes</span>
     </button>
   </form>

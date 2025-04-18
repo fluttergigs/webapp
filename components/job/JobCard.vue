@@ -1,18 +1,17 @@
 <script lang="ts" setup>
-  import ArrowBackIcon from '~/components/icons/ArrowBackIcon.vue';
-  import { userFacingRemoteOptions, userFacingWorkType } from '~/features/jobs/transformers';
-  import { AppRoutes } from '~/core/routes';
-  import { userFacingCompanySize } from '~/features/companies/transformers';
-  import useJobActions from '~/composables/useJobActions';
-
-  import type { JobOffer } from '~/features/jobs/job.types';
-  import { RemoteOptions } from '~/features/jobs/job.types';
-  import WorkingPermits from '~/components/job/WorkingPermits.vue';
-  import SaveJobIconButton from '~/components/job/SaveJobIconButton.vue';
   //@ts-ignore
   import { XCircleIcon } from '@heroicons/vue/24/outline';
+  import ArrowBackIcon from '~/components/icons/ArrowBackIcon.vue';
   import ConfirmJobDeleteModal from '~/components/job/ConfirmJobDeleteModal.vue';
   import JobSalaryBox from '~/components/job/JobSalaryBox.vue';
+  import SaveJobIconButton from '~/components/job/SaveJobIconButton.vue';
+  import WorkingPermits from '~/components/job/WorkingPermits.vue';
+  import useJobActions from '~/composables/useJobActions';
+  import { AppRoutes } from '~/core/routes';
+  import { userFacingCompanySize } from '~/features/companies/transformers';
+  import type { JobOffer } from '~/features/jobs/job.types';
+  import { RemoteOptions } from '~/features/jobs/job.types';
+  import { userFacingRemoteOptions, userFacingWorkType } from '~/features/jobs/transformers';
 
   const { data, error } = await useCountries();
   const { jobWorkingPermits } = useJobActions();
@@ -112,9 +111,7 @@
     <UCard
       :class="[
         'cursor-pointer transition-all duration-300 ease-in-out',
-        useJobActions().jobBelongsToCompany(company)
-          ? ''
-          : 'hover:translate-x-1.5',
+        useJobActions().jobBelongsToCompany(company) ? '' : 'hover:translate-x-1.5',
       ]"
       @click="useJobActions().viewDetails(props.job)"
     >
@@ -147,19 +144,15 @@
           <!--        options-->
           <div class="flex items-center space-x-3 text-sm">
             <WorkingPermits
-              :countries="jobWorkingPermits(data?.countries??[], job as JobOffer)"
+              :countries="jobWorkingPermits(data?.countries ?? [], job as JobOffer)"
             />
 
-            <span
-              class="rounded-full border border-gray-500/30 px-3 py-0.5 text-xs"
-            >
+            <span class="rounded-full border border-gray-500/30 px-3 py-0.5 text-xs">
               {{ userFacingRemoteOptions(job?.remoteOptions as RemoteOptions) }}
             </span>
 
             <!--            <span>•</span>-->
-            <span
-              class="rounded-full border border-gray-500/30 px-3 py-0.5 text-xs"
-            >
+            <span class="rounded-full border border-gray-500/30 px-3 py-0.5 text-xs">
               {{ userFacingWorkType(job?.workType) }}
             </span>
 

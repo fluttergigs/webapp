@@ -3,7 +3,6 @@
   import type { Notification } from '#ui/types';
   import CustomInput from '~/components/forms/CustomInput.vue';
   import LoadingSpinnerIcon from '~/components/icons/LoadingSpinnerIcon.vue';
-  import { changePasswordFormSchema } from '~/core/validations/auth.validations';
   import { useAuthStore } from '~/stores/auth';
 
   const authStore = useAuthStore();
@@ -15,13 +14,13 @@
 
   const canSubmit = ref(false);
 
-  watch(
+  /*watch(
     formInput,
     async () => {
       canSubmit.value = await changePasswordFormSchema.isValid(formInput.value);
     },
     { deep: true },
-  );
+  );*/
 
   const submit = async () => {
     useUser().updatePassword({ data: formInput.value });
@@ -43,13 +42,13 @@
     </div>
 
     <button
-      :disabled="!canSubmit || authStore.changePassword.isLoading"
+      :disabled="!canSubmit || authStore.$changePassword.isLoading"
       class="primary-button flex items-center justify-center space-x-2 m-auto max-w-xs"
       type="button"
       @click.prevent="submit"
     >
       <LoadingSpinnerIcon
-        v-if="authStore.changePassword.isLoading"
+        v-if="authStore.$changePassword.isLoading"
         class="text-primary animate-spin"
       />
       <span v-else> Save changes</span>

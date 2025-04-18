@@ -108,7 +108,7 @@
     ArrowsPointingInIcon,
     BriefcaseIcon,
     BuildingOffice2Icon,
-    CogIcon,
+    Cog8ToothIcon,
     MegaphoneIcon,
     StarIcon,
     UserIcon,
@@ -162,7 +162,7 @@
       name: 'Saved Jobs',
     },
     {
-      icon: CogIcon,
+      icon: Cog8ToothIcon,
       section: 'user',
       path: AppRoutes.myAccount,
       name: 'User Settings',

@@ -23,11 +23,11 @@ export function useUser() {
       await authStore.updateUserInfo(request, async () => {
         await getUser();
         useAnalytics().capture(AnalyticsEvent.successfulUserInfoUpdate, request.data);
-        ($toast as BaseToast<Notification, number>).success(<string>authStore.updateUser!.message);
+        ($toast as BaseToast<Notification, number>).success(<string>authStore.$updateUser!.message);
       });
 
     } catch (e) {
-      ($toast as BaseToast<Notification, number>).error(<string>authStore.updateUser!.message);
+      ($toast as BaseToast<Notification, number>).error(<string>authStore.$updateUser!.message);
     }
   };
 
@@ -38,10 +38,10 @@ export function useUser() {
       await authStore.changeUserPassword({ data: request.data.password }, async () => {
         await getUser();
         useAnalytics().capture(AnalyticsEvent.successfulPasswordChange, request.data);
-        ($toast as BaseToast<Notification, number>).success(<string>authStore.updateUser!.message);
+        ($toast as BaseToast<Notification, number>).success(<string>authStore.$updateUser!.message);
       });
     } catch (e) {
-      ($toast as BaseToast<Notification, number>).error(<string>authStore.updateUser!.message);
+      ($toast as BaseToast<Notification, number>).error(<string>authStore.$updateUser!.message);
     }
   };
 

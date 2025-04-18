@@ -6,12 +6,9 @@
           <h3 class="mb-4 text-xl md:text-3xl font-semibold tracking-px-n leading-tight">
             Your Settings
           </h3>
-          <p class="text-md md:text-xl">
-            👋, <b class="text-indigo-500">{{ useAuthStore().user.value.username }}</b
-          >! Make changes to your account here
-          </p>
+          <p class="text-md md:text-xl">Make changes to your account here</p>
 
-          <UTabs :items="tabs" class="w-full my-12" @change="onChange">
+          <UTabs :items="tabs" class="w-full my-12">
             <template #item="{ item }">
               <div v-if="item.key === 'account'" class="space-y-3">
                 <UpdateUser />
@@ -31,29 +28,23 @@
 </template>
 
 <script setup>
-import UpdatePassword from '~/components/account/UpdatePassword.vue';
-import UpdateUser from '~/components/account/UpdateUser.vue';
-import { AnalyticsEvent } from '~/services/analytics/events';
+  import UpdatePassword from '~/components/account/UpdatePassword.vue';
+  import UpdateUser from '~/components/account/UpdateUser.vue';
+  import { AnalyticsEvent } from '~/services/analytics/events';
 
-
-
-
-
-definePageMeta({ layout: 'app-layout', middleware: ['auth'] });
+  definePageMeta({ layout: 'app-layout', middleware: ['auth'] });
   useHead({ title: 'FlutterGigs - My account' });
-
-  const { $analytics } = useNuxtApp();
 
   const tabs = [
     {
       key: 'account',
       label: 'Account',
-      description: 'Make changes to your account here. Click save when you\'re done.',
+      description: "Make changes to your account here. Click save when you're done.",
     },
     {
       key: 'password',
       label: 'Password',
-      description: 'Change your password here. After saving, you\'ll be logged out.',
+      description: "Change your password here. After saving, you'll be logged out.",
     },
     {
       key: 'preferences',
@@ -65,16 +56,8 @@ definePageMeta({ layout: 'app-layout', middleware: ['auth'] });
   ];
 
   onMounted(() => {
-    $analytics.capture(AnalyticsEvent.userAccountPageEntered);
+    useAnalytics().capture(AnalyticsEvent.userAccountPageEntered);
   });
-
-  const onChange = (index) => {
-    const tab = tabs[index];
-
-    if (tab['key'] === 'account') {
-    } else if (tab['key'] === 'password') {
-    }
-  };
 </script>
 
 <style scoped></style>
