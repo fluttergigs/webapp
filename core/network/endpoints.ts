@@ -1,5 +1,4 @@
 export class Endpoint {
-
   static get setting() {
     return `/setting`;
   }

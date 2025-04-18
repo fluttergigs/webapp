@@ -1,6 +1,6 @@
 import type { FeatureFlag } from '~/services/feature-flag/FeatureFlag';
 import { FeatureFlagProvider } from '~/services/feature-flag/FeatureFlagProvider';
-import type { AvailableFlags } from '~/services/feature-flag/available_flags';
+import type { AvailableFlags } from '~/services/feature-flag/availableFlags';
 
 export function useFeatureFlags() {
   const { $featureFlags } = useNuxtApp();

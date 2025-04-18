@@ -1,19 +1,18 @@
 <script lang="ts" setup>
   import { storeToRefs } from 'pinia';
-  import { useCompanyStore } from '~/stores/company';
-  import { AnalyticsEvent } from '~/services/analytics/events';
-  import type { AppAnalyticsProvider } from '~/services/analytics/app_analytics_provider';
-  import CompanyFiltersWidget from '~/components/company/FiltersWidget.vue';
   import CompanyList from '~/components/company/CompanyList.vue';
-  import { AvailableFlags } from '~/services/feature-flag/available_flags';
+  import CompanyFiltersWidget from '~/components/company/FiltersWidget.vue';
+  import { AppAnalyticsProvider } from '~/services/analytics/AppAnalyticsProvider';
+  import { AnalyticsEvent } from '~/services/analytics/events';
+  import { AvailableFlags } from '~/services/feature-flag/availableFlags';
+  import { useCompanyStore } from '~/stores/company';
 
   definePageMeta({
     layout: 'main-layout',
     keepalive: true,
     middleware: [
-      function(to: any, from: any) {
+      function (to: any, from: any) {
         if (!useFeatureFlags().isEnabled(AvailableFlags.companiesList)) {
-
           const { $toast } = useNuxtApp();
 
           if ($toast) {
@@ -62,28 +61,27 @@
           </h1>
 
           <p class="mb-11 text-lg text-gray-900 font-medium text-center">
-            Unleash your work-from-anywhere potential! Explore top remote companies and their cultures, missions, and
-            open
-            positions.
+            Unleash your work-from-anywhere potential! Explore top remote companies and their
+            cultures, missions, and open positions.
           </p>
         </div>
-
       </div>
     </section>
 
     <section class="flex flex-wrap bg-gradient-white px-20 py-14 w-full mx-auto">
       <div class="w-full md:w-1/6">
         <CompanyFiltersWidget />
-
       </div>
       <div class="w-full sm:w-5/6 md:w-4/6 my-4 md:my-0">
-        <CompanyList v-if="!!companyFiltersResponse" :companies="filteredCompanies"
-                     :companies-response="companyFiltersResponse" class="md:mx-8" />
+        <CompanyList
+          v-if="!!companyFiltersResponse"
+          :companies="filteredCompanies"
+          :companies-response="companyFiltersResponse"
+          class="md:mx-8"
+        />
       </div>
     </section>
   </main>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

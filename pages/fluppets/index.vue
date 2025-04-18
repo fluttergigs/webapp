@@ -1,14 +1,13 @@
 <script lang="ts" setup>
-  import { AvailableFlags } from '~/services/feature-flag/available_flags';
-  import type { BaseToast } from '~/core/ui/base_toast';
   import { AppStrings } from '~/core/strings';
+  import type { BaseToast } from '~/core/ui/base_toast';
+  import { AvailableFlags } from '~/services/feature-flag/availableFlags';
 
   definePageMeta({
     title: 'Flutter snippets',
     middleware: [
-      function(to: any, from: any) {
+      function (to: any, from: any) {
         if (!useFeatureFlags().isEnabled(AvailableFlags.fluppets)) {
-
           const { $toast } = useNuxtApp();
 
           if ($toast) {
@@ -21,10 +20,6 @@
   });
 </script>
 
-<template>
+<template></template>
 
-</template>
-
-<style scoped>
-
-</style>
+<style scoped></style>

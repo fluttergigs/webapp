@@ -1,7 +1,5 @@
 <template>
-
   <main>
-
     <section class="relative bg-blueGray-50">
       <img
         alt=""
@@ -10,21 +8,21 @@
       />
       <div class="container mx-auto px-4 py-16">
         <div class="flex flex-col items-center justify-center p-8">
-          <h1
-            class="primary-gradient mb-6 text-5xl font-bold md:text-6xl lg:text-6xl"
-          >
+          <h1 class="primary-gradient mb-6 text-5xl font-bold md:text-6xl lg:text-6xl">
             FlutterGigs
           </h1>
 
           <p class="mb-11 text-center text-lg font-medium text-gray-900">
-            Discover the best Flutter opportunities and more at top remote
-            companies around the world.
+            Discover the best Flutter opportunities and more at top remote companies around the
+            world.
           </p>
         </div>
       </div>
     </section>
 
-    <section class="mx-auto flex w-full flex-wrap bg-gradient-white px-6 py-6 sm:px-12 md:px-20 md:py-14">
+    <section
+      class="mx-auto flex w-full flex-wrap bg-gradient-white px-6 py-6 sm:px-12 md:px-20 md:py-14"
+    >
       <div class="w-full md:w-1/6">
         <FiltersWidget />
       </div>
@@ -44,16 +42,15 @@
       </div>
     </section>
   </main>
-
 </template>
 
 <script setup>
+  import { useMediaQuery } from '@vueuse/core';
+  import { storeToRefs } from 'pinia';
   import FiltersWidget from '~/components/job/FiltersWidget.vue';
   import JobOffersList from '~/components/job/JobOffersList.vue';
   import { AnalyticsEvent } from '~/services/analytics/events';
-  import { storeToRefs } from 'pinia';
   import { useJobStore } from '~/stores/job';
-  import { useMediaQuery } from '@vueuse/core';
   import { useUserStore } from '~/stores/user';
 
   definePageMeta({
@@ -81,7 +78,9 @@
   onMounted(async () => {
     $analytics.capture(AnalyticsEvent.findJobOfferPageEntered);
 
-    await useUserStore().fetchBookmarkedJobOffers();
+    if (useUser().isAuthenticated.value) {
+      await useUserStore().fetchBookmarkedJobOffers();
+    }
   });
 </script>
 

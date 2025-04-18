@@ -1,7 +1,7 @@
 //@ts-ignore
 import posthog from 'posthog-js';
 import { FeatureFlag } from '~/services/feature-flag/FeatureFlag';
-import type { AvailableFlags } from '~/services/feature-flag/available_flags';
+import type { AvailableFlags } from '~/services/feature-flag/availableFlags';
 
 export class PosthogClient implements FeatureFlag {
   constructor() {

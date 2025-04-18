@@ -40,10 +40,7 @@
           class="mx-4 flex flex-grow flex-col justify-between overflow-y-auto overflow-x-hidden py-8"
         >
           <div class="-m-2.5 mb-8 flex flex-col flex-wrap space-y-3 px-7">
-            <div
-              v-for="(linkItems, section, sectionIndex) in groupedLinks"
-              class="my-2"
-            >
+            <div v-for="(linkItems, section, sectionIndex) in groupedLinks" class="my-2">
               <p
                 v-if="!!section && !isAppBarShrunk"
                 class="text-neutral-400 mb-2 w-auto text-xs font-medium uppercase"
@@ -56,9 +53,7 @@
                   v-for="(link, index) in linkItems"
                   :class="[
                     'flex w-auto p-2',
-                    useRoute().path === link.path
-                      ? 'rounded-md bg-indigo-200 text-indigo-800'
-                      : '',
+                    useRoute().path === link.path ? 'rounded-md bg-indigo-200 text-indigo-800' : '',
                   ]"
                 >
                   <div class="flex">
@@ -74,32 +69,18 @@
                         :class="['flex flex-wrap items-center space-x-3']"
                         :to="link.path"
                       >
-                        <component
-                          :is="link.icon"
-                          :class="['h-6 w-6 text-gray-600']"
-                        />
-                        <p
-                          v-if="!isAppBarShrunk"
-                          class="hover:text-neutral-700 font-medium"
-                        >
+                        <component :is="link.icon" :class="['h-6 w-6 text-gray-600']" />
+                        <p v-if="!isAppBarShrunk" class="hover:text-neutral-700 font-medium">
                           {{ link.name }}
                         </p>
                       </NuxtLink>
                       <div
                         v-else
-                        :class="[
-                          'flex cursor-pointer flex-wrap items-center space-x-3',
-                        ]"
+                        :class="['flex cursor-pointer flex-wrap items-center space-x-3']"
                         @click="link.onClick"
                       >
-                        <component
-                          :is="link.icon"
-                          :class="['h-5 w-5 text-gray-600']"
-                        />
-                        <p
-                          v-if="!isAppBarShrunk"
-                          class="hover:text-neutral-700 font-medium"
-                        >
+                        <component :is="link.icon" :class="['h-5 w-5 text-gray-600']" />
+                        <p v-if="!isAppBarShrunk" class="hover:text-neutral-700 font-medium">
                           {{ link.name }}
                         </p>
                       </div>
@@ -132,18 +113,17 @@
     StarIcon,
     UserIcon,
   } from '@heroicons/vue/24/solid';
-  import { AppRoutes } from '~/core/routes';
-  import { useCompanyStore } from '~/stores/company';
-  import { useSettingStore } from '~/stores/setting';
-  import { useAuthStore } from '~/stores/auth';
-  import { groupBy } from 'lodash';
-  import { useJobStore } from '~/stores/job';
-  import { useAppStore } from '~/stores/app';
-  import { storeToRefs } from 'pinia';
-  import { AnalyticsEvent } from '~/services/analytics/events';
   import { useWebSocket } from '@vueuse/core';
+  import { groupBy } from 'lodash';
+  import { storeToRefs } from 'pinia';
   import { logDev } from '~/core/helpers/log';
+  import { AppRoutes } from '~/core/routes';
   import { PaymentContext } from '~/core/shared/types';
+  import { useAppStore } from '~/stores/app';
+  import { useAuthStore } from '~/stores/auth';
+  import { useCompanyStore } from '~/stores/company';
+  import { useJobStore } from '~/stores/job';
+  import { useSettingStore } from '~/stores/setting';
 
   const links = [
     /*{
@@ -191,9 +171,7 @@
       icon: ArrowLeftEndOnRectangleIcon,
       section: 'user',
       onClick: () => {
-        const { $analytics } = useNuxtApp();
-        $analytics.capture(AnalyticsEvent.logoutButtonClicked);
-        useAuthStore().logout();
+        useUser().logout();
       },
       // path: AppRoutes.,
       name: 'Logout',

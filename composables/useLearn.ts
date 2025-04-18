@@ -1,6 +1,6 @@
 import { storeToRefs } from 'pinia';
 import type { LearnCategory, LearnResource } from '~/features/learn/learn.types';
-import type { AppAnalyticsProvider } from '~/services/analytics/app_analytics_provider';
+import type { AppAnalyticsProvider } from '~/services/analytics/AppAnalyticsProvider';
 import { AnalyticsEvent } from '~/services/analytics/events';
 
 export function useLearn() {
@@ -15,12 +15,16 @@ export function useLearn() {
   const { $toast, $analytics } = useNuxtApp();
 
   const handleLearnCategoryClick = (category: LearnCategory) => {
-    ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.learnCategoryClicked, { learnCategory: category });
+    ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.learnCategoryClicked, {
+      learnCategory: category,
+    });
     learnStore.setSelectedCategory(category);
   };
 
   const handleLearnResourceClick = (resource: LearnResource) => {
-    ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.learnResourceClicked, { learnResource: resource });
+    ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.learnResourceClicked, {
+      learnResource: resource,
+    });
     window.open(resource.link, '_blank');
   };
 
@@ -32,7 +36,9 @@ export function useLearn() {
 
   const getSelectedCategoryResources = computed(() => {
     if (getSelectedCategory.value) {
-      return getLearnResources.value?.filter(resource => resource.category.slug === getSelectedCategory.value.slug);
+      return getLearnResources.value?.filter(
+        (resource) => resource.category.slug === getSelectedCategory.value.slug,
+      );
     }
     return [];
   });

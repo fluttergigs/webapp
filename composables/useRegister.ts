@@ -1,13 +1,13 @@
 import { storeToRefs } from 'pinia';
-import { AppRoutes } from '~/core/routes';
-import { useAuthStore } from '~/stores/auth';
-import { registerFormSchema } from '~/core/validations/auth.validations';
-import { AnalyticsEvent } from '~/services/analytics/events';
-import { AppAnalyticsProvider } from '~/services/analytics/app_analytics_provider';
-import { BaseToast } from '~/core/ui/base_toast';
-import { RegistrationData, User } from '~/services/auth/auth.types';
-import type { CallbackFunction } from '~/core/shared/types';
 import { useUser } from '~/composables/useUser';
+import { AppRoutes } from '~/core/routes';
+import type { CallbackFunction } from '~/core/shared/types';
+import { BaseToast } from '~/core/ui/base_toast';
+import { registerFormSchema } from '~/core/validations/auth.validations';
+import type { AppAnalyticsProvider } from '~/services/analytics/AppAnalyticsProvider';
+import { AnalyticsEvent } from '~/services/analytics/events';
+import { RegistrationData, User } from '~/services/auth/auth.types';
+import { useAuthStore } from '~/stores/auth';
 
 export const useRegister = () => {
   let formInput = ref({
@@ -28,7 +28,7 @@ export const useRegister = () => {
   const authStore = useAuthStore();
 
   const {
-    user,
+    user: $user,
     authUser,
     hasReturnUrl,
     returnUrl,
@@ -49,9 +49,7 @@ export const useRegister = () => {
   );
 
   onMounted(() => {
-    ($analytics as AppAnalyticsProvider).capture(
-      AnalyticsEvent.registrationPageEntered,
-    );
+    ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.registrationPageEntered);
   });
 
   const submit = async (onDone?: CallbackFunction<User>) => {
@@ -70,25 +68,25 @@ export const useRegister = () => {
 
         onDone?.(authUser.value);
       }
+
+      if (isFailedRegistration.value) {
+        ($toast as BaseToast<Notification>).error($user.value.message);
+      }
     } catch (e) {
-      ($toast as BaseToast<Notification>).error(user.value.message);
+      ($toast as BaseToast<Notification>).error(AppStrings.errorOccurred);
     }
   };
 
-  const onSuccessfulRegistration: CallbackFunction<User> = async (
-    user?: User,
-  ) => {
+  const onSuccessfulRegistration: CallbackFunction<User> = async (user?: User) => {
     navigateTo(hasReturnUrl.value ? returnUrl.value : AppRoutes.jobs);
-    await Promise.all([
-      useUser().getUser(),
-    ]);
+    await Promise.all([useUser().getUser()]);
   };
 
   return {
     isFailedRegistration,
     formInput,
     canSubmit,
-    user,
+    user: $user,
     returnUrl,
     submit,
     onSuccessfulRegistration,

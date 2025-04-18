@@ -5,7 +5,7 @@ import { storeToRefs } from 'pinia';
 import { passwordForgetSchema, passwordResetSchema } from '~/core/validations/auth.validations';
 import type { CallbackFunction } from '~/core/shared/types';
 import { BaseToast } from '~/core/ui/base_toast';
-import { AppAnalyticsProvider } from '~/services/analytics/app_analytics_provider';
+import type { AppAnalyticsProvider } from '~/services/analytics/AppAnalyticsProvider';
 import { AnalyticsEvent } from '~/services/analytics/events';
 //@ts-ignore
 import type { StrapiForgotPasswordData } from '@nuxtjs/strapi/dist/runtime/types';
@@ -60,7 +60,7 @@ export const usePasswordReset = () => {
       passwordForgetDataInput.value,
     );
 
-    await authStore.forgotPassword<StrapiForgotPasswordData>(passwordForgetDataInput.value);
+    await authStore.forgotPassword(passwordForgetDataInput.value);
 
     if (isPasswordForgetSuccessful.value) {
       ($analytics as AppAnalyticsProvider).capture(

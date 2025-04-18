@@ -8,9 +8,7 @@
       />
       <div class="relative z-10 container px-4 mx-auto">
         <div class="text-center max-w-2xl mx-auto">
-          <p class="mb-5 text-sm text-indigo-600 font-semibold uppercase tracking-px">
-            JOB ALERTS
-          </p>
+          <p class="mb-5 text-sm text-indigo-600 font-semibold uppercase tracking-px">JOB ALERTS</p>
           <h2
             class="mb-11 text-6xl md:text-7xl text-center font-bold font-heading tracking-px-n leading-tight"
           >

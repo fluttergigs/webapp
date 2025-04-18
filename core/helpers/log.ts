@@ -4,5 +4,4 @@ const logDev = (message: any, ...data: any[]) => {
   }
 };
 
-
 export { logDev };

@@ -8,7 +8,7 @@
   import { useCompanyStore } from '~/stores/company';
   import { companyCreationFormSchema } from '~/core/validations/company.validations';
   import { AnalyticsEvent } from '~/services/analytics/events';
-  import { AppAnalyticsProvider } from '~/services/analytics/app_analytics_provider';
+  import { AppAnalyticsProvider } from '~/services/analytics/AppAnalyticsProvider';
   import { useUserStore } from '~/stores/user';
   import type { CreateCompanyRequest } from '~/features/companies/company.types';
 

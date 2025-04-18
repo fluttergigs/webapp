@@ -1,19 +1,19 @@
 export interface BasicApiResponse<T = unknown> {
-  data: T,
+  data: T;
   error: {
-    message: string,
-    code: string,
-    status: number,
-    [key: string]: any
-  }
+    message: string;
+    code: string;
+    status: number;
+    [key: string]: any;
+  };
 
-  [key: string]: any,
+  [key: string]: any;
 }
 
 export interface SingleApiResponse<T> {
-  data: T,
+  data: T;
 
-  [key: string]: unknown,
+  [key: string]: unknown;
 }
 
 export interface MultiApiResponse<T> {
@@ -22,21 +22,23 @@ export interface MultiApiResponse<T> {
 
 export enum Direction {
   vertical = 'vertical',
-  horizontal = 'horizontal'
+  horizontal = 'horizontal',
 }
 
 export declare type Country = {
-  name: string,
+  name: string;
   flag: {
-    src: string,
-    ico: string,
-  },
-  iso: string,
-  [key: string]: any,
-}
+    src: string;
+    ico: string;
+  };
+  iso: string;
+  [key: string]: any;
+};
 
 export enum PaymentContext {
   jobPost = 'jobPost',
 }
 
-export declare type CallbackFunction<Result, Err extends any = {}> = ((val?: Result) => void) | ((err?: Err) => void);
+export declare type CallbackFunction<Result, Err extends any = {}> =
+  | ((val?: Result) => void)
+  | ((err?: Err) => void);

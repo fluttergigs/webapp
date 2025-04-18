@@ -1,6 +1,10 @@
 //@ts-ignore
 import path from 'path';
 
+
+
+
+
 //@ts-ignore
 export default defineNuxtConfig({
   devtools: {
@@ -33,14 +37,7 @@ export default defineNuxtConfig({
       sources: ["/api/sitemap"],
   },*/
   imports: {
-    dirs: [
-      'core',
-      'stores',
-      'composables',
-      'components',
-      'services',
-      'features',
-    ],
+    dirs: ['core', 'stores', 'composables', 'components', 'services', 'features'],
   },
   build: {
     optimizeCSS: true,
@@ -57,10 +54,7 @@ export default defineNuxtConfig({
   },
   ignore: ['pages/ignore/*'],
 
-  css: [
-    '~/assets/css/app.css',
-    'vue-toast-notification/dist/theme-default.css',
-  ],
+  css: ['~/assets/css/app.css', 'vue-toast-notification/dist/theme-default.css'],
 
   script: ['~/assets/js/main.js'],
 
@@ -146,11 +140,10 @@ export default defineNuxtConfig({
     { src: '~/plugins/vue3-apexcharts', mode: 'client' },
     { src: '~/plugins/store' },
     { src: '~/plugins/toaster', mode: 'client' },
-    { src: '~/plugins/date-format', mode: 'all' },
+    { src: '~/plugins/dateFormat', mode: 'all' },
   ],
 
   vite: {
-
     optimizeDeps: {
       include: ['quill'],
     },
@@ -162,6 +155,8 @@ export default defineNuxtConfig({
     resolve: {
       alias: {
         vue: path.resolve('./node_modules/vue'),
+        '@': path.resolve(__dirname, './'),
+        '~': path.resolve(__dirname, './'),
       },
       preserveSymlinks: false,
     },

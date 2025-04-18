@@ -1,16 +1,11 @@
 <script lang="ts" setup>
-
-  import LoadingSpinnerIcon from '~/components/icons/LoadingSpinnerIcon.vue';
-  import CustomInput from '~/components/forms/CustomInput.vue';
-  import { useAuthStore } from '~/stores/auth';
-  import { changePasswordFormSchema } from '~/core/validations/auth.validations';
-  import { AnalyticsEvent } from '~/services/analytics/events';
-  import { AppAnalyticsProvider } from '~/services/analytics/app_analytics_provider';
-  import { BaseToast } from '~/core/ui/base_toast';
   //@ts-ignore
   import type { Notification } from '#ui/types';
+  import CustomInput from '~/components/forms/CustomInput.vue';
+  import LoadingSpinnerIcon from '~/components/icons/LoadingSpinnerIcon.vue';
+  import { changePasswordFormSchema } from '~/core/validations/auth.validations';
+  import { useAuthStore } from '~/stores/auth';
 
-  const { $analytics, $toast } = useNuxtApp();
   const authStore = useAuthStore();
 
   const formInput = ref({
@@ -20,36 +15,31 @@
 
   const canSubmit = ref(false);
 
-  watch(formInput, async () => {
-    canSubmit.value = await changePasswordFormSchema.isValid(formInput.value);
-
-  }, { deep: true });
+  watch(
+    formInput,
+    async () => {
+      canSubmit.value = await changePasswordFormSchema.isValid(formInput.value);
+    },
+    { deep: true },
+  );
 
   const submit = async () => {
-    try {
-      (<AppAnalyticsProvider>$analytics).capture(AnalyticsEvent.changePasswordButtonClicked, formInput.value);
-      await authStore.changeUserPassword({ data: formInput.value.password }, () => {
-        authStore.fetchUser();
-      });
-      (<AppAnalyticsProvider>$analytics).capture(AnalyticsEvent.successfulPasswordChange, formInput.value);
-
-      ($toast as BaseToast<Notification, number>).success(<string>authStore.updateUser!.message);
-    } catch (e) {
-      ($toast as BaseToast<Notification, number>).error(<string>authStore.updateUser!.message);
-    }
+    useUser().updatePassword({ data: formInput.value });
   };
 </script>
 
 <template>
   <form class="flex flex-col space-y-4 my-12 mr-8">
-
     <div class="block mb-5">
-      <CustomInput v-model="formInput.password" label="Password" name="password"
-                   type="password" />
+      <CustomInput v-model="formInput.password" label="Password" name="password" type="password" />
     </div>
     <div class="block mb-5">
-      <CustomInput v-model="formInput.confirmPassword" label="Confirm password"
-                   name="confirmPassword" type="password" />
+      <CustomInput
+        v-model="formInput.confirmPassword"
+        label="Confirm password"
+        name="confirmPassword"
+        type="password"
+      />
     </div>
 
     <button
@@ -58,13 +48,13 @@
       type="button"
       @click.prevent="submit"
     >
-      <LoadingSpinnerIcon v-if="authStore.changePassword.isLoading" class="text-primary animate-spin" />
+      <LoadingSpinnerIcon
+        v-if="authStore.changePassword.isLoading"
+        class="text-primary animate-spin"
+      />
       <span v-else> Save changes</span>
     </button>
   </form>
-
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -1,8 +1,8 @@
 //@ts-ignore
 import { FetchOptions } from 'ofetch';
-import { $fetchInterceptor } from '~/core/network/interceptor';
 import type { HttpClient } from '~/core/network/http_client';
 import { HttpMethod } from '~/core/network/http_client';
+import { $fetchInterceptor } from '~/core/network/interceptor';
 
 const headers = {
   Accept: '*/*',
@@ -20,8 +20,7 @@ export class Fetcher implements HttpClient<Response> {
   private readonly instance;
 
   constructor(private readonly fetchOptions?: FetchOptions) {
-    this.baseURL =
-      useRuntimeConfig().apiBaseUrl ?? useRuntimeConfig().public.apiBaseUrl;
+    this.baseURL = useRuntimeConfig().apiBaseUrl ?? useRuntimeConfig().public.apiBaseUrl;
     // @ts-ignore
     const apiFetchOptions: FetchOptions = {
       baseURL: this.baseURL,

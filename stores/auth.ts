@@ -53,8 +53,6 @@ export const useAuthStore = defineStore('auth', {
         this.$login = this.$login.toSuccess(unref(response.user));
 
         this.$user = this.$user.toSuccess(unref(response.user));
-        //@ts-ignore
-        this.user = this.user.toSuccess(unref(response.user));
       } catch (customError) {
         this.setToken('');
 
@@ -72,10 +70,11 @@ export const useAuthStore = defineStore('auth', {
           message = AppStrings.errorOccurred;
         }
 
+        logDev('ERROR MESSAGE', message);
+
         this.$login = this.$login.toFailed(message);
 
         this.$user = this.$user.toFailed(message);
-        throw customError;
       }
     },
 
@@ -123,7 +122,6 @@ export const useAuthStore = defineStore('auth', {
 
         this.$user = this.$user.toFailed(message);
         this.$register = this.$register.toFailed(message);
-        throw customError;
       }
     },
     async logout() {
@@ -142,7 +140,6 @@ export const useAuthStore = defineStore('auth', {
         logDev(error);
         //@ts-ignore
         this.errorMessage = error.message;
-        throw error;
       }
     },
 
@@ -237,15 +234,9 @@ export const useAuthStore = defineStore('auth', {
           this.$fetchUser = new Wrapper<User>().toSuccess(response);
           //@ts-ignore
           this.$user = new Wrapper().toSuccess(response);
-          /*  (<AppAnalyticsProvider>$analytics).identify(
-                        response!.email!,
-                        this.user
-                      );
-                      (<ErrorTrackerProvider>$errorTracker).setUser(this.user);*/
         }
       } catch (error) {
         this.$fetchUser = new Wrapper<User>().toFailed(AppStrings.errorOccurred);
-        // $analytics.capture(AnalyticsEvent.error, {user: this.user})
         logDev(error);
       }
     },

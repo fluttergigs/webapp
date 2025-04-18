@@ -11,7 +11,7 @@ import { useUserStore } from '~/stores/user';
 import { BaseToast } from '~/core/ui/base_toast';
 //@ts-ignore
 import type { Notification } from '#ui/types';
-import { AppAnalyticsProvider } from '~/services/analytics/app_analytics_provider';
+import type { AppAnalyticsProvider } from '~/services/analytics/AppAnalyticsProvider';
 import { AnalyticsEvent } from '~/services/analytics/events';
 
 export default function useJobActions() {

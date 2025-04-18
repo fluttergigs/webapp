@@ -1,5 +1,4 @@
 <template>
-
   <main>
     <section class="py-20 bg-blueGray-50">
       <div class="flex flex-col gap-4 overflow-hidden">
@@ -23,16 +22,15 @@
         </client-only>
       </div>
     </section>
-
   </main>
 </template>
 
 <script lang="ts" setup>
+  import LearnResources from '~/components/learn/resources.vue';
+  import { AppAnalyticsProvider } from '~/services/analytics/AppAnalyticsProvider';
+  import { AnalyticsEvent } from '~/services/analytics/events';
 
   import '@/components/landing/Header.vue';
-  import type { AppAnalyticsProvider } from '~/services/analytics/app_analytics_provider';
-  import { AnalyticsEvent } from '~/services/analytics/events';
-  import LearnResources from '~/components/learn/resources.vue';
 
   definePageMeta({
     layout: 'main-layout',

@@ -1,13 +1,13 @@
 // Burger menus
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   let i;
-// open
+  // open
   const burger = document.querySelectorAll('.navbar-burger');
   const menu = document.querySelectorAll('.navbar-menu');
 
   if (burger.length && menu.length) {
     for (i = 0; i < burger.length; i++) {
-      burger[i].addEventListener('click', function() {
+      burger[i].addEventListener('click', function () {
         for (let j = 0; j < menu.length; j++) {
           menu[j].classList.toggle('hidden');
         }
@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   if (close.length) {
     for (i = 0; i < close.length; i++) {
-      close[i].addEventListener('click', function() {
+      close[i].addEventListener('click', function () {
         for (let j = 0; j < menu.length; j++) {
           menu[j].classList.toggle('hidden');
         }
@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   if (backdrop.length) {
     for (i = 0; i < backdrop.length; i++) {
-      backdrop[i].addEventListener('click', function() {
+      backdrop[i].addEventListener('click', function () {
         for (let j = 0; j < menu.length; j++) {
           menu[j].classList.toggle('hidden');
         }

@@ -1,5 +1,4 @@
 export class AppStrings {
-
   static unableToFetchSetting = 'Unable to fetch settings';
   static unableToFetchCompanies = 'Unable to fetch companies';
 
@@ -15,9 +14,11 @@ export class AppStrings {
 
   static unableToRemoveSavedJob = 'Unable to remove this job from your bookmarks';
 
-  static yourCompanyHasBeenCreatedSuccessfully = 'Your company {{name}} has been created successfully';
+  static yourCompanyHasBeenCreatedSuccessfully =
+    'Your company {{name}} has been created successfully';
 
-  static yourCompanyHasBeenUpdatedSuccessfully = 'Your company {{name}} has been updated successfully';
+  static yourCompanyHasBeenUpdatedSuccessfully =
+    'Your company {{name}} has been updated successfully';
 
   static unableToCreateCompany = 'Unable to create company with name: {{name}}. Please try again!';
 
@@ -35,11 +36,13 @@ export class AppStrings {
 
   static jobOfferDeletedSuccessfully = 'Your job offer has been deleted successfully';
 
-  static jobOfferPostedSuccessfully = 'Your job offer {{title}} has been posted successfully and available';
+  static jobOfferPostedSuccessfully =
+    'Your job offer {{title}} has been posted successfully and available';
 
   static jobOfferUpdatedSuccessfully = 'Your job offer has been successfully updated';
 
-  static yourProfileInfoHasBeenUpdatedSuccessfully = 'Your profile info has has been updated successfully';
+  static yourProfileInfoHasBeenUpdatedSuccessfully =
+    'Your profile info has has been updated successfully';
 
   static unableToUpdateProfileInfo = 'Unable to update your account info. Please try again';
 
@@ -53,19 +56,20 @@ export class AppStrings {
 
   static emailAlreadyTaken = 'Email already taken. Please try again!';
 
-  static jobDescriptionIsReady = 'Your job\'s description is ready';
+  static jobDescriptionIsReady = "Your job's description is ready";
 
-  static companyDescriptionIsReady = 'Your company\'s description is ready';
+  static companyDescriptionIsReady = "Your company's description is ready";
 
-  static unableToGenerateJobDescription = 'Unable to generate your job\'s description';
+  static unableToGenerateJobDescription = "Unable to generate your job's description";
 
-  static unableToGenerateCompanyDescription = 'Unable to generate your company\'s description';
+  static unableToGenerateCompanyDescription = "Unable to generate your company's description";
 
   static saveJobOffer = 'Save this job offer';
 
   static removeJobFromBookmarks = 'Remove this job offer from your bookmarks';
 
-  static notFoundMessage = ' The page you are looking for is not found! Try something else or go back to homepage.';
+  static notFoundMessage =
+    ' The page you are looking for is not found! Try something else or go back to homepage.';
 
   static errorMessage = 'An unexpected error occurred. Please go back to homepage';
 
@@ -75,11 +79,13 @@ export class AppStrings {
 
   static unableToFetchLearnResources = 'Unable to fetch learn resources';
 
-  static failedToSendPasswordResetEmail = 'Failed to send password reset email. Please try again later';
+  static failedToSendPasswordResetEmail =
+    'Failed to send password reset email. Please try again later';
 
   static passwordResetEmailSent = 'Password reset email has been sent to your email address';
 
   static passwordResetFailed = 'Password reset failed. Please try again later';
 
-  static passwordResetSuccessful = 'Password has been reset successfully. You can now login with your new password';
+  static passwordResetSuccessful =
+    'Password has been reset successfully. You can now login with your new password';
 }

@@ -2,8 +2,6 @@
 import sharp, { SharpOptions } from 'sharp';
 
 export class BufferUtils {
-
-
   static async urlToBuffer(url: String, options: SharpOptions = {}) {
     try {
       // Fetch the image
@@ -28,8 +26,6 @@ export class BufferUtils {
         .toFormat(options.format || 'png', options.formatOptions || {})
         // Get buffer
         .toBuffer();
-
-
     } catch (error) {
       //@ts-ignore
       throw new Error(`Error processing image: ${error.message}`);
@@ -37,9 +33,7 @@ export class BufferUtils {
   }
 
   static async createCircularBuffer(imageBuffer: Buffer, options: SharpOptions = {}) {
-    const {
-      size = 342,
-    } = options;
+    const { size = 342 } = options;
 
     const radius = size * 0.5; // 40% of smallest dimension
 
@@ -53,10 +47,12 @@ export class BufferUtils {
       // Resize the image to be square (optional, but recommended for perfect circles)
       .resize(size, size, { fit: 'contain' })
       // Composite the circular mask over the image
-      .composite([{
-        input: roundedCorners,
-        blend: 'dest-in',
-      }])
+      .composite([
+        {
+          input: roundedCorners,
+          blend: 'dest-in',
+        },
+      ])
       .png()
       .toBuffer();
 
@@ -65,7 +61,6 @@ export class BufferUtils {
 
   static textToSvg(text: String, options: SharpOptions = {}) {
     const {
-
       height = 600,
       width = 1000,
       x = 0,
@@ -105,7 +100,6 @@ export class BufferUtils {
       fontFamily = 'FuturaPt',
     } = options;
 
-
     // Calculate circle properties
     const centerPoint = size / 2;
     const radius = size * 0.5;
@@ -144,13 +138,10 @@ export class BufferUtils {
   `);
 
     try {
-      const info = await sharp(svgBuffer)
-        .toBuffer();
+      const info = await sharp(svgBuffer).toBuffer();
       return { success: true, info };
     } catch (error) {
       return { success: false, error };
     }
   }
-
-
 }

@@ -1,4 +1,4 @@
-export default defineEventHandler((event:) => {
+export default defineEventHandler((event: any) => {
   setResponseHeaders(event, {
     'Access-Control-Allow-Methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
     'Access-Control-Allow-Origin': '*',

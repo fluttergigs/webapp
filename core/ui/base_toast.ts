@@ -1,6 +1,6 @@
 export type ToastConfig<P> = {
-  [T in keyof P]?: P[T]
-}
+  [T in keyof P]?: P[T];
+};
 
 export abstract class BaseToast<NotificationData, ClearNotificationParams extends number = any> {
   protected timeout = 7000;
@@ -19,4 +19,3 @@ export abstract class BaseToast<NotificationData, ClearNotificationParams extend
 
   abstract clear(params?: Partial<ClearNotificationParams>): void;
 }
-

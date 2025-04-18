@@ -14,14 +14,8 @@ export const useLogin = () => {
   const { $toast, $analytics, $errorTracker } = useNuxtApp();
   const authStore = useAuthStore();
 
-  const {
-    user: storeUser,
-    authUser,
-    hasReturnUrl,
-    returnUrl,
-    isFailedLogin,
-    isSuccessfulLogin,
-  } = storeToRefs(authStore);
+  const { $user, authUser, hasReturnUrl, returnUrl, isFailedLogin, isSuccessfulLogin } =
+    storeToRefs(authStore);
   const canSubmit = ref(false);
 
   const formInput = ref({
@@ -61,8 +55,11 @@ export const useLogin = () => {
         ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.successfulLogin, loginData);
         onDone?.(authUser.value);
       }
+      if (isFailedLogin.value) {
+        ($toast as BaseToast<Notification>).error($user.value.message);
+      }
     } catch (e) {
-      ($toast as BaseToast<Notification>).error(storeUser.value.message);
+      ($toast as BaseToast<Notification>).error(AppStrings.errorOccurred);
     }
   };
 
@@ -79,7 +76,7 @@ export const useLogin = () => {
   };
 
   return {
-    user: storeUser,
+    user: $user,
     returnUrl,
     canSubmit,
     formInput,

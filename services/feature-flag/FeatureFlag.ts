@@ -1,7 +1,6 @@
-import { AvailableFlags } from '~/services/feature-flag/available_flags';
+import { AvailableFlags } from '~/services/feature-flag/availableFlags';
 
 export abstract class FeatureFlag {
-
   abstract load(): Promise<void>;
 
   abstract isEnabled(flag: AvailableFlags): boolean;

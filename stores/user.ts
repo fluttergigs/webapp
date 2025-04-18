@@ -31,7 +31,7 @@ export const useUserStore = defineStore('user', {
   actions: {
     // Save a job to bookmarks
     async saveJob(request: SaveJobOfferRequest): Promise<void> {
-      this.bookmarkedJobCreation = this.bookmarkedJobCreation.toLoading();
+      this.bookmarkedJobCreation = new Wrapper<SingleApiResponse<BookmarkedJobOffer>>().toInitial();
       const { $http } = useNuxtApp();
 
       try {
@@ -52,7 +52,7 @@ export const useUserStore = defineStore('user', {
 
     // Remove a saved job from bookmarks
     async deleteSavedJob(request: DeleteSavedJobOfferRequest): Promise<void> {
-      this.bookmarkedJobDelete = this.bookmarkedJobDelete.toLoading();
+      this.bookmarkedJobDelete = new Wrapper<SingleApiResponse<Object>>().toLoading();
       const { $http } = useNuxtApp();
 
       try {
@@ -71,8 +71,7 @@ export const useUserStore = defineStore('user', {
 
     // Fetch all bookmarked job offers
     async fetchBookmarkedJobOffers(): Promise<void> {
-      this.bookmarkedJobsListResponse =
-        this.bookmarkedJobsListResponse.toLoading();
+      this.bookmarkedJobsListResponse = new Wrapper<MultiApiResponse<BookmarkedJobOffer>>().toLoading();
       const { $http } = useNuxtApp();
 
       try {

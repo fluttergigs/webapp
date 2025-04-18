@@ -1,6 +1,7 @@
 //@ts-ignore
-import { customAlphabet } from 'nanoid'; //@ts-ignore
+//@ts-ignore
 import slugify from '@sindresorhus/slugify';
+import { customAlphabet } from 'nanoid';
 
 export const generateUserName = (email: string) => {
   const nanoid = customAlphabet(`1234567890fluttergigs${email}`, 20);
@@ -8,18 +9,15 @@ export const generateUserName = (email: string) => {
 };
 
 export const generateJobOfferSlug = ({
-                                       jobTitle,
-                                       companyName,
-                                     }: {
+  jobTitle,
+  companyName,
+}: {
   companyName: string;
   jobTitle: string;
 }) => {
   const jobTitleSlug = slugify(jobTitle, { lowercase: true });
   const companyNameSlug = slugify(companyName, { lowercase: true });
-  const nanoid = customAlphabet(
-    `1234567890${jobTitleSlug}-at-${companyNameSlug}`,
-    6,
-  );
+  const nanoid = customAlphabet(`1234567890${jobTitleSlug}-at-${companyNameSlug}`, 6);
   return `${jobTitleSlug}-${companyNameSlug}-${nanoid()}`;
 };
 
@@ -36,6 +34,6 @@ const isMarkdown = (text: string | String): boolean => {
   return markdownSyntaxRegex.test(text);
 };
 
-String.prototype.isMarkdown = function() {
+String.prototype.isMarkdown = function () {
   return isMarkdown(this);
 };

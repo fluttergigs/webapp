@@ -79,7 +79,7 @@
   import { companyUpdateFormSchema } from '~/core/validations/company.validations';
   import { AnalyticsEvent } from '~/services/analytics/events';
   import { useCompanyStore } from '~/stores/company';
-  import { AppAnalyticsProvider } from '~/services/analytics/app_analytics_provider';
+  import { AppAnalyticsProvider } from '~/services/analytics/AppAnalyticsProvider';
   import { companySizeOptions } from '~/core/constants';
   import type { UpdateCompanyRequest } from '~/features/companies/company.types';
   import { CompanySize } from '~/features/companies/company.types';

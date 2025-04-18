@@ -1,7 +1,7 @@
 //@ts-ignore
 import { FetchContext, FetchResponse } from 'ofetch';
-import { useAuthStore } from '~/stores/auth';
 import { logDev } from '~/core/helpers/log';
+import { useAuthStore } from '~/stores/auth';
 
 export type PromiseVoid = Promise<void> | void;
 export const $fetchInterceptor = {

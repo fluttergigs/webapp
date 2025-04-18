@@ -2,18 +2,12 @@
 <!--TODO check whether user has selected at least a work permit-->
 
 <template>
-
   <main>
-
-    <JobDescriptionGenerationModal
-      @successful-generation="handleJobDescriptionGenerated"
-    />
+    <JobDescriptionGenerationModal @successful-generation="handleJobDescriptionGenerated" />
     <section class="w-full overflow-hidden bg-white px-2 py-8 md:py-12 xl:pb-56">
       <div class="my-4 flex flex-col gap-x-16 font-normal md:flex-row">
         <div class="flex w-full flex-col gap-y-8 xl:mx-auto">
-          <h3
-            class="tracking-px-n mb-4 text-2xl font-semibold leading-tight md:text-4xl"
-          >
+          <h3 class="tracking-px-n mb-4 text-2xl font-semibold leading-tight md:text-4xl">
             Post your job
           </h3>
 
@@ -131,7 +125,7 @@
 
             <!--          apply before-->
             <LabelledInput label="Application closes on *">
-              <UPopover :popper="{ placement: 'bottom-start', }">
+              <UPopover :popper="{ placement: 'bottom-start' }">
                 <UButton
                   :label="format(new Date(jobCreationData.applyBefore), 'd MMMM, yyy')"
                   class="w-full"
@@ -170,9 +164,7 @@
                     :value="true"
                     label="Must be eligible to work in"
                   />
-                  <WorkPermitSelector
-                    @selected-countries="getSelectedCountries"
-                  />
+                  <WorkPermitSelector @selected-countries="getSelectedCountries" />
                 </div>
               </div>
             </LabelledInput>
@@ -213,25 +205,25 @@
 </template>
 
 <script lang="ts" setup>
-  import { storeToRefs } from 'pinia';
-  import { useJobStore } from '~/stores/job';
-  import CustomInput from '~/components/forms/CustomInput.vue';
-  import { remoteOptions, seniorityLevelOptions, workTypeOptions } from '~/core/constants';
-  import { checkDigit } from '~/core/utils';
-  import 'v-calendar/dist/style.css';
   import { format } from 'date-fns';
+  import { storeToRefs } from 'pinia';
   import { DatePicker } from 'v-calendar';
+  import 'v-calendar/dist/style.css';
+  import CustomInput from '~/components/forms/CustomInput.vue';
   import LabelledInput from '~/components/forms/LabelledInput.vue';
+  import QuillEditorWrapper from '~/components/forms/QuillEditorWrapper.vue';
   import JobDescriptionGenerationModal from '~/components/job/JobDescriptionGenerationModal.vue';
   import WorkPermitSelector from '~/components/job/WorkPermitSelector.vue';
-  import type { Country } from '~/core/shared/types';
-  import { logDev } from '~/core/helpers/log';
-  import { AppAnalyticsProvider } from '~/services/analytics/app_analytics_provider';
-  import { AnalyticsEvent } from '~/services/analytics/events';
-  import { postJobFormSchema } from '~/core/validations/job.validations';
   import useCompanyActions from '~/composables/useCompanyActions';
-  import QuillEditorWrapper from '~/components/forms/QuillEditorWrapper.vue';
   import { useJobPost } from '~/composables/useJobPost';
+  import { remoteOptions, seniorityLevelOptions, workTypeOptions } from '~/core/constants';
+  import { logDev } from '~/core/helpers/log';
+  import type { Country } from '~/core/shared/types';
+  import { checkDigit } from '~/core/utils';
+  import { postJobFormSchema } from '~/core/validations/job.validations';
+  import { AppAnalyticsProvider } from '~/services/analytics/AppAnalyticsProvider';
+  import { AnalyticsEvent } from '~/services/analytics/events';
+  import { useJobStore } from '~/stores/job';
 
   definePageMeta({
     layout: 'app-layout',
@@ -248,9 +240,7 @@
   const { handleJobPosting, handleJobDescriptionGenerated } = useCompanyActions();
 
   onMounted(() => {
-    ($analytics as AppAnalyticsProvider).capture(
-      AnalyticsEvent.jobPostPageEntered,
-    );
+    ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.jobPostPageEntered);
   });
 
   watch(
@@ -285,9 +275,7 @@
     logDev('EDITOR READY');
   };
 
-  const isSubmitButtonEnabled = computed(
-    () => canPostJob.value && !jobCreation.value.isLoading,
-  );
+  const isSubmitButtonEnabled = computed(() => canPostJob.value && !jobCreation.value.isLoading);
 
   const getSelectedCountries = (data: { countries: [Country] }) => {
     logDev('SELECTED COUNTRIES POST', data);
@@ -297,9 +285,7 @@
     }
 
     workPermits.value = data.countries.map((country) => country);
-    jobCreationData.value.workPermits = workPermits.value.map(
-      ({ iso }: Country) => iso,
-    );
+    jobCreationData.value.workPermits = workPermits.value.map(({ iso }: Country) => iso);
   };
 </script>
 

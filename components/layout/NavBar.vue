@@ -31,7 +31,7 @@
                       { 'text-indigo-800': useRoute().fullPath === link.path },
                     ]"
                     :to="link.path"
-                  >{{ link.name }}
+                    >{{ link.name }}
                   </NuxtLink>
                 </UChip>
               </li>
@@ -44,21 +44,13 @@
           <div class="mr-5 hidden w-auto lg:block">
             <ClientOnly>
               <div class="inline-block">
-                <NuxtLink
-                  v-if="!isAuthenticated"
-                  :to="AppRoutes.login"
-                  class="font-medium"
-                >
+                <NuxtLink v-if="!isAuthenticated" :to="AppRoutes.login" class="font-medium">
                   Login
                 </NuxtLink>
-                <UDropdown
-                  v-else
-                  :items="accountLinks"
-                  :popper="{ placement: 'bottom-start' }"
-                >
+                <UDropdown v-else :items="accountLinks" :popper="{ placement: 'bottom-start' }">
                   <div class="flex items-center justify-center">
                     <span class="text-sm primary-gradient font-bold">
-                     {{ useAuthStore().user.value.username }}
+                      {{ useAuthStore().authUser.username }}
                     </span>
                     <UIcon name="i-heroicons-chevron-down-20-solid" />
                   </div>
@@ -127,14 +119,12 @@
           </div>
           <div class="flex w-full flex-col justify-center py-16">
             <ul>
-              <li v-for="link in links" v-if="link?.isEnabled ?? true"
-                  class="mb-12"
-              >
+              <li v-for="link in links" v-if="link?.isEnabled ?? true" class="mb-12">
                 <a
                   :href="link.path"
                   class="font-medium hover:text-indigo-900"
                   @click.prevent="onMenuLinkClick(link)"
-                >{{ link.name }}</a
+                  >{{ link.name }}</a
                 >
               </li>
             </ul>
@@ -144,23 +134,15 @@
               <div class="mb-3 w-full">
                 <ClientOnly>
                   <div class="block">
-                    <NuxtLink
-                      v-if="!isAuthenticated"
-                      :to="AppRoutes.login"
-                      class="font-medium"
-                    >
+                    <NuxtLink v-if="!isAuthenticated" :to="AppRoutes.login" class="font-medium">
                       Login
                     </NuxtLink>
 
-                    <UDropdown
-                      v-else
-                      :items="accountLinks"
-                      :popper="{ placement: 'bottom-start' }"
-                    >
+                    <UDropdown v-else :items="accountLinks" :popper="{ placement: 'bottom-start' }">
                       <div class="flex items-center justify-center">
-                       <span class="text-sm primary-gradient font-bold">
-                     {{ useAuthStore().user.value.username }}
-                    </span>
+                        <span class="text-sm primary-gradient font-bold">
+                          {{ useAuthStore().authUser.username }}
+                        </span>
                         <UIcon name="i-heroicons-chevron-down-20-solid" />
                       </div>
                     </UDropdown>
@@ -186,13 +168,11 @@
 </template>
 
 <script lang="ts" setup>
-  import { AppRoutes } from '~/core/routes';
-  import { useAuthStore } from '~/stores/auth';
   import { storeToRefs } from 'pinia';
-  import { AnalyticsEvent } from '~/services/analytics/events';
-  import { AvailableFlags } from '~/services/feature-flag/available_flags';
   import CloseIcon from '~/components/icons/CloseIcon.vue';
-  import { AppAnalyticsProvider } from '~/services/analytics/app_analytics_provider';
+  import { AppRoutes } from '~/core/routes';
+  import { AvailableFlags } from '~/services/feature-flag/availableFlags';
+  import { useAuthStore } from '~/stores/auth';
 
   const links = shallowRef([
     {
@@ -211,16 +191,12 @@
     {
       path: AppRoutes.hireConsultants,
       name: 'Consultants',
-      tag: useFeatureFlags().isEnabled(AvailableFlags.hireConsultants)
-        ? 'New'
-        : 'Soon',
+      tag: useFeatureFlags().isEnabled(AvailableFlags.hireConsultants) ? 'New' : 'Soon',
     },
     {
       path: AppRoutes.fluppets,
       name: 'Fluppets',
-      tag: useFeatureFlags().isEnabled(AvailableFlags.fluppets)
-        ? 'New'
-        : 'Soon',
+      tag: useFeatureFlags().isEnabled(AvailableFlags.fluppets) ? 'New' : 'Soon',
     },
     {
       path: AppRoutes.learn,
@@ -270,15 +246,11 @@
         },
       },
     ],
-
     [
       {
         label: 'Logout',
         click: () => {
-          const { $analytics } = useNuxtApp();
-          ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.logoutButtonClicked);
-
-          useAuthStore().logout();
+          useUser().logout();
         },
       },
     ],

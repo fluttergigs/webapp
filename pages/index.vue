@@ -1,5 +1,4 @@
 <template>
-
   <main>
     <LazyLandingHeader />
 
@@ -13,7 +12,8 @@
               <div class="flex flex-wrap items-center m-3">
                 <div class="w-auto p-3">
                   <div
-                    class="flex items-center justify-center w-20 h-20 bg-indigo-100 rounded-full">
+                    class="flex items-center justify-center w-20 h-20 bg-indigo-100 rounded-full"
+                  >
                     <img alt="" src="@/assets/images/chat.svg" />
                   </div>
                 </div>
@@ -141,7 +141,7 @@
                 </svg>
                 <span class="font-medium leading-relaxed">Unlimited free resources</span>
               </li>
-              <li class="inline-flex flex-wrap items-center p-4">
+              <li class="inline-flex flex-wrap items-center p-4">s
                 <svg
                     class="mr-2.5"
                     width="18"
@@ -168,12 +168,12 @@
 </template>
 
 <script lang="ts" setup>
+  import CompanyCreationSection from '~/components/landing/CompanyCreationSection.vue';
+  import CompanySection from '~/components/landing/CompanySection.vue';
+  import SecondaryUserSection from '~/components/landing/SecondaryUserSection.vue';
+  import UserSection from '~/components/landing/UserSection.vue';
 
   import '@/components/landing/Header.vue';
-  import UserSection from '~/components/landing/UserSection.vue';
-  import SecondaryUserSection from '~/components/landing/SecondaryUserSection.vue';
-  import CompanySection from '~/components/landing/CompanySection.vue';
-  import CompanyCreationSection from '~/components/landing/CompanyCreationSection.vue';
 
   definePageMeta({
     layout: 'main-layout',
@@ -184,15 +184,17 @@
     title: 'FlutterGigs - The #1 Flutter jobs platform',
     ogTitle: 'FlutterGigs - The #1 Flutter jobs platform',
     ogUrl: 'https://fluttergigs.com',
-    ogLogo: 'https://fluttergigs.com/ico.png',
-    description: 'FlutterGigs is a platform to find Flutter framework related job opportunities and more',
-    ogDescription: 'FlutterGigs is a platform to find Flutter framework related job opportunities and more',
+    // ogLogo: 'https://fluttergigs.com/ico.png',
+    description:
+      'FlutterGigs is a platform to find Flutter framework related job opportunities and more',
+    ogDescription:
+      'FlutterGigs is a platform to find Flutter framework related job opportunities and more',
     ogSiteName: 'FlutterGigs - The #1 Flutter jobs platform',
     twitterCard: 'summary_large_image',
-    twitterUrl: 'https://fluttergigs.com',
     twitterDomain: 'https://fluttergigs.com',
     twitterSite: '@fluttergigs',
     twitterTitle: `FlutterGigs - Find the best Flutter opportunities at top remote companies around the world`,
-    twitterDescription: 'FlutterGigs is a platform to find Flutter framework related job opportunities and more',
+    twitterDescription:
+      'FlutterGigs is a platform to find Flutter framework related job opportunities and more',
   });
 </script>

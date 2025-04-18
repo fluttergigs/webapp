@@ -1,16 +1,17 @@
 <script setup>
-  import { useJobStore } from '~/stores/job';
-  import { Endpoint } from '~/core/network/endpoints';
-  import { AnalyticsEvent } from '~/services/analytics/events';
-  import { userFacingCompanySize } from '~/features/companies/transformers';
-  import { AppRoutes } from '~/core/routes';
-  import useJobActions from '@/composables/useJobActions';
-  import { Direction } from '~/core/shared/types';
-  import CompanyInfoCard from '~/components/company/CompanyInfoCard.vue';
-  import WorkingPermits from '~/components/job/WorkingPermits.vue';
-  import SaveJobIconButton from '~/components/job/SaveJobIconButton.vue';
-  import { marked } from 'marked';
   import { htmlToText } from 'html-to-text';
+  import { marked } from 'marked';
+  import CompanyInfoCard from '~/components/company/CompanyInfoCard.vue';
+  import SaveJobIconButton from '~/components/job/SaveJobIconButton.vue';
+  import WorkingPermits from '~/components/job/WorkingPermits.vue';
+  import { Endpoint } from '~/core/network/endpoints';
+  import { AppRoutes } from '~/core/routes';
+  import { Direction } from '~/core/shared/types';
+  import { userFacingCompanySize } from '~/features/companies/transformers';
+  import { AnalyticsEvent } from '~/services/analytics/events';
+  import { useJobStore } from '~/stores/job';
+
+  import useJobActions from '@/composables/useJobActions';
 
   //TODO handle account/dashboard/consultants
 
@@ -25,7 +26,11 @@
   const { data: countriesData, error: countriesError } = await useCountries();
   const { jobWorkingPermits } = useJobActions();
 
-  const { data: jobOffer, error, status } = await useLazyFetch(
+  const {
+    data: jobOffer,
+    error,
+    status,
+  } = await useLazyFetch(
     `${useRuntimeConfig().public.apiBaseUrl}${Endpoint.jobOffersBySlug(jobSlug.value)}`,
     {
       key: jobSlug.value,
@@ -48,33 +53,36 @@
     title: `FlutterGis job opportunities`,
   });
 
-
   useSeoMeta({
     title: () => `Flutter Gigs - ${jobOffer.value?.title}`,
     ogTitle: () => `Flutter Gigs - ${jobOffer.value?.title}`,
     ogUrl: 'https://fluttergigs.com',
     ogLogo: 'https://fluttergigs.com/ico.png',
     // ogImageUrl: () => `/api/generate_job_offer_og_image?title=${jobOffer.value?.title}&companyName=${company.value?.name}&companyLogo=${company.value?.logo}`,
-    description: () => htmlToText(jobOffer.value?.description?.substring(0, 100), { wordwrap: 130 }),
-    ogDescription: () => htmlToText(jobOffer.value?.description?.substring(0, 100), { wordwrap: 130 }),
+    description: () =>
+      htmlToText(jobOffer.value?.description?.substring(0, 100), { wordwrap: 130 }),
+    ogDescription: () =>
+      htmlToText(jobOffer.value?.description?.substring(0, 100), { wordwrap: 130 }),
     ogSiteName: 'Flutter Gigs - The #1 Flutter job platform',
-    twitterCard: 'summary',/*
+    twitterCard: 'summary' /*
 
   twitterImage: () =>
-      jobOffer.value?.company?.logo ?? "https://fluttergigs.com/fluttergigs-og.png",*/
+      jobOffer.value?.company?.logo ?? "https://fluttergigs.com/fluttergigs-og.png",*/,
     twitterSite: '@fluttergigs',
     twitterTitle: () => `Flutter Gigs - ${jobOffer.value?.title}`,
     twitterDescription: () =>
       `Find this opportunity on FlutterGigs: ${htmlToText(jobOffer.value?.title?.substring(0, 100), { wordwrap: 130 })}`,
   });
 
-  defineOgImageComponent('JobOffer', {
-    ...jobOffer.value,
-  }, {
-    fonts: [
-      'Outfit:700',
-    ],
-  });
+  defineOgImageComponent(
+    'JobOffer',
+    {
+      ...jobOffer.value,
+    },
+    {
+      fonts: ['Outfit:700'],
+    },
+  );
 
   onMounted(() => {
     // if (import.meta.client)
@@ -123,7 +131,9 @@
               </h2>
 
               <client-only>
-                <div class="my-2 md:my-0 flex flex-wrap justify-center items-center space-x-3 space-y-1 md:space-y-0">
+                <div
+                  class="my-2 md:my-0 flex flex-wrap justify-center items-center space-x-3 space-y-1 md:space-y-0"
+                >
                   <UButton
                     v-if="useJobActions().jobBelongsToCompany(company)"
                     color="white"
@@ -161,25 +171,19 @@
               <div class="flex items-center space-x-1">
                 <UIcon class="text-gray-600" name="i-heroicons-building-office" />
                 <span class="font-medium text-black">
-                {{ userFacingCompanySize(company?.size) }}
-              </span>
+                  {{ userFacingCompanySize(company?.size) }}
+                </span>
               </div>
 
               <div class="flex items-center space-x-1">
                 <UIcon class="text-gray-600" name="i-heroicons-link" />
-                <a
-                  :href="company?.website"
-                  class="font-medium text-black"
-                  target="_blank"
-                >
+                <a :href="company?.website" class="font-medium text-black" target="_blank">
                   Website
                 </a>
               </div>
 
               <WorkingPermits
-                :countries="
-                jobWorkingPermits(countriesData?.countries ?? [], jobOffer)
-              "
+                :countries="jobWorkingPermits(countriesData?.countries ?? [], jobOffer)"
               />
             </div>
           </section>
@@ -190,10 +194,16 @@
               <div class="space-y-6 md:space-y-10 font-medium text-gray-900">
                 <p class="leading-10">{{ company?.description }}</p>
 
-                <hr>
+                <hr />
 
-                <p class="leading-[24px] md:leading-[40px]"
-                   v-html="jobOffer?.description?.isMarkdown()? marked(jobOffer.description): jobOffer?.description"></p>
+                <p
+                  class="leading-[24px] md:leading-[40px]"
+                  v-html="
+                    jobOffer?.description?.isMarkdown()
+                      ? marked(jobOffer.description)
+                      : jobOffer?.description
+                  "
+                ></p>
               </div>
               <!--          apply section-->
               <LazyJobApplicationCtaCard
@@ -218,7 +228,6 @@
         </div>
       </template>
     </client-only>
-
   </main>
 </template>
 

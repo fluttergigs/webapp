@@ -3,21 +3,15 @@
     <div class="overflow-hidden">
       <div class="container mx-auto py-6 md:py-8">
         <div class="flex flex-wrap items-center justify-center">
-          <div
-            class="flex w-full flex-col gap-8 p-6 md:w-1/2 md:p-8"
-            contenteditable="false"
-          >
+          <div class="flex w-full flex-col gap-8 p-6 md:w-1/2 md:p-8" contenteditable="false">
             <div
               class="mb-6 inline-block rounded-full bg-green-100 px-2 py-1 font-semibold"
               style="width: fit-content"
             >
               <div class="-m-1 flex items-center p-2" contenteditable="false">
                 <div contenteditable="false">
-                  <NuxtLink
-                    :to="AppRoutes.jobs"
-                    class="text-sm"
-                    contenteditable="false"
-                  >Get the best Flutter opportunities from all around the world!
+                  <NuxtLink :to="AppRoutes.jobs" class="text-sm" contenteditable="false"
+                    >Get the best Flutter opportunities from all around the world!
                   </NuxtLink>
                 </div>
                 <div class="w-auto p-1">
@@ -35,8 +29,7 @@
               </h1>
 
               <p class="mb-11 text-lg font-medium text-gray-900 md:max-w-md">
-                Get the best-in-class group mentoring plans and professional
-                benefits for your team
+                Get the best-in-class group mentoring plans and professional benefits for your team
               </p>
               <div
                 class="my-5 flex flex-col items-start gap-3 sm:flex-row md:my-20 md:items-center"
@@ -74,11 +67,12 @@
 </template>
 
 <script lang="ts" setup>
-  import { AppRoutes } from '~/core/routes';
-  import useCompanyActions from '@/composables/useCompanyActions';
-  import { AppAnalyticsProvider } from '~/services/analytics/app_analytics_provider';
-  import { AnalyticsEvent } from '~/services/analytics/events';
   import ArrowBackIcon from '~/components/icons/ArrowBackIcon.vue';
+  import { AppRoutes } from '~/core/routes';
+  import { AppAnalyticsProvider } from '~/services/analytics/AppAnalyticsProvider';
+  import { AnalyticsEvent } from '~/services/analytics/events';
+
+  import useCompanyActions from '@/composables/useCompanyActions';
 
   const { $analytics } = useNuxtApp();
 

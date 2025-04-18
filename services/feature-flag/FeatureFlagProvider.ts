@@ -1,6 +1,6 @@
 import { FeatureFlag } from '~/services/feature-flag/FeatureFlag';
 import { PosthogClient } from '~/services/feature-flag/PosthogClient';
-import { AvailableFlags } from '~/services/feature-flag/available_flags';
+import { AvailableFlags } from '~/services/feature-flag/availableFlags';
 
 export class FeatureFlagProvider {
   private client: FeatureFlag;

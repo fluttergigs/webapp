@@ -1,15 +1,16 @@
 <script lang="ts" setup>
+  import { htmlToText } from 'html-to-text';
+  import { marked } from 'marked';
+  import { storeToRefs } from 'pinia';
+  import { stringify } from 'qs';
+  import { logDev } from '~/core/helpers/log';
   import { Endpoint } from '~/core/network/endpoints';
   import type { Company } from '~/features/companies/company.types';
-  import { AppAnalyticsProvider } from '~/services/analytics/app_analytics_provider';
+  import { AppAnalyticsProvider } from '~/services/analytics/AppAnalyticsProvider';
   import { AnalyticsEvent } from '~/services/analytics/events';
-  import { stringify } from 'qs';
-  import CompanyJobs from '@/components/company/CompanyJobs.vue';
   import { useCompanyStore } from '~/stores/company';
-  import { storeToRefs } from 'pinia';
-  import { logDev } from '~/core/helpers/log';
-  import { marked } from 'marked';
-  import { htmlToText } from 'html-to-text';
+
+  import CompanyJobs from '@/components/company/CompanyJobs.vue';
 
   definePageMeta({
     layout: 'main-layout',
@@ -35,7 +36,11 @@
     ),
   );
 
-  const { data: company, error, status } = await useLazyFetch(
+  const {
+    data: company,
+    error,
+    status,
+  } = await useLazyFetch(
     `${useRuntimeConfig().public.apiBaseUrl}${Endpoint.companies}?${query.value}`,
     {
       key: companySlug.value,
@@ -74,7 +79,6 @@
     { deep: true, immediate: true },
   );
 
-
   watch(
     company,
     async (value: any) => {
@@ -89,10 +93,9 @@
   useHead({ title: `Flutter Gigs - ${company?.value?.name}` });
 
   onMounted(() => {
-    ($analytics as AppAnalyticsProvider).capture(
-      AnalyticsEvent.companyPageDetailEntered,
-      { company: company.value },
-    );
+    ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.companyPageDetailEntered, {
+      company: company.value,
+    });
   });
 
   useSeoMeta({
@@ -128,19 +131,19 @@
     <template v-else>
       <section class="relative w-full bg-blueGray-50">
         <div class="container px-10 py-6 md:px-20 md:py-14">
-          <div
-            class="flex flex-col items-start gap-x-6 md:flex-row md:items-center"
-          >
+          <div class="flex flex-col items-start gap-x-6 md:flex-row md:items-center">
             <CompanyLogo :company="company as Company" size="3xl" />
 
             <div class="flex flex-1 flex-col justify-center space-y-2">
-              <h3 class="text-6xl font-bold md:text-7xl">
-                company </h3>
+              <h3 class="text-6xl font-bold md:text-7xl">company</h3>
               <p
                 class="line-clamp-1 overflow-ellipsis font-medium leading-relaxed text-gray-500"
-                v-html="company?.description?.isMarkdown()? marked(company.description): company?.description"
-              >
-              </p>
+                v-html="
+                  company?.description?.isMarkdown()
+                    ? marked(company.description)
+                    : company?.description
+                "
+              ></p>
             </div>
 
             <UButton
@@ -161,20 +164,19 @@
             <UTabs
               :items="tabs"
               :ui="{
-              list: {
-                width: 'w-fit',
-                background: 'bg-transparent',
-                tab: {
-                  base: 'mr-4 relative left-[40px] md:left-[80px] top-[12px] z-[2000]',
-                  size: 'text-lg',
-                  padding: 'px-0',
-                  active:
-                    'text-indigo-800 font-bold border-b-2 border-indigo-800',
-                  rounded: 'rounded-none',
+                list: {
+                  width: 'w-fit',
+                  background: 'bg-transparent',
+                  tab: {
+                    base: 'mr-4 relative left-[40px] md:left-[80px] top-[12px] z-[2000]',
+                    size: 'text-lg',
+                    padding: 'px-0',
+                    active: 'text-indigo-800 font-bold border-b-2 border-indigo-800',
+                    rounded: 'rounded-none',
+                  },
+                  marker: { background: 'bg-transparent', shadow: 'shadow-none' },
                 },
-                marker: { background: 'bg-transparent', shadow: 'shadow-none' },
-              },
-            }"
+              }"
               class="mt-10 w-full"
             >
               <template v-if="!!company" #item="{ item }">
@@ -197,16 +199,16 @@
 </template>
 
 <style>
-  div[role="tablist"] {
+  div[role='tablist'] {
     /* z-index: 2000;
      top: -40px;*/
   }
 
-  [role="tablist"] button {
+  [role='tablist'] button {
     width: fit-content;
   }
 
-  [role="tablist"] button span {
+  [role='tablist'] button span {
     padding-bottom: 2rem;
   }
 </style>
