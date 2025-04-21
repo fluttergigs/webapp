@@ -1,12 +1,13 @@
 <script lang="ts" setup>
   //@ts-ignore
-
-  import type { JobOffer } from '~/features/jobs/job.types';
   import OgPreview from '~/components/job/OgPreview.vue';
+  import type { JobOffer } from '~/features/jobs/job.types';
 
   const jobOffer = defineProps<Partial<JobOffer>>();
 
-  const jobOfferTitle = computed(() => jobOffer.title.length > 85 ? `${jobOffer.title.substring(0, 85)}...` : jobOffer.title);
+  const jobOfferTitle = computed(() =>
+    jobOffer.title.length > 85 ? `${jobOffer.title.substring(0, 85)}...` : jobOffer.title,
+  );
 </script>
 
 <template>
@@ -17,6 +18,5 @@
         {{ jobOfferTitle }}
       </p>
     </div>
-
   </div>
 </template>

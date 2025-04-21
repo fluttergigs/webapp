@@ -28,7 +28,7 @@
             <a
               class="cursor-pointer text-[12px] font-medium text-indigo-600 hover:text-indigo-700"
               @click="$emit('insideTextClicked')"
-            >{{ insideText }}</a
+              >{{ insideText }}</a
             >
           </div>
         </slot>

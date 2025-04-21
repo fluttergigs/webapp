@@ -4,7 +4,6 @@
     <div class="flex h-full flex-col">
       <LayoutNavBar />
       <div class="flex-grow overflow-hidden">
-
         <div class="relative">
           <NuxtPage />
         </div>
@@ -20,23 +19,23 @@
 </template>
 
 <script lang="ts" setup>
+  import { useWebSocket } from '@vueuse/core';
   import LayoutNavBar from '~/components/layout/NavBar.vue';
   import { logDev } from '~/core/helpers/log';
-  import type { ErrorTrackerProvider } from '~/services/error-tracker/error_tracker_provider';
-  import { useWebSocket } from '@vueuse/core';
+  import type { ErrorTrackerProvider } from '~/services/error-tracker/ErrorTrackerProvider';
 
   const { $errorTracker } = useNuxtApp();
   const authStore = useAuthStore();
 
-  await Promise.all([
-    useAuthStore().getUser(),
-    useJobStore().fetchJobs(),
-    useSettingStore().fetchSetting(),
-    useLearnStore().fetchLearnCategories(),
-    useLearnStore().fetchLearnResources(),
-    useCompanyStore().fetchCompanies(),
-  ]);
-
+  /* await Promise.all([
+     useAuthStore().getUser(),
+     useJobStore().fetchJobs(),
+     useSettingStore().fetchSetting(),
+     useLearnStore().fetchLearnCategories(),
+     useLearnStore().fetchLearnResources(),
+     useCompanyStore().fetchCompanies(),
+   ]);
+ */
   const onError = (error: any) => {
     logDev('error', error);
 

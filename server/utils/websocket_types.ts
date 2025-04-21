@@ -3,14 +3,14 @@ export enum WebSocketMessageType {
   UNSUBSCRIBE = 'unsubscribe',
   MESSAGE = 'message',
   SUBSCRIBED = 'subscribed',
-  UNSUBSCRIBED = 'unsubscribed'
+  UNSUBSCRIBED = 'unsubscribed',
 }
 
 export enum WebSocketChannel {
   NOTIFICATIONS = 'notifications',
   CHAT = 'chat',
   UPDATES = 'updates',
-  PAYMENT = 'payment'
+  PAYMENT = 'payment',
   // Add more channels as needed
 }
 

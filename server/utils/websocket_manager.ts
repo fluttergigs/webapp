@@ -1,5 +1,6 @@
-import { WebSocketChannel } from './websocket_types';
 import { Peer } from 'crossws';
+
+import { WebSocketChannel } from './websocket_types';
 
 interface ChannelSubscription {
   ws: WebSocket;
@@ -175,7 +176,6 @@ export class WebSocketManager {
 }
 */
 
-
 export class WebsocketClientManager {
   private static instance: WebsocketClientManager;
   private peers = new Map<string, Peer>();
@@ -183,8 +183,7 @@ export class WebsocketClientManager {
   private singlePeer: Peer | null = null;
 
   //define singleton constructor
-  private constructor() {
-  }
+  private constructor() {}
 
   get peer(): Peer<any> | null {
     return this.singlePeer;
@@ -216,5 +215,4 @@ export class WebsocketClientManager {
   removePeer(clientId: string) {
     this.peers.delete(clientId);
   }
-
 }

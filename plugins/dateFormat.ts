@@ -7,7 +7,6 @@ export default defineNuxtPlugin((nuxtApp) => {
     el.innerText = useDateFormat(date, format, { locales: 'en-US' }).value;
   });
 
-
   //alternative syntax
   /*nuxtApp.vueApp.directive('focus', {
       mounted(el: any) {

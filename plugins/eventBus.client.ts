@@ -1,7 +1,13 @@
-// @ts-ignore
 import mitt from 'mitt';
 
-type ApplicationEvents = {};
+export enum ApplicationEventEnum {
+  featureFlagsLoaded = 'featureFlags:loaded',
+}
+
+export type ApplicationEvents = {
+  [ApplicationEventEnum.featureFlagsLoaded]: { data: {} };
+};
+
 export default defineNuxtPlugin(() => {
   const emitter = mitt<ApplicationEvents>();
 

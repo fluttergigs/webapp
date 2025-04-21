@@ -1,15 +1,15 @@
 <script lang="ts" setup>
-  import type { JobCreationRequest } from '~/features/jobs/job.types';
-  import { userFacingWorkType } from '~/features/jobs/transformers';
   //@ts-ignore
   import type { PropType } from '@vue/runtime-core';
-  import type { Country } from '~/core/shared/types';
-  import { useJobStore } from '~/stores/job';
-  import useCompanyActions from '~/composables/useCompanyActions';
   import WorkingPermits from '~/components/job/WorkingPermits.vue';
-  import { useUserStore } from '~/stores/user';
-  import type { Company } from '~/features/companies/company.types';
+  import useCompanyActions from '~/composables/useCompanyActions';
   import { useJobPost } from '~/composables/useJobPost';
+  import type { Country } from '~/core/shared/types';
+  import type { Company } from '~/features/companies/company.types';
+  import type { JobCreationRequest } from '~/features/jobs/job.types';
+  import { userFacingWorkType } from '~/features/jobs/transformers';
+  import { useJobStore } from '~/stores/job';
+  import { useUserStore } from '~/stores/user';
 
   //@ts-ignore
   const props = defineProps({
@@ -40,14 +40,12 @@
 <template>
   <div class="flex flex-col space-y-4 w-full sticky top-[88px]">
     <div
-      class="transition-all ease-in-2s
-        flex flex-col
-        rounded-lg shadow-sm hover:shadow-md border border-indigo-700
-        px-8 py-4 space-y-2 ">
+      class="transition-all ease-in-2s flex flex-col rounded-lg shadow-sm hover:shadow-md border border-indigo-700 px-8 py-4 space-y-2"
+    >
       <div class="flex space-x-2 items-start justify-between">
         <CompanyLogo :company="useUserStore().myCompany as Company" size="2xl" />
 
-        <WorkingPermits :countries="workPermitCountries??[]" />
+        <WorkingPermits :countries="workPermitCountries ?? []" />
       </div>
       <p class="text-lg text-gray-900 font-medium">{{ job?.title }}</p>
 
@@ -63,15 +61,17 @@
       </div>
     </div>
 
-    <UButton v-if="isCtaVisible" :disabled="!isCtaEnabled"
-             :label="useJobPost().jobPostCtaLabel"
-             :loading="useJobStore().jobCreation.isLoading" class="bg-indigo-700 flex justify-center items-center"
-             color="indigo"
-             size="xl"
-             @click="()=>payForJobPosting()" />
+    <UButton
+      v-if="isCtaVisible"
+      :disabled="!isCtaEnabled"
+      :label="useJobPost().jobPostCtaLabel"
+      :loading="useJobStore().jobCreation.isLoading"
+      class="bg-indigo-700 flex justify-center items-center"
+      color="indigo"
+      size="xl"
+      @click="() => payForJobPosting()"
+    />
   </div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

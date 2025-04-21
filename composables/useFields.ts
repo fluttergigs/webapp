@@ -5,7 +5,7 @@ export function useFields() {
     isPasswordVisible.value = !isPasswordVisible.value;
   };
 
-  const passwordFieldType = computed(() => isPasswordVisible.value ? 'text' : 'password');
+  const passwordFieldType = computed(() => (isPasswordVisible.value ? 'text' : 'password'));
 
   return {
     passwordFieldType,

@@ -4,6 +4,10 @@ import * as Sentry from '@sentry/nuxt';
 import type { User } from '~/services/error-tracker/ErrorTracker';
 import { Context, ErrorTracker } from '~/services/error-tracker/ErrorTracker';
 
+
+
+
+
 export class SentryClient implements ErrorTracker {
   captureException(error: Error, context?: Context): void {
     Sentry.captureException(error, context);

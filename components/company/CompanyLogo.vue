@@ -20,11 +20,11 @@
   <UAvatar
     :alt="props.company?.name + ' logo'"
     :size="size"
-    :src="company?.logo" :text="props.company?.name?.substring(0,1)!"
+    :src="company?.logo"
+    :text="props.company?.name?.substring(0, 1)!"
     class="border-2 border-white"
-    icon="i-heroicons-photo" />
+    icon="i-heroicons-photo"
+  />
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

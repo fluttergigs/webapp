@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-
   import { remoteOptions } from '~/core/constants';
 
   const selected = ref(null);
@@ -8,7 +7,6 @@
   watch(selected, () => {
     emits('filterByRemoteOptions', selected.value);
   });
-
 </script>
 
 <template>
@@ -24,6 +22,4 @@
   />
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

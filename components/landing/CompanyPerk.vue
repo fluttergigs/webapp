@@ -3,7 +3,7 @@
   import { ArrowRightIcon, PaperAirplaneIcon } from '@heroicons/vue/24/solid';
 
   //@ts-ignore
-  const props = defineProps({
+  defineProps({
     icon: {
       type: Function,
       required: true,
@@ -25,9 +25,8 @@
 
 <template>
   <div
-    class="px-9 py-8 text-white bg-blueGray-900 rounded-4xl shadow-7xl
-      transition-all ease-in-out duration-200
-      hover:-translate-y-2 hover:shadow-9xl">
+    class="px-9 py-8 text-white bg-blueGray-900 rounded-4xl shadow-7xl transition-all ease-in-out duration-200 hover:-translate-y-2 hover:shadow-9xl"
+  >
     <div class="flex flex-col h-full justify-between">
       <slot name="icon">
         <component :is="icon" class="w-9 mb-5" />
@@ -51,9 +50,6 @@
       </slot>
     </div>
   </div>
-
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

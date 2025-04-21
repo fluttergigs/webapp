@@ -11,13 +11,15 @@ export class PosthogClient implements FeatureFlag {
       } = useRuntimeConfig();
 
       const posthogClient = posthog.init(posthogKey, {
-        capture_pageleave: false,
-        capture_pageview: false,
+        capture_pageleave: true,
+        feature_flag_request_timeout_ms: 24000,
+        capture_pageview: true,
         name: 'Flutter Gigs',
-        advanced_disable_feature_flags: false,
-        advanced_disable_feature_flags_on_first_load: false,
-        // api_host: "https://app.posthog.com",
-        loaded: (posthog: { debug: (arg0: boolean) => void }) => {
+        debug: import.meta.env.MODE === 'development',
+        advanced_disable_decide: import.meta.env.MODE === 'development',
+        person_profiles: 'always',
+        api_host: 'https://us.i.posthog.com',
+        loaded: (posthog: any) => {
           posthog.debug(import.meta.env.MODE === 'development');
         },
       });
@@ -36,7 +38,8 @@ export class PosthogClient implements FeatureFlag {
   }
 
   async load() {
-    await posthog.reloadFeatureFlags();
+    posthog.reloadFeatureFlags();
+    posthog.featureFlags.ensureFlagsLoaded();
   }
 
   isEnabled(flag: AvailableFlags): boolean {

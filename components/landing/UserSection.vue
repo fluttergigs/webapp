@@ -49,7 +49,14 @@
         v-if="landingPageJobs"
         class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-4 gap-3 my-4"
       >
-        <JobCardDetailed v-for="job in landingPageJobs" :key="job.slug" :job="job" />
+        <client-only>
+          <LazyJobCardDetailed
+            v-for="(job, index) in landingPageJobs"
+            :key="`${job.slug}-${index}`"
+            :job="job"
+            hydrate-on-visible
+          />
+        </client-only>
       </div>
     </div>
   </section>

@@ -88,11 +88,13 @@
                   >Post a job</a
                 >
               </li>
-              <li v-if="useFeatureFlags().isEnabled(AvailableFlags.hireConsultants)" class="mb-5">
-                <a class="text-white hover:text-gray-200 font-medium leading-relaxed" href="#"
-                  >Hire Flutter Consultants</a
-                >
-              </li>
+              <!--              <client-only>
+                              <li v-if="useFeatureFlags().isEnabled(AvailableFlags.hireConsultants)" class="mb-5">
+                                <a class="text-white hover:text-gray-200 font-medium leading-relaxed" href="#"
+                                  >Hire Flutter Consultants</a
+                                >
+                              </li>
+                            </client-only>-->
             </ul>
           </div>
           <div class="w-full sm:w-1/2 lg:w-2/12 p-8">
@@ -133,5 +135,4 @@
   import AltTwitterIcon from '~/components/icons/AltTwitterIcon.vue';
   import useCompanyActions from '~/composables/useCompanyActions';
   import { AppRoutes } from '~/core/routes';
-  import { AvailableFlags } from '~/services/feature-flag/availableFlags';
 </script>

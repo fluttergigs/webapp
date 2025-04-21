@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia';
 
 export let useAppStore = defineStore('app', {
-  state: (() => ({
+  state: () => ({
     isAppBarShrunk: false,
-  })),
+  }),
 
   actions: {
     shrinkAppBar() {

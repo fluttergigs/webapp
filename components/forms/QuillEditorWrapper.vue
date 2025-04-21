@@ -15,7 +15,9 @@
 </template>
 
 <script setup>
-  import { ref, watch } from 'vue'; //define props for placeholder
+  import { ref, watch } from 'vue';
+
+  //define props for placeholder
 
   //define props for placeholder
 

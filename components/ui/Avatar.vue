@@ -1,5 +1,4 @@
 <script setup>
-
   const props = defineProps({
     url: {
       type: String,
@@ -10,11 +9,7 @@
 </script>
 
 <template>
-  <img
-    :src=source
-    class="w-24 h-24 shadow-sm rounded-full" />
+  <img :src="source" class="w-24 h-24 shadow-sm rounded-full" />
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

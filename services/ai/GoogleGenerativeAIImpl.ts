@@ -1,13 +1,15 @@
-import type { BaseGenerativeAI } from '~/services/ai/base_generative_ai';
 //@ts-ignore
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { logDev } from '~/core/helpers/log';
+import type { BaseGenerativeAI } from '~/services/ai/base_generative_ai';
 
 export class GoogleGenerativeAIImpl implements BaseGenerativeAI {
   private genAI: GoogleGenerativeAI;
 
   constructor() {
-    const { public: { googleGenerativeApiKey } } = useRuntimeConfig();
+    const {
+      public: { googleGenerativeApiKey },
+    } = useRuntimeConfig();
 
     this.genAI = new GoogleGenerativeAI(googleGenerativeApiKey);
   }
@@ -26,5 +28,4 @@ export class GoogleGenerativeAIImpl implements BaseGenerativeAI {
     logDev('RESPONSE', response);
     return response.text();
   }
-
 }

@@ -1,11 +1,15 @@
 <template>
-  <NuxtLoadingIndicator :height=5 color="#283593" />
+  <NuxtLoadingIndicator :height="5" color="#283593" />
   <NuxtLayout>
     <NuxtPage />
   </NuxtLayout>
 </template>
 
 <script lang="ts" setup>
+  import { useAuthStore } from '~/stores/auth';
+  import { useCompanyStore } from '~/stores/company';
+  import { useJobStore } from '~/stores/job';
+  import { useSettingStore } from '~/stores/setting';
 
   useHead({
     htmlAttrs: {
@@ -15,26 +19,25 @@
     meta: [
       {
         name: 'description',
-        content: 'Flutter Gigs is a platform to find Flutter framework related job opportunities and more',
+        content:
+          'Flutter Gigs is a platform to find Flutter framework related job opportunities and more',
       },
       {
         name: 'viewport',
-        content:
-          'width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=yes',
+        content: 'width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=yes',
       },
       {
         key: 'description',
         name: 'description',
-        content: 'Flutter Gigs is a platform to find Flutter framework related job opportunities and more',
+        content:
+          'Flutter Gigs is a platform to find Flutter framework related job opportunities and more',
       },
       {
         name: 'format-detection',
         content: 'telephone=no',
       },
     ],
-    script: [
-      { src: 'https://fluttergigs.com/main.js', defer: true },
-    ],
+    script: [{ src: 'https://fluttergigs.com/main.js', defer: true }],
     link: [
       { rel: 'canonical', href: 'https://fluttergigs.com' },
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
@@ -63,35 +66,53 @@
     ogImage: 'https://fluttergigs.com/fluttergigs-og-1.png',
     ogUrl: 'https://fluttergigs.com',
     ogLogo: 'https://fluttergigs.com/ico.png',
-    description: 'FlutterGigs is a platform to find Flutter framework related job opportunities and more',
-    ogDescription: 'FlutterGigs is a platform to find Flutter framework related job opportunities and more',
+    description:
+      'FlutterGigs is a platform to find Flutter framework related job opportunities and more',
+    ogDescription:
+      'FlutterGigs is a platform to find Flutter framework related job opportunities and more',
     ogSiteName: 'FlutterGigs - The #1 Flutter jobs platform',
     twitterCard: 'summary_large_image',
     twitterUrl: 'https://fluttergigs.com',
     twitterDomain: 'https://fluttergigs.com',
     twitterSite: '@fluttergigs',
     twitterTitle: `FlutterGigs - Find the best Flutter opportunities at top remote companies around the world`,
-    twitterDescription: 'FlutterGigs is a platform to find Flutter framework related job opportunities and more',
+    twitterDescription:
+      'FlutterGigs is a platform to find Flutter framework related job opportunities and more',
     twitterImage: 'https://fluttergigs.com/fluttergigs-og-1.png',
   });
 
   defineOgImage({
     url: 'https://fluttergigs.com/fluttergigs-og.png',
   });
+
+  await Promise.all([
+    useCompanyStore().fetchCompanies(),
+    useJobStore().fetchJobs(),
+    useSettingStore().fetchSetting(),
+    useAuthStore().getUser(),
+    useLearnStore().fetchLearnCategories(),
+    useLearnStore().fetchLearnResources(),
+  ]);
+
+  onMounted(() => {
+    useFeatureFlags().loadFlags();
+  });
 </script>
 
 <style>
-
-  .page-enter-active, .page-leave-active {
+  .page-enter-active,
+  .page-leave-active {
     transition: all 0.35s;
   }
 
-  .page-enter-active, .page-leave-active {
+  .page-enter-active,
+  .page-leave-active {
     opacity: 1;
     transform: translate(0px, 0px);
   }
 
-  .page-enter-from, .page-leave-to {
+  .page-enter-from,
+  .page-leave-to {
     opacity: 0;
     transform: translate(0px, 20px);
   }
@@ -122,5 +143,4 @@
     opacity: 0;
     transform: translate(50px, 0);
   }*/
-
 </style>

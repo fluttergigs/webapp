@@ -10,7 +10,6 @@
   });
 </script>
 
-
 <template>
   <USelectMenu
     v-model="selected"
@@ -25,6 +24,4 @@
   />
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

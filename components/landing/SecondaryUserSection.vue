@@ -1,19 +1,18 @@
 <script lang="ts" setup>
   //@ts-ignore
   import { MagnifyingGlassIcon, UserIcon } from '@heroicons/vue/24/solid';
+  import CompanyPerk from '~/components/landing/CompanyPerk.vue';
   import { AppRoutes } from '~/core/routes';
-  import { AppAnalyticsProvider } from '~/services/analytics/AppAnalyticsProvider';
   import { AnalyticsEvent } from '~/services/analytics/events';
 
-  const { $analytics } = useNuxtApp();
   const createAccount = () => {
-    ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.userPerkCreateAccountButtonClicked);
+    useAnalytics().capture(AnalyticsEvent.userPerkCreateAccountButtonClicked);
 
     return navigateTo(AppRoutes.login);
   };
 
   const findJobs = () => {
-    ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.userPerkFindJobsButtonClicked);
+    useAnalytics().capture(AnalyticsEvent.userPerkFindJobsButtonClicked);
     navigateTo(AppRoutes.jobs);
   };
 </script>

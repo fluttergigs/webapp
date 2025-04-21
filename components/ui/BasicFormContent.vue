@@ -21,7 +21,6 @@
 <template>
   <client-only>
     <section class="flex flex-col py-8 md:py-16 xl:pb-56 bg-white relative overflow-hidden">
-
       <CloseButton v-if="showCloseButton" />
       <div class="container px-4 mx-auto">
         <div class="text-center max-w-lg mx-auto">
@@ -32,7 +31,9 @@
           </slot>
 
           <slot name="title">
-            <h2 class="mb-4 text-6xl md:text-7xl text-center font-bold font-heading tracking-px-n leading-tight">
+            <h2
+              class="mb-4 text-6xl md:text-7xl text-center font-bold font-heading tracking-px-n leading-tight"
+            >
               {{ title }}
             </h2>
           </slot>
@@ -43,18 +44,13 @@
             </p>
           </slot>
 
-          <slot name="form">
-
-          </slot>
+          <slot name="form"> </slot>
         </div>
       </div>
     </section>
 
     <UNotifications />
   </client-only>
-
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -9,9 +9,6 @@ export default defineWebSocketHandler({
     WebsocketClientManager.getInstance().addPeer(peer.id, peer);
   },
 
-  message(peer: Peer, message: Message) {
-
-  },
-  close(peer: Peer) {
-  },
+  message(peer: Peer, message: Message) {},
+  close(peer: Peer) {},
 });

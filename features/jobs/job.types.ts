@@ -1,5 +1,5 @@
-import type { CompanyApiResponse } from '~/features/companies/company.types';
 import { PaymentContext, SingleApiResponse } from '~/core/shared/types';
+import type { CompanyApiResponse } from '~/features/companies/company.types';
 import type { UserApiResponse } from '~/features/users/user.types';
 
 //Shared Enums
@@ -74,10 +74,8 @@ export type JobOfferDeleteRequest = SaveJobOfferRequest;
 export type SaveJobOfferRequest = { jobOffer: number };
 export type DeleteSavedJobOfferRequest = Pick<BookmarkedJobOffer, 'id'>;
 
-
 // Response Types
 export type JobOfferApiResponse = SingleApiResponse<JobOffer>;
-
 
 //Search Filters
 export interface JobSearchFilters {

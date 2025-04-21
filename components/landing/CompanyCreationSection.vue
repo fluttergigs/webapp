@@ -1,20 +1,17 @@
 <script lang="ts" setup>
   import { BuildingOfficeIcon, MegaphoneIcon } from '@heroicons/vue/24/solid';
+  import CompanyPerk from '~/components/landing/CompanyPerk.vue';
   import { AppRoutes } from '~/core/routes';
-  import { AppAnalyticsProvider } from '~/services/analytics/AppAnalyticsProvider';
   import { AnalyticsEvent } from '~/services/analytics/events';
 
-  const { $analytics } = useNuxtApp();
   const postJob = () => {
-    ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.companyPerkPostJobButtonClicked);
+    useAnalytics().capture(AnalyticsEvent.companyPerkPostJobButtonClicked);
 
     useCompanyActions().handleJobCreation();
   };
 
   const createCompany = () => {
-    ($analytics as AppAnalyticsProvider).capture(
-      AnalyticsEvent.companyPerkCreateCompanyButtonClicked,
-    );
+    useAnalytics().capture(AnalyticsEvent.companyPerkCreateCompanyButtonClicked);
     navigateTo(AppRoutes.createCompany);
   };
 </script>
@@ -37,7 +34,7 @@
           <h2
             class="mb-16 text-4xl md:text-5xl xl:text-6xl font-bold font-heading tracking-px-n leading-none"
           >
-            Hire talented Flutter engineers
+            Hire talented Flutter Engineers
           </h2>
 
           <p class="font-medium text-gray-600 leading-relaxed">

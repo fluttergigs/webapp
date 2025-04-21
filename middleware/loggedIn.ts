@@ -1,5 +1,5 @@
-import { useAuthStore } from '~/stores/auth';
 import { AppRoutes } from '~/core/routes';
+import { useAuthStore } from '~/stores/auth';
 
 export default defineNuxtRouteMiddleware((from, to) => {
   const { isAuthenticated, hasReturnUrl, returnUrl } = useAuthStore();

@@ -1,6 +1,6 @@
 <script setup>
-  import { useJobStore } from '~/stores/job';
   import { defaultShimmerListItemsCount } from '~/core/constants';
+  import { useJobStore } from '~/stores/job';
 
   const jobStore = useJobStore();
 
@@ -24,13 +24,15 @@
           <slot name="error">
             <div class="flex flex-col items-center space-y-2">
               <p>Unable to fetch jobs in the list</p>
-              <img alt="Empty job results" class="w-96 h-96" src="@/assets/images/emptyJobFiltersResult.svg" />
+              <img
+                alt="Empty job results"
+                class="w-96 h-96"
+                src="@/assets/images/emptyJobFiltersResult.svg"
+              />
             </div>
           </slot>
-          <slot name="ctaError">
-          </slot>
+          <slot name="ctaError"></slot>
         </div>
-
       </template>
 
       <div v-else-if="props.jobsResponse.isLoading">
@@ -41,30 +43,29 @@
         </slot>
       </div>
 
-
       <template v-else>
         <div v-if="props.jobs.length === 0" class="flex flex-col items-center justify-center">
           <slot name="noData">
             <div class="flex flex-col items-center space-y-2">
               <p>No jobs found in the list</p>
-              <img alt="Empty job results" class="w-96 h-96" src="@/assets/images/emptyJobFiltersResult.svg" />
+              <img
+                alt="Empty job results"
+                class="w-96 h-96"
+                src="@/assets/images/emptyJobFiltersResult.svg"
+              />
             </div>
           </slot>
-          <slot name="cta">
-          </slot>
+          <slot name="cta"></slot>
         </div>
 
         <template v-else>
-          <slot v-for="job in props.jobs" :key="job.slug" :job="job">
+          <slot v-for="(job, index) in props.jobs" :key="`${job.slug}-${index}`" :job="job">
             <JobCard :key="job.slug" :job="job" />
           </slot>
         </template>
       </template>
-
     </client-only>
   </div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

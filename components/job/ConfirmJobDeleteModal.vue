@@ -1,11 +1,10 @@
 <script lang="ts" setup>
-
-  import BaseModal from '~/components/ui/BaseModal.vue';
   //@ts-ignore
   import type { PropType } from '@vue/runtime-core';
+  import BaseModal from '~/components/ui/BaseModal.vue';
   import type { JobOffer } from '~/features/jobs/job.types';
-  import { useJobStore } from '~/stores/job';
   import { useCompanyStore } from '~/stores/company';
+  import { useJobStore } from '~/stores/job';
 
   //@ts-ignore
   const props = defineProps({
@@ -26,22 +25,24 @@
 <template>
   <BaseModal header-title="Confirm job delete">
     <template #body>
-      <div class="text-md font-medium">Do you want to delete <b>{{ job.title }}</b> job offer ?</div>
+      <div class="text-md font-medium">
+        Do you want to delete <b>{{ job.title }}</b> job offer ?
+      </div>
     </template>
 
     <template #footer>
       <div class="flex space-x-2">
-        <UButton
-          color="white"
-          label="No" @click="useModal().close()" />
+        <UButton color="white" label="No" @click="useModal().close()" />
 
-        <UButton :loading="jobStore.jobDelete.isLoading" color="red"
-                 label="Yes" @click="useJobActions().handleJobDelete(job, postDeleteJob)" />
+        <UButton
+          :loading="jobStore.jobDelete.isLoading"
+          color="red"
+          label="Yes"
+          @click="useJobActions().handleJobDelete(job, postDeleteJob)"
+        />
       </div>
     </template>
   </BaseModal>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

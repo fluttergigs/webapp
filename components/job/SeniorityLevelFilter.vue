@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-
   import { seniorityLevelOptions } from '~/core/constants';
 
   const selected = ref(null);
@@ -24,6 +23,4 @@
   />
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

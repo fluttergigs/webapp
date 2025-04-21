@@ -51,6 +51,8 @@
               <div class="flex flex-col space-y-4">
                 <div
                   v-for="(link, index) in linkItems"
+                  v-if="link.enabled ?? true"
+                  :key="index"
                   :class="[
                     'flex w-auto p-2',
                     useRoute().path === link.path ? 'rounded-md bg-indigo-200 text-indigo-800' : '',
@@ -119,11 +121,9 @@
   import { logDev } from '~/core/helpers/log';
   import { AppRoutes } from '~/core/routes';
   import { PaymentContext } from '~/core/shared/types';
+  import { AvailableFlags } from '~/services/feature-flag/availableFlags';
   import { useAppStore } from '~/stores/app';
-  import { useAuthStore } from '~/stores/auth';
-  import { useCompanyStore } from '~/stores/company';
   import { useJobStore } from '~/stores/job';
-  import { useSettingStore } from '~/stores/setting';
 
   const links = [
     /*{
@@ -136,6 +136,7 @@
       path: AppRoutes.consultantProfile,
       section: 'user',
       name: 'My Profile',
+      enabled: useFeatureFlags().isEnabled(AvailableFlags.hireConsultants),
     },
     {
       icon: BuildingOffice2Icon,
@@ -180,16 +181,6 @@
 
   const { isAppBarShrunk } = storeToRefs(useAppStore());
   const groupedLinks = computed(() => groupBy(links, 'section'));
-
-  await Promise.all([
-    useFeatureFlags().loadFlags(),
-    useCompanyStore().fetchCompanies(),
-    useJobStore().fetchJobs(),
-    useSettingStore().fetchSetting(),
-    useAuthStore().getUser(),
-    useLearnStore().fetchLearnCategories(),
-    useLearnStore().fetchLearnResources(),
-  ]);
 
   onMounted(() => {
     if (!useAppStore().isAppBarShrunk) {
