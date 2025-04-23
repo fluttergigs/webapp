@@ -12,23 +12,23 @@
 
 <template>
   <UModal>
-    <UCard :ui="{ ring: '', divide: 'divide-y divide-gray-100 dark:divide-gray-800' }">
-      <template #header>
-        <slot name="header">
-          <h3 class="font-medium">{{ headerTitle }}</h3>
-        </slot>
-      </template>
-
-      <slot name="body">
-        <div>
-          {{ body }}
-        </div>
+    <template #header>
+      <slot name="header">
+        <h3 class="font-medium">{{ headerTitle }}</h3>
       </slot>
-
-      <template #footer>
-        <slot name="footer"> </slot>
-      </template>
-    </UCard>
+    </template>
+    <template #body>
+      <UCard :ui="{ ring: '', divide: 'divide-y divide-gray-100 dark:divide-gray-800' }">
+        <slot name="body">
+          <div>
+            {{ body }}
+          </div>
+        </slot>
+      </UCard>
+    </template>
+    <template #footer>
+      <slot name="footer"></slot>
+    </template>
   </UModal>
 </template>
 

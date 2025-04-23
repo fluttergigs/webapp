@@ -13,7 +13,7 @@
 <template>
   <USelectMenu
     v-model="selected"
-    :options="companySizeOptions"
+    :items="companySizeOptions"
     :required="false"
     clear-search-on-close
     option-attribute="label"

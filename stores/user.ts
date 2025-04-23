@@ -1,20 +1,16 @@
 import { defineStore } from 'pinia';
 import { logDev } from '~/core/helpers/log'; // @ts-ignore
 import { Wrapper } from '~/core/wrapper';
-import { MultiApiResponse, SingleApiResponse } from '~/core/shared/types';
+import type { MultiApiResponse, SingleApiResponse } from '~/core/shared/types';
 import { Endpoint } from '~/core/network/endpoints';
 import { AppStrings } from '~/core/strings';
 import type { HttpClient } from '~/core/network/http_client';
-import {
-  BookmarkedJobOffer,
-  DeleteSavedJobOfferRequest,
-  JobOffer,
-  SaveJobOfferRequest,
-} from '~/features/jobs/job.types'; // @ts-ignore
+import type { BookmarkedJobOffer, DeleteSavedJobOfferRequest, SaveJobOfferRequest } from '~/features/jobs/job.types'; // @ts-ignore
 import isBefore from 'date-fns/isBefore'; // @ts-ignore
 import parseISO from 'date-fns/parseISO'; // @ts-ignore
 import isAfter from 'date-fns/isAfter';
-import { useAuthStore } from '~/stores/auth'; //@ts-ignore
+import { useAuthStore } from '~/stores/auth';
+import type { AddEducationRequest, AddExperienceRequest, Education, Experience } from '~/features/users/user.types'; //@ts-ignore
 
 //@ts-ignore
 export const useUserStore = defineStore('user', {
@@ -27,6 +23,8 @@ export const useUserStore = defineStore('user', {
     >().toInitial(),
     bookmarkedJobDelete: new Wrapper<SingleApiResponse<Object>>().toInitial(),
     jobToBookmark: -1,
+    $addExperience: new Wrapper<SingleApiResponse<Experience>>().toInitial(),
+    $addEducation: new Wrapper<SingleApiResponse<Education>>().toInitial(),
   }),
   actions: {
     // Save a job to bookmarks
@@ -35,9 +33,7 @@ export const useUserStore = defineStore('user', {
       const { $http } = useNuxtApp();
 
       try {
-        const response = await (<HttpClient>$http).post<
-          SingleApiResponse<BookmarkedJobOffer>
-        >(Endpoint.bookmarkedJobOffers, { data: request });
+        const response = await (<HttpClient>$http).post<SingleApiResponse<BookmarkedJobOffer>>(Endpoint.bookmarkedJobOffers, { data: request });
         this.bookmarkedJobCreation = this.bookmarkedJobCreation.toSuccess(
           response,
           AppStrings.jobOfferSavedSuccessfully,
@@ -88,22 +84,63 @@ export const useUserStore = defineStore('user', {
           );
       }
     },
+
+    // Add experience
+    async addExperience(request: AddExperienceRequest): Promise<void> {
+      this.$addExperience = new Wrapper<SingleApiResponse<Experience>>().toLoading();
+      const { $http } = useNuxtApp();
+
+      try {
+        const response = await (<HttpClient>$http).post<SingleApiResponse<Experience>>(Endpoint.experiences, { ...request });
+        this.$addExperience = this.$addExperience.toSuccess(
+          response,
+          AppStrings.experienceAddedSuccessfully,
+        );
+      } catch (error) {
+        logDev('Error adding experience', error);
+        this.$addExperience = this.$addExperience.toFailed(
+          AppStrings.unableToAddExperience,
+        );
+      }
+    },
+
+    // Add education
+    async addEducation(request: AddEducationRequest): Promise<void> {
+      this.$addEducation = new Wrapper<SingleApiResponse<Education>>().toLoading();
+      const { $http } = useNuxtApp();
+
+      try {
+        const response = await (<HttpClient>$http).post<
+          SingleApiResponse<Education>
+        >(Endpoint.educations, { ...request });
+        this.$addEducation = this.$addEducation.toSuccess(
+          response,
+          AppStrings.educationAddedSuccessfully,
+        );
+      } catch (error) {
+        logDev('Error adding education', error);
+        this.$addEducation = this.$addEducation.toFailed(
+          AppStrings.unableToAddEducation,
+        );
+      }
+    },
   },
   getters: {
-    activeBookmarkedJobs: (state) =>
-      useUserStore().bookmarkedJobs?.filter((job: JobOffer) =>
-        isAfter(parseISO(job.applyBefore.toString()), new Date()),
-      ),
-
     bookmarkedJobs: (state) =>
       state.bookmarkedJobsListResponse?.value?.data ?? [],
 
-    companies: (state) => useAuthStore().authUser?.companies ?? [],
+    activeBookmarkedJobs: (state) =>
+      useUserStore().bookmarkedJobs?.filter(({ applyBefore }) =>
+        isAfter(parseISO(applyBefore.toString()), new Date()),
+      ) ?? [],
 
     expiredBookmarkedJobs: (state) =>
-      useUserStore().bookmarkedJobs?.filter((job: JobOffer) =>
+      useUserStore().bookmarkedJobs?.filter(({ applyBefore }) =>
         isBefore(parseISO(job.applyBefore.toString()), new Date()),
-      ),
+      ) ?? [],
+
+    companies: (state) => useAuthStore().authUser?.companies ?? [],
+
 
     isHandlingBookmark: (state) =>
       (
@@ -117,18 +154,14 @@ export const useUserStore = defineStore('user', {
       useUserStore().hasCompanies ? useUserStore().companies[0] : null,
 
     educations: (state) => {
-      const educations = useUserStore().authUser?.educations ?? [];
-      return educations.filter((education: { endDate: string }) =>
-        isAfter(parseISO(education.endDate), new Date()),
-      );
+      return useAuthStore().authUser?.educations ?? [];
     },
     hasEducations: (state) => useUserStore().educations.length > 0,
-    employments: (state) => {
-      const employments = useUserStore().authUser?.employments ?? [];
-      return employments.filter((employment: { endDate: string }) =>
-        isAfter(parseISO(employment.endDate), new Date()),
+    experiences: (state) => {
+      const experiences: Experience[] = useAuthStore().authUser?.experiences ?? [];
+      return experiences.filter(({ endDate }) => isAfter(parseISO(endDate!.toString()), new Date()),
       );
     },
-    hasEmployments: (state) => useUserStore().employments.length > 0,
+    hasExperiences: (state) => useUserStore().experiences.length > 0,
   },
 });

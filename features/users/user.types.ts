@@ -1,5 +1,5 @@
-import { SingleApiResponse } from '~/core/shared/types';
-import { User } from '~/services/auth/auth.types';
+import type { SingleApiResponse } from '~/core/shared/types';
+import type { User } from '~/services/auth/auth.types';
 
 export enum ExperienceType {
   internship = 'internship',

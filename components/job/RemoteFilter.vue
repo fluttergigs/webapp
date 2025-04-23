@@ -12,7 +12,7 @@
 <template>
   <USelectMenu
     v-model="selected"
-    :options="remoteOptions"
+    :items="remoteOptions"
     clear-search-on-close
     option-attribute="label"
     placeholder="Select your remote options"

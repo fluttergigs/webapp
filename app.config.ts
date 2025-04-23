@@ -1,7 +1,9 @@
 export default defineAppConfig({
   ui: {
-    primary: 'indigo',
-    ring: 'ring-1 ring-gray-200 dark:ring-gray-700',
+    colors: {
+      primary: 'indigo',
+      ring: 'ring-1 ring-gray-200 dark:ring-gray-700',
+    },
     avatar: {
       background: 'bg-indigo-600',
       text: 'text-white',

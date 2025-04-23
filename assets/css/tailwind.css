@@ -1,7 +1,31 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
+:root{
+    --color-blueGray-100: #F1F5F9
+    --color-blueGray-200: #E2E8F0
+    --color-blueGray-300: #CBD5E1
+    --color-blueGray-400: #94A3B8
+    --color-blueGray-500: #64748B
+    --color-blueGray-600: #475569
+    --color-blueGray-700: #334155
+    --color-blueGray-800: #1E293B
+    --color-blueGray-900: #0F172A
+
+    --text-10xl: 10rem
+    --text-10xl--line-height: 1;
+
+    --text-11xl: 11.25rem
+    --text-10xl--line-height: 1;
+
+    --text-12xl: 12rem
+}
+
+@theme {
+    --font-outfit: 'Outfit', sans-serif !important;
+    --font-manRope: 'Manrope', 'Inter', sans-serif !important;
+
+
+    --text-10xl--line-height: 1;
+}
 
 @layer components {
     :root {

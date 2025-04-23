@@ -3,7 +3,7 @@ import { defineStore } from 'pinia';
 import { Endpoint } from '~/core/network/endpoints';
 import { Wrapper } from '~/core/wrapper';
 import { logDev } from '~/core/helpers/log';
-import { MultiApiResponse, SingleApiResponse } from '~/core/shared/types';
+import type { MultiApiResponse, SingleApiResponse } from '~/core/shared/types';
 import { AppStrings } from '~/core/strings';
 import type {
   JobCreationRequest,

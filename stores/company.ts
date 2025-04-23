@@ -2,19 +2,19 @@ import { defineStore } from 'pinia';
 import { Endpoint } from '~/core/network/endpoints';
 import { Wrapper } from '~/core/wrapper';
 import { logDev } from '~/core/helpers/log';
-import {
+import type {
   Company,
   CompanySearchFilters,
   CreateCompanyRequest,
   ListCompanyApiResponse,
   UpdateCompanyRequest,
 } from '~/features/companies/company.types';
-import { MultiApiResponse, SingleApiResponse } from '~/core/shared/types';
+import type { MultiApiResponse, SingleApiResponse } from '~/core/shared/types';
 import { AppStrings } from '~/core/strings';
 import type { HttpClient } from '~/core/network/http_client';
 //@ts-ignore
 import slugify from '@sindresorhus/slugify';
-import { JobOffer } from '~/features/jobs/job.types';
+import type { JobOffer } from '~/features/jobs/job.types';
 import { stringify } from 'qs';
 
 //@ts-ignore

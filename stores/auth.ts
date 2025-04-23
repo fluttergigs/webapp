@@ -1,15 +1,15 @@
 import { defineStore } from 'pinia';
-import { LoginData, RegistrationData, User } from '~/services/auth/auth.types';
+import type { LoginData, RegistrationData, User } from '~/services/auth/auth.types';
 import { AppRoutes } from '~/core/routes';
 import { generateUserName } from '~/core/utils';
 import { logDev } from '~/core/helpers/log';
 // @ts-ignore
 import { jwtDecode } from 'jwt-decode';
 import { Wrapper } from '~/core/wrapper';
-import { BasicApiResponse, SingleApiResponse } from '~/core/shared/types';
+import type { BasicApiResponse, SingleApiResponse } from '~/core/shared/types';
 import { Endpoint } from '~/core/network/endpoints';
 import { AppStrings } from '~/core/strings';
-import { UpdatePasswordRequest, UpdateUserRequest } from '~/features/users/user.types';
+import type { UpdatePasswordRequest, UpdateUserRequest } from '~/features/users/user.types';
 import { AppAnalyticsProvider } from '~/services/analytics/AppAnalyticsProvider';
 import type { AuthProvider } from '~/services/auth/AuthProvider';
 import type { HttpClient } from '~/core/network/http_client';

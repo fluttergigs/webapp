@@ -1,5 +1,5 @@
 //@ts-ignore
-import { FetchContext, FetchResponse } from 'ofetch';
+import type { FetchContext, FetchResponse } from 'ofetch';
 import { logDev } from '~/core/helpers/log';
 import { useAuthStore } from '~/stores/auth';
 

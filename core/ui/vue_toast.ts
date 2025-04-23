@@ -1,6 +1,7 @@
 // @ts-ignore
 import type { Notification } from '#ui/types';
-import { BaseToast, ToastConfig } from '~/core/ui/base_toast';
+import type { ToastConfig } from '~/core/ui/base_toast';
+import { BaseToast } from '~/core/ui/base_toast';
 
 export class VueToastImpl extends BaseToast<Notification, number> {
   private toast = useToast();
@@ -26,9 +27,9 @@ export class VueToastImpl extends BaseToast<Notification, number> {
       id: this.currentNotification.toString(),
       title: title ?? config?.title,
       description: config?.description,
-      timeout: config?.timeout ?? this.timeout,
+      duration: config?.timeout ?? this.timeout,
       click: config?.click,
-      color: 'blue-gray',
+      color: 'info',
     });
   }
 
@@ -39,8 +40,8 @@ export class VueToastImpl extends BaseToast<Notification, number> {
       id: this.currentNotification.toString(),
       title: title ?? config?.title,
       description: config?.description,
-      timeout: config?.timeout ?? this.timeout,
-      color: 'red',
+      duration: config?.timeout ?? this.timeout,
+      color: 'error',
       click: config?.click,
     });
   }
@@ -52,7 +53,7 @@ export class VueToastImpl extends BaseToast<Notification, number> {
       id: this.currentNotification.toString(),
       title: title ?? config?.title,
       description: config?.description,
-      timeout: config?.timeout ?? this.timeout,
+      duration: config?.timeout ?? this.timeout,
       color: 'primary',
       click: config?.click,
     });
@@ -65,8 +66,8 @@ export class VueToastImpl extends BaseToast<Notification, number> {
       id: this.currentNotification.toString(),
       title: title ?? config?.title,
       description: config?.description,
-      timeout: config?.timeout ?? this.timeout,
-      color: 'indigo',
+      duration: config?.timeout ?? this.timeout,
+      color: 'primary',
       click: config?.click,
     });
   }
@@ -78,8 +79,8 @@ export class VueToastImpl extends BaseToast<Notification, number> {
       id: this.currentNotification.toString(),
       title: title ?? config?.title,
       description: config?.description,
-      timeout: config?.timeout ?? this.timeout,
-      color: 'green',
+      duration: config?.timeout ?? this.timeout,
+      color: 'success',
       click: config?.click,
     });
   }
@@ -92,7 +93,7 @@ export class VueToastImpl extends BaseToast<Notification, number> {
       title: config.title ?? 'Notification',
       description: config.description,
       actions: config.actions,
-      timeout: config.timeout,
+      duration: config.timeout,
       color: config.color,
       click: config.click,
     });

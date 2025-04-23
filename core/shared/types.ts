@@ -11,7 +11,7 @@ export interface BasicApiResponse<T = unknown> {
 }
 
 export interface SingleApiResponse<T> {
-  data: T;
+  //spread the type T in the object
 
   [key: string]: unknown;
 }

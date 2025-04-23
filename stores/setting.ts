@@ -2,11 +2,15 @@ import { defineStore } from 'pinia';
 import { logDev } from '~/core/helpers/log';
 import { Endpoint } from '~/core/network/endpoints';
 import type { HttpClient } from '~/core/network/http_client';
-import { SingleApiResponse } from '~/core/shared/types';
+import type { SingleApiResponse } from '~/core/shared/types';
 import { AppStrings } from '~/core/strings';
 import { Wrapper } from '~/core/wrapper';
 
 export interface Setting {
+  extras: {
+    [key: string]: any;
+  };
+
   [key: string]: any;
 }
 
@@ -36,7 +40,7 @@ export const useSettingStore = defineStore('setting', {
     },
   },
   getters: {
-    getSettingExtras: (state) => state['setting']['value']['extras'] ?? {},
+    getSettingExtras: (state) => state.setting.value.extras ?? {},
     getAppName: (state) => useSettingStore().getSettingExtras['appName'] ?? APP_NAME,
     isMaintenanceMode: (state) => useSettingStore().getSettingExtras['maintenanceMode'] ?? false,
   },

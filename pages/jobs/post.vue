@@ -52,7 +52,7 @@
                 <LabelledInput label="Job type *">
                   <USelectMenu
                     v-model="jobCreationData.workType"
-                    :options="workTypeOptions"
+                    :items="workTypeOptions"
                     clear-search-on-close
                     option-attribute="label"
                     placeholder="Select a work type option"
@@ -68,7 +68,7 @@
                 <LabelledInput label="Seniority level *">
                   <USelectMenu
                     v-model="jobCreationData.seniorityLevel"
-                    :options="seniorityLevelOptions"
+                    :items="seniorityLevelOptions"
                     clear-search-on-close
                     option-attribute="label"
                     placeholder="Select a seniority level"
@@ -84,7 +84,7 @@
               <LabelledInput label="Remote options *">
                 <USelectMenu
                   v-model="jobCreationData.remoteOptions"
-                  :options="remoteOptions"
+                  :items="remoteOptions"
                   clear-search-on-close
                   option-attribute="label"
                   placeholder="Select your remote options"
@@ -140,7 +140,7 @@
                     :is-range="false"
                     :is-required="true"
                     :min-date="new Date()"
-                    color="indigo"
+                    color="primary"
                     @close="close"
                     @update:model-value="close"
                   />
@@ -183,7 +183,7 @@
               :label="useJobPost().jobPostCtaLabel"
               :loading="jobCreation.isLoading"
               class="flex items-center justify-center bg-indigo-700"
-              color="indigo"
+              color="primary"
               size="xl"
               @click="handleJobPosting"
             />

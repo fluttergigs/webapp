@@ -36,7 +36,7 @@
     <USelectMenu
       v-if="countries.length > 0"
       v-model="selected"
-      :options="countries || []"
+      :items="countries || []"
       :placeholder="searchPlaceholder"
       :search-attributes="['name']"
       :ui-menu="{ height: 'h-[200px]' }"

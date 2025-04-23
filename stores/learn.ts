@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { Wrapper } from '~/core/wrapper';
 import { Endpoint } from '~/core/network/endpoints';
 import { HttpClient } from '~/core/network/http_client';
-import { LearnCategory, LearnResource } from '~/features/learn/learn.types';
+import type { LearnCategory, LearnResource } from '~/features/learn/learn.types';
 import { AppStrings } from '~/core/strings';
 import type { MultiApiResponse } from '~/core/shared/types';
 

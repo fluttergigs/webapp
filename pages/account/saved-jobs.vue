@@ -10,43 +10,45 @@
 
         <keep-alive>
           <UTabs :items="tabs" class="w-full my-12">
-            <template #item="{ item }">
-              <div v-if="item.key === 'all'" class="space-y-3">
-                <JobOffersList
-                  v-if="!!bookmarkedJobsListResponse"
-                  :jobs="bookmarkedJobs"
-                  :jobs-response="bookmarkedJobsListResponse"
-                  class="my-10"
-                >
-                  <template #cta>
-                    <UButton :to="AppRoutes.jobs" label="Browse available jobs" />
-                  </template>
-                </JobOffersList>
-              </div>
-              <div v-else-if="item.key === 'active'" class="space-y-3">
-                <JobOffersList
-                  v-if="!!bookmarkedJobsListResponse"
-                  :jobs="activeBookmarkedJobs"
-                  :jobs-response="bookmarkedJobsListResponse"
-                  class="my-10"
-                >
-                  <template #cta>
-                    <UButton :to="AppRoutes.jobs" label="Browse available jobs" />
-                  </template>
-                </JobOffersList>
-              </div>
-              <div v-else-if="item.key === 'expired'" class="space-y-3">
-                <JobOffersList
-                  v-if="!!bookmarkedJobsListResponse"
-                  :jobs="expiredBookmarkedJobs"
-                  :jobs-response="bookmarkedJobsListResponse"
-                  class="my-10"
-                >
-                  <template #cta>
-                    <UButton :to="AppRoutes.jobs" label="Browse available jobs" />
-                  </template>
-                </JobOffersList>
-              </div>
+            <template #all="{ item }">
+              <JobOffersList
+                v-if="!!bookmarkedJobsListResponse"
+                :jobs="bookmarkedJobs"
+                :jobs-response="bookmarkedJobsListResponse"
+                class="my-10"
+              >
+                <template #cta>
+                  <UButton :to="AppRoutes.jobs" label="Browse available jobs" />
+                </template>
+              </JobOffersList>
+            </template>
+
+            <!--            active-->
+            <template #active="{ item }">
+              <JobOffersList
+                v-if="!!bookmarkedJobsListResponse"
+                :jobs="activeBookmarkedJobs"
+                :jobs-response="bookmarkedJobsListResponse"
+                class="my-10"
+              >
+                <template #cta>
+                  <UButton :to="AppRoutes.jobs" label="Browse available jobs" />
+                </template>
+              </JobOffersList>
+            </template>
+
+            <!--            expired-->
+            <template #expired="{ item }">
+              <JobOffersList
+                v-if="!!bookmarkedJobsListResponse"
+                :jobs="expiredBookmarkedJobs"
+                :jobs-response="bookmarkedJobsListResponse"
+                class="my-10"
+              >
+                <template #cta>
+                  <UButton :to="AppRoutes.jobs" label="Browse available jobs" />
+                </template>
+              </JobOffersList>
             </template>
           </UTabs>
         </keep-alive>
@@ -70,17 +72,17 @@
 
   const tabs = [
     {
-      key: 'all',
+      slot: 'all',
       label: 'All',
       description: 'All your saved jobs',
     },
     {
-      key: 'active',
+      slot: 'active',
       label: 'Active',
       description: 'Active saved jobs',
     },
     {
-      key: 'expired',
+      slot: 'expired',
       label: 'Expired',
       description: 'Expired saved jobs',
     },

@@ -88,4 +88,12 @@ export class AppStrings {
 
   static passwordResetSuccessful =
     'Password has been reset successfully. You can now login with your new password';
+
+  static experienceAddedSuccessfully = 'Your experience has been added successfully';
+
+  static unableToAddExperience = 'Unable to add your experience. Please try again later';
+
+  static educationAddedSuccessfully = 'Your education has been added successfully';
+
+  static unableToAddEducation = 'Unable to add your education. Please try again later';
 }

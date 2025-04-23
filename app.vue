@@ -1,8 +1,10 @@
 <template>
   <NuxtLoadingIndicator :height="5" color="#283593" />
-  <NuxtLayout>
-    <NuxtPage />
-  </NuxtLayout>
+  <UApp>
+    <NuxtLayout>
+      <NuxtPage />
+    </NuxtLayout>
+  </UApp>
 </template>
 
 <script lang="ts" setup>

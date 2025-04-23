@@ -10,7 +10,7 @@
           <UButton
             :class="['bg-indigo-700 px-2 py-1 sm:px-4 md:py-3']"
             :padded="false"
-            color="indigo"
+            color="primary"
             icon="i-heroicons-megaphone"
             label="Post a job"
             square
@@ -21,49 +21,51 @@
 
         <keep-alive>
           <UTabs :items="tabs" class="w-full my-12">
-            <template #item="{ item }">
-              <div v-if="item.key === 'all'" class="space-y-3">
-                <JobOffersList
-                  v-if="!!companyJobsResponse"
-                  :jobs="myJobPostings"
-                  :jobs-response="companyJobsResponse"
-                  class="my-10"
-                >
-                  <template #default="{ job }">
-                    <JobCard v-if="isMediumScreen" :job="job" />
+            <template #all="{ item }">
+              <JobOffersList
+                v-if="!!companyJobsResponse"
+                :jobs="myJobPostings"
+                :jobs-response="companyJobsResponse"
+                class="my-10"
+              >
+                <template #default="{ job }">
+                  <JobCard v-if="isMediumScreen" :job="job" />
 
-                    <JobCardDetailed v-else :job="job" />
-                  </template>
-                </JobOffersList>
-              </div>
-              <div v-else-if="item.key === 'active'" class="space-y-3">
-                <JobOffersList
-                  v-if="!!companyJobsResponse"
-                  :jobs="activeJobPostings"
-                  :jobs-response="companyJobsResponse"
-                  class="my-10"
-                >
-                  <template #default="{ job }">
-                    <JobCard v-if="isMediumScreen" :job="job" />
+                  <JobCardDetailed v-else :job="job" />
+                </template>
+              </JobOffersList>
+            </template>
 
-                    <JobCardDetailed v-else :job="job" />
-                  </template>
-                </JobOffersList>
-              </div>
-              <div v-else-if="item.key === 'expired'" class="space-y-3">
-                <JobOffersList
-                  v-if="!!companyJobsResponse"
-                  :jobs="expiredJobPostings"
-                  :jobs-response="companyJobsResponse"
-                  class="my-10"
-                >
-                  <template #default="{ job }">
-                    <JobCard v-if="isMediumScreen" :job="job" />
+            <!--            active-->
+            <template #active="{ item }">
+              <JobOffersList
+                v-if="!!companyJobsResponse"
+                :jobs="activeJobPostings"
+                :jobs-response="companyJobsResponse"
+                class="my-10"
+              >
+                <template #default="{ job }">
+                  <JobCard v-if="isMediumScreen" :job="job" />
 
-                    <JobCardDetailed v-else :job="job" />
-                  </template>
-                </JobOffersList>
-              </div>
+                  <JobCardDetailed v-else :job="job" />
+                </template>
+              </JobOffersList>
+            </template>
+
+            <!--            expired-->
+            <template #expired="{ item }">
+              <JobOffersList
+                v-if="!!companyJobsResponse"
+                :jobs="expiredJobPostings"
+                :jobs-response="companyJobsResponse"
+                class="my-10"
+              >
+                <template #default="{ job }">
+                  <JobCard v-if="isMediumScreen" :job="job" />
+
+                  <JobCardDetailed v-else :job="job" />
+                </template>
+              </JobOffersList>
             </template>
           </UTabs>
         </keep-alive>
@@ -95,17 +97,17 @@
 
   const tabs = [
     {
-      key: 'all',
+      slot: 'all',
       label: 'All',
       description: 'All your job postings',
     },
     {
-      key: 'active',
+      slot: 'active',
       label: 'Active',
       description: 'Active job postings',
     },
     {
-      key: 'expired',
+      slot: 'expired',
       label: 'Expired',
       description: 'Expired job postings',
     },

@@ -67,7 +67,7 @@
       :label="useJobPost().jobPostCtaLabel"
       :loading="useJobStore().jobCreation.isLoading"
       class="bg-indigo-700 flex justify-center items-center"
-      color="indigo"
+      color="primary"
       size="xl"
       @click="() => payForJobPosting()"
     />

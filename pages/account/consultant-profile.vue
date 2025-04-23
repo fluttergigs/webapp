@@ -10,16 +10,10 @@
                       Manage your education history and work experience</p>-->
 
           <UTabs :items="tabs" class="w-full my-12" @change="onChange">
-            <template #item="{ item }">
-              <div v-if="item.key === 'overview'" class="space-y-3">
-                <div></div>
-              </div>
-              <div v-else-if="item.key === 'education'" class="space-y-3">
-                <div></div>
-              </div>
-              <div v-else-if="item.key === 'experience'" class="space-y-3">
-                <ExperienceView />
-              </div>
+            <template #overview="{ item }"></template>
+            <template #education="{ item }"></template>
+            <template #experience="{ item }">
+              <ExperienceView />
             </template>
           </UTabs>
         </section>
@@ -40,19 +34,19 @@
 
   const tabs = [
     {
-      key: 'overview',
       label: 'Overview',
       description: "Make changes to your account here. Click save when you're done.",
+      slot: 'overview',
     },
     {
-      key: 'education',
       label: 'Education',
       description: 'Add your education details',
+      slot: 'education',
     },
     {
-      key: 'experience',
       label: 'Experience',
       description: 'Add your work experience',
+      slot: 'experience',
     },
   ];
 

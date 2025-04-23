@@ -22,7 +22,7 @@
 <template>
   <!--  set dynamic padding from property-->
 
-  <div class="p-6 border rounded-xl space-y-5 flex flex-col">
+  <div class="p-6 border border-gray-300 rounded-xl space-y-5 flex flex-col">
     <h3 class="text-xl font-semibold">About the job</h3>
 
     <ItemData v-if="props.job.applyBefore" label="Apply Before">

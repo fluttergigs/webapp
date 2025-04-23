@@ -37,7 +37,7 @@
         </div>
         <UButton
           class="bg-indigo-700 w-full md:w-auto"
-          color="indigo"
+          color="primary"
           label="Find jobs"
           size="xl"
           style="height: fit-content"

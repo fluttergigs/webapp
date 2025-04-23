@@ -54,22 +54,15 @@ export default defineNuxtConfig({
   },
   ignore: ['pages/ignore/*'],
 
-  css: ['~/assets/css/app.css', 'vue-toast-notification/dist/theme-default.css'],
+  css: ['@/assets/css/main.css', 'vue-toast-notification/dist/theme-default.css'],
 
   script: ['~/assets/js/main.js'],
 
-  postcss: {
-    plugins: {
-      tailwindcss: {},
-      autoprefixer: {},
-    },
-  },
-
   modules: [
     '@pinia/nuxt',
-    '@pinia-plugin-persistedstate/nuxt',
-    '@nuxtjs/i18n', // '@nuxtjs/tailwindcss',
-    'nuxt-lodash', // 'nuxt-appwrite',
+    '@pinia-plugin-persistedstate/nuxt', // '@nuxtjs/tailwindcss',
+    '@nuxtjs/i18n', // 'nuxt-appwrite',
+    'nuxt-lodash',
     '@nuxtjs/strapi',
     '@nuxt/ui',
     '@sentry/nuxt/module',

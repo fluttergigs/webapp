@@ -16,13 +16,13 @@
               <li
                 v-for="link in links"
                 v-if="link?.isEnabled ?? true"
-                :key="link.name"
+                :key="link?.name"
                 class="mr-9 font-medium hover:text-indigo-900"
               >
                 <UChip :show="link.hasOwnProperty('tag')" :text="link.tag" color="green" size="xl">
                   <NuxtLink
                     :class="[
-                      'font-medium hover:text-indigo-900',
+                      'font-bold hover:text-indigo-900',
                       { 'text-indigo-800': useRoute().fullPath === link.path },
                     ]"
                     :to="link.path"
@@ -42,14 +42,14 @@
               <NuxtLink v-if="!isAuthenticated" :to="AppRoutes.login" class="font-medium">
                 Login
               </NuxtLink>
-              <UDropdown v-else :items="accountLinks" :popper="{ placement: 'bottom-start' }">
+              <UDropdownMenu v-else :items="accountLinks" :popper="{ placement: 'bottom-start' }">
                 <div class="flex items-center justify-center">
                   <span class="text-sm primary-gradient font-bold">
                     {{ useAuthStore().authUser.username }}
                   </span>
                   <UIcon name="i-heroicons-chevron-down-20-solid" />
                 </div>
-              </UDropdown>
+              </UDropdownMenu>
             </div>
             <!--            </ClientOnly>-->
           </div>
@@ -57,8 +57,7 @@
             <UButton
               :to="AppRoutes.postJob"
               block
-              class="bg-indigo-700"
-              color="indigo"
+              color="primary"
               icon="i-heroicons-megaphone"
               label="Post a job"
               size="lg"
@@ -117,7 +116,7 @@
               <li v-for="link in links" v-if="link?.isEnabled ?? true" class="mb-12">
                 <a
                   :href="link.path"
-                  class="font-medium hover:text-indigo-900"
+                  class="font-bold hover:text-indigo-900"
                   @click.prevent="onMenuLinkClick(link)"
                   >{{ link.name }}</a
                 >
@@ -133,26 +132,28 @@
                     Login
                   </NuxtLink>
 
-                  <UDropdown v-else :items="accountLinks" :popper="{ placement: 'bottom-start' }">
+                  <UDropdownMenu
+                    v-else
+                    :items="accountLinks"
+                    :popper="{ placement: 'bottom-start' }"
+                  >
                     <div class="flex items-center justify-center">
                       <span class="text-sm primary-gradient font-bold">
                         {{ useAuthStore().authUser.username }}
                       </span>
                       <UIcon name="i-heroicons-chevron-down-20-solid" />
                     </div>
-                  </UDropdown>
+                  </UDropdownMenu>
                 </div>
                 <!--                </ClientOnly>-->
               </div>
               <UButton
                 :to="AppRoutes.postJob"
-                class="bg-indigo-700"
-                color="indigo"
+                color="primary"
                 icon="i-heroicons-megaphone"
                 label="Post a job"
                 size="lg"
                 square
-                variant="solid"
               />
             </div>
           </div>
@@ -192,7 +193,7 @@
     [
       {
         label: 'Account',
-        click: () => {
+        onClick: () => {
           navigateTo(AppRoutes.myAccount);
         },
       },
@@ -200,7 +201,7 @@
     [
       {
         label: 'Saved Jobs',
-        click: () => {
+        onClick: () => {
           navigateTo(AppRoutes.mySavedJobs);
         },
       },
@@ -208,7 +209,7 @@
     [
       {
         label: 'My Job postings',
-        click: () => {
+        onClick: () => {
           navigateTo(AppRoutes.myJobs);
         },
       },
@@ -216,7 +217,7 @@
     [
       {
         label: 'My company',
-        click: () => {
+        onClick: () => {
           navigateTo(AppRoutes.myCompany);
         },
       },
@@ -224,7 +225,7 @@
     [
       {
         label: 'Logout',
-        click: () => {
+        onClick: () => {
           useUser().logout();
         },
       },
@@ -282,7 +283,7 @@
         accountLinks.value.unshift([
           {
             label: 'Profile',
-            click: () => {
+            onClick: () => {
               navigateTo(AppRoutes.consultantProfile);
             },
           },

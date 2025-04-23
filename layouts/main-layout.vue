@@ -9,10 +9,6 @@
         </div>
       </div>
       <LayoutFooter />
-
-      <client-only>
-        <UNotifications />
-      </client-only>
     </div>
   </NuxtErrorBoundary>
   <!--  </client-only>-->

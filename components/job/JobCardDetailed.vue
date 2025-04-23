@@ -25,7 +25,7 @@
   <div @click="useJobActions().viewDetails(job!)">
     <div class="group">
       <div
-        class="cursor-pointer h-full rounded-xl border bg-white bg-opacity-80 p-6 transition-all duration-200 ease-in group-hover:border-gray-300 group-hover:shadow-xl"
+        class="cursor-pointer h-full rounded-xl border border-gray-300 bg-white bg-opacity-80 p-6 transition-all duration-200 ease-in group-hover:border-gray-400 group-hover:shadow-xl"
       >
         <div class="flex h-full flex-col justify-between">
           <div class="mb-16 flex flex-col gap-3">

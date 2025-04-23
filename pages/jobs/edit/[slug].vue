@@ -42,7 +42,7 @@
                 <LabelledInput label="Job type *">
                   <USelectMenu
                     v-model="jobEditData.workType"
-                    :options="workTypeOptions"
+                    :items="workTypeOptions"
                     clear-search-on-close
                     option-attribute="label"
                     placeholder="Select a work type option"
@@ -58,7 +58,7 @@
                 <LabelledInput label="Seniority level *">
                   <USelectMenu
                     v-model="jobEditData.seniorityLevel"
-                    :options="seniorityLevelOptions"
+                    :items="seniorityLevelOptions"
                     clear-search-on-close
                     option-attribute="label"
                     placeholder="Select a seniority level"
@@ -74,7 +74,7 @@
               <LabelledInput label="Remote options *">
                 <USelectMenu
                   v-model="jobEditData.remoteOptions"
-                  :options="remoteOptions"
+                  :items="remoteOptions"
                   clear-search-on-close
                   option-attribute="label"
                   placeholder="Select your remote options"
@@ -128,7 +128,7 @@
                   <DatePicker
                     v-model="jobEditData.applyBefore"
                     :min-date="new Date()"
-                    color="indigo"
+                    color="primary"
                     @close="close"
                   />
                 </template>
@@ -169,7 +169,7 @@
               :disabled="!isSubmitButtonEnabled"
               :loading="jobEdit.isLoading"
               class="bg-indigo-700 flex justify-center items-center"
-              color="indigo"
+              color="primary"
               label="Save changes"
               size="xl"
               @click="() => editJobOffer(jobEditData)"

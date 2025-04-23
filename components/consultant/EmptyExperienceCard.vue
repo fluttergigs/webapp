@@ -1,6 +1,6 @@
 <script lang="ts" setup>
   import { AcademicCapIcon } from '@heroicons/vue/24/solid';
-  import { useConsultant } from '~/composables/useConsultant';
+  import { useProfile } from '~/composables/useProfile';
 </script>
 
 <template>
@@ -20,10 +20,10 @@
 
       <UButton
         class="flex gap-2 rounded-xl px-6 py-4 font-medium"
-        color="indigo"
+        color="primary"
         icon="i-heroicons-plus-circle-solid"
         label="Add experience"
-        @click="useConsultant().toggleAddEducationModal"
+        @click="useProfile().toggleAddEducationModal"
       />
     </div>
   </div>

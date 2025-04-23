@@ -9,16 +9,14 @@
           <p class="text-md md:text-xl">Make changes to your account here</p>
 
           <UTabs :items="tabs" class="w-full my-12">
-            <template #item="{ item }">
-              <div v-if="item.key === 'account'" class="space-y-3">
-                <UpdateUser />
-              </div>
-              <div v-else-if="item.key === 'password'" class="space-y-3">
-                <UpdatePassword />
-              </div>
-              <div v-else-if="item.key === 'preferences'" class="space-y-3">
-                <section></section>
-              </div>
+            <template #account="{ item }">
+              <UpdateUser />
+            </template>
+            <template #password="{ item }">
+              <UpdatePassword />
+            </template>
+            <template #preference="{ item }">
+              <section></section>
             </template>
           </UTabs>
         </section>
@@ -35,23 +33,23 @@
   definePageMeta({ layout: 'app-layout', middleware: ['auth'] });
   useHead({ title: 'FlutterGigs - My account' });
 
+  //TODO - implement user preferences
   const tabs = [
     {
-      key: 'account',
       label: 'Account',
       description: "Make changes to your account here. Click save when you're done.",
+      slot: 'account',
     },
     {
-      key: 'password',
       label: 'Password',
       description: "Change your password here. After saving, you'll be logged out.",
+      slot: 'password',
     },
     {
-      key: 'preferences',
       label: 'Preferences',
-      //TODO - implement user preferences
       disabled: true,
       description: 'Set your preferences',
+      slot: 'preferences',
     },
   ];
 

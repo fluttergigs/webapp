@@ -1043,10 +1043,10 @@ module.exports = {
     zIndex: ['responsive', 'focus-within', 'focus'],
   },
   corePlugins: {},
-  plugins: [
+  /*plugins: [
     require('@tailwindcss/forms')({
       strategy: 'class',
     }),
     require('@tailwindcss/typography'),
-  ],
+  ],*/
 };

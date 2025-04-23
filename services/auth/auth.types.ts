@@ -1,4 +1,4 @@
-import { Company } from '~/features/companies/company.types';
+import type { Company } from '~/features/companies/company.types';
 
 export interface RegistrationData {
   firstName: string | null;
@@ -32,7 +32,9 @@ export type User = {
   firstName: string;
   lastName: string;
   bio: string;
-  companies?: Company[];
-  [key: string]: unknown;
   stripeCustomerId?: string;
+  companies?: Company[];
+  experiences?: Experience[];
+  educations?: Education[];
+  [key: string]: unknown;
 };

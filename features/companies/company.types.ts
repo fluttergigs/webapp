@@ -1,6 +1,6 @@
-import { MultiApiResponse, SingleApiResponse } from '~/core/shared/types';
+import type { MultiApiResponse, SingleApiResponse } from '~/core/shared/types';
 import type { JobOffer } from '~/features/jobs/job.types';
-import { UserApiResponse } from '~/features/users/user.types';
+import type { UserApiResponse } from '~/features/users/user.types';
 
 //TODO - add company twitter and linkedin property
 export interface Company {

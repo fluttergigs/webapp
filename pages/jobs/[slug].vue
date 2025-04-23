@@ -112,7 +112,7 @@
       </template>
 
       <template v-else>
-        <section class="relative w-full bg-blueGray-50">
+        <section class="relative w-full">
           <div class="md:x-20 container mx-auto px-4 py-6 md:py-14">
             <CompanyLogo
               :company="company"
@@ -194,7 +194,7 @@
               <div class="space-y-6 md:space-y-10 font-medium text-gray-900">
                 <p class="leading-10">{{ company?.description }}</p>
 
-                <hr />
+                <USeparator />
 
                 <p
                   class="leading-[24px] md:leading-[40px]"

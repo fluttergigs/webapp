@@ -2,11 +2,10 @@
 import { useClipboard } from '@vueuse/core';
 import type { DeleteSavedJobOfferRequest, JobOffer } from '~/features/jobs/job.types';
 import { useAuthStore } from '~/stores/auth';
-import { Company } from '~/features/companies/company.types';
+import type { Company } from '~/features/companies/company.types';
 import { useJobStore } from '~/stores/job';
 import { AppRoutes } from '~/core/routes';
-import type { Country } from '~/core/shared/types';
-import { CallbackFunction } from '~/core/shared/types';
+import type { CallbackFunction, Country } from '~/core/shared/types';
 import { useUserStore } from '~/stores/user';
 import { BaseToast } from '~/core/ui/base_toast';
 //@ts-ignore

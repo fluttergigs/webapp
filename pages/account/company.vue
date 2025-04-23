@@ -37,7 +37,7 @@
               <p class="text-sm">Size</p>
               <USelectMenu
                 v-model="formInput.size"
-                :options="companySizeOptions"
+                :items="companySizeOptions"
                 clear-search-on-close
                 option-attribute="label"
                 placeholder="Select your company size"

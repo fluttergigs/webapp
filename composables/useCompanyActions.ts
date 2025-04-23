@@ -3,8 +3,7 @@ import type { Company, CreateCompanyRequest } from '~/features/companies/company
 import { useJobStore } from '~/stores/job';
 import { AnalyticsEvent } from '~/services/analytics/events';
 import type { AppAnalyticsProvider } from '~/services/analytics/AppAnalyticsProvider';
-import type { JobOfferApiResponse, JobOfferEditRequest, JobPostPaymentData } from '~/features/jobs/job.types';
-import { JobOffer } from '~/features/jobs/job.types';
+import type { JobOffer, JobOfferApiResponse, JobOfferEditRequest, JobPostPaymentData } from '~/features/jobs/job.types';
 import type { CallbackFunction } from '~/core/shared/types';
 import { BaseToast } from '~/core/ui/base_toast';
 //@ts-ignore

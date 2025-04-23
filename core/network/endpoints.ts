@@ -31,6 +31,14 @@ export class Endpoint {
     return '/learn-resources';
   }
 
+  static get experiences() {
+    return '/experiences';
+  }
+
+  static get educations() {
+    return '/educations';
+  }
+
   static jobOffersBySlug(slug: string) {
     return `/job-offers/find-by-slug/${slug}`;
   }

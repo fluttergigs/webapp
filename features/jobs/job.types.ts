@@ -1,6 +1,5 @@
-import { PaymentContext, SingleApiResponse } from '~/core/shared/types';
-import type { CompanyApiResponse } from '~/features/companies/company.types';
-import type { UserApiResponse } from '~/features/users/user.types';
+import type { SingleApiResponse } from '~/core/shared/types';
+import { PaymentContext } from '~/core/shared/types';
 
 //Shared Enums
 export enum SeniorityLevel {
@@ -42,7 +41,7 @@ export type JobOffer = {
   applyBefore: Date;
   createdAt: string;
   updatedAt: string;
-  company: CompanyApiResponse | number;
+  company: Company | number;
   workPermits: string[] | null;
   bookmarkedJob?: number;
 };
@@ -58,8 +57,8 @@ export type JobPostPaymentData = {
 
 export type BookmarkedJobOffer = {
   id: number;
-  jobOffer: JobOfferApiResponse;
-  user: UserApiResponse;
+  jobOffer: JobOffer;
+  user: User;
 };
 
 export type JobCreationRequest = Partial<

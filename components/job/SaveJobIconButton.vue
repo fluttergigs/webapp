@@ -43,7 +43,7 @@
     :ui="{ background: 'bg-gray-900', color: 'text-white' }"
   >
     <div v-if="useUserStore().isHandlingBookmark && useUserStore().jobToBookmark === props.job.id">
-      <UButton color="indigo" loading variant="ghost" />
+      <UButton color="primary" loading variant="ghost" />
     </div>
     <div
       v-else

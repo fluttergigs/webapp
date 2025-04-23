@@ -1,5 +1,5 @@
 //@ts-ignore
-import { FetchOptions } from 'ofetch';
+import type { FetchOptions } from 'ofetch';
 import type { HttpClient } from '~/core/network/http_client';
 import { HttpMethod } from '~/core/network/http_client';
 import { $fetchInterceptor } from '~/core/network/interceptor';

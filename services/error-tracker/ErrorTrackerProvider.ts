@@ -1,5 +1,5 @@
-import type { User } from '~/services/error-tracker/ErrorTracker';
-import { Context, ErrorTracker } from '~/services/error-tracker/ErrorTracker';
+import type { Context, User } from '~/services/error-tracker/ErrorTracker';
+import { ErrorTracker } from '~/services/error-tracker/ErrorTracker';
 import { SentryClient } from '~/services/error-tracker/SentryClient';
 
 export class ErrorTrackerProvider {

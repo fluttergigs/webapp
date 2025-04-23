@@ -47,7 +47,7 @@
     [
       {
         label: 'Share',
-        click: () => {
+        onClick: () => {
           useJobActions().shareJobOffer(props.job);
         },
       },
@@ -55,7 +55,7 @@
     [
       {
         label: 'Edit',
-        click: () => {
+        onClick: () => {
           useCompanyActions().handleJobEdit(props.job);
         },
       },
@@ -63,7 +63,7 @@
     [
       {
         label: 'Duplicate',
-        click: () => {
+        onClick: () => {
           useCompanyActions().handleJobDuplicate(props.job);
         },
       },
@@ -71,7 +71,7 @@
     [
       {
         label: 'View',
-        click: () => {
+        onClick: () => {
           navigateTo(AppRoutes.jobDetail(props.job.slug));
         },
       },
@@ -80,7 +80,7 @@
       {
         label: 'Delete',
         icon: 'i-heroicons-trash-20-solid',
-        click: () => {
+        onClick: () => {
           showConfirmJobDeleteModal();
         },
       },
@@ -97,7 +97,7 @@
       class="absolute right-[29px] top-[12px]"
       @click.self.capture="toggleJobActionItems"
     >
-      <UDropdown
+      <UDropdownMenu
         v-model:open="isActionItemsOpen"
         :items="jobActionItems"
         :popper="{ placement: 'bottom-start' }"
@@ -105,7 +105,7 @@
         <div class="flex items-center justify-center">
           <UIcon class="ml-5 text-2xl" name="i-heroicons-ellipsis-horizontal" />
         </div>
-      </UDropdown>
+      </UDropdownMenu>
     </div>
 
     <UCard
@@ -174,7 +174,7 @@
   </div>
 
   <USlideover
-    v-model="isJobSidePanelOpen"
+    v-model:open="isJobSidePanelOpen"
     :ui="{ overlay: { background: 'bg-gray-200/60 dark:bg-gray-800/75' } }"
   >
     <div class="relative p-4">

@@ -10,7 +10,7 @@
       <!--      <div class="navbar-backdrop fixed xl:hidden inset-0 bg-blueGray-50 opacity-10"></div>-->
       <div
         :class="[
-          'fixed inset-0 flex h-full flex-col items-center border-r bg-blueGray-50 transition-all duration-200 ease-in',
+          'fixed inset-0 flex h-full flex-col items-center border-r border-gray-200 bg-blueGray-50 transition-all duration-200 ease-in',
           isAppBarShrunk ? 'max-w-[70px]' : 'max-w-[260px]',
         ]"
       >
@@ -43,7 +43,7 @@
             <div v-for="(linkItems, section, sectionIndex) in groupedLinks" class="my-2">
               <p
                 v-if="!!section && !isAppBarShrunk"
-                class="text-neutral-400 mb-2 w-auto text-xs font-medium uppercase"
+                class="text-neutral-500 mb-2 w-auto text-xs font-medium uppercase"
               >
                 {{ section }}
               </p>
@@ -51,7 +51,7 @@
               <div class="flex flex-col space-y-4">
                 <div
                   v-for="(link, index) in linkItems"
-                  v-if="link.enabled ?? true"
+                  v-if="link?.enabled ?? true"
                   :key="index"
                   :class="[
                     'flex w-auto p-2',
@@ -98,9 +98,6 @@
     <div class="flex min-h-screen w-full flex-1 flex-grow px-1 md:px-6">
       <NuxtPage />
     </div>
-    <client-only>
-      <UNotifications />
-    </client-only>
   </section>
 </template>
 

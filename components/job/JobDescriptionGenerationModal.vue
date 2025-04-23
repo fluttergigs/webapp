@@ -55,7 +55,7 @@
           :disabled="!canGenerate || jobStore.jobDescriptionGenerationTask.isLoading"
           :loading="jobStore.jobDescriptionGenerationTask.isLoading"
           class="bg-indigo-700 text-white"
-          color="indigo"
+          color="primary"
           label="Generate"
           @click="generateText"
         />

@@ -4,7 +4,7 @@ import type {
   StrapiResetPasswordData,
 } from '@nuxtjs/strapi/dist/runtime/types';
 import { AuthService } from '~/services/auth/auth.base.service';
-import { LoginData, RegistrationData } from '~/services/auth/auth.types';
+import type { LoginData, RegistrationData } from '~/services/auth/auth.types';
 
 export class AuthProvider {
   private authService: AuthService<LoginData, RegistrationData>;
