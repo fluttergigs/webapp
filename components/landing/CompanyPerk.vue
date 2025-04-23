@@ -33,18 +33,18 @@
       </slot>
 
       <slot name="title">
-        <h2 class="text-3xl mb-9 font-bold leading-snug">{{ title }}</h2>
+        <h2 class="text-4xl mb-9 font-bold leading-snug">{{ title }}</h2>
       </slot>
 
       <slot name="description">
-        <p class="text-sm font-medium mb-24">
+        <p class="text-md font-medium mb-24">
           {{ description }}
         </p>
       </slot>
 
       <slot name="cta">
-        <div class="flex space-x-3 cursor-pointer" @click="emits('ctaClicked')">
-          <p class="font-medium">{{ ctaText }}</p>
+        <div class="flex gap-3 cursor-pointer" @click="emits('ctaClicked')">
+          <p class="font-bold">{{ ctaText }}</p>
           <ArrowRightIcon class="w-4" />
         </div>
       </slot>

@@ -22,7 +22,7 @@
                 <UChip
                   :show="link.hasOwnProperty('tag')"
                   :text="link.tag"
-                  :ui="{ root: 'p-2' }"
+                  :ui="{ base: 'p-2' }"
                   color="success"
                   size="3xl"
                 >
@@ -63,11 +63,11 @@
             <UButton
               :to="AppRoutes.postJob"
               block
+              class="rounded-xl"
               color="primary"
               icon="i-heroicons-megaphone"
               label="Post a job"
               size="lg"
-              square
               variant="solid"
             />
           </div>
@@ -155,6 +155,7 @@
               </div>
               <UButton
                 :to="AppRoutes.postJob"
+                class="rounded-xl"
                 color="primary"
                 icon="i-heroicons-megaphone"
                 label="Post a job"

@@ -171,7 +171,7 @@
               class="bg-indigo-700 flex justify-center items-center"
               color="primary"
               label="Save changes"
-              size="3xl"
+              size="xl"
               @click="() => editJobOffer(jobEditData)"
             />
           </form>

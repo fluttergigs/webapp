@@ -1042,7 +1042,6 @@ module.exports = {
     wordBreak: ['responsive'],
     zIndex: ['responsive', 'focus-within', 'focus'],
   },
-  corePlugins: {},
   /*plugins: [
     require('@tailwindcss/forms')({
       strategy: 'class',

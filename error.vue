@@ -5,7 +5,7 @@
         <div class="w-full md:w-1/2 p-8">
           <div class="flex flex-col justify-between h-full">
             <div class="mb-8">
-              <h2 class="mb-6 text-12xl text-indigo-600 font-bold tracking-px-2n leading-none">
+              <h2 class="mb-6 text-14xl text-indigo-600 font-bold tracking-px-2n leading-none">
                 {{ props.error.statusCode }}
               </h2>
               <h3 class="mb-4 text-3xl font-bold font-heading leading-snug">Something is wrong!</h3>

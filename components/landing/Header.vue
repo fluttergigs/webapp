@@ -22,7 +22,7 @@
 
             <div class="flex flex-col gap-2 px-2 sm:px-0 md:gap-4">
               <h1
-                class="primary-gradient mb-6 text-4xl font-bold leading-tight md:text-6xl lg:text-7xl"
+                class="primary-gradient mb-6 text-4xl font-bold leading-tight md:text-5xl lg:text-6xl"
               >
                 The #1 Flutter Job Board in its Ecosystem<br />
               </h1>

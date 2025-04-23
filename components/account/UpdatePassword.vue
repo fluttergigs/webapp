@@ -31,6 +31,7 @@
     <CustomInput v-model="formInput.password" label="Password" name="password" type="password" />
     <CustomInput
       v-model="formInput.confirmPassword"
+      autocomplete="new-password"
       label="Confirm password"
       name="confirmPassword"
       type="password"
@@ -41,7 +42,7 @@
       :loading="authStore.$changePassword.isLoading"
       class="primary-button flex items-center justify-center gap-2 m-auto max-w-xs"
       label="Save changes"
-      size="3xl"
+      size="xl"
       @click.prevent="submit"
     />
   </form>

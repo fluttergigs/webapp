@@ -10,6 +10,12 @@ export default defineAppConfig({
     },
 
     button: {
+      slots: {
+        base: [
+          'rounded-lg font-medium inline-flex items-center cursor-pointer disabled:cursor-not-allowed aria-disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:opacity-75',
+          'transition-colors',
+        ],
+      },
       icon: {
         size: {
           '2xl': 'h-8 w-8',

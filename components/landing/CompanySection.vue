@@ -32,7 +32,7 @@
           </div>
         </div>
         <div class="w-full md:w-1/2 p-8">
-          <div class="md:max-w-md mx-auto overflow-hidden rounded-3xl shadow-md">
+          <div class="md:max-w-md mx-auto overflow-hidden rounded-4xl shadow-lg">
             <div class="p-9">
               <span
                 class="mb-7 inline-block text-sm text-gray-500 font-semibold uppercase tracking-px"

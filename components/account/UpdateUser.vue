@@ -69,7 +69,7 @@
       :loading="authStore.$updateUser.isLoading"
       class="primary-button flex items-center justify-center gap-2 m-auto max-w-xs"
       label="Save changes"
-      size="2xl"
+      size="xl"
       @click.prevent="submit"
     />
   </form>
