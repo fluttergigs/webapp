@@ -16,11 +16,11 @@
     :items="companySizeOptions"
     :required="false"
     clear-search-on-close
-    option-attribute="label"
+    label-key="label"
     placeholder="Select a company size option"
     searchable
     size="lg"
-    value-attribute="id"
+    value-key="id"
   />
 </template>
 

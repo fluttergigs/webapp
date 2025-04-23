@@ -2,7 +2,6 @@
   //@ts-ignore
   import type { Notification } from '#ui/types';
   import CustomInput from '~/components/forms/CustomInput.vue';
-  import LoadingSpinnerIcon from '~/components/icons/LoadingSpinnerIcon.vue';
   import { updateUserFormSchema } from '~/core/validations/auth.validations';
   import { useAuthStore } from '~/stores/auth';
 
@@ -32,17 +31,15 @@
 </script>
 
 <template>
-  <form class="flex flex-col space-y-4 my-12 mr-8">
-    <div class="block mb-5">
-      <CustomInput
-        v-model="formInput.username"
-        :is-disabled="true"
-        label="Username"
-        name="username"
-        type="text"
-      />
-    </div>
-    <div class="flex space-x-4 mb-5 w-full">
+  <form class="flex flex-col gap-4 my-12 mr-8">
+    <CustomInput
+      v-model="formInput.username"
+      :is-disabled="true"
+      label="Username"
+      name="username"
+      type="text"
+    />
+    <div class="flex gap-4 w-full">
       <CustomInput
         v-model="formInput.firstName"
         class="w-full"
@@ -51,38 +48,30 @@
       />
       <CustomInput v-model="formInput.lastName" class="w-full" label="Last name" name="lastName" />
     </div>
-    <div class="block mb-5">
-      <CustomInput
-        v-model="formInput.email"
-        :is-disabled="true"
-        label="Email"
-        name="email"
-        type="email"
-      />
-    </div>
-    <div class="block mb-5">
-      <CustomInput
-        v-model="formInput.bio"
-        :is-text-area="true"
-        label="Bio"
-        name="bio"
-        placeholder="Your bio tells about yourself"
-        type="text"
-      />
-    </div>
+    <CustomInput
+      v-model="formInput.email"
+      :is-disabled="true"
+      label="Email"
+      name="email"
+      type="email"
+    />
+    <CustomInput
+      v-model="formInput.bio"
+      :is-text-area="true"
+      label="Bio"
+      name="bio"
+      placeholder="Your bio tells about yourself"
+      type="text"
+    />
 
-    <button
+    <UButton
       :disabled="!canSubmit || authStore.$updateUser.isLoading"
-      class="primary-button flex items-center justify-center space-x-2 m-auto max-w-xs"
-      type="button"
+      :loading="authStore.$updateUser.isLoading"
+      class="primary-button flex items-center justify-center gap-2 m-auto max-w-xs"
+      label="Save changes"
+      size="2xl"
       @click.prevent="submit"
-    >
-      <LoadingSpinnerIcon
-        v-if="authStore.$updateUser.isLoading"
-        class="text-primary animate-spin"
-      />
-      <span v-else> Save changes</span>
-    </button>
+    />
   </form>
 </template>
 

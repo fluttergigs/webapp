@@ -44,30 +44,32 @@
 </script>
 
 <template>
-  <UModal v-model="companyStore.isCompanyDescriptionGenerationModalOpen">
-    <UCard :ui="{ ring: '', divide: 'divide-y divide-gray-100 dark:divide-gray-800' }">
-      <template #header>
-        <h3>Generate your company's description with AI 🚀</h3>
-      </template>
-
+  <UModal
+    v-model:open="companyStore.isCompanyDescriptionGenerationModalOpen"
+    title="Generate your company's description with AI 🚀"
+  >
+    <template #body>
+      <!--        <template #header>
+                <h3>Generate your company's description with AI 🚀</h3>
+              </template>-->
       <CustomInput
         v-model="description"
         :is-text-area="true"
         name="description"
         placeholder="Generate a short and comprehensive description for a Fintech company"
       />
-
-      <template #footer>
-        <UButton
-          :disabled="!canGenerate || companyStore.companyDescriptionGenerationTask.isLoading"
-          :loading="companyStore.companyDescriptionGenerationTask.isLoading"
-          class="bg-indigo-700 text-white"
-          color="indigo"
-          label="Generate"
-          @click="generateText"
-        />
-      </template>
-    </UCard>
+    </template>
+    <template #footer>
+      <UButton
+        :disabled="!canGenerate || companyStore.companyDescriptionGenerationTask.isLoading"
+        :loading="companyStore.companyDescriptionGenerationTask.isLoading"
+        class="bg-indigo-700 text-white"
+        color="indigo"
+        label="Generate"
+        size="lg"
+        @click="generateText"
+      />
+    </template>
   </UModal>
 </template>
 

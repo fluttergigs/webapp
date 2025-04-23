@@ -15,11 +15,11 @@
     v-model="selected"
     :options="seniorityLevelOptions"
     clear-search-on-close
-    option-attribute="label"
+    label-key="label"
     placeholder="Select an experience level"
     searchable
     size="lg"
-    value-attribute="id"
+    value-key="id"
   />
 </template>
 

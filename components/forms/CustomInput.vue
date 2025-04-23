@@ -1,7 +1,7 @@
 <template>
-  <div class="flex flex-col space-y-2">
+  <div class="flex flex-col gap-2">
     <slot name="label">
-      <p v-if="hasLabel && showLabel" class="text-sm font-medium">{{ label }}</p>
+      <p v-if="hasLabel && showLabel" class="text-md font-medium">{{ label }}</p>
     </slot>
 
     <!--    <client-only>-->
@@ -19,13 +19,11 @@
       <textarea
         v-if="isTextArea"
         v-model="fieldValue"
-        :class="[
-          'custom-input !text-black',
-          isDisabled ? 'disabled:opacity-50 cursor-not-allowed' : '',
-        ]"
+        :class="[isDisabled ? 'disabled:opacity-50 cursor-not-allowed' : '']"
         :disabled="isDisabled"
         :name="name"
         :placeholder="placeholder"
+        class="border border-gray-300 py-2 px-3 rounded-md text-gray-800 w-full"
         rows="5"
         v-bind="$attrs"
       >
@@ -33,18 +31,16 @@
       <input
         v-else
         v-model="fieldValue"
-        :class="[
-          'custom-input !text-black',
-          isDisabled ? 'disabled:opacity-50 cursor-not-allowed' : '',
-        ]"
+        :class="[isDisabled ? 'disabled:opacity-50 cursor-not-allowed' : '']"
         :disabled="isDisabled"
         :name="name"
         :placeholder="placeholder"
         :type="type"
+        class="border border-gray-300 py-2 px-3 rounded-md text-gray-800 w-full"
         v-bind="$attrs"
       />
     </div>
-    <p v-if="true" class="text-red-600 text-start text-sm capitalize">
+    <p v-if="errorMessage" class="text-red-600 text-start text-sm capitalize">
       {{ errorMessage }}
     </p>
     <!--    </client-only>-->

@@ -11,7 +11,7 @@
             Post your job
           </h3>
 
-          <form class="my-12 flex w-full flex-col space-y-8">
+          <form class="my-12 flex w-full flex-col gap-8">
             <CustomInput
               v-model="jobCreationData.title"
               label="Job title *"
@@ -46,58 +46,58 @@
                                    label="Job description *"
                                    name="description" @inside-text-clicked="jobStore.showJobDescriptionGenerationModal()"/>-->
 
-            <div class="flex space-x-3">
+            <div class="flex gap-3">
               <!--          job type-->
-              <div class="flex w-full flex-col space-y-2">
+              <div class="flex w-full flex-col gap-2">
                 <LabelledInput label="Job type *">
                   <USelectMenu
                     v-model="jobCreationData.workType"
                     :items="workTypeOptions"
                     clear-search-on-close
-                    option-attribute="label"
+                    label-key="label"
                     placeholder="Select a work type option"
                     searchable
                     size="lg"
-                    value-attribute="id"
+                    value-key="id"
                   />
                 </LabelledInput>
               </div>
 
               <!--          seniority level-->
-              <div class="flex w-full flex-col space-y-2">
+              <div class="flex w-full flex-col gap-2">
                 <LabelledInput label="Seniority level *">
                   <USelectMenu
                     v-model="jobCreationData.seniorityLevel"
                     :items="seniorityLevelOptions"
                     clear-search-on-close
-                    option-attribute="label"
+                    label-key="label"
                     placeholder="Select a seniority level"
                     searchable
                     size="lg"
-                    value-attribute="id"
+                    value-key="id"
                   />
                 </LabelledInput>
               </div>
             </div>
             <!--          remote options-->
-            <div class="flex flex-col space-y-2">
+            <div class="flex flex-col gap-2">
               <LabelledInput label="Remote options *">
                 <USelectMenu
                   v-model="jobCreationData.remoteOptions"
                   :items="remoteOptions"
                   clear-search-on-close
-                  option-attribute="label"
+                  label-key="label"
                   placeholder="Select your remote options"
                   searchable
                   size="lg"
-                  value-attribute="id"
+                  value-key="id"
                 />
               </LabelledInput>
             </div>
             <!--          base salary-->
-            <div class="flex flex-col space-y-2">
+            <div class="flex flex-col gap-2">
               <LabelledInput label="Monthly Salary range (USD) *">
-                <div class="flex space-x-3">
+                <div class="flex gap-3">
                   <CustomInput
                     v-model="jobCreationData.salaryFrom"
                     :show-label="false"
@@ -129,12 +129,13 @@
                 <UButton
                   :label="format(new Date(jobCreationData.applyBefore), 'd MMMM, yyy')"
                   class="w-full"
-                  color="white"
+                  color="neutral"
                   icon="i-heroicons-calendar-days-20-solid"
                   size="xl"
+                  variant="outline"
                 />
 
-                <template #panel="{ close }">
+                <template #content="{ close }">
                   <DatePicker
                     v-model="jobCreationData.applyBefore"
                     :is-range="false"

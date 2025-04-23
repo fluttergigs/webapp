@@ -23,11 +23,11 @@
         v-model="newExperienceFormData.data.type"
         :items="workTypeOptions"
         clear-search-on-close
-        option-attribute="label"
+        label-key="label"
         placeholder="Select the job type"
         searchable
         size="lg"
-        value-attribute="id"
+        value-key="id"
       />
     </LabelledInput>
 
@@ -62,7 +62,7 @@
           size="xl"
         />
 
-        <template #panel="{ close }">
+        <template #content="{ close }">
           <DatePicker
             v-model="newExperienceFormData.data.startDate"
             :is-range="false"
@@ -86,7 +86,7 @@
           size="xl"
         />
 
-        <template #panel="{ close }">
+        <template #content="{ close }">
           <DatePicker
             v-model="newExperienceFormData.data.startDate"
             :is-range="false"

@@ -14,11 +14,11 @@
     v-model="selected"
     :items="remoteOptions"
     clear-search-on-close
-    option-attribute="label"
+    label-key="label"
     placeholder="Select your remote options"
     searchable
     size="lg"
-    value-attribute="id"
+    value-key="id"
   />
 </template>
 

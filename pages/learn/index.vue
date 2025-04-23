@@ -4,11 +4,11 @@
       <div class="flex flex-col gap-4 overflow-hidden">
         <div class="container px-4 mx-auto flex justify-center items-center">
           <div class="flex flex-col justify-center max-w-2xl">
-            <h3 class="text-2xl md:text-7xl font-semibold primary-gradient">
+            <h3 class="text-2xl md:text-4xl font-semibold primary-gradient">
               Best resources for your skills
             </h3>
 
-            <p class="text-sm md:text-md">Discover the best resources to hone your skills</p>
+            <p class="text-md md:text-lg">Discover the best resources to hone your skills</p>
           </div>
         </div>
       </div>

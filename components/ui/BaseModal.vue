@@ -18,13 +18,11 @@
       </slot>
     </template>
     <template #body>
-      <UCard :ui="{ ring: '', divide: 'divide-y divide-gray-100 dark:divide-gray-800' }">
-        <slot name="body">
-          <div>
-            {{ body }}
-          </div>
-        </slot>
-      </UCard>
+      <slot name="body">
+        <div>
+          {{ body }}
+        </div>
+      </slot>
     </template>
     <template #footer>
       <slot name="footer"></slot>

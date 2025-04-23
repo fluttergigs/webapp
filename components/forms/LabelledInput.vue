@@ -16,7 +16,7 @@
 <template>
   <client-only>
     <div class="relative">
-      <div class="flex flex-col space-y-2">
+      <div class="flex flex-col gap-2">
         <slot name="label">
           <p class="text-sm font-medium">{{ label }}</p>
         </slot>

@@ -48,7 +48,7 @@
     <div
       v-else
       :class="[
-        'cursor-pointer w-8 h-8 transition-all duration-300 ease-in-out',
+        'cursor-pointer w-7 h-7 transition-all duration-300 ease-in-out',
         isBookmarked
           ? 'text-yellow-500 hover:text-yellow-400'
           : 'text-gray-300 hover:text-yellow-500',

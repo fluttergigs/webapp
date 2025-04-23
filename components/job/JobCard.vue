@@ -16,7 +16,8 @@
   const { data, error } = await useCountries();
   const { jobWorkingPermits } = useJobActions();
 
-  const modal = useModal();
+  const overlay = useOverlay();
+
   //@ts-ignore
   const props = defineProps({
     job: {
@@ -35,12 +36,13 @@
   const toggleJobActionItems = () => {
     isActionItemsOpen.value = !isActionItemsOpen.value;
   };
-  const showConfirmJobDeleteModal = () => {
-    modal.open(ConfirmJobDeleteModal, {
+  const showConfirmJobDeleteModal = async () => {
+    const modal = overlay.create(ConfirmJobDeleteModal, {
       //@ts-ignore
       job: props.job,
-      preventClose: true,
     });
+
+    await modal.open();
   };
 
   const jobActionItems = [
@@ -116,7 +118,7 @@
       @click="useJobActions().viewDetails(props.job)"
     >
       <div class="relative flex items-center justify-between">
-        <div class="absolute bottom-[-20px] right-[3.5px]">
+        <div class="absolute bottom-[-15px] right-[1px]">
           <SaveJobIconButton :company="company" :job="job" />
         </div>
         <div class="flex flex-grow flex-col space-y-1.5">
@@ -176,17 +178,14 @@
   <USlideover
     v-model:open="isJobSidePanelOpen"
     :ui="{ overlay: { background: 'bg-gray-200/60 dark:bg-gray-800/75' } }"
+    :title="job.title"
+    description="Job Details"
   >
-    <div class="relative p-4">
-      <XCircleIcon
-        class="absolute right-4 top-2 w-8 cursor-pointer text-blueGray-900"
-        @click="isJobSidePanelOpen = false"
-      />
-
+    <template #body>
       <div class="my-4 flex-1 p-4">
         <JobDetailsCard :job="job" />
       </div>
-    </div>
+    </template>
   </USlideover>
 </template>
 

@@ -19,7 +19,13 @@
                 :key="link?.name"
                 class="mr-9 font-medium hover:text-indigo-900"
               >
-                <UChip :show="link.hasOwnProperty('tag')" :text="link.tag" color="green" size="xl">
+                <UChip
+                  :show="link.hasOwnProperty('tag')"
+                  :text="link.tag"
+                  :ui="{ root: 'p-2' }"
+                  color="success"
+                  size="3xl"
+                >
                   <NuxtLink
                     :class="[
                       'font-bold hover:text-indigo-900',

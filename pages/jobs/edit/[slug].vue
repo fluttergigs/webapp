@@ -44,11 +44,11 @@
                     v-model="jobEditData.workType"
                     :items="workTypeOptions"
                     clear-search-on-close
-                    option-attribute="label"
+                    label-key="label"
                     placeholder="Select a work type option"
                     searchable
                     size="lg"
-                    value-attribute="id"
+                    value-key="id"
                   />
                 </LabelledInput>
               </div>
@@ -60,11 +60,11 @@
                     v-model="jobEditData.seniorityLevel"
                     :items="seniorityLevelOptions"
                     clear-search-on-close
-                    option-attribute="label"
+                    label-key="label"
                     placeholder="Select a seniority level"
                     searchable
                     size="lg"
-                    value-attribute="id"
+                    value-key="id"
                   />
                 </LabelledInput>
               </div>
@@ -76,11 +76,11 @@
                   v-model="jobEditData.remoteOptions"
                   :items="remoteOptions"
                   clear-search-on-close
-                  option-attribute="label"
+                  label-key="label"
                   placeholder="Select your remote options"
                   searchable
                   size="lg"
-                  value-attribute="id"
+                  value-key="id"
                 />
               </LabelledInput>
             </div>
@@ -124,7 +124,7 @@
                   size="xl"
                 />
 
-                <template #panel="{ close }">
+                <template #content="{ close }">
                   <DatePicker
                     v-model="jobEditData.applyBefore"
                     :min-date="new Date()"
@@ -166,12 +166,12 @@
             />
 
             <UButton
-              :disabled="!isSubmitButtonEnabled"
+              :disabled="!isSubmitButtonEnabled || jobEdit.isLoading"
               :loading="jobEdit.isLoading"
               class="bg-indigo-700 flex justify-center items-center"
               color="primary"
               label="Save changes"
-              size="xl"
+              size="3xl"
               @click="() => editJobOffer(jobEditData)"
             />
           </form>

@@ -2,7 +2,6 @@
   //@ts-ignore
   import type { Notification } from '#ui/types';
   import CustomInput from '~/components/forms/CustomInput.vue';
-  import LoadingSpinnerIcon from '~/components/icons/LoadingSpinnerIcon.vue';
   import { useAuthStore } from '~/stores/auth';
 
   const authStore = useAuthStore();
@@ -28,31 +27,23 @@
 </script>
 
 <template>
-  <form class="flex flex-col space-y-4 my-12 mr-8">
-    <div class="block mb-5">
-      <CustomInput v-model="formInput.password" label="Password" name="password" type="password" />
-    </div>
-    <div class="block mb-5">
-      <CustomInput
-        v-model="formInput.confirmPassword"
-        label="Confirm password"
-        name="confirmPassword"
-        type="password"
-      />
-    </div>
+  <form class="flex flex-col gap-4 my-12 mr-8">
+    <CustomInput v-model="formInput.password" label="Password" name="password" type="password" />
+    <CustomInput
+      v-model="formInput.confirmPassword"
+      label="Confirm password"
+      name="confirmPassword"
+      type="password"
+    />
 
-    <button
+    <UButton
       :disabled="!canSubmit || authStore.$changePassword.isLoading"
-      class="primary-button flex items-center justify-center space-x-2 m-auto max-w-xs"
-      type="button"
+      :loading="authStore.$changePassword.isLoading"
+      class="primary-button flex items-center justify-center gap-2 m-auto max-w-xs"
+      label="Save changes"
+      size="3xl"
       @click.prevent="submit"
-    >
-      <LoadingSpinnerIcon
-        v-if="authStore.$changePassword.isLoading"
-        class="text-primary animate-spin"
-      />
-      <span v-else> Save changes</span>
-    </button>
+    />
   </form>
 </template>
 

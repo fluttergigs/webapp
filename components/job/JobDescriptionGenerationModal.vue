@@ -37,30 +37,30 @@
 </script>
 
 <template>
-  <UModal v-model="jobStore.isJobDescriptionGenerationModalOpen">
-    <UCard :ui="{ ring: '', divide: 'divide-y divide-gray-100 dark:divide-gray-800' }">
-      <template #header>
-        <h3>Generate your job's description with AI 🚀</h3>
-      </template>
-
+  <UModal
+    v-model:open="jobStore.isJobDescriptionGenerationModalOpen"
+    title="Generate your job's description with AI 🚀"
+  >
+    <template #body>
       <CustomInput
         v-model="description"
         :is-text-area="true"
         name="description"
         placeholder="Generate a job description for Flutter Software Engineer position"
       />
+    </template>
 
-      <template #footer>
-        <UButton
-          :disabled="!canGenerate || jobStore.jobDescriptionGenerationTask.isLoading"
-          :loading="jobStore.jobDescriptionGenerationTask.isLoading"
-          class="bg-indigo-700 text-white"
-          color="primary"
-          label="Generate"
-          @click="generateText"
-        />
-      </template>
-    </UCard>
+    <template #footer>
+      <UButton
+        :disabled="!canGenerate || jobStore.jobDescriptionGenerationTask.isLoading"
+        :loading="jobStore.jobDescriptionGenerationTask.isLoading"
+        class="bg-indigo-700 text-white"
+        color="primary"
+        label="Generate"
+        size="lg"
+        @click="generateText"
+      />
+    </template>
   </UModal>
 </template>
 

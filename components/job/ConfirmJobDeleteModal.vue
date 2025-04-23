@@ -16,7 +16,7 @@
 
   const postDeleteJob = async () => {
     await useCompanyStore().fetchMyJobs();
-    useModal().close();
+    useOverlay().close();
   };
 
   const jobStore = useJobStore();
@@ -32,11 +32,11 @@
 
     <template #footer>
       <div class="flex space-x-2">
-        <UButton color="white" label="No" @click="useModal().close()" />
+        <UButton color="neutral" label="No" variant="outline" @click="useOverlay().close()" />
 
         <UButton
           :loading="jobStore.jobDelete.isLoading"
-          color="red"
+          color="error"
           label="Yes"
           @click="useJobActions().handleJobDelete(job, postDeleteJob)"
         />

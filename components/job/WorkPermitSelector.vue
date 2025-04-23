@@ -36,15 +36,15 @@
     <USelectMenu
       v-if="countries.length > 0"
       v-model="selected"
+      :filter-fields="['name']"
       :items="countries || []"
       :placeholder="searchPlaceholder"
-      :search-attributes="['name']"
       :ui-menu="{ height: 'h-[200px]' }"
+      label-key="name"
       multiple
-      option-attribute="name"
       searchable
       size="lg"
-      value-attribute="iso"
+      value-key="iso"
     >
       <!--    <template #label>
             <span :class="[selected.online ? 'bg-green-400' : 'bg-gray-200', 'inline-block h-2 w-2 flex-shrink-0 rounded-full']" aria-hidden="true" />
@@ -56,12 +56,12 @@
         <q>{{ query }}</q> not found
       </template>
 
-      <template #option="{ option: country }">
-        <div class="flex space-x-3 items-center">
+      <template #item-label="{ item: country }">
+        <div class="flex gap-3 items-center">
           <span aria-hidden="true" class="text-xl">
             {{ country?.flag?.ico }}
           </span>
-          <span class="text-gray-900 font-medium text-md">{{ country?.name }}</span>
+          <span class="text-gray-500 font-medium text-lg">{{ country?.name }}</span>
         </div>
       </template>
     </USelectMenu>
