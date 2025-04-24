@@ -12,6 +12,7 @@ export enum ExperienceType {
 }
 
 export type Experience = {
+  documentId?: string;
   id: number;
   title: string;
   type: ExperienceType;
@@ -24,6 +25,7 @@ export type Experience = {
 };
 
 export type Education = {
+  documentId: string;
   id: number;
   degree: string;
   field: string;
@@ -54,9 +56,9 @@ export type UserApiResponse = SingleApiResponse<User>;
 
 export type AddExperienceRequest = {
   //experience without id
-  data: Omit<Experience, 'id'>;
+  data: Omit<Experience, 'id' | 'documentId'>;
 };
 
 export type AddEducationRequest = {
-  data: Omit<Education, 'id'>;
+  data: Omit<Education, 'id' | 'documentId'>;
 };

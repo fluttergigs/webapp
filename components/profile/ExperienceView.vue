@@ -1,6 +1,7 @@
 <script lang="ts" setup>
   import AddExperienceForm from '~/components/profile/AddExperienceForm.vue';
   import EmptyExperienceCard from '~/components/profile/EmptyExperienceCard.vue';
+  import ExperienceCard from '~/components/profile/ExperienceCard.vue';
   import { useProfile } from '~/composables/useProfile';
 
   const {
@@ -10,6 +11,7 @@
     isAddExperienceModalVisible,
     toggleAddExperienceModal,
     addExperience,
+    experiences,
   } = useProfile();
 </script>
 
@@ -49,9 +51,11 @@
       </template>
     </UModal>
 
-    <div v-if="hasExperiences" class="flex flex-row md:flex-col py-2 border-b border-gray-200">
-      <div class="flex flex-col md:flex-row justify-start md:justify-between w-full">
-        <div class="flex flex-col gap-2">
+    <div v-if="hasExperiences" class="flex flex-row md:flex-col py-2">
+      <div
+        class="flex flex-col border-b border-gray-200 md:flex-row justify-start md:justify-between w-full"
+      >
+        <div class="flex flex-col gap-2 py-2">
           <h3 class="text-3xl font-semibold text-gray-900">Experience</h3>
           <p>Add your work experience</p>
         </div>
@@ -63,6 +67,14 @@
           label="Add Experience"
           size="xl"
           @click="toggleAddExperienceModal"
+        />
+      </div>
+
+      <div class="flex flex-col gap-4 mt-4">
+        <ExperienceCard
+          v-for="experience in experiences"
+          :key="experience.id"
+          :experience="experience"
         />
       </div>
     </div>

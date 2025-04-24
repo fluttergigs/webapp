@@ -154,12 +154,24 @@ export const useUserStore = defineStore('user', {
       useUserStore().hasCompanies ? useUserStore().companies[0] : null,
 
     educations: (state) => {
-      return useAuthStore().authUser?.educations ?? [];
+      const educations = useAuthStore().authUser?.educations ?? [];
+
+      //filter out duplicate educations
+      return educations.filter((education, index, self) =>
+        index === self.findIndex((e) => e.documentId === education.documentId),
+      );
+
     },
     hasEducations: (state) => useUserStore().educations.length > 0,
     experiences: (state) => {
       const experiences: Experience[] = useAuthStore().authUser?.experiences ?? [];
-      return experiences.filter(({ endDate }) => isAfter(parseISO(endDate!.toString()), new Date()),
+
+      //filter out duplicate experiences
+      const uniqueExperiences = experiences.filter((experience, index, self) =>
+        index === self.findIndex((e) => e.documentId === experience.documentId),
+      );
+
+      return uniqueExperiences.filter(({ endDate }) => isAfter(parseISO(endDate!.toString()), new Date()),
       );
     },
     hasExperiences: (state) => useUserStore().experiences.length > 0,
