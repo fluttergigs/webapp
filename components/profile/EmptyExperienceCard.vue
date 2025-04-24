@@ -1,13 +1,15 @@
 <script lang="ts" setup>
-  import { AcademicCapIcon } from '@heroicons/vue/24/solid';
+  import { BriefcaseIcon } from '@heroicons/vue/24/solid';
   import { useProfile } from '~/composables/useProfile';
 </script>
 
 <template>
-  <div class="px-4 py-8 border border-gray-200 rounded-md w-full">
+  <div
+    class="px-4 py-8 border border-gray-200 rounded-md w-full border-dashed border-gray-300 rounded-lg bg-gray-50"
+  >
     <div class="flex flex-col gap-3 justify-center items-center">
       <div class="rounded-md p-4 border border-gray-200" style="width: fit-content">
-        <AcademicCapIcon class="w-12 h-12 text-gray-500" />
+        <BriefcaseIcon class="w-12 h-12 text-gray-500" />
       </div>
 
       <h3 class="text-xl font-semibold text-center mt-4">No Experience yet</h3>

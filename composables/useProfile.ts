@@ -44,12 +44,11 @@ function createProfileState() {
     data: {
       degree: '',
       field: '',
-      title: '',
       school: '',
-      startYear: '',
-      endYear: '',
+      // startYear: '',
+      // endYear: '',
       description: '',
-      hasGraduated: false,
+      isActive: false,
       user: useAuthStore().authUser.id,
     },
   });
@@ -124,8 +123,8 @@ function createProfileState() {
 
         await useUser().getUser();
         // Reset form and close modal on success
-        resetExperienceForm();
         toggleAddExperienceModal();
+        resetExperienceForm();
       }
 
       if ($addExperience.value.isFailure) {
@@ -144,8 +143,8 @@ function createProfileState() {
         ($toast as BaseToast<Notification>).info(AppStrings.educationAddedSuccessfully);
         await useUser().getUser();
         // Reset form and close modal on success
-        resetEducationForm();
         toggleAddEducationModal();
+        resetEducationForm();
       }
 
       if ($addEducation.value.isFailure) {
@@ -176,12 +175,11 @@ function createProfileState() {
       data: {
         degree: '',
         field: '',
-        title: '',
         school: '',
         startYear: '',
         endYear: '',
         description: '',
-        hasGraduated: false,
+        isActive: false,
       },
     };
   };

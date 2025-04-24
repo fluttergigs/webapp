@@ -1,4 +1,5 @@
 import type { Company } from '~/features/companies/company.types';
+import type { Education, Experience } from '~/features/users/user.types';
 
 export interface RegistrationData {
   firstName: string | null;

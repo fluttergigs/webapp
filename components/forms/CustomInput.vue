@@ -199,11 +199,6 @@
       .required()
       .label(hasLabel ? props.label : 'Still working there'),
 
-    hasGraduated: yup
-      .boolean()
-      .required()
-      .label(hasLabel ? props.label : 'Has graduated'),
-
     startYear: yup
       .number()
       .required()
@@ -211,16 +206,16 @@
 
     endYear: yup
       .number()
-      .when('hasGraduated', (hasGraduated, schema) => {
-        if (!hasGraduated) {
+      .when('isActive', (isActive, schema) => {
+        if (!isActive) {
           return schema
             .required('End year is required')
             .min(yup.ref('startYear'), 'End year must be after start year');
         }
         return schema
+          .optional()
           .min(yup.ref('startYear'), 'End year must be after start year')
-          .nullable()
-          .optional();
+          .nullable();
       })
       .label(hasLabel ? props.label : 'End year'),
   }));

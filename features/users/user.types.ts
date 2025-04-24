@@ -29,12 +29,11 @@ export type Education = {
   id: number;
   degree: string;
   field: string;
-  title: string;
   school: string;
-  startYear: string;
-  endYear?: string | null;
+  startYear: number;
+  endYear?: number | null;
   description: string;
-  hasGraduated: boolean;
+  isActive: boolean;
   user?: User | number | String;
 };
 

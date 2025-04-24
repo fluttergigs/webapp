@@ -11,7 +11,9 @@
 
           <UTabs :items="tabs" class="w-full my-12" @change="onChange">
             <template #overview="{ item }"></template>
-            <template #education="{ item }"></template>
+            <template #education="{ item }">
+              <EducatiionView />
+            </template>
             <template #experience="{ item }">
               <ExperienceView />
             </template>
@@ -23,6 +25,7 @@
 </template>
 
 <script setup>
+  import EducatiionView from '~/components/profile/EducationView.vue';
   import ExperienceView from '~/components/profile/ExperienceView.vue';
   import { AnalyticsEvent } from '~/services/analytics/events';
   import { useAuthStore } from '~/stores/auth';

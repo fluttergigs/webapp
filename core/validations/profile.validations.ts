@@ -28,14 +28,13 @@ export const updateExperienceFormSchema = addExperienceFormSchema;
 export const addEducationFormSchema = yup.object({
   degree: yup.string().required().min(3).max(50).label('Degree'),
   field: yup.string().required().min(3).max(50).label('Field'),
-  title: yup.string().required().min(3).max(50).label('Title'),
   school: yup.string().required().min(3).max(50).label('School'),
-  hasGraduated: yup.boolean().optional().label('Has graduated'),
+  isActive: yup.boolean().optional().label('Still studying there'),
   startYear: yup.number().required().label('Start year'),
   endYear: yup
     .number()
-    .when('hasGraduated', (hasGraduated, schema) => {
-      if (!hasGraduated) {
+    .when('isActive', (isActive, schema) => {
+      if (!isActive) {
         return schema
           .required('End year is required')
           .min(yup.ref('startYear'), 'End year must be after start year');

@@ -19,7 +19,7 @@
   });
 
   // Function to validate specific fields
-  const validateField = async (fieldName) => {
+  const validateField = async (fieldName: any) => {
     await validate(fieldName);
   };
 </script>
