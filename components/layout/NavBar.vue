@@ -199,6 +199,12 @@
   const accountLinks = ref([
     [
       {
+        label: 'Profile',
+        onClick: () => {
+          navigateTo(AppRoutes.consultantProfile);
+        },
+      },
+      {
         label: 'Account',
         onClick: () => {
           navigateTo(AppRoutes.myAccount);

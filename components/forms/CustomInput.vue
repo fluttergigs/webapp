@@ -1,7 +1,7 @@
 <template>
-  <div class="flex flex-col gap-2">
+  <div class="flex flex-col gap-1.5">
     <slot name="label">
-      <p v-if="hasLabel && showLabel" class="text-md font-medium">{{ label }}</p>
+      <p v-if="hasLabel && showLabel" class="text-sm font-medium">{{ label }}</p>
     </slot>
 
     <!--    <client-only>-->
@@ -99,7 +99,7 @@
     set: (val) => emits('update:modelValue', val),
   });
 
-  const validators = {
+  const validators = computed(() => ({
     email: yup
       .string()
       .email()
@@ -125,7 +125,6 @@
       .required()
       .min(2)
       .label(hasLabel ? props.label : 'Username'),
-    //TODO - change password min length to 8
     password: yup
       .string()
       .required()
@@ -136,7 +135,7 @@
     confirmPassword: yup
       .string()
       .label(hasLabel ? props.label : 'Confirm password')
-      .oneOf([yup.ref('password'), null], 'Passwords must match'),
+      .oneOf([yup.ref('password')], 'Passwords must match'),
 
     description: yup
       .string()
@@ -144,31 +143,91 @@
       .min(30)
       .max(5000)
       .label(hasLabel ? props.label : 'Description'),
+
     bio: yup
       .string()
       .min(15)
       .max(500)
       .label(hasLabel ? props.label : 'Bio'),
+
     url: yup
       .string()
       .url()
       .label(hasLabel ? props.label : 'Url'),
-    jobTitle: yup
+
+    title: yup
       .string()
       .required()
       .min(8)
+      .max(30)
       .label(hasLabel ? props.label : 'Job title'),
+
+    company: yup
+      .string()
+      .required()
+      .min(3)
+      .max(30)
+      .label(hasLabel ? props.label : 'Company'),
+
     amount: yup
       .number()
       .required()
       .min(1)
       .label(hasLabel ? props.label : 'Amount'),
-  };
 
-  const {
-    errorMessage,
-    meta: { valid, dirty, touched },
-  } = useField(() => props.name, validators[props.name], { syncVModel: true });
+    startDate: yup
+      .date()
+      .required()
+      .label(hasLabel ? props.label : 'Start date'),
+    endDate: yup
+      .date()
+      .when('isActive', (isActive, schema) => {
+        if (!isActive) {
+          return schema
+            .required('End date is required')
+            .min(yup.ref('startDate'), 'End date must be after start date');
+        }
+        return schema
+          .min(yup.ref('startDate'), 'End date must be after start date')
+          .nullable()
+          .optional();
+      })
+      .label('End date'),
+
+    isActive: yup
+      .boolean()
+      .required()
+      .label(hasLabel ? props.label : 'Still working there'),
+
+    hasGraduated: yup
+      .boolean()
+      .required()
+      .label(hasLabel ? props.label : 'Has graduated'),
+
+    startYear: yup
+      .number()
+      .required()
+      .label(hasLabel ? props.label : 'Start year'),
+
+    endYear: yup
+      .number()
+      .when('hasGraduated', (hasGraduated, schema) => {
+        if (!hasGraduated) {
+          return schema
+            .required('End year is required')
+            .min(yup.ref('startYear'), 'End year must be after start year');
+        }
+        return schema
+          .min(yup.ref('startYear'), 'End year must be after start year')
+          .nullable()
+          .optional();
+      })
+      .label(hasLabel ? props.label : 'End year'),
+  }));
+
+  const { errorMessage, meta } = useField(() => props.name, validators.value[props.name], {
+    syncVModel: true,
+  });
 </script>
 
 <style scoped></style>

@@ -4,9 +4,9 @@
 </script>
 
 <template>
-  <div class="px-4 py-8 border rounded-md w-fit">
+  <div class="px-4 py-8 border border-gray-200 rounded-md w-full">
     <div class="flex flex-col gap-3 justify-center items-center">
-      <div class="rounded-md p-4 border" style="width: fit-content">
+      <div class="rounded-md p-4 border border-gray-200" style="width: fit-content">
         <AcademicCapIcon class="w-12 h-12 text-gray-500" />
       </div>
 
@@ -23,7 +23,7 @@
         color="primary"
         icon="i-heroicons-plus-circle-solid"
         label="Add experience"
-        @click="useProfile().toggleAddEducationModal"
+        @click="useProfile().toggleAddExperienceModal"
       />
     </div>
   </div>

@@ -23,7 +23,7 @@
 </template>
 
 <script setup>
-  import ExperienceView from '~/components/consultant/ExperienceView.vue';
+  import ExperienceView from '~/components/profile/ExperienceView.vue';
   import { AnalyticsEvent } from '~/services/analytics/events';
   import { useAuthStore } from '~/stores/auth';
 
@@ -61,8 +61,8 @@
 
     tabLabel.value = tab['label'];
 
-    if (tab['key'] === 'account') {
-    } else if (tab['key'] === 'password') {
+    if (tab['slot'] === 'account') {
+    } else if (tab['slot'] === 'password') {
     }
   };
 </script>

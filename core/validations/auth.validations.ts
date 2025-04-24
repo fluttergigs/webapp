@@ -19,7 +19,7 @@ export const passwordForgetSchema = yup.object({
 
 export const passwordResetSchema = yup.object({
   password: yup.string().required().min(8).label('password'),
-  passwordConfirmation: yup.string().oneOf([yup.ref('password')], 'Passwords must match'),
+  passwordConfirmation: yup.string().oneOf([yup.ref('password'), null], 'Passwords must match'),
   code: yup.string().required().label('code'),
 });
 
@@ -33,5 +33,5 @@ export const updateUserFormSchema = yup.object({
 
 export const changePasswordFormSchema = yup.object({
   password: yup.string().required().min(8).label('password'),
-  confirmPassword: yup.string().oneOf([yup.ref('password')], 'Passwords must match'),
+  confirmPassword: yup.string().oneOf([yup.ref('password'), null], 'Passwords must match'),
 });

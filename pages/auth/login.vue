@@ -33,15 +33,14 @@
               </template>
             </CustomInput>
           </div>
-          <button
+          <UButton
+            class="w-full"
+            label="Sign In"
+            :loading="user.isLoading"
             :disabled="!canSubmit || user.isLoading"
-            class="primary-button flex items-center justify-center space-x-2"
-            type="button"
+            size="xl"
             @click.prevent="() => submit(onSuccessfulLogin)"
-          >
-            <LoadingSpinnerIcon v-if="user.isLoading" class="text-primary animate-spin" />
-            <span v-else> Sign In</span>
-          </button>
+          />
           <p class="font-medium">
             <span>Don’t have an account?</span>
             <NuxtLink :to="AppRoutes.register" class="ml-2 text-indigo-600 hover:text-indigo-700"

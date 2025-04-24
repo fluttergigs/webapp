@@ -177,8 +177,8 @@
 
   <USlideover
     v-model:open="isJobSidePanelOpen"
-    :ui="{ overlay: { background: 'bg-gray-200/60 dark:bg-gray-800/75' } }"
     :title="job.title"
+    :ui="{ overlay: { background: 'bg-gray-200/60 dark:bg-gray-800/75' } }"
     description="Job Details"
   >
     <template #body>

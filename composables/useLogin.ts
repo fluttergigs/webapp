@@ -7,7 +7,7 @@ import { BaseToast } from '~/core/ui/base_toast';
 import { loginFormSchema } from '~/core/validations/auth.validations';
 import { AppAnalyticsProvider } from '~/services/analytics/AppAnalyticsProvider';
 import { AnalyticsEvent } from '~/services/analytics/events';
-import { LoginData, User } from '~/services/auth/auth.types';
+import type { LoginData, User } from '~/services/auth/auth.types';
 import { useAuthStore } from '~/stores/auth';
 
 export const useLogin = () => {
@@ -56,7 +56,7 @@ export const useLogin = () => {
         onDone?.(authUser.value);
       }
       if (isFailedLogin.value) {
-        ($toast as BaseToast<Notification>).error($user.value.message);
+        ($toast as BaseToast<Notification>).error($user.value.message as string);
       }
     } catch (e) {
       ($toast as BaseToast<Notification>).error(AppStrings.errorOccurred);

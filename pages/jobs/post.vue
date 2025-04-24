@@ -1,5 +1,6 @@
 <!--TODO - check whether min salary is > max salary-->
 <!--TODO check whether user has selected at least a work permit-->
+<!--TODO: refactor job post logic-->
 
 <template>
   <main>
@@ -15,7 +16,7 @@
             <CustomInput
               v-model="jobCreationData.title"
               label="Job title *"
-              name="jobTitle"
+              name="title"
               placeholder="eg. Senior Flutter Engineer"
               type="text"
             />
@@ -29,7 +30,7 @@
             <LabelledInput
               inside-text="Generate description using AI 🚀"
               label="Job Description *"
-              @inside-text-clicked="jobStore.showJobDescriptionGenerationModal()"
+              @inside-text-clicked="jobStore.showJobDescriptionGenerationModal"
             >
               <client-only>
                 <QuillEditorWrapper
@@ -135,15 +136,13 @@
                   variant="outline"
                 />
 
-                <template #content="{ close }">
+                <template #content>
                   <DatePicker
                     v-model="jobCreationData.applyBefore"
                     :is-range="false"
                     :is-required="true"
                     :min-date="new Date()"
                     color="primary"
-                    @close="close"
-                    @update:model-value="close"
                   />
                 </template>
               </UPopover>

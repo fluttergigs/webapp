@@ -29,15 +29,15 @@
               type="password"
             />
           </div>
-          <button
+          <UButton
+            class="w-full"
+            label="Create account"
             :disabled="!canSubmit || user.isLoading"
-            class="primary-button flex items-center justify-center space-x-2"
-            type="button"
+            :loading="user.isLoading"
+            size="xl"
             @click.prevent="submit(onSuccessfulRegistration)"
-          >
-            <LoadingSpinnerIcon v-if="user.isLoading" class="text-primary animate-spin" />
-            <span v-else> Create account</span>
-          </button>
+          />
+
           <p class="font-medium text-center mx-auto">
             <span class="mr-2">Already have an account?</span>
             <NuxtLink :to="AppRoutes.login" class="text-indigo-600 hover:text-indigo-700"

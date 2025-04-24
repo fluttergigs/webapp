@@ -109,14 +109,14 @@
 
   .page-enter-active,
   .page-leave-active {
-    opacity: 1;
     transform: translate(0px, 0px);
+    opacity: 1;
   }
 
   .page-enter-from,
   .page-leave-to {
-    opacity: 0;
     transform: translate(0px, 20px);
+    opacity: 0;
   }
 
   /*.slide-left-enter-active,

@@ -4,27 +4,29 @@ import { addEducationFormSchema, addExperienceFormSchema } from '~/core/validati
 import type { AddEducationRequest, AddExperienceRequest } from '~/features/users/user.types';
 import { ExperienceType } from '~/features/users/user.types';
 
-export const useProfile = () => {
+// Create a ref to store our state
+let profileStateRef: ReturnType<typeof createProfileState> | null = null;
+
+// Function that creates the state
+function createProfileState() {
   const { $toast } = useNuxtApp();
-
+  const userStore = useUserStore();
   const { hasExperiences, hasEducations, educations, experiences, $addEducation, $addExperience } =
-    storeToRefs(useUserStore());
-  const isAddExperienceModalVisible = ref(false);
+    storeToRefs(userStore);
 
+  // UI state
+  const isAddExperienceModalVisible = ref(false);
   const isAddEducationModalVisible = ref(false);
 
-  const isAddingExperience = computed(() => {
-    return $addExperience.value.isLoading;
-  });
+  // Form validation state
+  const isExperienceFormValid = ref(false);
+  const isEducationFormValid = ref(false);
 
-  const isAddingEducation = computed(() => {
-    return $addEducation.value.isLoading;
-  });
+  // Loading states
+  const isAddingExperience = computed(() => $addExperience.value.isLoading);
+  const isAddingEducation = computed(() => $addEducation.value.isLoading);
 
-  const canAddExperience = ref(false);
-  const canAddEducation = ref(false);
-
-  //new experience form data
+  // Form data
   const newExperienceFormData = ref<AddExperienceRequest>({
     data: {
       title: '',
@@ -34,10 +36,10 @@ export const useProfile = () => {
       endDate: new Date(),
       description: '',
       isActive: false,
+      user: useAuthStore().authUser.id,
     },
   });
 
-  //new education form data
   const newEducationFormData = ref<AddEducationRequest>({
     data: {
       degree: '',
@@ -48,9 +50,62 @@ export const useProfile = () => {
       endYear: '',
       description: '',
       hasGraduated: false,
+      user: useAuthStore().authUser.id,
     },
   });
 
+  watch(
+    () => newExperienceFormData.value.data.isActive,
+    () => {
+      setTimeout(() => {
+        newExperienceFormData.value.data.endDate = null;
+      }, 0);
+    },
+  );
+
+  /* watch(
+     () => newExperienceFormData.value.data.endDate,
+     () => {
+       // Force validation by updating a non-date property
+       const current = newExperienceFormData.value.data.isActive;
+       newExperienceFormData.value.data.isActive = !current;
+       setTimeout(() => {
+         newExperienceFormData.value.data.isActive = current;
+       }, 0);
+     },
+   );
+
+   // Add watchers to force validation when dates change
+   watch(
+     () => newExperienceFormData.value.data.startDate,
+     () => {
+       // Force validation by updating a non-date property that will trigger the watcher
+       const current = newExperienceFormData.value.data.isActive;
+       newExperienceFormData.value.data.isActive = !current;
+       setTimeout(() => {
+         newExperienceFormData.value.data.isActive = current;
+       }, 0);
+     },
+   );*/
+
+  // Track form validation state changes
+  watch(
+    () => newExperienceFormData.value.data,
+    async (newData) => {
+      isExperienceFormValid.value = await addExperienceFormSchema.isValid(newData);
+    },
+    { immediate: true, deep: true },
+  );
+
+  watch(
+    () => newEducationFormData.value.data,
+    async (newData) => {
+      isEducationFormValid.value = await addEducationFormSchema.isValid(newData);
+    },
+    { immediate: true, deep: true },
+  );
+
+  // UI actions
   const toggleAddExperienceModal = () => {
     isAddExperienceModalVisible.value = !isAddExperienceModalVisible.value;
   };
@@ -59,34 +114,22 @@ export const useProfile = () => {
     isAddEducationModalVisible.value = !isAddEducationModalVisible.value;
   };
 
-  watch(
-    newExperienceFormData,
-    async () => {
-      canAddExperience.value = await addExperienceFormSchema.isValid(
-        newExperienceFormData.value.data,
-      );
-    },
-    { immediate: true, deep: true },
-  );
-
-  watch(
-    newEducationFormData,
-    async () => {
-      canAddEducation.value = await addEducationFormSchema.isValid(newEducationFormData.value.data);
-    },
-    { immediate: true, deep: true },
-  );
-
+  // Form submission
   const addExperience = async () => {
     try {
-      await useUserStore().addExperience(newExperienceFormData.value);
+      await userStore.addExperience(newExperienceFormData.value);
 
       if ($addExperience.value.isSuccess) {
-        useUser().getUser();
+        ($toast as BaseToast<Notification>).info(AppStrings.experienceAddedSuccessfully);
+
+        await useUser().getUser();
+        // Reset form and close modal on success
+        resetExperienceForm();
+        toggleAddExperienceModal();
       }
 
-      if ($addExperience.value.isFailed) {
-        ($toast as BaseToast<Notification>).error($addExperience.value.message);
+      if ($addExperience.value.isFailure) {
+        ($toast as BaseToast<Notification>).error($addExperience.value.message as string);
       }
     } catch (error) {
       console.error('Error adding experience:', error);
@@ -95,39 +138,86 @@ export const useProfile = () => {
 
   const addEducation = async () => {
     try {
-      await useUserStore().addEducation(newEducationFormData.value);
+      await userStore.addEducation(newEducationFormData.value);
 
       if ($addEducation.value.isSuccess) {
-        useUser().getUser();
+        ($toast as BaseToast<Notification>).info(AppStrings.educationAddedSuccessfully);
+        await useUser().getUser();
+        // Reset form and close modal on success
+        resetEducationForm();
+        toggleAddEducationModal();
       }
 
-      if ($addEducation.value.isFailed) {
-        ($toast as BaseToast<Notification>).error($addEducation.value.message);
+      if ($addEducation.value.isFailure) {
+        ($toast as BaseToast<Notification>).error($addEducation.value.message as string);
       }
     } catch (error) {
       console.error('Error adding education:', error);
     }
   };
 
+  // Helper functions
+  const resetExperienceForm = () => {
+    newExperienceFormData.value = {
+      data: {
+        title: '',
+        type: ExperienceType.fullTime,
+        company: '',
+        startDate: new Date(),
+        endDate: new Date(),
+        description: '',
+        isActive: false,
+      },
+    };
+  };
+
+  const resetEducationForm = () => {
+    newEducationFormData.value = {
+      data: {
+        degree: '',
+        field: '',
+        title: '',
+        school: '',
+        startYear: '',
+        endYear: '',
+        description: '',
+        hasGraduated: false,
+      },
+    };
+  };
+
   return {
-    //state && computed properties
+    // Return all your state and methods here
     isAddExperienceModalVisible,
     isAddEducationModalVisible,
+    canAddExperience: isExperienceFormValid,
+    canAddEducation: isEducationFormValid,
+    isExperienceFormValid,
+    isEducationFormValid,
+    isAddingExperience,
+    isAddingEducation,
+    newExperienceFormData,
+    newEducationFormData,
     hasExperiences,
     hasEducations,
     educations,
     experiences,
-    newExperienceFormData,
-    newEducationFormData,
-    canAddExperience,
-    canAddEducation,
-    isAddingExperience,
-    isAddingEducation,
-
     //methods
+    toggleAddExperienceModal,
+    toggleAddEducationModal,
     addExperience,
     addEducation,
-    toggleAddEducationModal,
-    toggleAddExperienceModal,
+    resetExperienceForm,
+    resetEducationForm,
   };
+}
+
+// The actual composable that gets called from components
+export const useProfile = () => {
+  // Create the state only once when this composable is first called
+  if (!profileStateRef) {
+    profileStateRef = createProfileState();
+  }
+
+  return profileStateRef;
 };

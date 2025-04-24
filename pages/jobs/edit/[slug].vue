@@ -33,7 +33,7 @@
               inside-text="Generate description using AI 🚀"
               label="Job description *"
               name="description"
-              @inside-text-clicked="jobStore.showJobDescriptionGenerationModal()"
+              @inside-text-clicked="jobStore.showJobDescriptionGenerationModal"
             />
 
             <div class="flex space-x-3">

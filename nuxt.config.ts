@@ -9,6 +9,10 @@ import path from 'path';
 export default defineNuxtConfig({
   devtools: {
     enabled: true,
+
+    timeline: {
+      enabled: true,
+    },
   },
   experimental: {
     renderJsonPayloads: false,

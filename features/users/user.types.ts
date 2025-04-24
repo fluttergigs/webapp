@@ -17,10 +17,10 @@ export type Experience = {
   type: ExperienceType;
   company: string;
   startDate: Date;
-  endDate?: Date;
+  endDate?: Date | null;
   description: string;
   isActive: boolean;
-  user?: User;
+  user?: User | number | String;
 };
 
 export type Education = {
@@ -30,10 +30,10 @@ export type Education = {
   title: string;
   school: string;
   startYear: string;
-  endYear?: string;
+  endYear?: string | null;
   description: string;
   hasGraduated: boolean;
-  user?: User;
+  user?: User | number | String;
 };
 
 export type UpdateUserRequestProps = {
@@ -54,9 +54,9 @@ export type UserApiResponse = SingleApiResponse<User>;
 
 export type AddExperienceRequest = {
   //experience without id
-  data: Omit<Experience, 'id' | 'user'>;
+  data: Omit<Experience, 'id'>;
 };
 
 export type AddEducationRequest = {
-  data: Omit<Education, 'id' | 'user'>;
+  data: Omit<Education, 'id'>;
 };

@@ -44,7 +44,7 @@
             </p>
           </slot>
 
-          <slot name="form"> </slot>
+          <slot name="form"></slot>
         </div>
       </div>
     </section>

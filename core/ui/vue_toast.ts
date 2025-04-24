@@ -28,7 +28,7 @@ export class VueToastImpl extends BaseToast<Notification, number> {
       title: title ?? config?.title,
       description: config?.description,
       duration: config?.timeout ?? this.timeout,
-      click: config?.click,
+      onClick: config?.click,
       color: 'info',
     });
   }
@@ -42,7 +42,7 @@ export class VueToastImpl extends BaseToast<Notification, number> {
       description: config?.description,
       duration: config?.timeout ?? this.timeout,
       color: 'error',
-      click: config?.click,
+      onClick: config?.click,
     });
   }
 
@@ -55,7 +55,7 @@ export class VueToastImpl extends BaseToast<Notification, number> {
       description: config?.description,
       duration: config?.timeout ?? this.timeout,
       color: 'primary',
-      click: config?.click,
+      onClick: config?.click,
     });
   }
 
@@ -68,7 +68,7 @@ export class VueToastImpl extends BaseToast<Notification, number> {
       description: config?.description,
       duration: config?.timeout ?? this.timeout,
       color: 'primary',
-      click: config?.click,
+      onClick: config?.click,
     });
   }
 
@@ -81,7 +81,7 @@ export class VueToastImpl extends BaseToast<Notification, number> {
       description: config?.description,
       duration: config?.timeout ?? this.timeout,
       color: 'success',
-      click: config?.click,
+      onClick: config?.click,
     });
   }
 
@@ -95,12 +95,13 @@ export class VueToastImpl extends BaseToast<Notification, number> {
       actions: config.actions,
       duration: config.timeout,
       color: config.color,
-      click: config.click,
+      onClick: config.click,
     });
   }
 
   clear(id?: number): void {
-    this.toast.remove((id ?? this.currentNotification).toString());
-    this.resetCurrentNotificationId();
+    this.toast.clear();
+    // this.toast.remove((id ?? this.currentNotification).toString());
+    // this.resetCurrentNotificationId();
   }
 }

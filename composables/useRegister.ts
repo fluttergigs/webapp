@@ -6,7 +6,7 @@ import { BaseToast } from '~/core/ui/base_toast';
 import { registerFormSchema } from '~/core/validations/auth.validations';
 import type { AppAnalyticsProvider } from '~/services/analytics/AppAnalyticsProvider';
 import { AnalyticsEvent } from '~/services/analytics/events';
-import { RegistrationData, User } from '~/services/auth/auth.types';
+import type { RegistrationData, User } from '~/services/auth/auth.types';
 import { useAuthStore } from '~/stores/auth';
 
 export const useRegister = () => {
@@ -70,7 +70,7 @@ export const useRegister = () => {
       }
 
       if (isFailedRegistration.value) {
-        ($toast as BaseToast<Notification>).error($user.value.message);
+        ($toast as BaseToast<Notification>).error($user.value.message as string);
       }
     } catch (e) {
       ($toast as BaseToast<Notification>).error(AppStrings.errorOccurred);
