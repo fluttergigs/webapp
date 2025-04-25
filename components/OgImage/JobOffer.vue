@@ -6,7 +6,7 @@
   const jobOffer = defineProps<Partial<JobOffer>>();
 
   const jobOfferTitle = computed(() =>
-    jobOffer.title.length > 85 ? `${jobOffer.title.substring(0, 85)}...` : jobOffer.title,
+    jobOffer.title!.length > 85 ? `${jobOffer!.title!.substring(0, 85)}...` : jobOffer.title,
   );
 </script>
 

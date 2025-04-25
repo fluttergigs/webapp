@@ -9,7 +9,6 @@
   import { Direction } from '~/core/shared/types';
   import { userFacingCompanySize } from '~/features/companies/transformers';
   import { AnalyticsEvent } from '~/services/analytics/events';
-  import { useJobStore } from '~/stores/job';
 
   import useJobActions from '@/composables/useJobActions';
 
@@ -92,7 +91,7 @@
   });
 
   onBeforeMount(() => {
-    useJobStore().setSelectedJob(jobOffer.value ?? {});
+    // useJobStore().setSelectedJob(jobOffer.value ?? {});
   });
 </script>
 
