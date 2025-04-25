@@ -59,11 +59,11 @@
       </template>
     </ItemData>
 
-    <UDivider class="my-2" />
+    <USeparator class="my-2" />
 
     <ItemData label="Location requirements">
       <template #content>
-        <WorkingPermits :countries="jobWorkingPermits(data?.countries ?? [], props.job)" />
+        <WorkingPermits :countries="jobWorkingPermits(data ?? [], props.job)" />
       </template>
     </ItemData>
   </div>
