@@ -62,7 +62,7 @@ export default function useJobActions() {
   const handleJobDelete = async (job: JobOffer, onDone?: CallbackFunction<any>) => {
     ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.jobOfferDeleteButtonClicked, { job });
 
-    await jobStore.deleteJob({ jobOffer: job.id });
+    await jobStore.deleteJob({ jobOffer: job.documentId });
 
     ($toast as BaseToast<Notification>).info(<string>jobStore.jobDelete.message);
 
@@ -71,7 +71,7 @@ export default function useJobActions() {
     }
   };
 
-  const isJobBookmarked = (job: JobOffer): boolean => useUserStore().bookmarkedJobs?.filter((savedJob: JobOffer) => savedJob.id == job.id).length > 0;
+  const isJobBookmarked = (job: JobOffer): boolean => useUserStore().bookmarkedJobs?.filter((savedJob: JobOffer) => savedJob.id === job.id).length > 0;
 
   const jobBelongsToCompany = (company: Company) =>
     (authStore.isAuthenticated && useUserStore().myCompany?.id === company.id);

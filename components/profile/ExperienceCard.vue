@@ -7,6 +7,13 @@
       required: true,
     },
   });
+
+  const { toggleUpdateExperienceModal, setExperience } = useProfile();
+
+  const handleEditButtonClick = () => {
+    setExperience(props.experience);
+    toggleUpdateExperienceModal();
+  };
 </script>
 
 <template>
@@ -73,6 +80,7 @@
               label="Edit"
               size="sm"
               variant="outline"
+              @click="handleEditButtonClick"
             />
           </div>
         </div>

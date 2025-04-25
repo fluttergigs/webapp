@@ -96,4 +96,16 @@ export class AppStrings {
   static educationAddedSuccessfully = 'Your education has been added successfully';
 
   static unableToAddEducation = 'Unable to add your education. Please try again later';
+
+  static unableToDeleteExperience = 'Unable to delete this experience. Please try again later';
+  static unableToDeleteEducation = 'Unable to delete this education. Please try again later';
+
+  static unableToUpdateExperience = 'Unable to update this experience. Please try again later';
+  static unableToUpdateEducation = 'Unable to update this education. Please try again later';
+
+  static educationDeletedSuccessfully = 'Your education has been deleted successfully';
+  static experienceDeletedSuccessfully = 'Your experience has been deleted successfully';
+
+  static educationUpdatedSuccessfully = 'Your education has been updated successfully';
+  static experienceUpdatedSuccessfully = 'Your experience has been updated successfully';
 }

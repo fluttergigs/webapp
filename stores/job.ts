@@ -172,7 +172,7 @@ export const useJobStore = defineStore('job', {
       this.jobEdit = new Wrapper<SingleApiResponse<Object>>().toLoading();
       try {
         const { $http } = useNuxtApp();
-        const response = await (<HttpClient>$http).put<SingleApiResponse<Object>>(`${Endpoint.jobOffers}/${job.id}`, { data: this.jobEditData });
+        const response = await (<HttpClient>$http).put<SingleApiResponse<Object>>(`${Endpoint.jobOffers}/${job.documentId}`, { data: this.jobEditData });
         this.jobEdit = this.jobEdit.toSuccess(response, AppStrings.jobOfferUpdatedSuccessfully);
       } catch (e) {
         logDev('job offer edit error', e);

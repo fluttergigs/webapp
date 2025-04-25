@@ -1,8 +1,12 @@
 import { storeToRefs } from 'pinia';
 import { BaseToast } from '~/core/ui/base_toast';
-import { addEducationFormSchema, addExperienceFormSchema } from '~/core/validations';
-import type { AddEducationRequest, AddExperienceRequest } from '~/features/users/user.types';
+import { addEducationFormSchema, addExperienceFormSchema, updateEducationFormSchema, updateExperienceFormSchema } from '~/core/validations';
+import type { AddEducationRequest, AddExperienceRequest, Education, Experience, UpdateEducationRequest, UpdateExperienceRequest } from '~/features/users/user.types';
 import { ExperienceType } from '~/features/users/user.types';
+
+
+
+
 
 // Create a ref to store our state
 let profileStateRef: ReturnType<typeof createProfileState> | null = null;
@@ -11,20 +15,45 @@ let profileStateRef: ReturnType<typeof createProfileState> | null = null;
 function createProfileState() {
   const { $toast } = useNuxtApp();
   const userStore = useUserStore();
-  const { hasExperiences, hasEducations, educations, experiences, $addEducation, $addExperience } =
-    storeToRefs(userStore);
+  const {
+    hasExperiences,
+    hasEducations,
+    educations,
+    experiences,
+    $addEducation,
+    $addExperience,
+    $deleteEducation,
+    $deleteExperience,
+    $updateEducation,
+    $updateExperience,
+  } = storeToRefs(userStore);
 
   // UI state
   const isAddExperienceModalVisible = ref(false);
   const isAddEducationModalVisible = ref(false);
 
+  const isUpdateExperienceModalVisible = ref(false);
+  const isUpdateEducationModalVisible = ref(false);
+
   // Form validation state
   const isExperienceFormValid = ref(false);
   const isEducationFormValid = ref(false);
+  const isUpdateExperienceFormValid = ref(false);
+  const isUpdateEducationFormValid = ref(false);
 
   // Loading states
   const isAddingExperience = computed(() => $addExperience.value.isLoading);
   const isAddingEducation = computed(() => $addEducation.value.isLoading);
+
+  const isUpdatingExperience = computed(() => $updateExperience.value.isLoading);
+  const isUpdatingEducation = computed(() => $updateEducation.value.isLoading);
+
+  const isDeletingExperience = computed(() => $deleteExperience.value.isLoading);
+  const isDeletingEducation = computed(() => $deleteEducation.value.isLoading);
+
+  //
+  const selectedEducation = ref<Education>();
+  const selectedExperience = ref<Experience>();
 
   // Form data
   const newExperienceFormData = ref<AddExperienceRequest>({
@@ -45,21 +74,60 @@ function createProfileState() {
       degree: '',
       field: '',
       school: '',
-      // startYear: '',
-      // endYear: '',
+      startYear: new Date().getFullYear(),
+      endYear: new Date().getFullYear(),
       description: '',
       isActive: false,
       user: useAuthStore().authUser.id,
     },
   });
 
+  const updatedEducationFormData = ref<UpdateEducationRequest>();
+
+  const updatedExperienceFormData = ref<UpdateExperienceRequest>();
+
   watch(
     () => newExperienceFormData.value.data.isActive,
     () => {
-      setTimeout(() => {
-        newExperienceFormData.value.data.endDate = null;
-      }, 0);
+      newExperienceFormData.value.data.endDate = null;
     },
+  );
+
+  watch(
+    () => selectedExperience,
+    (data) => {
+      //filter out irrelevant properties from the selected experience
+      //implement it here
+
+      const { documentId, createdAt, updatedAt, publishedAt, id, ...filteredExperience } =
+        data.value || {};
+
+      updatedExperienceFormData.value = {
+        //@ts-ignore
+        data: {
+          ...filteredExperience,
+          user: useAuthStore().authUser.id,
+        } as unknown as UpdateExperienceRequest,
+      };
+    },
+    { deep: true },
+  );
+
+  watch(
+    () => selectedEducation,
+    (data) => {
+      const { documentId, createdAt, id, updatedAt, publishedAt, ...filteredEducation } =
+        data.value || {};
+
+      updatedEducationFormData.value = {
+        //@ts-ignore
+        data: {
+          ...filteredEducation,
+          user: useAuthStore().authUser.id,
+        } as unknown as UpdateEducationRequest,
+      };
+    },
+    { deep: true },
   );
 
   /* watch(
@@ -104,6 +172,30 @@ function createProfileState() {
     { immediate: true, deep: true },
   );
 
+  watch(
+    () => (updatedExperienceFormData.value?.data ?? {}) as Experience,
+    async (newData) => {
+      isUpdateExperienceFormValid.value = await updateExperienceFormSchema.isValid(newData);
+
+      //log validation errors
+      const errors = await updateExperienceFormSchema.validate(newData).catch((err) => {
+        console.error('Validation errors:', err.errors);
+        return err;
+      });
+    },
+    { deep: true },
+  );
+
+  watch(
+    () => (updatedEducationFormData.value?.data ?? {}) as Education,
+    async (newData) => {
+      isUpdateEducationFormValid.value = await updateEducationFormSchema.isValid(newData);
+
+      //
+    },
+    { deep: true },
+  );
+
   // UI actions
   const toggleAddExperienceModal = () => {
     isAddExperienceModalVisible.value = !isAddExperienceModalVisible.value;
@@ -112,6 +204,18 @@ function createProfileState() {
   const toggleAddEducationModal = () => {
     isAddEducationModalVisible.value = !isAddEducationModalVisible.value;
   };
+
+  const toggleUpdateExperienceModal = () => {
+    isUpdateExperienceModalVisible.value = !isUpdateExperienceModalVisible.value;
+  };
+
+  const toggleUpdateEducationModal = () => {
+    isUpdateEducationModalVisible.value = !isUpdateEducationModalVisible.value;
+  };
+
+  const setExperience = (param: Experience) => (selectedExperience.value = param);
+
+  const setEducation = (param: Education) => (selectedEducation.value = param);
 
   // Form submission
   const addExperience = async () => {
@@ -123,8 +227,8 @@ function createProfileState() {
 
         await useUser().getUser();
         // Reset form and close modal on success
-        toggleAddExperienceModal();
         resetExperienceForm();
+        toggleAddExperienceModal();
       }
 
       if ($addExperience.value.isFailure) {
@@ -143,8 +247,8 @@ function createProfileState() {
         ($toast as BaseToast<Notification>).info(AppStrings.educationAddedSuccessfully);
         await useUser().getUser();
         // Reset form and close modal on success
-        toggleAddEducationModal();
         resetEducationForm();
+        toggleAddEducationModal();
       }
 
       if ($addEducation.value.isFailure) {
@@ -152,6 +256,88 @@ function createProfileState() {
       }
     } catch (error) {
       console.error('Error adding education:', error);
+    }
+  };
+
+  const updateExperience = async () => {
+    try {
+      await userStore.updateExperience(
+        updatedExperienceFormData.value!,
+        selectedExperience.value?.documentId ?? '',
+      );
+
+      if ($updateExperience.value.isSuccess) {
+        ($toast as BaseToast<Notification>).info(AppStrings.experienceUpdatedSuccessfully);
+        await useUser().getUser();
+        // Reset form and close modal on success
+        toggleUpdateExperienceModal();
+      }
+
+      if ($updateExperience.value.isFailure) {
+        ($toast as BaseToast<Notification>).error($updateExperience.value.message as string);
+      }
+    } catch (error) {
+      console.error('Error updating experience:', error);
+    }
+  };
+
+  const updateEducation = async () => {
+    try {
+      await userStore.updateEducation(
+        updatedEducationFormData.value!,
+        selectedEducation.value?.documentId ?? '',
+      );
+
+      if ($updateEducation.value.isSuccess) {
+        ($toast as BaseToast<Notification>).info(AppStrings.educationUpdatedSuccessfully);
+        await useUser().getUser();
+        // Reset form and close modal on success
+        toggleUpdateEducationModal();
+      }
+
+      if ($updateEducation.value.isFailure) {
+        ($toast as BaseToast<Notification>).error($updateEducation.value.message as string);
+      }
+    } catch (error) {
+      console.error('Error updating education:', error);
+    }
+  };
+
+  const deleteExperience = async () => {
+    try {
+      await userStore.deleteExperience(selectedExperience.value!.documentId);
+
+      if ($deleteExperience.value.isSuccess) {
+        ($toast as BaseToast<Notification>).info(AppStrings.experienceDeletedSuccessfully);
+        await useUser().getUser();
+        // Reset form and close modal on success
+        toggleUpdateExperienceModal();
+      }
+
+      if ($deleteExperience.value.isFailure) {
+        ($toast as BaseToast<Notification>).error($deleteExperience.value.message as string);
+      }
+    } catch (error) {
+      console.error('Error deleting experience:', error);
+    }
+  };
+
+  const deleteEducation = async () => {
+    try {
+      await userStore.deleteEducation(selectedEducation.value!.documentId);
+
+      if ($deleteEducation.value.isSuccess) {
+        ($toast as BaseToast<Notification>).info(AppStrings.educationDeletedSuccessfully);
+        await useUser().getUser();
+        // Reset form and close modal on success
+        toggleUpdateEducationModal();
+      }
+
+      if ($deleteEducation.value.isFailure) {
+        ($toast as BaseToast<Notification>).error($deleteEducation.value.message as string);
+      }
+    } catch (error) {
+      console.error('Error deleting education:', error);
     }
   };
 
@@ -176,8 +362,8 @@ function createProfileState() {
         degree: '',
         field: '',
         school: '',
-        startYear: '',
-        endYear: '',
+        startYear: new Date().getFullYear(),
+        endYear: new Date().getFullYear(),
         description: '',
         isActive: false,
       },
@@ -186,16 +372,26 @@ function createProfileState() {
 
   return {
     // Return all your state and methods here
+    isUpdateExperienceModalVisible,
+    isUpdateEducationModalVisible,
     isAddExperienceModalVisible,
     isAddEducationModalVisible,
     canAddExperience: isExperienceFormValid,
     canAddEducation: isEducationFormValid,
+    canUpdateExperience: isUpdateExperienceFormValid,
+    canUpdateEducation: isUpdateEducationFormValid,
     isExperienceFormValid,
     isEducationFormValid,
     isAddingExperience,
     isAddingEducation,
+    isUpdatingExperience,
+    isUpdatingEducation,
+    isDeletingEducation,
+    isDeletingExperience,
     newExperienceFormData,
     newEducationFormData,
+    updatedExperienceFormData,
+    updatedEducationFormData,
     hasExperiences,
     hasEducations,
     educations,
@@ -203,10 +399,18 @@ function createProfileState() {
     //methods
     toggleAddExperienceModal,
     toggleAddEducationModal,
+    toggleUpdateExperienceModal,
+    toggleUpdateEducationModal,
     addExperience,
     addEducation,
+    deleteExperience,
+    deleteEducation,
     resetExperienceForm,
     resetEducationForm,
+    setExperience,
+    setEducation,
+    updateExperience,
+    updateEducation,
   };
 }
 

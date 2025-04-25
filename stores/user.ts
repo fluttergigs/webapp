@@ -10,7 +10,14 @@ import isBefore from 'date-fns/isBefore'; // @ts-ignore
 import parseISO from 'date-fns/parseISO'; // @ts-ignore
 import isAfter from 'date-fns/isAfter';
 import { useAuthStore } from '~/stores/auth';
-import type { AddEducationRequest, AddExperienceRequest, Education, Experience } from '~/features/users/user.types'; //@ts-ignore
+import type {
+  AddEducationRequest,
+  AddExperienceRequest,
+  Education,
+  Experience,
+  UpdateEducationRequest,
+  UpdateExperienceRequest,
+} from '~/features/users/user.types'; //@ts-ignore
 
 //@ts-ignore
 export const useUserStore = defineStore('user', {
@@ -25,6 +32,10 @@ export const useUserStore = defineStore('user', {
     jobToBookmark: -1,
     $addExperience: new Wrapper<SingleApiResponse<Experience>>().toInitial(),
     $addEducation: new Wrapper<SingleApiResponse<Education>>().toInitial(),
+    $deleteExperience: new Wrapper<SingleApiResponse<Object>>().toInitial(),
+    $deleteEducation: new Wrapper<SingleApiResponse<Object>>().toInitial(),
+    $updateExperience: new Wrapper<SingleApiResponse<Experience>>().toInitial(),
+    $updateEducation: new Wrapper<SingleApiResponse<Education>>().toInitial(),
   }),
   actions: {
     // Save a job to bookmarks
@@ -104,6 +115,48 @@ export const useUserStore = defineStore('user', {
       }
     },
 
+    //Delete experience
+    async deleteExperience(experienceId: string | number): Promise<void> {
+      this.$deleteExperience = new Wrapper<SingleApiResponse<Object>>().toLoading();
+      const { $http } = useNuxtApp();
+
+      try {
+        const response = await (<HttpClient>$http).delete<SingleApiResponse<Object>>(
+          `${Endpoint.experiences}/${experienceId}`,
+        );
+        this.$deleteExperience = this.$deleteExperience.toSuccess(
+          response,
+          AppStrings.experienceDeletedSuccessfully,
+        );
+      } catch (error) {
+        logDev('Error deleting experience', error);
+        this.$deleteExperience = this.$deleteExperience.toFailed(
+          AppStrings.unableToDeleteExperience,
+        );
+      }
+    },
+
+    async deleteEducation(educationId: string | number): Promise<void> {
+      this.$deleteEducation = new Wrapper<SingleApiResponse<Object>>().toLoading();
+      const { $http } = useNuxtApp();
+
+      try {
+        const response = await (<HttpClient>$http).delete<SingleApiResponse<Object>>(
+          `${Endpoint.educations}/${educationId}`,
+        );
+        this.$deleteEducation = this.$deleteEducation.toSuccess(
+          response,
+          AppStrings.experienceDeletedSuccessfully,
+        );
+      } catch (error) {
+        logDev('Error deleting experience', error);
+        this.$deleteEducation = this.$deleteEducation.toFailed(
+          AppStrings.unableToDeleteExperience,
+        );
+      }
+    },
+
+
     // Add education
     async addEducation(request: AddEducationRequest): Promise<void> {
       this.$addEducation = new Wrapper<SingleApiResponse<Education>>().toLoading();
@@ -121,6 +174,57 @@ export const useUserStore = defineStore('user', {
         logDev('Error adding education', error);
         this.$addEducation = this.$addEducation.toFailed(
           AppStrings.unableToAddEducation,
+        );
+      }
+    },
+
+    // Update experience
+    /**
+     * Updates an existing experience with the provided data.
+     *
+     * @param {UpdateExperienceRequest} request - The data used to update the experience.
+     * @param {string} id - The unique identifier of the experience to update.
+     * @return {Promise<void>} A promise that resolves when the experience has been updated or rejects if an error occurs.
+     */
+    async updateExperience(request: UpdateExperienceRequest, id: string): Promise<void> {
+      this.$updateExperience = new Wrapper<SingleApiResponse<Experience>>().toLoading();
+      const { $http } = useNuxtApp();
+
+      try {
+        const response = await (<HttpClient>$http).put<SingleApiResponse<Experience>>(
+          `${Endpoint.experiences}/${id}`,
+          { ...request },
+        );
+        this.$updateExperience = this.$updateExperience.toSuccess(
+          response,
+          AppStrings.experienceAddedSuccessfully,
+        );
+      } catch (error) {
+        logDev('Error updating experience', error);
+        this.$updateExperience = this.$updateExperience.toFailed(
+          AppStrings.unableToUpdateExperience,
+        );
+      }
+    },
+
+    // Update education
+    async updateEducation(request: UpdateEducationRequest, id: string): Promise<void> {
+      this.$updateEducation = new Wrapper<SingleApiResponse<Education>>().toLoading();
+      const { $http } = useNuxtApp();
+
+      try {
+        const response = await (<HttpClient>$http).put<SingleApiResponse<Education>>(
+          `${Endpoint.educations}/${id}`,
+          { ...request },
+        );
+        this.$updateEducation = this.$updateEducation.toSuccess(
+          response,
+          AppStrings.educationAddedSuccessfully,
+        );
+      } catch (error) {
+        logDev('Error updating education', error);
+        this.$updateEducation = this.$updateEducation.toFailed(
+          AppStrings.unableToUpdateEducation,
         );
       }
     },

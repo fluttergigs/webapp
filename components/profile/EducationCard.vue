@@ -23,7 +23,7 @@
         <div class="flex flex-grow flex-col gap-y-5">
           <div class="flex flex-row justify-between">
             <div>
-              <div class="mb-3 flex flex-col flex-wrap gap-x-4 gap-y-2 md:flex-row">
+              <div class="mb-3 flex flex-col flex-wrap gap-x-3 gap-y-2 md:flex-row">
                 <div class="flex w-full items-center gap-x-2">
                   <h2 class="text-base font-medium text-gray-900">{{ education.degree }}</h2>
                   <div
@@ -34,7 +34,7 @@
                   </div>
                 </div>
                 <div class="flex flex-row items-center">
-                  <span class="text-sm font-medium text-gray-700">{{ education.school }}</span>
+                  <span class="text-md font-medium text-gray-700">{{ education.school }}</span>
                 </div>
                 <div class="flex items-center gap-x-2">
                   <UButton

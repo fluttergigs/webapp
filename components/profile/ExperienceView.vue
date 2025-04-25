@@ -1,55 +1,17 @@
 <script lang="ts" setup>
-  import AddExperienceForm from '~/components/profile/AddExperienceForm.vue';
+  import AddExperienceModal from '~/components/profile/AddExperienceModal.vue';
   import EmptyExperienceCard from '~/components/profile/EmptyExperienceCard.vue';
   import ExperienceCard from '~/components/profile/ExperienceCard.vue';
+  import UpdateExperienceModal from '~/components/profile/UpdateExperienceModal.vue';
   import { useProfile } from '~/composables/useProfile';
 
-  const {
-    hasExperiences,
-    canAddExperience,
-    isAddingExperience,
-    isAddExperienceModalVisible,
-    toggleAddExperienceModal,
-    addExperience,
-    experiences,
-  } = useProfile();
+  const { hasExperiences, toggleAddExperienceModal, experiences } = useProfile();
 </script>
 
 <template>
   <div class="flex flex-col gap-4 my-12 mr-8 w-full">
-    <UModal
-      v-model:open="isAddExperienceModalVisible"
-      :dismissible="false"
-      size="lg"
-      title="Add experience"
-    >
-      <template #body>
-        <AddExperienceForm />
-      </template>
-
-      <template #footer>
-        <div class="flex gap-2">
-          <UButton
-            class="flex gap-2 font-medium"
-            color="neutral"
-            label="Cancel"
-            size="xl"
-            variant="outline"
-            @click="toggleAddExperienceModal"
-          />
-
-          <UButton
-            :disabled="!canAddExperience"
-            :loading="isAddingExperience"
-            class="flex gap-2 font-medium"
-            color="primary"
-            label="Add experience"
-            size="xl"
-            @click="addExperience"
-          />
-        </div>
-      </template>
-    </UModal>
+    <AddExperienceModal />
+    <UpdateExperienceModal />
 
     <div v-if="hasExperiences" class="flex flex-row md:flex-col py-2">
       <div

@@ -1,5 +1,7 @@
 import type { SingleApiResponse } from '~/core/shared/types';
 import { PaymentContext } from '~/core/shared/types';
+import type { Company } from '~/features/companies/company.types';
+import type { User } from '~/services/auth/auth.types';
 
 //Shared Enums
 export enum SeniorityLevel {
@@ -44,6 +46,7 @@ export type JobOffer = {
   company: Company | number;
   workPermits: string[] | null;
   bookmarkedJob?: number;
+  documentId?: string;
 };
 
 export type JobPostPaymentData = {
@@ -69,7 +72,7 @@ export type JobCreationRequest = Partial<
 
 // Request Types
 export type JobOfferEditRequest = Partial<JobOffer>;
-export type JobOfferDeleteRequest = SaveJobOfferRequest;
+export type JobOfferDeleteRequest = { jobOffer: string };
 export type SaveJobOfferRequest = { jobOffer: number };
 export type DeleteSavedJobOfferRequest = Pick<BookmarkedJobOffer, 'id'>;
 

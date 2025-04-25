@@ -22,6 +22,9 @@ export type Experience = {
   description: string;
   isActive: boolean;
   user?: User | number | String;
+  createdAt?: Date;
+  updatedAt?: Date;
+  publishedAt?: Date;
 };
 
 export type Education = {
@@ -35,6 +38,9 @@ export type Education = {
   description: string;
   isActive: boolean;
   user?: User | number | String;
+  createdAt?: Date;
+  updatedAt?: Date;
+  publishedAt?: Date;
 };
 
 export type UpdateUserRequestProps = {
@@ -55,9 +61,17 @@ export type UserApiResponse = SingleApiResponse<User>;
 
 export type AddExperienceRequest = {
   //experience without id
-  data: Omit<Experience, 'id' | 'documentId'>;
+  data: Omit<Experience, 'id' | 'documentId' | 'createdAt' | 'updatedAt'>;
+};
+
+export type UpdateExperienceRequest = {
+  data: Omit<Experience, 'documentId' | 'createdAt' | 'updatedAt' | 'publishedAt'>;
 };
 
 export type AddEducationRequest = {
-  data: Omit<Education, 'id' | 'documentId'>;
+  data: Omit<Education, 'id' | 'documentId' | 'createdAt' | 'updatedAt' | 'publishedAt'>;
+};
+
+export type UpdateEducationRequest = {
+  data: Omit<Education, 'documentId' | 'createdAt' | 'updatedAt' | 'publishedAt'>;
 };
