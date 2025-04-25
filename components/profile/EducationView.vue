@@ -1,55 +1,17 @@
 <script lang="ts" setup>
-  import AddEducationForm from '~/components/profile/AddEducationForm.vue';
+  import AddEducationModal from '~/components/profile/AddEducationModal.vue';
   import EducationCard from '~/components/profile/EducationCard.vue';
   import EmptyEducationCard from '~/components/profile/EmptyEducationCard.vue';
+  import UpdateEducationModal from '~/components/profile/UpdateEducationModal.vue';
   import { useProfile } from '~/composables/useProfile';
 
-  const {
-    hasEducations,
-    canAddEducation,
-    isAddingEducation,
-    isAddEducationModalVisible,
-    toggleAddEducationModal,
-    addEducation,
-    educations,
-  } = useProfile();
+  const { hasEducations, educations, toggleAddEducationModal } = useProfile();
 </script>
 
 <template>
   <div class="flex flex-col gap-4 my-12 mr-8 w-full">
-    <UModal
-      v-model:open="isAddEducationModalVisible"
-      :dismissible="false"
-      size="lg"
-      title="Add education"
-    >
-      <template #body>
-        <AddEducationForm />
-      </template>
-
-      <template #footer>
-        <div class="flex gap-2">
-          <UButton
-            class="flex gap-2 font-medium"
-            color="neutral"
-            label="Cancel"
-            size="xl"
-            variant="outline"
-            @click="toggleAddEducationModal"
-          />
-
-          <UButton
-            :disabled="!canAddEducation"
-            :loading="isAddingEducation"
-            class="flex gap-2 font-medium"
-            color="primary"
-            label="Add education"
-            size="xl"
-            @click="addEducation"
-          />
-        </div>
-      </template>
-    </UModal>
+    <UpdateEducationModal />
+    <AddEducationModal />
 
     <div v-if="hasEducations" class="flex flex-row md:flex-col py-2">
       <div

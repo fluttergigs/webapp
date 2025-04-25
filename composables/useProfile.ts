@@ -305,7 +305,7 @@ function createProfileState() {
 
   const deleteExperience = async () => {
     try {
-      await userStore.deleteExperience(selectedExperience.value!.documentId);
+      await userStore.deleteExperience(selectedExperience.value!.documentId as string);
 
       if ($deleteExperience.value.isSuccess) {
         ($toast as BaseToast<Notification>).info(AppStrings.experienceDeletedSuccessfully);
@@ -324,7 +324,7 @@ function createProfileState() {
 
   const deleteEducation = async () => {
     try {
-      await userStore.deleteEducation(selectedEducation.value!.documentId);
+      await userStore.deleteEducation(selectedEducation.value!.documentId as string);
 
       if ($deleteEducation.value.isSuccess) {
         ($toast as BaseToast<Notification>).info(AppStrings.educationDeletedSuccessfully);

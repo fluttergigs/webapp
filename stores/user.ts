@@ -116,7 +116,7 @@ export const useUserStore = defineStore('user', {
     },
 
     //Delete experience
-    async deleteExperience(experienceId: string | number): Promise<void> {
+    async deleteExperience(experienceId: string): Promise<void> {
       this.$deleteExperience = new Wrapper<SingleApiResponse<Object>>().toLoading();
       const { $http } = useNuxtApp();
 
@@ -136,7 +136,7 @@ export const useUserStore = defineStore('user', {
       }
     },
 
-    async deleteEducation(educationId: string | number): Promise<void> {
+    async deleteEducation(educationId: string): Promise<void> {
       this.$deleteEducation = new Wrapper<SingleApiResponse<Object>>().toLoading();
       const { $http } = useNuxtApp();
 

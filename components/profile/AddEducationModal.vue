@@ -1,25 +1,25 @@
 <script lang="ts" setup>
-  import UpdateExperienceForm from '~/components/profile/UpdateExperienceForm.vue';
+  import AddEducationForm from '~/components/profile/AddEducationForm.vue';
   import { useProfile } from '~/composables/useProfile';
 
   const {
-    canUpdateExperience,
-    isUpdatingExperience,
-    toggleUpdateExperienceModal,
-    updateExperience,
-    isUpdateExperienceModalVisible,
+    canAddEducation,
+    isAddingEducation,
+    isAddEducationModalVisible,
+    toggleAddEducationModal,
+    addEducation,
   } = useProfile();
 </script>
 
 <template>
   <UModal
-    v-model:open="isUpdateExperienceModalVisible"
+    v-model:open="isAddEducationModalVisible"
     :dismissible="false"
     size="lg"
-    title="Update Experience"
+    title="Add education"
   >
     <template #body>
-      <UpdateExperienceForm />
+      <AddEducationForm />
     </template>
 
     <template #footer>
@@ -27,21 +27,20 @@
         <UButton
           class="flex gap-2 font-medium"
           color="neutral"
-          icon="i-heroicons-trash-solid"
-          label="Delete"
+          label="Cancel"
           size="xl"
           variant="outline"
-          @click="toggleUpdateExperienceModal"
+          @click="toggleAddEducationModal"
         />
 
         <UButton
-          :disabled="!canUpdateExperience"
-          :loading="isUpdatingExperience"
+          :disabled="!canAddEducation"
+          :loading="isAddingEducation"
           class="flex gap-2 font-medium"
           color="primary"
-          label="Update experience"
+          label="Add education"
           size="xl"
-          @click="updateExperience"
+          @click="addEducation"
         />
       </div>
     </template>

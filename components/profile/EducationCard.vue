@@ -7,6 +7,12 @@
       required: true,
     },
   });
+
+  const { toggleUpdateEducationModal, setEducation } = useProfile();
+  const handleEditButtonClick = () => {
+    setEducation(props.education);
+    toggleUpdateEducationModal();
+  };
 </script>
 
 <template>
@@ -65,6 +71,7 @@
               label="Edit"
               size="sm"
               variant="outline"
+              @click="handleEditButtonClick"
             />
           </div>
         </div>
