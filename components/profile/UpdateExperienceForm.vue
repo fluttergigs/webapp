@@ -14,7 +14,7 @@
 
   // Create a form context that all fields can access
   const { errors, values, validate } = useForm({
-    initialValues: updatedExperienceFormData.value!.data,
+    initialValues: updatedExperienceFormData.value?.data ?? {},
     validationSchema: updateExperienceFormSchema,
   });
 

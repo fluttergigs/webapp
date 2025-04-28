@@ -1,4 +1,5 @@
 import { storeToRefs } from 'pinia';
+import { createDeleteMode, createModalToggle, createUpdateModal } from '~/core/helpers';
 import { BaseToast } from '~/core/ui/base_toast';
 import { addEducationFormSchema, addExperienceFormSchema, updateEducationFormSchema, updateExperienceFormSchema } from '~/core/validations';
 import type { AddEducationRequest, AddExperienceRequest, Education, Experience, UpdateEducationRequest, UpdateExperienceRequest } from '~/features/users/user.types';
@@ -28,12 +29,14 @@ function createProfileState() {
     $updateExperience,
   } = storeToRefs(userStore);
 
-  // UI state
-  const isAddExperienceModalVisible = ref(false);
-  const isAddEducationModalVisible = ref(false);
+  const addEducationModal = createModalToggle();
+  const addExperienceModal = createModalToggle();
 
-  const isUpdateExperienceModalVisible = ref(false);
-  const isUpdateEducationModalVisible = ref(false);
+  const updateEducationModal = createUpdateModal<Education>();
+  const updateExperienceModal = createUpdateModal<Experience>();
+
+  const educationDeleteMode = createDeleteMode<Education>();
+  const experienceDeleteMode = createDeleteMode<Experience>();
 
   // Form validation state
   const isExperienceFormValid = ref(false);
@@ -51,9 +54,8 @@ function createProfileState() {
   const isDeletingExperience = computed(() => $deleteExperience.value.isLoading);
   const isDeletingEducation = computed(() => $deleteEducation.value.isLoading);
 
-  //
-  const selectedEducation = ref<Education>();
-  const selectedExperience = ref<Experience>();
+  const selectedEducation = computed(() => updateEducationModal.selectedItem.value);
+  const selectedExperience = computed(() => updateExperienceModal.selectedItem.value);
 
   // Form data
   const newExperienceFormData = ref<AddExperienceRequest>({
@@ -94,11 +96,15 @@ function createProfileState() {
   );
 
   watch(
+    () => newEducationFormData.value.data.isActive,
+    () => {
+      newEducationFormData.value.data.endYear = null;
+    },
+  );
+
+  watch(
     () => selectedExperience,
     (data) => {
-      //filter out irrelevant properties from the selected experience
-      //implement it here
-
       const { documentId, createdAt, updatedAt, publishedAt, id, ...filteredExperience } =
         data.value || {};
 
@@ -160,8 +166,13 @@ function createProfileState() {
     () => newExperienceFormData.value.data,
     async (newData) => {
       isExperienceFormValid.value = await addExperienceFormSchema.isValid(newData);
+
+      const errors = await addExperienceFormSchema.validate(newData).catch((err) => {
+        console.error('Validation errors:', err.errors);
+        return err;
+      });
     },
-    { immediate: true, deep: true },
+    { deep: true },
   );
 
   watch(
@@ -169,7 +180,7 @@ function createProfileState() {
     async (newData) => {
       isEducationFormValid.value = await addEducationFormSchema.isValid(newData);
     },
-    { immediate: true, deep: true },
+    { deep: true },
   );
 
   watch(
@@ -196,27 +207,6 @@ function createProfileState() {
     { deep: true },
   );
 
-  // UI actions
-  const toggleAddExperienceModal = () => {
-    isAddExperienceModalVisible.value = !isAddExperienceModalVisible.value;
-  };
-
-  const toggleAddEducationModal = () => {
-    isAddEducationModalVisible.value = !isAddEducationModalVisible.value;
-  };
-
-  const toggleUpdateExperienceModal = () => {
-    isUpdateExperienceModalVisible.value = !isUpdateExperienceModalVisible.value;
-  };
-
-  const toggleUpdateEducationModal = () => {
-    isUpdateEducationModalVisible.value = !isUpdateEducationModalVisible.value;
-  };
-
-  const setExperience = (param: Experience) => (selectedExperience.value = param);
-
-  const setEducation = (param: Education) => (selectedEducation.value = param);
-
   // Form submission
   const addExperience = async () => {
     try {
@@ -228,7 +218,7 @@ function createProfileState() {
         await useUser().getUser();
         // Reset form and close modal on success
         resetExperienceForm();
-        toggleAddExperienceModal();
+        addExperienceModal.toggle();
       }
 
       if ($addExperience.value.isFailure) {
@@ -245,10 +235,10 @@ function createProfileState() {
 
       if ($addEducation.value.isSuccess) {
         ($toast as BaseToast<Notification>).info(AppStrings.educationAddedSuccessfully);
-        await useUser().getUser();
         // Reset form and close modal on success
+        await useUser().getUser();
         resetEducationForm();
-        toggleAddEducationModal();
+        addEducationModal.toggle();
       }
 
       if ($addEducation.value.isFailure) {
@@ -270,7 +260,8 @@ function createProfileState() {
         ($toast as BaseToast<Notification>).info(AppStrings.experienceUpdatedSuccessfully);
         await useUser().getUser();
         // Reset form and close modal on success
-        toggleUpdateExperienceModal();
+
+        updateExperienceModal.toggle();
       }
 
       if ($updateExperience.value.isFailure) {
@@ -292,7 +283,7 @@ function createProfileState() {
         ($toast as BaseToast<Notification>).info(AppStrings.educationUpdatedSuccessfully);
         await useUser().getUser();
         // Reset form and close modal on success
-        toggleUpdateEducationModal();
+        updateEducationModal.toggle();
       }
 
       if ($updateEducation.value.isFailure) {
@@ -311,7 +302,7 @@ function createProfileState() {
         ($toast as BaseToast<Notification>).info(AppStrings.experienceDeletedSuccessfully);
         await useUser().getUser();
         // Reset form and close modal on success
-        toggleUpdateExperienceModal();
+        updateExperienceModal.toggle();
       }
 
       if ($deleteExperience.value.isFailure) {
@@ -330,7 +321,7 @@ function createProfileState() {
         ($toast as BaseToast<Notification>).info(AppStrings.educationDeletedSuccessfully);
         await useUser().getUser();
         // Reset form and close modal on success
-        toggleUpdateEducationModal();
+        updateEducationModal.toggle();
       }
 
       if ($deleteEducation.value.isFailure) {
@@ -372,10 +363,12 @@ function createProfileState() {
 
   return {
     // Return all your state and methods here
-    isUpdateExperienceModalVisible,
-    isUpdateEducationModalVisible,
-    isAddExperienceModalVisible,
-    isAddEducationModalVisible,
+    educationDeleteMode,
+    experienceDeleteMode,
+    addEducationModal,
+    addExperienceModal,
+    updateEducationModal,
+    updateExperienceModal,
     canAddExperience: isExperienceFormValid,
     canAddEducation: isEducationFormValid,
     canUpdateExperience: isUpdateExperienceFormValid,
@@ -397,18 +390,13 @@ function createProfileState() {
     educations,
     experiences,
     //methods
-    toggleAddExperienceModal,
-    toggleAddEducationModal,
-    toggleUpdateExperienceModal,
-    toggleUpdateEducationModal,
+
     addExperience,
     addEducation,
     deleteExperience,
     deleteEducation,
     resetExperienceForm,
     resetEducationForm,
-    setExperience,
-    setEducation,
     updateExperience,
     updateEducation,
   };

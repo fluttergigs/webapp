@@ -1,6 +1,8 @@
 <script lang="ts" setup>
   import type { Experience } from '~/features/users/user.types';
 
+  import ExperienceDateDisplay from '@/components/profile/ExperienceDateDisplay.vue';
+
   const props = defineProps({
     experience: {
       type: Object as PropType<Experience>,
@@ -8,11 +10,10 @@
     },
   });
 
-  const { toggleUpdateExperienceModal, setExperience } = useProfile();
+  const { updateExperienceModal } = useProfile();
 
   const handleEditButtonClick = () => {
-    setExperience(props.experience);
-    toggleUpdateExperienceModal();
+    updateExperienceModal.open(props.experience);
   };
 </script>
 
@@ -53,21 +54,7 @@
                   />
 
                   <!--                  use this format Month Day ==> Jan 25-->
-                  <p>
-                    <span
-                      v-date-format="{ date: experience.startDate, format: 'MMM D' }"
-                      class="text-md font-medium"
-                    >
-                    </span>
-                    -
-                    <span v-if="experience.isActive" class="text-md font-medium">Present</span>
-
-                    <span
-                      v-else
-                      v-date-format="{ date: experience.endDate, format: 'MMM D' }"
-                      class="text-md font-medium"
-                    ></span>
-                  </p>
+                  <ExperienceDateDisplay :experience="experience" />
                 </div>
               </div>
               <p class="text-sm text-gray-600">{{ experience.title }}</p>

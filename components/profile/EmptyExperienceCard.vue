@@ -25,7 +25,7 @@
         color="primary"
         icon="i-heroicons-plus-circle-solid"
         label="Add experience"
-        @click="useProfile().toggleAddExperienceModal"
+        @click="useProfile().addExperienceModal.toggle"
       />
     </div>
   </div>

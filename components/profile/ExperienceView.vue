@@ -5,7 +5,7 @@
   import UpdateExperienceModal from '~/components/profile/UpdateExperienceModal.vue';
   import { useProfile } from '~/composables/useProfile';
 
-  const { hasExperiences, toggleAddExperienceModal, experiences } = useProfile();
+  const { hasExperiences, addExperienceModal, experiences } = useProfile();
 </script>
 
 <template>
@@ -28,7 +28,7 @@
           icon="i-heroicons-plus-circle-solid"
           label="Add Experience"
           size="xl"
-          @click="toggleAddExperienceModal"
+          @click="addExperienceModal.toggle"
         />
       </div>
 

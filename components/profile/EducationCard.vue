@@ -1,6 +1,8 @@
 <script lang="ts" setup>
   import type { Education } from '~/features/users/user.types';
 
+  import EducationDateDisplay from '@/components/profile/EducationDateDisplay.vue';
+
   const props = defineProps({
     education: {
       type: Object as PropType<Education>,
@@ -8,10 +10,9 @@
     },
   });
 
-  const { toggleUpdateEducationModal, setEducation } = useProfile();
+  const { updateEducationModal } = useProfile();
   const handleEditButtonClick = () => {
-    setEducation(props.education);
-    toggleUpdateEducationModal();
+    updateEducationModal.open(props.education);
   };
 </script>
 
@@ -51,14 +52,7 @@
                     variant="ghost"
                   />
 
-                  <!--                  use this format Month Day ==> Jan 25-->
-                  <p>
-                    <span class="text-md font-medium">{{ education.startYear }} </span>
-                    -
-                    <span v-if="education.isActive" class="text-md font-medium">Present</span>
-
-                    <span v-else class="text-md font-medium">{{ education.endYear }}</span>
-                  </p>
+                  <EducationDateDisplay :education="education" />
                 </div>
               </div>
               <p class="text-sm text-gray-600">{{ education.field }}</p>

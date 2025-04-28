@@ -13,7 +13,7 @@ export function useUser() {
     await authStore.getUser();
 
     if (isUserFetched.value) {
-      await useAnalytics().identifyUser(authUser.value);
+      useAnalytics().identifyUser(authUser.value);
     }
   };
 
@@ -35,7 +35,7 @@ export function useUser() {
     try {
       useAnalytics().capture(AnalyticsEvent.changePasswordButtonClicked, request.data);
 
-      await authStore.changeUserPassword({ data: request.data.password }, async () => {
+      await authStore.changeUserPassword({ data: { password: request.data.password } }, async () => {
         await getUser();
         useAnalytics().capture(AnalyticsEvent.successfulPasswordChange, request.data);
         ($toast as BaseToast<Notification, number>).success(<string>authStore.$updateUser!.message);

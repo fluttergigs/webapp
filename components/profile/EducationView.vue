@@ -5,7 +5,7 @@
   import UpdateEducationModal from '~/components/profile/UpdateEducationModal.vue';
   import { useProfile } from '~/composables/useProfile';
 
-  const { hasEducations, educations, toggleAddEducationModal } = useProfile();
+  const { hasEducations, educations, addEducationModal } = useProfile();
 </script>
 
 <template>
@@ -28,7 +28,7 @@
           icon="i-heroicons-plus-circle-solid"
           label="Add Education"
           size="xl"
-          @click="toggleAddEducationModal"
+          @click="addEducationModal.toggle"
         />
       </div>
 

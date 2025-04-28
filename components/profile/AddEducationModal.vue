@@ -5,18 +5,23 @@
   const {
     canAddEducation,
     isAddingEducation,
-    isAddEducationModalVisible,
-    toggleAddEducationModal,
+    addEducationModal,
     addEducation,
+    resetEducationForm,
   } = useProfile();
+
+  const handleCancelButtonClick = () => {
+    resetEducationForm();
+    addEducationModal.toggle();
+  };
 </script>
 
 <template>
   <UModal
-    v-model:open="isAddEducationModalVisible"
+    v-model:open="addEducationModal.isVisible.value"
     :dismissible="false"
     size="lg"
-    title="Add education"
+    title="Add Education"
   >
     <template #body>
       <AddEducationForm />
@@ -30,7 +35,7 @@
           label="Cancel"
           size="xl"
           variant="outline"
-          @click="toggleAddEducationModal"
+          @click="handleCancelButtonClick"
         />
 
         <UButton
@@ -38,7 +43,7 @@
           :loading="isAddingEducation"
           class="flex gap-2 font-medium"
           color="primary"
-          label="Add education"
+          label="Add Education"
           size="xl"
           @click="addEducation"
         />

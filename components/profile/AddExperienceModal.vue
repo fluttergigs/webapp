@@ -1,19 +1,24 @@
-<script setup lang="ts">
+<script lang="ts" setup>
   import AddExperienceForm from '~/components/profile/AddExperienceForm.vue';
   import { useProfile } from '~/composables/useProfile';
 
   const {
     canAddExperience,
     isAddingExperience,
-    isAddExperienceModalVisible,
-    toggleAddExperienceModal,
+    addExperienceModal,
     addExperience,
+    resetExperienceForm,
   } = useProfile();
+
+  const handleCancelButtonClick = () => {
+    resetExperienceForm();
+    addExperienceModal.toggle();
+  };
 </script>
 
 <template>
   <UModal
-    v-model:open="isAddExperienceModalVisible"
+    v-model:open="addExperienceModal.isVisible.value"
     :dismissible="false"
     size="lg"
     title="Add experience"
@@ -30,7 +35,7 @@
           label="Cancel"
           size="xl"
           variant="outline"
-          @click="toggleAddExperienceModal"
+          @click="handleCancelButtonClick"
         />
 
         <UButton

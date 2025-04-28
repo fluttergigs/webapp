@@ -9,7 +9,7 @@
 
   // Create a form context that all fields can access
   const { errors, values, validate } = useForm({
-    initialValues: updatedEducationFormData.value!.data,
+    initialValues: updatedEducationFormData.value?.data ??{},
     validationSchema: addEducationFormSchema,
   });
 

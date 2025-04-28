@@ -37,7 +37,7 @@ export const useAuthStore = defineStore('auth', {
       this.returnUrl = path;
     },
     async login({ email, password }: LoginData) {
-      const { $auth, $analytics, $errorTracker } = useNuxtApp();
+      const { $auth } = useNuxtApp();
 
       try {
         this.$user = new Wrapper<User>().toLoading();
@@ -79,7 +79,7 @@ export const useAuthStore = defineStore('auth', {
     },
 
     async register({ email, password, firstName, lastName }: RegistrationData) {
-      const { $auth, $analytics, $errorTracker } = useNuxtApp();
+      const { $auth } = useNuxtApp();
       try {
         this.$user = new Wrapper<User>().toLoading();
         this.$register = new Wrapper<User>().toLoading();
@@ -223,7 +223,7 @@ export const useAuthStore = defineStore('auth', {
     },
 
     async getUser() {
-      const { $auth, $analytics, $errorTracker } = useNuxtApp();
+      const { $auth } = useNuxtApp();
       try {
         if (this.isAuthenticated) {
           logDev('FETCHING USER');

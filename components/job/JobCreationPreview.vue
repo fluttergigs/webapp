@@ -6,7 +6,7 @@
   import { useJobPost } from '~/composables/useJobPost';
   import type { Country } from '~/core/shared/types';
   import type { Company } from '~/features/companies/company.types';
-  import type { JobCreationRequest } from '~/features/jobs/job.types';
+  import type { JobCreationRequest, JobOfferEditRequest } from '~/features/jobs/job.types';
   import { userFacingWorkType } from '~/features/jobs/transformers';
   import { useJobStore } from '~/stores/job';
   import { useUserStore } from '~/stores/user';
@@ -14,7 +14,7 @@
   //@ts-ignore
   const props = defineProps({
     job: {
-      type: Object as PropType<JobCreationRequest>,
+      type: Object as PropType<JobCreationRequest | JobOfferEditRequest>,
     },
     workPermitCountries: {
       type: Object as PropType<Country[]>,
@@ -57,14 +57,14 @@
       </div>
 
       <div class="rounded-lg border px-2 py-1 text-xs my-4 !w-fit" style="width: fit-content">
-        {{ userFacingWorkType(job?.workType) }}
+        {{ userFacingWorkType(job!.workType!) }}
       </div>
     </div>
 
     <UButton
       v-if="isCtaVisible"
       :disabled="!isCtaEnabled"
-      :label="useJobPost().jobPostCtaLabel"
+      :label="useJobPost().jobPostCtaLabel.value"
       :loading="useJobStore().jobCreation.isLoading"
       class="bg-indigo-700 flex justify-center items-center"
       color="primary"

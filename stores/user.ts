@@ -156,7 +156,6 @@ export const useUserStore = defineStore('user', {
       }
     },
 
-
     // Add education
     async addEducation(request: AddEducationRequest): Promise<void> {
       this.$addEducation = new Wrapper<SingleApiResponse<Education>>().toLoading();
@@ -264,7 +263,6 @@ export const useUserStore = defineStore('user', {
       return educations.filter((education, index, self) =>
         index === self.findIndex((e) => e.documentId === education.documentId),
       );
-
     },
     hasEducations: (state) => useUserStore().educations.length > 0,
     experiences: (state) => {
@@ -274,9 +272,19 @@ export const useUserStore = defineStore('user', {
       const uniqueExperiences = experiences.filter((experience, index, self) =>
         index === self.findIndex((e) => e.documentId === experience.documentId),
       );
-
-      return uniqueExperiences.filter(({ endDate }) => isAfter(parseISO(endDate!.toString()), new Date()),
-      );
+      //sort experiences by end date in descending order
+      return uniqueExperiences.sort((a, b) => {
+        if (a.endDate && b.endDate) {
+          return (
+            new Date(b.endDate).getTime() - new Date(a.endDate).getTime()
+          );
+        } else if (a.endDate) {
+          return -1;
+        } else if (b.endDate) {
+          return 1;
+        }
+        return 0;
+      });
     },
     hasExperiences: (state) => useUserStore().experiences.length > 0,
   },

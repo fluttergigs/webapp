@@ -6,12 +6,12 @@ import type { AnalyticsEvent } from '~/services/analytics/events';
 export function useAnalytics() {
   const { $analytics, $errorTracker } = useNuxtApp();
 
-  const identifyUser = async (data: User) => {
+  const identifyUser = (data: User) => {
     (<ErrorTrackerProvider>$errorTracker).setUser(data);
     (<AppAnalyticsProvider>$analytics).identify(data?.email!, data);
   };
 
-  const capture = async (event: AnalyticsEvent, data?: any) => {
+  const capture = (event: AnalyticsEvent, data?: any) => {
     (<AppAnalyticsProvider>$analytics).capture(event, data);
   };
 
