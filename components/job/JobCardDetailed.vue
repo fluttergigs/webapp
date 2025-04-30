@@ -14,7 +14,7 @@
     },
   });
 
-  const { data, error } = await useCountries();
+  const { data: countries, error } = await useCountries();
   const { jobWorkingPermits } = useJobActions();
 
   const isJobSidePanelOpen = ref(false);
@@ -30,7 +30,7 @@
         <div class="flex h-full flex-col justify-between">
           <div class="mb-16 flex flex-col gap-3">
             <h3
-              class="text-base mb-4 line-clamp-1 font-heading font-bold leading-snug sm:line-clamp-2 md:text-xl"
+              class="text-base mb-4 line-clamp-1 font-heading font-bold leading-snug overflow-ellipsis md:text-xl"
             >
               {{ job.title }}
             </h3>
@@ -44,9 +44,7 @@
           </div>
 
           <div class="flex flex-grow flex-wrap items-center gap-1.5 text-sm">
-            <WorkingPermits
-              :countries="jobWorkingPermits(data?.countries ?? [], job as JobOffer)"
-            />
+            <WorkingPermits :countries="jobWorkingPermits(countries ?? [], job as JobOffer)" />
 
             <span class="rounded-full border border-gray-500/30 px-3 py-0.5 text-xs">
               {{ userFacingRemoteOptions(job?.remoteOptions as RemoteOptions) }}

@@ -13,7 +13,7 @@
   import { RemoteOptions } from '~/features/jobs/job.types';
   import { userFacingRemoteOptions, userFacingWorkType } from '~/features/jobs/transformers';
 
-  const { data, error } = await useCountries();
+  const { data: countries, error } = await useCountries();
   const { jobWorkingPermits } = useJobActions();
 
   const overlay = useOverlay();
@@ -145,9 +145,7 @@
 
           <!--        options-->
           <div class="flex items-center space-x-3 text-sm">
-            <WorkingPermits
-              :countries="jobWorkingPermits(data?.countries ?? [], job as JobOffer)"
-            />
+            <WorkingPermits :countries="jobWorkingPermits(countries ?? [], job as JobOffer)" />
 
             <span class="rounded-full border border-gray-500/30 px-3 py-0.5 text-xs">
               {{ userFacingRemoteOptions(job?.remoteOptions as RemoteOptions) }}
