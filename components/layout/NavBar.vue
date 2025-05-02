@@ -267,14 +267,16 @@
           name: 'Home',
         },
         {
-          path: AppRoutes.companies,
-          name: 'Companies',
-          isEnabled: useFeatureFlags().isEnabled(AvailableFlags.companiesList),
-        },
-        {
           path: AppRoutes.jobs,
           name: 'Jobs',
         },
+        {
+          path: AppRoutes.companies,
+          name: 'Companies',
+          isEnabled: useFeatureFlags().isEnabled(AvailableFlags.companiesList),
+          tag: useFeatureFlags().isEnabled(AvailableFlags.companiesList) ? 'New' : 'Soon',
+        },
+
         {
           path: AppRoutes.hireConsultants,
           name: 'Consultants',
@@ -288,7 +290,6 @@
         {
           path: AppRoutes.learn,
           name: 'Learn',
-          isEnabled: true,
         },
       ];
 

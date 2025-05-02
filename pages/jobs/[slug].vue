@@ -29,12 +29,11 @@
     data: jobOffer,
     error,
     status,
-  } = await useLazyFetch(
+  } = await useFetch(
     `${useRuntimeConfig().public.apiBaseUrl}${Endpoint.jobOffersBySlug(jobSlug.value)}`,
     {
       key: jobSlug.value,
       transform: (result) => result.data,
-      pending: false,
     },
   );
 
@@ -98,19 +97,16 @@
 <template>
   <main>
     <client-only>
-      <template v-if="pending">
-        <div class="flex items-center justify-center p-52">
-          <UButton
-            class="border-none bg-transparent text-indigo-700"
-            label=""
-            loading
-            size="xl"
-            variant="ghost"
-          />
-        </div>
-      </template>
-
-      <template v-else>
+      <div v-if="pending" class="flex items-center justify-center p-52">
+        <UButton
+          class="border-none bg-transparent text-indigo-700"
+          label=""
+          loading
+          size="xl"
+          variant="ghost"
+        />
+      </div>
+      <div v-else class="w-full">
         <section class="relative w-full">
           <div class="md:x-20 container mx-auto px-4 py-6 md:py-14">
             <CompanyLogo
@@ -129,34 +125,32 @@
                 {{ jobOffer?.title }}
               </h2>
 
-              <client-only>
-                <div
-                  class="my-2 md:my-0 flex flex-wrap justify-center items-center space-x-3 space-y-1 md:space-y-0"
-                >
-                  <UButton
-                    v-if="useJobActions().jobBelongsToCompany(company)"
-                    color="white"
-                    icon="i-heroicons-pencil"
-                    label="Edit job offer"
-                    size="xl"
-                    square
-                    variant="solid"
-                    @click="useCompanyActions().handleJobEdit(jobOffer)"
-                  />
+              <div
+                class="my-2 md:my-0 flex flex-wrap justify-center items-center space-x-3 space-y-1 md:space-y-0"
+              >
+                <UButton
+                  v-if="useJobActions().jobBelongsToCompany(company)"
+                  color="white"
+                  icon="i-heroicons-pencil"
+                  label="Edit job offer"
+                  size="xl"
+                  square
+                  variant="solid"
+                  @click="useCompanyActions().handleJobEdit(jobOffer)"
+                />
 
-                  <UButton
-                    color="white"
-                    icon="i-heroicons-share"
-                    label="Share job offer"
-                    size="xl"
-                    square
-                    variant="solid"
-                    @click="useJobActions().shareJobOffer(jobOffer)"
-                  />
+                <UButton
+                  color="white"
+                  icon="i-heroicons-share"
+                  label="Share job offer"
+                  size="xl"
+                  square
+                  variant="solid"
+                  @click="useJobActions().shareJobOffer(jobOffer)"
+                />
 
-                  <SaveJobIconButton :company="company" :job="jobOffer" />
-                </div>
-              </client-only>
+                <SaveJobIconButton :company="company" :job="jobOffer" />
+              </div>
             </div>
 
             <div class="my-4 flex flex-wrap gap-4 items-center">
@@ -213,15 +207,13 @@
                 :layout-direction="Direction.vertical"
               />
 
-              <client-only>
-                <JobDetailsCard :job="jobOffer" />
-              </client-only>
+              <JobDetailsCard :job="jobOffer" />
 
               <CompanyInfoCard :company="company" />
             </div>
           </section>
         </div>
-      </template>
+      </div>
     </client-only>
   </main>
 </template>
