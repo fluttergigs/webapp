@@ -164,7 +164,7 @@
                 :href="AppRoutes.companyPage(company.slug)"
                 class="text-lg font-bold text-gray-900"
               >
-                {{ company?.name }}
+                {{ jobOffer.companyName ?? company?.name }}
               </a>
 
               <div class="flex items-center space-x-1">
