@@ -22,7 +22,7 @@
   const company = computed(() => jobOffer.value.company);
   const jobSlug = ref(useRoute().params.slug);
 
-  const { data: countriesData, error: countriesError } = await useCountries();
+  const { data: countries, error: countriesError } = await useCountries();
   const { jobWorkingPermits } = useJobActions();
 
   const {
@@ -97,129 +97,132 @@
 
 <template>
   <main>
-    <template v-if="pending">
-      <div class="flex items-center justify-center p-52">
-        <UButton
-          class="border-none bg-transparent text-indigo-700"
-          label=""
-          loading
-          size="xl"
-          variant="ghost"
-        />
-      </div>
-    </template>
-
-    <template v-else>
-      <section class="relative w-full">
-        <div class="md:x-20 container mx-auto px-4 py-6 md:py-14">
-          <CompanyLogo
-            :company="company"
-            class="absolute left-[10px] top-[6px] md:left-16 md:top-18"
-            size="3xl"
+    <client-only>
+      <template v-if="pending">
+        <div class="flex items-center justify-center p-52">
+          <UButton
+            class="border-none bg-transparent text-indigo-700"
+            label=""
+            loading
+            size="xl"
+            variant="ghost"
           />
         </div>
-      </section>
-      <div class="px-4 py-20 md:px-20">
-        <section class="bg-white">
-          <div
-            class="flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:justify-between"
-          >
-            <h2 class="text-2xl font-bold md:text-5xl lg:text-7xl">
-              {{ jobOffer?.title }}
-            </h2>
+      </template>
 
-            <client-only>
-              <div
-                class="my-2 md:my-0 flex flex-wrap justify-center items-center space-x-3 space-y-1 md:space-y-0"
-              >
-                <UButton
-                  v-if="useJobActions().jobBelongsToCompany(company)"
-                  color="white"
-                  icon="i-heroicons-pencil"
-                  label="Edit job offer"
-                  size="xl"
-                  square
-                  variant="solid"
-                  @click="useCompanyActions().handleJobEdit(jobOffer)"
-                />
-
-                <UButton
-                  color="white"
-                  icon="i-heroicons-share"
-                  label="Share job offer"
-                  size="xl"
-                  square
-                  variant="solid"
-                  @click="useJobActions().shareJobOffer(jobOffer)"
-                />
-
-                <SaveJobIconButton :company="company" :job="jobOffer" />
-              </div>
-            </client-only>
-          </div>
-
-          <div class="my-4 flex flex-wrap gap-4 items-center">
-            <a :href="AppRoutes.companyPage(company.slug)" class="text-lg font-bold text-gray-900">
-              {{ jobOffer.companyName ?? company?.name }}
-            </a>
-
-            <div class="flex items-center space-x-1">
-              <UIcon class="text-gray-600" name="i-heroicons-building-office" />
-              <span class="font-medium text-black">
-                {{ userFacingCompanySize(company?.size) }}
-              </span>
-            </div>
-
-            <div class="flex items-center space-x-1">
-              <UIcon class="text-gray-600" name="i-heroicons-link" />
-              <a :href="company?.website" class="font-medium text-black" target="_blank">
-                Website
-              </a>
-            </div>
-
-            <WorkingPermits
-              :countries="jobWorkingPermits(countriesData?.countries ?? [], jobOffer)"
-            />
-          </div>
-        </section>
-
-        <!--      job details-->
-        <section class="my-4 flex flex-col gap-2 gap-x-16 font-normal md:flex-row">
-          <div class="flex w-full flex-col space-y-10 md:w-4/6">
-            <div class="space-y-6 md:space-y-10 font-medium text-gray-900">
-              <p class="leading-10">{{ company?.description }}</p>
-
-              <USeparator />
-
-              <p
-                class="leading-[28px] md:leading-[40px]"
-                v-html="
-                  jobOffer?.description?.isMarkdown()
-                    ? marked(jobOffer.description)
-                    : jobOffer?.description
-                "
-              ></p>
-            </div>
-            <!--          apply section-->
-            <JobApplicationCtaCard :company="company" :job="jobOffer" class="hidden md:block" />
-          </div>
-
-          <div class="flex w-full flex-col space-y-9 md:w-2/6">
-            <JobApplicationCtaCard
+      <template v-else>
+        <section class="relative w-full">
+          <div class="md:x-20 container mx-auto px-4 py-6 md:py-14">
+            <CompanyLogo
               :company="company"
-              :job="jobOffer"
-              :layout-direction="Direction.vertical"
+              class="absolute left-[10px] top-[6px] md:left-16 md:top-18"
+              size="3xl"
             />
-
-            <client-only>
-              <JobDetailsCard :job="jobOffer" />
-            </client-only>
-
-            <CompanyInfoCard :company="company" />
           </div>
         </section>
-      </div>
-    </template>
+        <div class="px-4 py-20 md:px-20">
+          <section class="bg-white">
+            <div
+              class="flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:justify-between"
+            >
+              <h2 class="text-2xl font-bold md:text-5xl lg:text-7xl">
+                {{ jobOffer?.title }}
+              </h2>
+
+              <client-only>
+                <div
+                  class="my-2 md:my-0 flex flex-wrap justify-center items-center space-x-3 space-y-1 md:space-y-0"
+                >
+                  <UButton
+                    v-if="useJobActions().jobBelongsToCompany(company)"
+                    color="white"
+                    icon="i-heroicons-pencil"
+                    label="Edit job offer"
+                    size="xl"
+                    square
+                    variant="solid"
+                    @click="useCompanyActions().handleJobEdit(jobOffer)"
+                  />
+
+                  <UButton
+                    color="white"
+                    icon="i-heroicons-share"
+                    label="Share job offer"
+                    size="xl"
+                    square
+                    variant="solid"
+                    @click="useJobActions().shareJobOffer(jobOffer)"
+                  />
+
+                  <SaveJobIconButton :company="company" :job="jobOffer" />
+                </div>
+              </client-only>
+            </div>
+
+            <div class="my-4 flex flex-wrap gap-4 items-center">
+              <a
+                :href="AppRoutes.companyPage(company.slug)"
+                class="text-lg font-bold text-gray-900"
+              >
+                {{ jobOffer.companyName ?? company?.name }}
+              </a>
+
+              <div class="flex items-center space-x-1">
+                <UIcon class="text-gray-600" name="i-heroicons-building-office" />
+                <span class="font-medium text-black">
+                  {{ userFacingCompanySize(company?.size) }}
+                </span>
+              </div>
+
+              <div class="flex items-center space-x-1">
+                <UIcon class="text-gray-600" name="i-heroicons-link" />
+                <a :href="company?.website" class="font-medium text-black" target="_blank">
+                  Website
+                </a>
+              </div>
+
+              <WorkingPermits :countries="jobWorkingPermits(countries ?? [], jobOffer)" />
+            </div>
+          </section>
+
+          <!--      job details-->
+          <section class="my-4 flex flex-col gap-2 gap-x-16 font-normal md:flex-row">
+            <div class="flex w-full flex-col space-y-10 md:w-4/6">
+              <div class="space-y-6 md:space-y-10 font-medium text-gray-900">
+                <p class="leading-10">{{ company?.description }}</p>
+
+                <USeparator />
+
+                <article
+                  class="leading-[48px] md:leading-[40px]"
+                  v-html="
+                    jobOffer?.description?.isMarkdown()
+                      ? marked(jobOffer.description)
+                      : jobOffer?.description
+                  "
+                ></article>
+              </div>
+              <!--          apply section-->
+              <JobApplicationCtaCard :company="company" :job="jobOffer" class="hidden md:block" />
+            </div>
+
+            <div class="flex w-full flex-col space-y-9 md:w-2/6">
+              <JobApplicationCtaCard
+                :company="company"
+                :job="jobOffer"
+                :layout-direction="Direction.vertical"
+              />
+
+              <client-only>
+                <JobDetailsCard :job="jobOffer" />
+              </client-only>
+
+              <CompanyInfoCard :company="company" />
+            </div>
+          </section>
+        </div>
+      </template>
+    </client-only>
   </main>
 </template>
 
