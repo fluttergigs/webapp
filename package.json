@@ -40,7 +40,7 @@
     "@nuxt/image": "^1.10.0",
     "@nuxt/ui": "^3.0.2",
     "@pinia/nuxt": "^0.11.0",
-    "@sentry/nuxt": "^9.13.0",
+    "@sentry/nuxt": "^9.14.0",
     "@sindresorhus/slugify": "^2.2.1",
     "@types/html-to-text": "^9.0.4",
     "@types/qs": "^6.9.12",

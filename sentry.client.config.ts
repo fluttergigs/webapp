@@ -2,7 +2,8 @@ import * as Sentry from '@sentry/nuxt';
 
 Sentry.init({
   dsn: 'https://f75947c9ff3f5ec880cb5f644cf74f85@o4507778789867520.ingest.de.sentry.io/4507806697586768',
-
+  debug: process.env.NODE_ENV !== 'production',
+  sendClientReports: false,
   environment: process.env.NODE_ENV,
   // We recommend adjusting this value in production, or using tracesSampler
   // for finer control
@@ -10,6 +11,11 @@ Sentry.init({
     // Add browser profiling integration to the list of integrations
     Sentry.browserTracingIntegration(),
     Sentry.browserProfilingIntegration(),
+    Sentry.piniaIntegration(usePinia()),
+    Sentry.feedbackIntegration({
+      // Additional SDK configuration goes in here, for example:
+      colorScheme: 'system',
+    }),
   ],
 
   // Set tracesSampleRate to 1.0 to capture 100%
@@ -17,7 +23,7 @@ Sentry.init({
   // We recommend adjusting this value in production
   tracesSampleRate: process.env.NODE_ENV === 'production' ? 0.2 : 1.0,
   // Set `tracePropagationTargets` to control for which URLs trace propagation should be enabled
-  tracePropagationTargets: ['localhost', /^https:\/\/fluttergigs\.com\//],
+  tracePropagationTargets: ['localhost'],
 
   // Set profilesSampleRate to 1.0 to profile every transaction.
   // Since profilesSampleRate is relative to tracesSampleRate,

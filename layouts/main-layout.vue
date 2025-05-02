@@ -37,7 +37,7 @@
 
     ($errorTracker as ErrorTrackerProvider).captureException(
       error,
-      authStore.isAuthenticated ? { ...authStore.authUser } : null,
+      authStore.isAuthenticated ? { user: authStore.authUser } : null,
     );
   };
   onMounted(async () => {

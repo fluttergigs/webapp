@@ -8,7 +8,9 @@
               <h2 class="mb-6 text-14xl text-indigo-600 font-bold tracking-px-2n leading-none">
                 {{ props.error.statusCode }}
               </h2>
-              <h3 class="mb-4 text-3xl font-bold font-heading leading-snug">Something is wrong!</h3>
+              <h3 class="mb-4 text-3xl font-bold font-heading leading-snug">
+                Something feels off!
+              </h3>
               <p class="text-lg text-gray-600 font-medium leading-normal md:max-w-md">
                 {{ errorMessage }}
               </p>
@@ -44,6 +46,7 @@
   import { AppStrings } from '~/core/strings';
   import type { AppAnalyticsProvider } from '~/services/analytics/AppAnalyticsProvider';
   import { AnalyticsEvent } from '~/services/analytics/events';
+  import type { ErrorTrackerProvider } from '~/services/error-tracker/ErrorTrackerProvider';
 
   useHead({ title: 'FlutterGigs - Error ' });
 
@@ -52,22 +55,25 @@
     error: Object as () => NuxtError,
   });
 
+  const { $analytics, $errorTracker } = useNuxtApp();
+  const authStore = useAuthStore();
+
   onMounted(() => {
     logDev('ERROR MESSAGE', props.error?.message);
     logDev('ERROR STACK', props.error?.stack);
     logDev('ERROR STATUS CODE', props.error?.statusCode);
+    // if (import.meta.env.MODE !== 'development') {
+    (useNuxtApp().$analytics as AppAnalyticsProvider).capture(AnalyticsEvent.error, props.error);
 
-    if (import.meta.env.MODE !== 'development') {
-      (useNuxtApp().$analytics as AppAnalyticsProvider).capture(AnalyticsEvent.error, props.error);
-    }
+    ($errorTracker as ErrorTrackerProvider).captureException(
+      props.error,
+      authStore.isAuthenticated ? { user: authStore.authUser } : null,
+    );
+    // }
   });
 
   const handleError = () => clearError({ redirect: AppRoutes.welcome });
   const errorMessage = computed(() =>
-    true
-      ? props.error?.statusCode === 404
-        ? AppStrings.notFoundMessage
-        : AppStrings.errorMessage
-      : props.error?.message,
+    props.error?.statusCode === 404 ? props.error?.message : AppStrings.errorMessage,
   );
 </script>

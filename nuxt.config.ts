@@ -1,10 +1,6 @@
 //@ts-ignore
 import path from 'path';
 
-
-
-
-
 //@ts-ignore
 export default defineNuxtConfig({
   devtools: {
@@ -94,7 +90,6 @@ export default defineNuxtConfig({
       googleGenerativeApiKey: '',
       sentry: {
         dsn: '',
-        environment: '',
       },
     },
   },
