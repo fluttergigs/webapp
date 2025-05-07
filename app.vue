@@ -145,4 +145,9 @@
     opacity: 0;
     transform: translate(50px, 0);
   }*/
+
+  #sentry-feedback .widget__actor {
+    left: 0 !important;
+    width: fit-content;
+  }
 </style>

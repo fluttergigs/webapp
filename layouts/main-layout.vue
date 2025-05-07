@@ -41,17 +41,24 @@
     );
   };
   onMounted(async () => {
-    const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const wsUrl = `${wsProtocol}//${window.location.host}/_ws`;
-    const { status, data, send, open, close } = useWebSocket(wsUrl, {
-      autoReconnect: true,
-      onMessage: (ws, event: MessageEvent) => {
-        logDev('data from websocket', event);
-      },
+    try {
+      const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+      const wsUrl = `${wsProtocol}//${window.location.host}/_ws`;
+      const { status, data, send, open, close } = useWebSocket(wsUrl, {
+        autoReconnect: true,
+        onMessage: (ws, event: MessageEvent) => {
+          logDev('data from websocket', event);
+        },
 
-      onConnected: (ws) => {
-        logDev('connected to websocket');
-      },
-    });
+        onConnected: (ws) => {
+          logDev('connected to websocket');
+        },
+      });
+    } catch (e) {
+      ($errorTracker as ErrorTrackerProvider).captureException(
+        error,
+        authStore.isAuthenticated ? { user: authStore.authUser } : null,
+      );
+    }
   });
 </script>

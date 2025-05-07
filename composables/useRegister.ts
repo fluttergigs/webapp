@@ -28,7 +28,7 @@ export const useRegister = () => {
   const authStore = useAuthStore();
 
   const {
-    user: $user,
+    $user,
     authUser,
     hasReturnUrl,
     returnUrl,
