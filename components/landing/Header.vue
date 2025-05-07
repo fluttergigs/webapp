@@ -24,7 +24,10 @@
               <h1
                 class="primary-gradient mb-6 text-4xl font-bold leading-tight md:text-5xl lg:text-6xl"
               >
-                The #1 Flutter Job Board in its Ecosystem<br />
+                <!--                TODO
+                  add a changing effect to the text, it should fade from opportunities to talents
+                -->
+                Bringing Flutter opportunities and talents to you <br />
               </h1>
 
               <p class="mb-11 text-lg font-medium text-gray-900 md:max-w-md">

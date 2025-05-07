@@ -27,7 +27,7 @@ export const usePasswordReset = () => {
   const canSubmitResetPasswordForm = ref(false);
 
   const {
-    forgetPassword,
+    $forgetPassword,
     isPasswordForgetFailed,
     isPasswordForgetSuccessful,
     isHandlingForgotPassword,
@@ -68,13 +68,13 @@ export const usePasswordReset = () => {
         passwordForgetDataInput.value,
       );
 
-      ($toast as BaseToast<Notification>).success(<string>forgetPassword.value.message);
+      ($toast as BaseToast<Notification>).success(<string>$forgetPassword.value.message);
 
       onDone && onDone();
     }
 
     if (isPasswordForgetFailed.value) {
-      ($toast as BaseToast<Notification>).error(<string>forgetPassword.value.message);
+      ($toast as BaseToast<Notification>).error(<string>$forgetPassword.value.message);
 
       ($analytics as AppAnalyticsProvider).capture(
         AnalyticsEvent.passwordForgetFailed,
@@ -99,13 +99,13 @@ export const usePasswordReset = () => {
         resetPasswordDataInput.value,
       );
 
-      ($toast as BaseToast<Notification>).success(<string>forgetPassword.value.message);
+      ($toast as BaseToast<Notification>).success(<string>$forgetPassword.value.message);
 
       onDone && onDone();
     }
 
     if (isPasswordResetFailed.value) {
-      ($toast as BaseToast<Notification>).error(<string>forgetPassword.value.message);
+      ($toast as BaseToast<Notification>).error(<string>$forgetPassword.value.message);
 
       ($analytics as AppAnalyticsProvider).capture(
         AnalyticsEvent.passwordResetFailed,
