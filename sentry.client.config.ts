@@ -9,8 +9,7 @@ Sentry.init({
   // for finer control
   integrations: [
     // Add browser profiling integration to the list of integrations
-    Sentry.browserTracingIntegration(),
-    Sentry.browserProfilingIntegration(),
+    // Sentry.browserTracingIntegration(),
     Sentry.piniaIntegration(usePinia()),
     Sentry.feedbackIntegration({
       // Additional SDK configuration goes in here, for example:
