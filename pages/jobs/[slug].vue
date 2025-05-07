@@ -9,6 +9,7 @@
   import { Direction } from '~/core/shared/types';
   import { userFacingCompanySize } from '~/features/companies/transformers';
   import { AnalyticsEvent } from '~/services/analytics/events';
+  import { AvailableFlags } from '~/services/feature-flag/availableFlags';
 
   import useJobActions from '@/composables/useJobActions';
 
@@ -155,7 +156,7 @@
 
             <div class="my-4 flex flex-wrap gap-4 items-center">
               <a
-                :href="AppRoutes.companyPage(company.slug)"
+                :href="AppRoutes.companyPage(company?.slug)"
                 class="text-lg font-bold text-gray-900"
               >
                 {{ jobOffer.companyName ?? company?.name }}
@@ -168,7 +169,10 @@
                 </span>
               </div>
 
-              <div class="flex items-center space-x-1">
+              <div
+                v-if="useFeatureFlags().isEnabled(AvailableFlags.companiesList)"
+                class="flex items-center space-x-1"
+              >
                 <UIcon class="text-gray-600" name="i-heroicons-link" />
                 <a :href="company?.website" class="font-medium text-black" target="_blank">
                   Website
@@ -183,7 +187,12 @@
           <section class="my-4 flex flex-col gap-2 gap-x-16 font-normal md:flex-row">
             <div class="flex w-full flex-col space-y-10 md:w-4/6">
               <div class="space-y-6 md:space-y-10 font-medium text-gray-900">
-                <p class="leading-10">{{ company?.description }}</p>
+                <p
+                  v-if="useFeatureFlags().isEnabled(AvailableFlags.companiesList)"
+                  class="leading-10"
+                >
+                  {{ company?.description }}
+                </p>
 
                 <USeparator />
 

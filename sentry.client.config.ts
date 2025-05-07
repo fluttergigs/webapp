@@ -2,7 +2,7 @@ import * as Sentry from '@sentry/nuxt';
 
 Sentry.init({
   dsn: 'https://f75947c9ff3f5ec880cb5f644cf74f85@o4507778789867520.ingest.de.sentry.io/4507806697586768',
-  debug: process.env.NODE_ENV !== 'production',
+  // debug: process.env.NODE_ENV !== 'production',
   sendClientReports: false,
   environment: process.env.NODE_ENV,
   // We recommend adjusting this value in production, or using tracesSampler
