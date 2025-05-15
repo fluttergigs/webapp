@@ -29,7 +29,7 @@
                   <NuxtLink
                     :class="[
                       'font-bold hover:text-indigo-900',
-                      { 'text-indigo-800': useRoute().fullPath === link.path },
+                      { 'text-indigo-800 text-lg': useRoute().fullPath === link.path },
                     ]"
                     :to="link.path"
                     >{{ link.name }}
@@ -50,7 +50,7 @@
               </NuxtLink>
               <UDropdownMenu v-else :items="accountLinks" :popper="{ placement: 'bottom-start' }">
                 <div class="flex items-center justify-center">
-                  <span class="text-sm primary-gradient font-bold">
+                  <span class="text-lg primary-gradient font-bold">
                     {{ useAuthStore().authUser.username }}
                   </span>
                   <UIcon name="i-heroicons-chevron-down-20-solid" />
@@ -122,7 +122,7 @@
               <li v-for="link in links" v-if="link?.isEnabled ?? true" class="mb-12">
                 <a
                   :href="link.path"
-                  class="font-bold hover:text-indigo-900"
+                  class="font-bold text-lg hover:text-indigo-900"
                   @click.prevent="onMenuLinkClick(link)"
                   >{{ link.name }}</a
                 >
@@ -144,7 +144,7 @@
                     :popper="{ placement: 'bottom-start' }"
                   >
                     <div class="flex items-center justify-center">
-                      <span class="text-sm primary-gradient font-bold">
+                      <span class="text-lg primary-gradient font-bold">
                         {{ useAuthStore().authUser.username }}
                       </span>
                       <UIcon name="i-heroicons-chevron-down-20-solid" />

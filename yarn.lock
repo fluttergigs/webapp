@@ -902,6 +902,13 @@
   resolved "https://registry.npmjs.org/@heroicons/vue/-/vue-2.1.1.tgz"
   integrity sha512-Yi5nh/89L193ALgHyJUQUdNLsKXPrrE3yj5yiR8WAlo7nZyXGxGauQcEAmBsa2XJGMhBMuEdoOiuZ8wEwTBxVQ==
 
+"@hypernym/nuxt-gsap@^2.4.3":
+  version "2.4.3"
+  resolved "https://registry.yarnpkg.com/@hypernym/nuxt-gsap/-/nuxt-gsap-2.4.3.tgz#23aea281fd6e5f389ed741aec45d22f83526a893"
+  integrity sha512-l3m7Z6NHWqPtz5Q7o18WKW1vOu0XVHtNZurRdE+Es5zKWdIUoHd6L5mNz440drE0bzCN7jIDicRlE5fcj30rpQ==
+  dependencies:
+    gsap "^3.12.5"
+
 "@iconify-json/heroicons@^1.2.2":
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/@iconify-json/heroicons/-/heroicons-1.2.2.tgz#8e03d91655ea6a2d7e1283ba13df13eda50d8bd8"
@@ -6253,6 +6260,11 @@ graphql@^16.9.0:
   version "16.10.0"
   resolved "https://registry.yarnpkg.com/graphql/-/graphql-16.10.0.tgz#24c01ae0af6b11ea87bf55694429198aaa8e220c"
   integrity sha512-AjqGKbDGUFRKIRCP9tCKiIGHyriz2oHEbPIbEtcSLSs4YjReZOIPQQWek4+6hjw62H9QShXHyaGivGiYVLeYFQ==
+
+gsap@^3.12.5, gsap@^3.13.0:
+  version "3.13.0"
+  resolved "https://registry.yarnpkg.com/gsap/-/gsap-3.13.0.tgz#597d4e019a2bb487785387d91296adebf92db9dd"
+  integrity sha512-QL7MJ2WMjm1PHWsoFrAQH/J8wUeqZvMtHO58qdekHpCfhvhSL4gSiz6vJf5EeMP0LOn3ZCprL2ki/gjED8ghVw==
 
 gzip-size@^7.0.0:
   version "7.0.0"

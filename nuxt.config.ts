@@ -59,16 +59,20 @@ export default defineNuxtConfig({
   script: ['~/assets/js/main.js'],
 
   modules: [
-    '@pinia/nuxt',
-    '@pinia-plugin-persistedstate/nuxt', // '@nuxtjs/tailwindcss',
-    '@nuxtjs/i18n', // 'nuxt-appwrite',
+    '@pinia/nuxt', // '@nuxtjs/tailwindcss',
+    '@pinia-plugin-persistedstate/nuxt', // 'nuxt-appwrite',
+    '@nuxtjs/i18n',
     'nuxt-lodash',
     '@nuxtjs/strapi',
     '@nuxt/ui',
     '@sentry/nuxt/module',
     '@nuxt/image',
     'nuxt-og-image',
+    '@hypernym/nuxt-gsap',
   ],
+  gsap: {
+    composables: true,
+  },
   sentry: {
     sourceMapsUploadOptions: {
       org: 'evacorp',
