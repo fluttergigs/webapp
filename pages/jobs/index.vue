@@ -27,18 +27,28 @@
         <FiltersWidget />
       </div>
       <div class="my-4 w-full sm:w-5/6 md:my-0 md:w-4/6">
-        <JobOffersList
-          v-if="!!jobFiltersResponse"
-          :jobs="filteredJobs"
-          :jobs-response="jobFiltersResponse"
-          class="md:mx-8"
-        >
-          <template #default="{ job }">
-            <JobCard v-if="isMediumScreen" :job="job" />
+        <div class="flex flex-col gap-4 justify-center">
+          <JobOffersList
+            v-if="!!jobFiltersResponse"
+            :jobs="paginatedJobs"
+            :jobs-response="jobFiltersResponse"
+            class="md:mx-8"
+          >
+            <template #default="{ job }">
+              <JobCard v-if="isMediumScreen" :job="job" />
 
-            <JobCardDetailed v-else :job="job" />
-          </template>
-        </JobOffersList>
+              <JobCardDetailed v-else :job="job" />
+            </template>
+          </JobOffersList>
+
+          <UPagination
+            v-if="filteredJobs.length > 0"
+            v-model:page="currentPage"
+            :items-per-page="MAX_JOBS_PER_PAGE"
+            :total="filteredJobs.length"
+            class="self-center"
+          />
+        </div>
       </div>
     </section>
   </main>
@@ -49,6 +59,7 @@
   import { storeToRefs } from 'pinia';
   import FiltersWidget from '~/components/job/FiltersWidget.vue';
   import JobOffersList from '~/components/job/JobOffersList.vue';
+  import { useJob } from '~/composables/useJob';
   import { AnalyticsEvent } from '~/services/analytics/events';
   import { useJobStore } from '~/stores/job';
   import { useUserStore } from '~/stores/user';
@@ -72,6 +83,8 @@
 
   const { $analytics } = useNuxtApp();
   const { filteredJobs, jobFiltersResponse } = storeToRefs(useJobStore());
+
+  const { paginatedJobs, currentPage, totalPages } = useJob();
 
   const isMediumScreen = useMediaQuery('(min-width: 768px)');
 

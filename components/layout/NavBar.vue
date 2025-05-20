@@ -48,7 +48,15 @@
               <NuxtLink v-if="!isAuthenticated" :to="AppRoutes.login" class="font-medium">
                 Login
               </NuxtLink>
-              <UDropdownMenu v-else :items="accountLinks" :popper="{ placement: 'bottom-start' }">
+              <UDropdownMenu
+                v-else
+                :items="accountLinks"
+                :popper="{ placement: 'bottom-start' }"
+                :ui="{
+                  content: 'w-48',
+                }"
+                size="xl"
+              >
                 <div class="flex items-center justify-center">
                   <span class="text-lg primary-gradient font-bold">
                     {{ useAuthStore().authUser.username }}
@@ -142,6 +150,10 @@
                     v-else
                     :items="accountLinks"
                     :popper="{ placement: 'bottom-start' }"
+                    :ui="{
+                      content: 'w-48',
+                    }"
+                    size="xl"
                   >
                     <div class="flex items-center justify-center">
                       <span class="text-lg primary-gradient font-bold">

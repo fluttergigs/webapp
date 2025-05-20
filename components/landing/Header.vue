@@ -62,7 +62,7 @@
           <div class="w-full p-2 sm:p-0 md:w-2/5">
             <img
               alt=""
-              class="transform transition duration-1000 ease-in-out hover:-translate-y-16"
+              class="transform transition duration-1000 ease-in-out hover:-translate-y-16 scale-125"
               src="/landing-header.webp"
             />
           </div>

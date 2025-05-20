@@ -121,7 +121,7 @@ export const useJobStore = defineStore('job', {
     },
 
     async filterJobs(): Promise<void> {
-      this.jobFiltersResponse = new Wrapper<MultiApiResponse<JobOffer>>().toLoading();
+      this.jobFiltersResponse = new Wrapper<MultiApiResponse<JobOffer>>().toLoading(this.jobFiltersResponse.value);
       try {
         const query = stringify({
           populate: '*',
@@ -228,11 +228,11 @@ export const useJobStore = defineStore('job', {
   getters: {
     //@ts-ignore
     jobs: (state) =>
-      state.jobListResponse?.value?.data?.reverse(),
+      state.jobListResponse?.value?.data ?? [],
     currentViewedJob: (state) => state.selectedJob.value,
-    filteredJobs: (state) => state.jobFiltersResponse?.value?.data?.reverse(),
+    filteredJobs: (state) => (state.jobFiltersResponse?.value?.data ?? []).reverse(),
     landingPageJobs: (state) => {
-      const jobs = useJobStore().jobs as JobOffer[];
+      const jobs = (useJobStore().jobs.reverse()) as JobOffer[];
       return jobs?.length > MAX_LANDING_PAGE_JOBS ? jobs?.slice(0, MAX_LANDING_PAGE_JOBS - 1) : jobs;
     },
   },
