@@ -1,71 +1,75 @@
 export enum Status {
-    initial = "initial",
-    loading = "loading",
-    success = "success",
-    failure = "failure",
+  initial = 'initial',
+  loading = 'loading',
+  success = 'success',
+  failure = 'failure',
 }
 
 export class Wrapper<Type extends Object = {}> {
-    status = Status.initial;
-    value: Type = <Type>{};
+  status = Status.initial;
+  value: Type = <Type>{};
 
-    message?: String;
+  message?: String;
 
-    constructor(value?: Type, status?: Status, errorMessage?: String) {
-        this.value = value ?? <Type>{};
-        this.status = status ?? Status.initial;
-        this.message = errorMessage ?? "";
-    }
+  constructor(value?: Type, status?: Status, errorMessage?: String) {
+    this.value = value ?? <Type>{};
+    this.status = status ?? Status.initial;
+    this.message = errorMessage ?? '';
+  }
 
-    get isLoading(): boolean {
-        return this.status === Status.loading;
-    }
+  get isInitial(): boolean {
+    return this.status === Status.initial;
+  }
 
-    get isSuccess(): boolean {
-        return this.status === Status.success;
-    }
+  get isLoading(): boolean {
+    return this.status === Status.loading;
+  }
 
-    get isFailure(): boolean {
-        return this.status === Status.failure;
-    }
+  get isSuccess(): boolean {
+    return this.status === Status.success;
+  }
 
-    public static getEmpty() {
-        return new Wrapper();
-    }
+  get isFailure(): boolean {
+    return this.status === Status.failure;
+  }
 
-    copyWith(
-        value?: Type,
-        status?: Status,
-        errorMessage?: String
-    ): Wrapper<Type> {
-        return new Wrapper<Type>(
-            value ?? this.value,
-            status ?? this.status,
-            errorMessage ?? this.message
-        );
-    }
+  public static getEmpty() {
+    return new Wrapper();
+  }
 
-    toSuccess(value: Type, message?: string): Wrapper<Type> {
-        return new Wrapper<Type>(value, Status.success, message ?? "");
-    }
+  copyWith(
+    value?: Type,
+    status?: Status,
+    errorMessage?: String,
+  ): Wrapper<Type> {
+    return new Wrapper<Type>(
+      value ?? this.value,
+      status ?? this.status,
+      errorMessage ?? this.message,
+    );
+  }
 
-    toFailed(error: any): Wrapper<Type> {
-        return new Wrapper<Type>(
-            <Type>{},
-            Status.failure,
-            error ?? "Error occurred"
-        );
-    }
+  toSuccess(value: Type, message?: string): Wrapper<Type> {
+    return new Wrapper<Type>(value, Status.success, message ?? '');
+  }
 
-    toInitial(): Wrapper<Type> {
-        return new Wrapper<Type>(<Type>{}, Status.initial);
-    }
+  toFailed(error: any): Wrapper<Type> {
+    return new Wrapper<Type>(
+      <Type>{},
+      Status.failure,
+      error ?? 'Error occurred',
+    );
+  }
 
-    toLoading(value?: Type): Wrapper<Type> {
-        return new Wrapper<Type>((value as Type) ?? this.value, Status.loading);
-    }
+  toInitial(): Wrapper<Type> {
+    return new Wrapper<Type>(<Type>{}, Status.initial);
+  }
 
-    toJSON() {
-        return {...this};
-    }
+  toLoading(value?: Type): Wrapper<Type> {
+    return new Wrapper<Type>((value as Type) ?? this.value, Status.loading);
+  }
+
+  toJSON() {
+    return { ...this };
+  }
 }

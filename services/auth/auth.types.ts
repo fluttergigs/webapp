@@ -1,8 +1,9 @@
-import { Company } from "~/features/companies/company.types";
+import type { Company } from '~/features/companies/company.types';
+import type { Education, Experience } from '~/features/users/user.types';
 
 export interface RegistrationData {
-  firstName: string;
-  lastName: string;
+  firstName: string | null;
+  lastName: string | null;
   email?: string;
   password: string;
   identifier?: string;
@@ -10,7 +11,7 @@ export interface RegistrationData {
   [name: string]: unknown;
 }
 
-export type LoginData = Omit<RegistrationData, "firstName" | "lastName">;
+export type LoginData = Omit<RegistrationData, 'firstName' | 'lastName'>;
 
 export interface ResetPasswordData {
   email: string;
@@ -22,6 +23,7 @@ export interface ForgetPasswordData {
 
 export type User = {
   id: number;
+  documentId: string;
   username?: string;
   email?: string;
   provider?: string;
@@ -32,7 +34,9 @@ export type User = {
   firstName: string;
   lastName: string;
   bio: string;
-  companies?: Company[];
-  [key: string]: unknown;
   stripeCustomerId?: string;
+  companies?: Company[];
+  experiences?: Experience[];
+  educations?: Education[];
+  [key: string]: unknown;
 };

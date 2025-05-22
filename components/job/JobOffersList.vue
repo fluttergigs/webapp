@@ -1,19 +1,19 @@
 <script setup>
-import {useJobStore} from "~/stores/job";
-import {defaultShimmerListItemsCount} from "~/core/constants";
+  import { defaultShimmerListItemsCount } from '~/core/constants';
+  import { useJobStore } from '~/stores/job';
 
-const jobStore = useJobStore()
+  const jobStore = useJobStore();
 
-const props = defineProps({
-  jobs: {
-    type: Array,
-    default: () => []
-  },
-  jobsResponse: {
-    type: Object,
-    required: true,
-  }
-})
+  const props = defineProps({
+    jobs: {
+      type: Array,
+      default: () => [],
+    },
+    jobsResponse: {
+      type: Object,
+      required: true,
+    },
+  });
 </script>
 
 <template>
@@ -24,44 +24,48 @@ const props = defineProps({
           <slot name="error">
             <div class="flex flex-col items-center space-y-2">
               <p>Unable to fetch jobs in the list</p>
-              <img class="w-96 h-96" alt="Empty job results" src="@/assets/images/emptyJobFiltersResult.svg"/>
+              <img
+                alt="Empty job results"
+                class="w-96 h-96"
+                src="@/assets/images/emptyJobFiltersResult.svg"
+              />
             </div>
           </slot>
-          <slot name="ctaError">
-          </slot>
+          <slot name="ctaError"></slot>
         </div>
-
       </template>
-      <template v-else-if="props.jobsResponse.isSuccess">
 
-        <div class="flex flex-col items-center justify-center" v-if="props.jobs.length <= 0">
-          <slot name="noData">
-            <div class="flex flex-col items-center space-y-2">
-              <p>No jobs found in the list</p>
-              <img class="w-96 h-96" alt="Empty job results" src="@/assets/images/emptyJobFiltersResult.svg"/>
-            </div>
-          </slot>
-          <slot name="cta">
-          </slot>
-        </div>
-
-        <template v-else>
-          <slot v-for="job in props.jobs" :job="job" :key="job.slug">
-            <JobCard :job="job" :key="job.slug"/>
-          </slot>
-        </template>
-      </template>
       <div v-else-if="props.jobsResponse.isLoading">
         <slot name="loader">
           <div v-for="_ in defaultShimmerListItemsCount">
-            <USkeleton class="flex h-[95px] w-full mb-3"/>
+            <USkeleton class="flex h-[95px] w-full mb-3" />
           </div>
         </slot>
       </div>
+
+      <template v-else>
+        <div v-if="props.jobs.length === 0" class="flex flex-col items-center justify-center">
+          <slot name="noData">
+            <div class="flex flex-col items-center space-y-2">
+              <p>No jobs found in the list</p>
+              <img
+                alt="Empty job results"
+                class="w-96 h-96"
+                src="@/assets/images/emptyJobFiltersResult.svg"
+              />
+            </div>
+          </slot>
+          <slot name="cta"></slot>
+        </div>
+
+        <template v-else>
+          <slot v-for="(job, index) in props.jobs" :key="`${job.slug}-${index}`" :job="job">
+            <JobCard :key="job.slug" :job="job" />
+          </slot>
+        </template>
+      </template>
     </client-only>
   </div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -1,29 +1,25 @@
-<script setup lang="ts">
+<script lang="ts" setup>
+  import { remoteOptions } from '~/core/constants';
 
-import {remoteOptions} from "~/core/constants";
-
-const selected = ref(null)
-//@ts-ignore
-const emits = defineEmits(['filterByRemoteOptions'])
-watch(selected, ()=>{
-  emits('filterByRemoteOptions', selected.value)
-},)
-
+  const selected = ref(null);
+  //@ts-ignore
+  const emits = defineEmits(['filterByRemoteOptions']);
+  watch(selected, () => {
+    emits('filterByRemoteOptions', selected.value);
+  });
 </script>
 
 <template>
   <USelectMenu
-      clear-search-on-close
-      searchable
-      v-model="selected"
-      size="lg"
-      :options="remoteOptions"
-      placeholder="Select your remote options"
-      value-attribute="id"
-      option-attribute="label"
+    v-model="selected"
+    :items="remoteOptions"
+    clear-search-on-close
+    label-key="label"
+    placeholder="Select your remote options"
+    searchable
+    size="lg"
+    value-key="id"
   />
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

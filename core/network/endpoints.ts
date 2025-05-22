@@ -4,11 +4,11 @@ export class Endpoint {
   }
 
   static get companies() {
-    return "/companies";
+    return '/companies';
   }
 
   static get users() {
-    return "/users";
+    return '/users';
   }
 
   static get jobOffers() {
@@ -20,15 +20,27 @@ export class Endpoint {
   }
 
   static get getMe() {
-    return "/users/me";
+    return '/users/me';
   }
 
   static get learnCategories() {
-    return "/learn-categories";
+    return '/learn-categories';
   }
 
   static get learnResources() {
-    return "/learn-resources";
+    return '/learn-resources';
+  }
+
+  static get experiences() {
+    return '/experiences';
+  }
+
+  static get educations() {
+    return '/educations';
+  }
+
+  static jobOffersBySlug(slug: string) {
+    return `/job-offers/find-by-slug/${slug}`;
   }
 }
 
@@ -38,11 +50,11 @@ export class ApiEndpoint {
   }
 
   static get companies() {
-    return "/api/companies";
+    return '/api/companies';
   }
 
   static get users() {
-    return "/api/users";
+    return '/api/users';
   }
 
   static get jobOffers() {
@@ -54,18 +66,14 @@ export class ApiEndpoint {
   }
 
   static get getMe() {
-    return "/api/users/me";
+    return '/api/users/me';
   }
 
   static get learnCategories() {
-    return "/api/learn-categories";
+    return '/api/learn-categories';
   }
 
   static get learnResources() {
-    return "/api/learn-resources";
-  }
-
-  static get fluppets() {
-    return "/api/snippets";
+    return '/api/learn-resources';
   }
 }

@@ -1,44 +1,33 @@
-<script setup lang="ts">
-
-//@ts-ignore
-const props = defineProps({
-  headerTitle: {
-    type: String,
-  },
-  body: {
-    type: String,
-  }
-})
-
+<script lang="ts" setup>
+  //@ts-ignore
+  const props = defineProps({
+    headerTitle: {
+      type: String,
+    },
+    body: {
+      type: String,
+    },
+  });
 </script>
 
 <template>
-
   <UModal>
-    <UCard :ui="{ ring: '', divide: 'divide-y divide-gray-100 dark:divide-gray-800' }">
-      <template #header>
-        <slot name="header">
-          <h3 class="font-medium">{{ headerTitle }}</h3>
-        </slot>
-
-      </template>
-
+    <template #header>
+      <slot name="header">
+        <h3 class="font-medium">{{ headerTitle }}</h3>
+      </slot>
+    </template>
+    <template #body>
       <slot name="body">
         <div>
           {{ body }}
         </div>
-
       </slot>
-
-      <template #footer>
-        <slot name="footer">
-        </slot>
-      </template>
-    </UCard>
+    </template>
+    <template #footer>
+      <slot name="footer"></slot>
+    </template>
   </UModal>
-
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

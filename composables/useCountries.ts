@@ -1,38 +1,33 @@
-import {COUNTRIES_API_ENDPOINT} from "~/core/constants";
-import {Country} from "~/core/shared/types";
+import { useStorage } from '@vueuse/core';
+import { COUNTRIES_API_ENDPOINT } from '~/core/constants';
+import type { Country } from '~/core/shared/types';
 
-import {useStorage} from '@vueuse/core'
-
-const countriesKey = "countries"
+const countriesKey = 'countries';
 
 export default async function useCountries() {
-    const countries = useStorage(countriesKey, () => [])
-    if (countries.length > 0) {
-        return {data: countries, error: null}
-    }
+  const countries = useStorage(countriesKey, () => []);
 
-    const {
-        data,
-        error,
-    } = await useFetch(COUNTRIES_API_ENDPOINT, {
-        key: "countries",
-        mode: "cors",
-        default: () => ({countries: []}),
+  if (countries.value.length > 0) {
+    return { data: countries, error: null };
+  }
 
-        transform: (countries) => {
-            const result: [Country] = countries.map((country: any) => ({
-                name: country.name.common,
-                flag: {src: country.flags.svg, ico: country.flag,},
-                iso: country.cca3,
-            }));
+  const { data, error } = await useFetch(COUNTRIES_API_ENDPOINT, {
+    key: 'countries',
+    mode: 'cors',
 
-            useStorage("countries", result)
+    default: () => [],
+    transform: (countries: any) => {
+      const result: Country[] = countries.map((country: any) => ({
+        name: country.name.common,
+        flag: { src: country.flags.svg, ico: country.flag },
+        iso: country.cca3,
+      }));
 
-            return {
-                countries: result,
-            }
-        }
-    })
+      localStorage.setItem(countriesKey, JSON.stringify(result));
 
-    return {data, error}
+      return result;
+    },
+  });
+
+  return { data, error };
 }

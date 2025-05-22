@@ -1,30 +1,27 @@
-<script setup lang="ts">
-import {workTypeOptions} from "~/core/constants";
+<script lang="ts" setup>
+  import { workTypeOptions } from '~/core/constants';
 
-const selected = ref(null)
+  const selected = ref(null);
 
-//@ts-ignore
-const emits = defineEmits(['filterByWorkType'])
-watch(selected, ()=>{
-  emits('filterByWorkType', selected.value)
-},)
+  //@ts-ignore
+  const emits = defineEmits(['filterByWorkType']);
+  watch(selected, () => {
+    emits('filterByWorkType', selected.value);
+  });
 </script>
-
 
 <template>
   <USelectMenu
-      clear-search-on-close
-      searchable
-      :required="false"
-      size="lg"
-      v-model="selected"
-      :options="workTypeOptions"
-      placeholder="Select a work type option"
-      value-attribute="id"
-      option-attribute="label"
+    v-model="selected"
+    :items="workTypeOptions"
+    :required="false"
+    clear-search-on-close
+    label-key="label"
+    placeholder="Select a work type option"
+    searchable
+    size="lg"
+    value-key="id"
   />
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

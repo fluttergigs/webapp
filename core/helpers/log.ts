@@ -1,8 +1,7 @@
 const logDev = (message: any, ...data: any[]) => {
-    if (import.meta.env.MODE === "development") {
-        console.log(message, ...data);
-    }
+  if (import.meta.env.MODE === 'development') {
+    console.log(message, ...data);
+  }
 };
 
-
-export {logDev};
+export { logDev };

@@ -1,6 +1,6 @@
 <template>
   <main>
-    <Header />
+    <LazyLandingHeader />
 
     <UserSection />
 
@@ -171,13 +171,13 @@
 </template>
 
 <script lang="ts" setup>
-import Header from "~/components/landing/Header.vue";
-import UserSection from "~/components/landing/UserSection.vue";
-import SecondaryUserSection from "~/components/landing/SecondaryUserSection.vue";
-import CompanySection from "~/components/landing/CompanySection.vue";
-import CompanyCreationSection from "~/components/landing/CompanyCreationSection.vue";
+  import '@/components/landing/Header.vue';
+  import UserSection from '~/components/landing/UserSection.vue';
+  import SecondaryUserSection from '~/components/landing/SecondaryUserSection.vue';
+  import CompanySection from '~/components/landing/CompanySection.vue';
+  import CompanyCreationSection from '~/components/landing/CompanyCreationSection.vue';
 
-definePageMeta({
+  definePageMeta({
   layout: "main-layout",
   title: "The #1 Flutter job platform in the world",
 });

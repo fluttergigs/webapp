@@ -1,9 +1,10 @@
-import {WebSocketChannel,} from "./websocket_types";
-import {Peer} from "crossws";
+import { Peer } from 'crossws';
+
+import { WebSocketChannel } from './websocket_types';
 
 interface ChannelSubscription {
-    ws: WebSocket;
-    channels: Set<WebSocketChannel>;
+  ws: WebSocket;
+  channels: Set<WebSocketChannel>;
 }
 
 /*
@@ -175,46 +176,43 @@ export class WebSocketManager {
 }
 */
 
-
 export class WebsocketClientManager {
-    private static instance: WebsocketClientManager;
-    private peers = new Map<string, Peer>()
+  private static instance: WebsocketClientManager;
+  private peers = new Map<string, Peer>();
 
-    private singlePeer: Peer | null = null
+  private singlePeer: Peer | null = null;
 
-    //define singleton constructor
-    private constructor() {
+  //define singleton constructor
+  private constructor() {}
+
+  get peer(): Peer<any> | null {
+    return this.singlePeer;
+  }
+
+  get peersList(): Map<string, Peer> {
+    return this.peers;
+  }
+
+  static getInstance(): WebsocketClientManager {
+    if (!WebsocketClientManager.instance) {
+      WebsocketClientManager.instance = new WebsocketClientManager();
     }
+    return WebsocketClientManager.instance;
+  }
 
-    get peer(): Peer<any> | null {
-        return this.singlePeer
-    }
+  setPeer(peer: Peer) {
+    this.singlePeer = peer;
+  }
 
-    get peersList(): Map<string, Peer> {
-        return this.peers
-    }
+  getPeerFromList(clientId: string) {
+    return this.peers.get(clientId);
+  }
 
-    static getInstance(): WebsocketClientManager {
-        if (!WebsocketClientManager.instance) {
-            WebsocketClientManager.instance = new WebsocketClientManager();
-        }
-        return WebsocketClientManager.instance;
-    }
+  addPeer(clientId: string, ws: Peer) {
+    this.peers.set(clientId, ws);
+  }
 
-    setPeer(peer: Peer) {
-        this.singlePeer = peer
-    }
-
-    getPeerFromList(clientId: string) {
-        return this.peers.get(clientId)
-    }
-
-    addPeer(clientId: string, ws: Peer) {
-        this.peers.set(clientId, ws)
-    }
-
-    removePeer(clientId: string) {
-        this.peers.delete(clientId)
-    }
-
+  removePeer(clientId: string) {
+    this.peers.delete(clientId);
+  }
 }

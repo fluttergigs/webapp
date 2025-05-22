@@ -1,12 +1,14 @@
 <script lang="ts" setup>
 //@ts-ignore
+import OgPreview from '~/components/job/OgPreview.vue';
+import type { JobOffer } from '~/features/jobs/job.types';
 
-import type {JobOffer} from "~/features/jobs/job.types";
-import OgPreview from "~/components/job/OgPreview.vue";
+const jobOffer = defineProps<Partial<JobOffer>>();
 
-const jobOffer = defineProps<Partial<JobOffer>>()
+const jobOfferTitle = computed(() =>
+  jobOffer.title ? (jobOffer.title.length > 85 ? `${jobOffer.title.substring(0, 85)}...` : jobOffer.title) : 'Untitled Job'
+);
 
-const jobOfferTitle = computed(() => jobOffer.title.length > 85 ? `${jobOffer.title.substring(0, 85)}...` : jobOffer.title)
 </script>
 
 <template>
@@ -17,6 +19,5 @@ const jobOfferTitle = computed(() => jobOffer.title.length > 85 ? `${jobOffer.ti
         {{ jobOfferTitle }}
       </p>
     </div>
-
   </div>
 </template>

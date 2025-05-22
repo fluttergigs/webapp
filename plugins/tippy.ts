@@ -1,6 +1,6 @@
-
 // @ts-ignore
 import { TippyPlugin } from 'tippy.vue';
+
 export default defineNuxtPlugin((nuxtApp) => {
-    nuxtApp.vueApp.use(TippyPlugin);
+  nuxtApp.vueApp.use(TippyPlugin);
 });

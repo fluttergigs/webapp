@@ -1,108 +1,105 @@
 <script lang="ts" setup>
-import ArrowBackIcon from "~/components/icons/ArrowBackIcon.vue";
-import {
-  extractCompanyFromJob,
-  userFacingRemoteOptions,
-  userFacingWorkType,
-} from "~/features/jobs/transformers";
-import { AppRoutes } from "~/core/routes";
-import { userFacingCompanySize } from "~/features/companies/transformers";
-import useJobActions from "~/composables/useJobActions";
+  //@ts-ignore
+  import { XCircleIcon } from '@heroicons/vue/24/outline';
+  import ArrowBackIcon from '~/components/icons/ArrowBackIcon.vue';
+  import ConfirmJobDeleteModal from '~/components/job/ConfirmJobDeleteModal.vue';
+  import JobSalaryBox from '~/components/job/JobSalaryBox.vue';
+  import SaveJobIconButton from '~/components/job/SaveJobIconButton.vue';
+  import WorkingPermits from '~/components/job/WorkingPermits.vue';
+  import useJobActions from '~/composables/useJobActions';
+  import { AppRoutes } from '~/core/routes';
+  import { userFacingCompanySize } from '~/features/companies/transformers';
+  import type { JobOffer } from '~/features/jobs/job.types';
+  import { RemoteOptions } from '~/features/jobs/job.types';
+  import { userFacingRemoteOptions, userFacingWorkType } from '~/features/jobs/transformers';
 
-import type { JobOffer } from "~/features/jobs/job.types";
-import { RemoteOptions } from "~/features/jobs/job.types";
-import WorkingPermits from "~/components/job/WorkingPermits.vue";
-import SaveJobIconButton from "~/components/job/SaveJobIconButton.vue";
-//@ts-ignore
-import { XCircleIcon } from "@heroicons/vue/24/outline";
-import ConfirmJobDeleteModal from "~/components/job/ConfirmJobDeleteModal.vue";
-import JobSalaryBox from "~/components/job/JobSalaryBox.vue";
+  const { data: countries, error } = await useCountries();
+  const { jobWorkingPermits } = useJobActions();
 
-const { data, error } = await useCountries();
-const { jobWorkingPermits } = useJobActions();
+  const overlay = useOverlay();
 
-const modal = useModal();
-//@ts-ignore
-const props = defineProps({
-  job: {
-    type: Object as PropType<JobOffer>,
-  },
-});
-
-const isJobSidePanelOpen = ref(false);
-
-const company = computed(() => ({
-  ...extractCompanyFromJob(props.job),
-}));
-
-const isActionItemsOpen = ref(false);
-
-const toggleJobActionItems = () => {
-  isActionItemsOpen.value = !isActionItemsOpen.value;
-};
-const showConfirmJobDeleteModal = () => {
-  modal.open(ConfirmJobDeleteModal, {
-    //@ts-ignore
-    job: props.job,
-    preventClose: true,
+  //@ts-ignore
+  const props = defineProps({
+    job: {
+      type: Object as PropType<JobOffer>,
+    },
   });
-};
 
-const jobActionItems = [
-  [
-    {
-      label: "Share",
-      click: () => {
-        useJobActions().shareJobOffer(props.job);
+  const isJobSidePanelOpen = ref(false);
+
+  const company = computed(() => ({
+    ...props.job.company,
+  }));
+
+  const isActionItemsOpen = ref(false);
+
+  const toggleJobActionItems = () => {
+    isActionItemsOpen.value = !isActionItemsOpen.value;
+  };
+  const showConfirmJobDeleteModal = async () => {
+    const modal = overlay.create(ConfirmJobDeleteModal, {
+      //@ts-ignore
+      job: props.job,
+    });
+
+    await modal.open();
+  };
+
+  const jobActionItems = [
+    [
+      {
+        label: 'Share',
+        onClick: () => {
+          useJobActions().shareJobOffer(props.job);
+        },
       },
-    },
-  ],
-  [
-    {
-      label: "Edit",
-      click: () => {
-        useCompanyActions().handleJobEdit(props.job);
+    ],
+    [
+      {
+        label: 'Edit',
+        onClick: () => {
+          useCompanyActions().handleJobEdit(props.job);
+        },
       },
-    },
-  ],
-  [
-    {
-      label: "Duplicate",
-      click: () => {
-        useCompanyActions().handleJobDuplicate(props.job);
+    ],
+    [
+      {
+        label: 'Duplicate',
+        onClick: () => {
+          useCompanyActions().handleJobDuplicate(props.job);
+        },
       },
-    },
-  ],
-  [
-    {
-      label: "View",
-      click: () => {
-        navigateTo(AppRoutes.jobDetail(props.job.slug));
+    ],
+    [
+      {
+        label: 'View',
+        onClick: () => {
+          navigateTo(AppRoutes.jobDetail(props.job.slug));
+        },
       },
-    },
-  ],
-  [
-    {
-      label: "Delete",
-      icon: "i-heroicons-trash-20-solid",
-      click: () => {
-        showConfirmJobDeleteModal();
+    ],
+    [
+      {
+        label: 'Delete',
+        icon: 'i-heroicons-trash-20-solid',
+        onClick: () => {
+          showConfirmJobDeleteModal();
+        },
       },
-    },
-  ],
-];
+    ],
+  ];
 </script>
 
 <!--TODO remove deleted job offer from saved jobs-->
 <template>
   <!--  @click.stop="useJobActions().viewDetails(props.job)"-->
-  <div class="relative" @click.self.prevent>
+  <div class="relative cursor-pointer" @click.self.prevent>
     <div
       v-if="useJobActions().jobBelongsToCompany(company)"
       class="absolute right-[29px] top-[12px]"
       @click.self.capture="toggleJobActionItems"
     >
-      <UDropdown
+      <UDropdownMenu
         v-model:open="isActionItemsOpen"
         :items="jobActionItems"
         :popper="{ placement: 'bottom-start' }"
@@ -110,20 +107,18 @@ const jobActionItems = [
         <div class="flex items-center justify-center">
           <UIcon class="ml-5 text-2xl" name="i-heroicons-ellipsis-horizontal" />
         </div>
-      </UDropdown>
+      </UDropdownMenu>
     </div>
 
     <UCard
       :class="[
         'cursor-pointer transition-all duration-300 ease-in-out',
-        useJobActions().jobBelongsToCompany(company)
-          ? ''
-          : 'hover:translate-x-1.5',
+        useJobActions().jobBelongsToCompany(company) ? '' : 'hover:translate-x-1.5',
       ]"
       @click="useJobActions().viewDetails(props.job)"
     >
       <div class="relative flex items-center justify-between">
-        <div class="absolute bottom-[-20px] right-[3.5px]">
+        <div class="absolute bottom-[-15px] right-[1px]">
           <SaveJobIconButton :company="company" :job="job" />
         </div>
         <div class="flex flex-grow flex-col space-y-1.5">
@@ -150,20 +145,14 @@ const jobActionItems = [
 
           <!--        options-->
           <div class="flex items-center space-x-3 text-sm">
-            <WorkingPermits
-              :countries="jobWorkingPermits(data?.countries??[], job as JobOffer)"
-            />
+            <WorkingPermits :countries="jobWorkingPermits(countries ?? [], job as JobOffer)" />
 
-            <span
-              class="rounded-full border border-gray-500/30 px-3 py-0.5 text-xs"
-            >
+            <span class="rounded-full border border-gray-500/30 px-3 py-0.5 text-xs">
               {{ userFacingRemoteOptions(job?.remoteOptions as RemoteOptions) }}
             </span>
 
             <!--            <span>•</span>-->
-            <span
-              class="rounded-full border border-gray-500/30 px-3 py-0.5 text-xs"
-            >
+            <span class="rounded-full border border-gray-500/30 px-3 py-0.5 text-xs">
               {{ userFacingWorkType(job?.workType) }}
             </span>
 
@@ -185,19 +174,16 @@ const jobActionItems = [
   </div>
 
   <USlideover
-    v-model="isJobSidePanelOpen"
+    v-model:open="isJobSidePanelOpen"
+    :title="job.title"
     :ui="{ overlay: { background: 'bg-gray-200/60 dark:bg-gray-800/75' } }"
+    description="Job Details"
   >
-    <div class="relative p-4">
-      <XCircleIcon
-        class="absolute right-4 top-2 w-8 cursor-pointer text-blueGray-900"
-        @click="isJobSidePanelOpen = false"
-      />
-
+    <template #body>
       <div class="my-4 flex-1 p-4">
         <JobDetailsCard :job="job" />
       </div>
-    </div>
+    </template>
   </USlideover>
 </template>
 

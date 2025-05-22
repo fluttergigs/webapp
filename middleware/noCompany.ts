@@ -1,7 +1,7 @@
-import useCompanyActions from "~/composables/useCompanyActions";
+import useCompanyActions from '~/composables/useCompanyActions';
 
 export default defineNuxtRouteMiddleware((from, to) => {
-    const {checkCompanyExistenceGuard} = useCompanyActions()
+  const { checkCompanyExistenceGuard } = useCompanyActions();
 
-    checkCompanyExistenceGuard()
-})
+  return checkCompanyExistenceGuard();
+});

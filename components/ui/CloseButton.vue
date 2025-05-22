@@ -1,20 +1,12 @@
-<script setup lang="ts">
-
-</script>
+<script lang="ts" setup></script>
 
 <template>
-  <div class="rounded-full border-indigo absolute top-8 left-8 cursor-pointer"
-       @click="useRouter().go(-1)">
-
-    <UButton
-        icon="i-heroicons-x-circle"
-        color="indigo" variant="ghost"
-        size="2xl"
-    />
+  <div
+    class="rounded-full border-indigo absolute top-8 left-8 cursor-pointer"
+    @click="useRouter().go(-1)"
+  >
+    <UButton color="primary" icon="i-heroicons-x-circle" size="2xl" variant="ghost" />
   </div>
-
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

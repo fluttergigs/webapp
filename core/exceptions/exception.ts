@@ -1,9 +1,8 @@
 export class CustomException extends Error {
+  message: string = '';
 
-    message: string = ""
-
-    constructor(message: string) {
-        super()
-        this.message = message
-    }
+  constructor(message: string) {
+    super();
+    this.message = message;
+  }
 }

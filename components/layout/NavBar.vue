@@ -2,7 +2,7 @@
   <section class="z-[2500] overflow-hidden">
     <div
       :class="[isHomePage ? 'bg-white' : 'bg-blueGray-50']"
-      class="sticky flex items-center justify-between bg-blueGray-50 px-4 py-5 transition-all duration-200 ease-in md:px-18"
+      class="sticky flex items-center justify-between bg-blueGray-50 px-6 py-5 transition-all duration-200 ease-in md:px-18"
     >
       <div class="w-auto">
         <div class="flex flex-wrap items-center">
@@ -15,19 +15,21 @@
             <ul class="mr-16 flex items-center">
               <li
                 v-for="link in links"
-                :key="link.name"
+                v-if="link?.isEnabled ?? true"
+                :key="link?.name"
                 class="mr-9 font-medium hover:text-indigo-900"
               >
                 <UChip
                   :show="link.hasOwnProperty('tag')"
-                  :text="link['tag']"
-                  color="green"
-                  size="xl"
+                  :text="link.tag"
+                  :ui="{ base: 'p-2' }"
+                  color="success"
+                  size="3xl"
                 >
                   <NuxtLink
                     :class="[
-                      'font-medium hover:text-indigo-900',
-                      { 'text-indigo-800': useRoute().fullPath === link.path },
+                      'font-bold hover:text-indigo-900',
+                      { 'text-indigo-800 text-lg': useRoute().fullPath === link.path },
                     ]"
                     :to="link.path"
                     >{{ link.name }}
@@ -41,40 +43,39 @@
       <div class="w-auto">
         <div class="flex flex-wrap items-center">
           <div class="mr-5 hidden w-auto lg:block">
-            <ClientOnly>
-              <div class="inline-block">
-                <NuxtLink
-                  v-if="!isAuthenticated"
-                  :to="AppRoutes.login"
-                  class="font-medium"
-                >
-                  Login
-                </NuxtLink>
-                <UDropdown
-                  v-else
-                  :items="accountLinks"
-                  :popper="{ placement: 'bottom-start' }"
-                >
-                  <div class="flex items-center justify-center">
-                    <span class="text-sm font-medium">
-                      {{ useAuthStore().userFullName.toUpperCase() }}
-                    </span>
-                    <UIcon name="i-heroicons-chevron-down-20-solid" />
-                  </div>
-                </UDropdown>
-              </div>
-            </ClientOnly>
+            <!--            <ClientOnly>-->
+            <div class="inline-block">
+              <NuxtLink v-if="!isAuthenticated" :to="AppRoutes.login" class="font-medium">
+                Login
+              </NuxtLink>
+              <UDropdownMenu
+                v-else
+                :items="accountLinks"
+                :popper="{ placement: 'bottom-start' }"
+                :ui="{
+                  content: 'w-48',
+                }"
+                size="xl"
+              >
+                <div class="flex items-center justify-center">
+                  <span class="text-lg primary-gradient font-bold">
+                    {{ useAuthStore().authUser.username }}
+                  </span>
+                  <UIcon name="i-heroicons-chevron-down-20-solid" />
+                </div>
+              </UDropdownMenu>
+            </div>
+            <!--            </ClientOnly>-->
           </div>
           <div class="hidden w-auto lg:block">
             <UButton
               :to="AppRoutes.postJob"
               block
-              class="bg-indigo-700"
-              color="indigo"
+              class="rounded-xl"
+              color="primary"
               icon="i-heroicons-megaphone"
               label="Post a job"
               size="lg"
-              square
               variant="solid"
             />
           </div>
@@ -126,10 +127,10 @@
           </div>
           <div class="flex w-full flex-col justify-center py-16">
             <ul>
-              <li v-for="link in links" class="mb-12">
+              <li v-for="link in links" v-if="link?.isEnabled ?? true" class="mb-12">
                 <a
                   :href="link.path"
-                  class="font-medium hover:text-indigo-900"
+                  class="font-bold text-lg hover:text-indigo-900"
                   @click.prevent="onMenuLinkClick(link)"
                   >{{ link.name }}</a
                 >
@@ -139,40 +140,39 @@
           <div class="flex w-full flex-col justify-end pb-8">
             <div class="flex flex-wrap">
               <div class="mb-3 w-full">
-                <ClientOnly>
-                  <div class="block">
-                    <NuxtLink
-                      v-if="!isAuthenticated"
-                      :to="AppRoutes.login"
-                      class="font-medium"
-                    >
-                      Login
-                    </NuxtLink>
+                <!--                <ClientOnly>-->
+                <div class="block">
+                  <NuxtLink v-if="!isAuthenticated" :to="AppRoutes.login" class="font-medium">
+                    Login
+                  </NuxtLink>
 
-                    <UDropdown
-                      v-else
-                      :items="accountLinks"
-                      :popper="{ placement: 'bottom-start' }"
-                    >
-                      <div class="flex items-center justify-center">
-                        <span class="font-medium">
-                          {{ useAuthStore().userFullName.toUpperCase() }}
-                        </span>
-                        <UIcon name="i-heroicons-chevron-down-20-solid" />
-                      </div>
-                    </UDropdown>
-                  </div>
-                </ClientOnly>
+                  <UDropdownMenu
+                    v-else
+                    :items="accountLinks"
+                    :popper="{ placement: 'bottom-start' }"
+                    :ui="{
+                      content: 'w-48',
+                    }"
+                    size="xl"
+                  >
+                    <div class="flex items-center justify-center">
+                      <span class="text-lg primary-gradient font-bold">
+                        {{ useAuthStore().authUser.username }}
+                      </span>
+                      <UIcon name="i-heroicons-chevron-down-20-solid" />
+                    </div>
+                  </UDropdownMenu>
+                </div>
+                <!--                </ClientOnly>-->
               </div>
               <UButton
                 :to="AppRoutes.postJob"
-                class="bg-indigo-700"
-                color="indigo"
+                class="rounded-xl"
+                color="primary"
                 icon="i-heroicons-megaphone"
                 label="Post a job"
                 size="lg"
                 square
-                variant="solid"
               />
             </div>
           </div>
@@ -183,111 +183,138 @@
 </template>
 
 <script lang="ts" setup>
-import { AppRoutes } from "~/core/routes";
-import { useAuthStore } from "~/stores/auth";
-import { storeToRefs } from "pinia";
-import { AnalyticsEvent } from "~/services/analytics/events";
-import { AvailableFlags } from "~/services/feature-flag/available_flags";
-import CloseIcon from "~/components/icons/CloseIcon.vue";
-import { AppAnalyticsProvider } from "~/services/analytics/app_analytics_provider";
+  import { storeToRefs } from 'pinia';
+  import CloseIcon from '~/components/icons/CloseIcon.vue';
+  import { logDev } from '~/core/helpers/log';
+  import { AppRoutes } from '~/core/routes';
+  import { ApplicationEventEnum } from '~/plugins/eventBus.client';
+  import { AvailableFlags } from '~/services/feature-flag/availableFlags';
+  import { useAuthStore } from '~/stores/auth';
 
-const links = shallowRef([
-  {
-    path: AppRoutes.welcome,
-    name: "Home",
-    enabled: true,
-  },
-
-  {
-    path: AppRoutes.jobs,
-    name: "Jobs",
-    isEnabled: true,
-  },
-  {
-    path: AppRoutes.fluppets,
-    name: "Fluppets",
-    tag: useFeatureFlags().isEnabled(AvailableFlags.fluppets) ? "New" : "Soon",
-    isEnabled: useFeatureFlags().isEnabled(AvailableFlags.fluppets),
-  },
-  {
-    path: AppRoutes.companies,
-    name: "Companies",
-    enabled: useFeatureFlags().isEnabled(AvailableFlags.companiesList),
-  },
-  {
-    path: AppRoutes.hireConsultants,
-    name: "Consultants",
-    tag: useFeatureFlags().isEnabled(AvailableFlags.hireConsultants)
-      ? "New"
-      : "Soon",
-    isEnabled: useFeatureFlags().isEnabled(AvailableFlags.hireConsultants),
-  },
-
-  {
-    path: AppRoutes.learn,
-    name: "Learn",
-    enabled: true,
-  },
-]);
-
-const isActive = (path: string) => useRoute().path === path;
-
-const accountLinks = [
-  [
+  const links = ref([
     {
-      label: "User Profile",
-      click: () => {
-        navigateTo(AppRoutes.myAccount);
-      },
+      path: AppRoutes.welcome,
+      name: 'Home',
     },
-  ],
-  [
+
     {
-      label: "Saved Jobs",
-      click: () => {
-        navigateTo(AppRoutes.mySavedJobs);
-      },
+      path: AppRoutes.jobs,
+      name: 'Jobs',
     },
-  ],
-  [
     {
-      label: "My Job postings",
-      click: () => {
-        navigateTo(AppRoutes.myJobs);
-      },
+      path: AppRoutes.learn,
+      name: 'Learn',
+      isEnabled: true,
     },
-  ],
-  [
-    {
-      label: "My company",
-      click: () => {
-        navigateTo(AppRoutes.myCompany);
+  ]);
+
+  const accountLinks = ref([
+    [
+      {
+        label: 'Profile',
+        onClick: () => {
+          navigateTo(AppRoutes.consultantProfile);
+        },
       },
-    },
-  ],
-
-  [
-    {
-      label: "Logout",
-      click: () => {
-        const { $analytics } = useNuxtApp();
-        ($analytics as AppAnalyticsProvider).capture(
-          AnalyticsEvent.logoutButtonClicked,
-        );
-
-        useAuthStore().logout();
+      {
+        label: 'Account',
+        onClick: () => {
+          navigateTo(AppRoutes.myAccount);
+        },
       },
-    },
-  ],
-];
+    ],
+    [
+      {
+        label: 'Saved Jobs',
+        onClick: () => {
+          navigateTo(AppRoutes.mySavedJobs);
+        },
+      },
+    ],
+    [
+      {
+        label: 'My Job postings',
+        onClick: () => {
+          navigateTo(AppRoutes.myJobs);
+        },
+      },
+    ],
+    [
+      {
+        label: 'My company',
+        onClick: () => {
+          navigateTo(AppRoutes.myCompany);
+        },
+      },
+    ],
+    [
+      {
+        label: 'Logout',
+        onClick: () => {
+          useUser().logout();
+        },
+      },
+    ],
+  ]);
 
-const isHomePage = useRoute().path === "/";
+  const isHomePage = useRoute().path === '/';
 
-const { isAuthenticated } = storeToRefs(useAuthStore());
+  const { isAuthenticated } = storeToRefs(useAuthStore());
 
-const onMenuLinkClick = (link: any) => {
-  //@ts-ignore
-  document.querySelector(".navbar-close")?.click();
-  navigateTo(link.path);
-};
+  const onMenuLinkClick = (link: any) => {
+    //@ts-ignore
+    document.querySelector('.navbar-close')?.click();
+    navigateTo(link.path);
+  };
+
+  onMounted(() => {
+    const { $listen } = useNuxtApp();
+
+    $listen(ApplicationEventEnum.featureFlagsLoaded, (data: any) => {
+      logDev('Feature Flags listener', data);
+
+      links.value = [
+        {
+          path: AppRoutes.welcome,
+          name: 'Home',
+        },
+        {
+          path: AppRoutes.jobs,
+          name: 'Jobs',
+        },
+        {
+          path: AppRoutes.companies,
+          name: 'Companies',
+          isEnabled: useFeatureFlags().isEnabled(AvailableFlags.companiesList),
+          tag: useFeatureFlags().isEnabled(AvailableFlags.companiesList) ? 'New' : 'Soon',
+        },
+
+        {
+          path: AppRoutes.hireConsultants,
+          name: 'Consultants',
+          tag: useFeatureFlags().isEnabled(AvailableFlags.hireConsultants) ? 'New' : 'Soon',
+        },
+        {
+          path: AppRoutes.fluppets,
+          name: 'Fluppets',
+          tag: useFeatureFlags().isEnabled(AvailableFlags.fluppets) ? 'New' : 'Soon',
+        },
+        {
+          path: AppRoutes.learn,
+          name: 'Learn',
+        },
+      ];
+
+      if (useFeatureFlags().isEnabled(AvailableFlags.hireConsultants)) {
+        accountLinks.value.unshift([
+          {
+            label: 'Profile',
+            onClick: () => {
+              navigateTo(AppRoutes.consultantProfile);
+            },
+          },
+        ]);
+      }
+    });
+  });
 </script>

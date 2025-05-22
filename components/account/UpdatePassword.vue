@@ -1,69 +1,51 @@
-<script setup lang="ts">
+<script lang="ts" setup>
+  //@ts-ignore
+  import type { Notification } from '#ui/types';
+  import CustomInput from '~/components/forms/CustomInput.vue';
+  import { useAuthStore } from '~/stores/auth';
 
-import LoadingSpinnerIcon from "~/components/icons/LoadingSpinnerIcon.vue";
-import CustomInput from "~/components/forms/CustomInput.vue";
-import {useAuthStore} from "~/stores/auth";
-import {changePasswordFormSchema} from "~/core/validations/auth.validations";
-import {AnalyticsEvent} from "~/services/analytics/events";
-import {AppAnalyticsProvider} from "~/services/analytics/app_analytics_provider";
-import {BaseToast} from "~/core/ui/base_toast";
-//@ts-ignore
-import type {Notification} from "#ui/types";
-const {$analytics, $toast} = useNuxtApp()
-const authStore = useAuthStore()
+  const authStore = useAuthStore();
 
-const formInput = ref({
-  password: '',
-  confirmPassword: '',
-})
+  const formInput = ref({
+    password: '',
+    confirmPassword: '',
+  });
 
-const canSubmit = ref(false)
+  const canSubmit = ref(false);
 
-watch(formInput, async () => {
-  canSubmit.value = await changePasswordFormSchema.isValid(formInput.value);
+  /*watch(
+    formInput,
+    async () => {
+      canSubmit.value = await changePasswordFormSchema.isValid(formInput.value);
+    },
+    { deep: true },
+  );*/
 
-}, {deep: true},)
-
-const submit = async () => {
-  try {
-    (<AppAnalyticsProvider>$analytics).capture(AnalyticsEvent.changePasswordButtonClicked, formInput.value);
-    await authStore.changeUserPassword({data: formInput.value.password}, () => {
-      authStore.fetchUser()
-    });
-    (<AppAnalyticsProvider>$analytics).capture(AnalyticsEvent.successfulPasswordChange, formInput.value);
-
-    ($toast as BaseToast<Notification, number>).success(<string>authStore.updateUser!.message);
-  } catch (e) {
-    ($toast as BaseToast<Notification, number>).error(<string>authStore.updateUser!.message);
-  }
-}
+  const submit = async () => {
+    useUser().updatePassword({ data: formInput.value });
+  };
 </script>
 
 <template>
-  <form class="flex flex-col space-y-4 my-12 mr-8">
+  <form class="flex flex-col gap-4 my-12 mr-8">
+    <CustomInput v-model="formInput.password" label="Password" name="password" type="password" />
+    <CustomInput
+      v-model="formInput.confirmPassword"
+      autocomplete="new-password"
+      label="Confirm password"
+      name="confirmPassword"
+      type="password"
+    />
 
-    <div class="block mb-5">
-      <CustomInput name="password" label="Password" v-model="formInput.password"
-                   type="password"/>
-    </div>
-    <div class="block mb-5">
-      <CustomInput name="confirmPassword" label="Confirm password"
-                   v-model="formInput.confirmPassword" type="password"/>
-    </div>
-
-    <button
-        :disabled="!canSubmit || authStore.changePassword.isLoading"
-        class="primary-button flex items-center justify-center space-x-2 m-auto max-w-xs"
-        type="button"
-        @click.prevent="submit"
-    >
-      <LoadingSpinnerIcon v-if="authStore.changePassword.isLoading" class="text-primary animate-spin"/>
-      <span v-else> Save changes</span>
-    </button>
+    <UButton
+      :disabled="!canSubmit || authStore.$changePassword.isLoading"
+      :loading="authStore.$changePassword.isLoading"
+      class="primary-button flex items-center justify-center gap-2 m-auto max-w-xs"
+      label="Save changes"
+      size="xl"
+      @click.prevent="submit"
+    />
   </form>
-
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

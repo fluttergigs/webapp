@@ -1,9 +1,9 @@
-import {Fetcher} from "~/core/network/fetcher";
+import { Fetcher } from '~/core/network/fetcher';
 
 export default defineNuxtPlugin((nuxtApp) => {
-    return ({
-        provide: {
-            http: new Fetcher()
-        }
-    });
-})
+  return {
+    provide: {
+      http: new Fetcher(),
+    },
+  };
+});
