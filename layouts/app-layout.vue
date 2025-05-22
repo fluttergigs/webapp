@@ -2,59 +2,65 @@
   <section class="flex w-full bg-white">
     <!--    xl:flex xl:flex-col-->
     <div
-        :class="[
+      :class="[
         'navbar-menu relative z-50 flex h-full w-full flex-col transition-all ease-in',
         isAppBarShrunk ? 'max-w-[70px]' : 'max-w-[240px]',
       ]"
     >
       <!--      <div class="navbar-backdrop fixed xl:hidden inset-0 bg-blueGray-50 opacity-10"></div>-->
       <div
-          :class="[
+        :class="[
           'fixed inset-0 flex h-full flex-col items-center border-r bg-blueGray-50 transition-all duration-200 ease-in',
           isAppBarShrunk ? 'max-w-[70px]' : 'max-w-[240px]',
         ]"
       >
         <!--        App Logo and menu toggle-->
         <div
-            :class="[isAppBarShrunk ? 'px-2' : 'px-8']"
-            class="my-2 flex w-full items-center justify-between py-3 transition-all duration-200 ease-in"
+          :class="[isAppBarShrunk ? 'px-2' : 'px-8']"
+          class="my-2 flex w-full items-center justify-between py-3 transition-all duration-200 ease-in"
         >
           <img
-              v-if="isAppBarShrunk"
-              alt=""
-              class="w-10"
-              src="/ico.webp"
-              @click="useAppStore().toggleAppBarShrink()"
+            v-if="isAppBarShrunk"
+            alt=""
+            class="w-10"
+            src="/ico.webp"
+            @click="useAppStore().toggleAppBarShrink()"
           />
-          <img v-else alt="" class="w-14" src="/logo.webp" @click="navigateTo(AppRoutes.welcome)"/>
+          <img
+            v-else
+            alt=""
+            class="w-14"
+            src="/logo.webp"
+            @click="navigateTo(AppRoutes.welcome)"
+          />
           <div class="w-auto" @click="useAppStore().toggleAppBarShrink()">
             <a class="text-neutral-400 hover:text-neutral-500" href="#">
               <!--              <ChevronDoubleRightIcon class="w-2" v-if="isAppBarShrunk"/>-->
-              <ArrowsPointingInIcon v-if="!isAppBarShrunk" class="w-5"/>
+              <ArrowsPointingInIcon v-if="!isAppBarShrunk" class="w-5" />
             </a>
           </div>
         </div>
 
         <!--    App menu-->
         <div
-            class="mx-4 flex flex-grow flex-col justify-between overflow-y-auto overflow-x-hidden py-8"
+          class="mx-4 flex flex-grow flex-col justify-between overflow-y-auto overflow-x-hidden py-8"
         >
           <div class="-m-2.5 mb-8 flex flex-col flex-wrap space-y-3 px-7">
             <div
-                v-for="(linkItems, section, sectionIndex) in groupedLinks"
-                class="my-3"
+              v-for="(linkItems, section, sectionIndex) in groupedLinks"
+              class="my-3"
             >
               <p
-                  v-if="!!section && !isAppBarShrunk"
-                  class="text-neutral-400 mb-2 w-auto text-xs font-medium uppercase"
+                v-if="!!section && !isAppBarShrunk"
+                class="text-neutral-400 mb-2 w-auto text-xs font-medium uppercase"
               >
                 {{ section }}
               </p>
 
               <div class="flex flex-col space-y-4">
                 <div
-                    v-for="(link, index) in linkItems"
-                    :class="[
+                  v-for="(link, index) in linkItems"
+                  :class="[
                     'flex w-auto p-2',
                     useRoute().path === link.path
                       ? 'rounded-md bg-indigo-200 text-indigo-800'
@@ -63,42 +69,42 @@
                 >
                   <div class="flex">
                     <UTooltip
-                        :close-delay="100"
-                        :open-delay="200"
-                        :prevent="!isAppBarShrunk"
-                        :text="link.name"
-                        :ui="{ background: 'bg-gray-900', color: 'text-white' }"
+                      :close-delay="100"
+                      :open-delay="200"
+                      :prevent="!isAppBarShrunk"
+                      :text="link.name"
+                      :ui="{ background: 'bg-gray-900', color: 'text-white' }"
                     >
                       <NuxtLink
-                          v-if="link.path"
-                          :class="['flex flex-wrap items-center space-x-3']"
-                          :to="link.path"
+                        v-if="link.path"
+                        :class="['flex flex-wrap items-center space-x-3']"
+                        :to="link.path"
                       >
                         <component
-                            :is="link.icon"
-                            :class="['h-5 w-5 text-gray-600']"
+                          :is="link.icon"
+                          :class="['h-5 w-5 text-gray-600']"
                         />
                         <p
-                            v-if="!isAppBarShrunk"
-                            class="hover:text-neutral-700 font-medium"
+                          v-if="!isAppBarShrunk"
+                          class="hover:text-neutral-700 font-medium"
                         >
                           {{ link.name }}
                         </p>
                       </NuxtLink>
                       <div
-                          v-else
-                          :class="[
+                        v-else
+                        :class="[
                           'flex cursor-pointer flex-wrap items-center space-x-3',
                         ]"
-                          @click="link.onClick"
+                        @click="link.onClick"
                       >
                         <component
-                            :is="link.icon"
-                            :class="['h-5 w-5 text-gray-600']"
+                          :is="link.icon"
+                          :class="['h-5 w-5 text-gray-600']"
                         />
                         <p
-                            v-if="!isAppBarShrunk"
-                            class="hover:text-neutral-700 font-medium"
+                          v-if="!isAppBarShrunk"
+                          class="hover:text-neutral-700 font-medium"
                         >
                           {{ link.name }}
                         </p>
@@ -113,10 +119,10 @@
       </div>
     </div>
     <div class="flex min-h-screen w-full flex-1 flex-grow px-1 md:px-6">
-      <NuxtPage/>
+      <NuxtPage />
     </div>
     <client-only>
-      <UNotifications/>
+      <UNotifications />
     </client-only>
   </section>
 </template>
@@ -131,25 +137,26 @@ import {
   StarIcon,
   UserIcon,
 } from "@heroicons/vue/24/outline";
-import {AppRoutes} from "~/core/routes";
-import {useCompanyStore} from "~/stores/company";
-import {useSettingStore} from "~/stores/setting";
-import {useAuthStore} from "~/stores/auth";
-import {groupBy} from "lodash";
-import {useJobStore} from "~/stores/job";
-import {useAppStore} from "~/stores/app";
-import {storeToRefs} from "pinia";
-import {AnalyticsEvent} from "~/services/analytics/events";
-import {useWebSocket} from "@vueuse/core";
-import {logDev} from "~/core/helpers/log";
-import {PaymentContext} from "~/core/shared/types";
+import { AppRoutes } from "~/core/routes";
+import { useCompanyStore } from "~/stores/company";
+import { useSettingStore } from "~/stores/setting";
+import { useAuthStore } from "~/stores/auth";
+import { groupBy } from "lodash";
+import { useJobStore } from "~/stores/job";
+import { useAppStore } from "~/stores/app";
+import { storeToRefs } from "pinia";
+import { AnalyticsEvent } from "~/services/analytics/events";
+import { useWebSocket } from "@vueuse/core";
+import { logDev } from "~/core/helpers/log";
+import { PaymentContext } from "~/core/shared/types";
+import { useFluppets } from "~/composables/useFluppets";
 
 const links = [
   /*{
-    icon: PresentationChartBarIcon,
-    path: '/dashboard',
-    name: 'Dashboard'
-  },*/
+          icon: PresentationChartBarIcon,
+          path: '/dashboard',
+          name: 'Dashboard'
+        },*/
   {
     icon: BuildingOffice2Icon,
     path: AppRoutes.myCompany,
@@ -184,7 +191,7 @@ const links = [
     icon: ArrowLeftEndOnRectangleIcon,
     section: "user",
     onClick: () => {
-      const {$analytics} = useNuxtApp();
+      const { $analytics } = useNuxtApp();
       $analytics.capture(AnalyticsEvent.logoutButtonClicked);
       useAuthStore().logout();
     },
@@ -193,7 +200,7 @@ const links = [
   },
 ];
 
-const {isAppBarShrunk} = storeToRefs(useAppStore());
+const { isAppBarShrunk } = storeToRefs(useAppStore());
 const groupedLinks = computed(() => groupBy(links, "section"));
 
 await Promise.all([
@@ -204,6 +211,7 @@ await Promise.all([
   useAuthStore().getUser(),
   useLearnStore().fetchLearnCategories(),
   useLearnStore().fetchLearnResources(),
+  useFluppets().load(),
 ]);
 
 onMounted(() => {
@@ -214,7 +222,7 @@ onMounted(() => {
   const wsProtocol = window.location.protocol === "https:" ? "wss:" : "ws:";
   const wsUrl = `${wsProtocol}//${window.location.host}/_ws`;
 
-  const {status, data, send, open, close} = useWebSocket(wsUrl, {
+  const { status, data, send, open, close } = useWebSocket(wsUrl, {
     autoReconnect: true,
 
     onConnected: (ws) => {

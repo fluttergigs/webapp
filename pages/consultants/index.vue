@@ -1,33 +1,30 @@
 <script lang="ts" setup>
-
-import {AvailableFlags} from "~/services/feature-flag/available_flags";
-import type {BaseToast} from "~/core/ui/base_toast";
 //@ts-ignore
-import type {Notification} from "#ui/types";
-import {AppStrings} from "~/core/strings";
+import type { Notification } from "#ui/types";
+import { AppStrings } from "~/core/strings";
+import type { BaseToast } from "~/core/ui/base_toast";
+import { AvailableFlags } from "~/services/feature-flag/available_flags";
 
 definePageMeta({
-  title: 'Flutter Consultants',
+  title: "Flutter Consultants",
   middleware: [
-    function (to: any, from: any) {
+    function (from: any, to: any) {
       if (!useFeatureFlags().isEnabled(AvailableFlags.hireConsultants)) {
-
-        const {$toast} = useNuxtApp();
-        ($toast as BaseToast<Notification, number>).info(AppStrings.featureAvailableSoon)
-        return navigateTo(from)
+        const { $toast } = useNuxtApp();
+        if ($toast) {
+          ($toast as BaseToast<Notification, number>).info(
+            AppStrings.featureAvailableSoon
+          );
+        }
+        return navigateTo(AppRoutes.welcome);
       }
-    }
-  ]
-})
+    },
+  ],
+});
 </script>
 
 <template>
-  <main>
-
-  </main>
-
+  <main></main>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
