@@ -1,4 +1,4 @@
-import { User } from "~/services/auth/auth.types";
+import { User } from '~/services/auth/auth.types';
 
 export interface Snippet {
   id: string;
@@ -14,4 +14,4 @@ export interface Snippet {
   [key: string]: any;
 }
 
-export type Snippet = Snippet[];
+export type Snippets = Snippet[];

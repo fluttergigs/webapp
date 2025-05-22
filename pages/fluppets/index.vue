@@ -1,82 +1,51 @@
 <script lang="ts" setup>
-import { CodeBracketIcon, LightBulbIcon } from "@heroicons/vue/24/solid";
-import Perk from "~/components/ui/Perk.vue";
-import { AnalyticsEvent } from "~/services/analytics/events";
-import { useAnalytics } from "~/composables/useAnalytics";
+  import { CodeBracketIcon, LightBulbIcon } from '@heroicons/vue/24/solid';
+  import Perk from '~/components/ui/Perk.vue';
+  import { useAnalytics } from '~/composables/useAnalytics';
+  import { useFluppets } from '~/composables/useFluppets';
+  import { AnalyticsEvent } from '~/services/analytics/events';
 
-definePageMeta({
-  title: "Flutter snippets",
-  layout: "main-layout",
-  middleware: [
-    function (to: any, from: any) {
-      /* if (!useFeatureFlags().isEnabled(AvailableFlags.fluppets)) {
-                                     const { $toast } = useNuxtApp();
-        
-                                     if ($toast) {
-                                       ($toast as BaseToast<Notification>)?.info(AppStrings.featureAvailableSoon);
-                                     }
-                                     return navigateTo(AppRoutes.welcome);
-                                   }*/
-    },
-  ],
-});
+  definePageMeta({
+    title: 'Fluppets - Discover & Share & Integrate Flutter Snippets',
+    layout: 'main-layout',
+  });
 
-const { browseFluppets, handleFluppetsCreate } = useFluppets();
+  useSeoMeta({
+    title: 'FlutterGigs - Discover & Share Flutter Snippets',
+    description: 'FlutterGigs - Discover the best resources to hone your skills',
+    ogTitle: 'FlutterGigs  - Discover & Share Flutter Snippets',
+    ogDescription: 'Discover the best resources to hone your skills',
+    ogImageUrl: 'https://fluttergigs.com/fluttergigs-og.png',
+    twitterImage: 'https://fluttergigs.com/fluttergigs-og.png',
+    twitterCard: 'summary_large_image',
+    ogSiteName: 'Flutter Gigs - The #1 Flutter job platform',
+    twitterSite: '@fluttergigs',
+    twitterTitle: 'FlutterGigs - Discover & Share Flutter Snippets',
+    twitterDescription: 'FlutterGigs - Discover & Share Flutter Snippets',
+  });
 
-useSeoMeta({
-  title: "FlutterGigs - Discover & Share Flutter Snippets",
-  description: "FlutterGigs - Discover the best resources to hone your skills",
-  ogTitle: "FlutterGigs  - Discover & Share Flutter Snippets",
-  ogDescription: "Discover the best resources to hone your skills",
-  ogImageUrl: "https://fluttergigs.com/fluttergigs-og.png",
-  twitterImage: "https://fluttergigs.com/fluttergigs-og.png",
-  twitterCard: "summary_large_image",
-  ogSiteName: "Flutter Gigs - The #1 Flutter job platform",
-  twitterSite: "@fluttergigs",
-  twitterTitle: "FlutterGigs - Discover & Share Flutter Snippets",
-  twitterDescription: "FlutterGigs - Discover & Share Flutter Snippets",
-});
+  const { browseFluppets, handleFluppetsCreate } = useFluppets();
 
-onMounted(() => {
-  useAnalytics().capture(AnalyticsEvent.fluppetsPageEntered);
-});
+  onMounted(() => {
+    useAnalytics().capture(AnalyticsEvent.fluppetsPageEntered);
+  });
 </script>
 
 <template>
-  <!--  📄-->
-  <!--  Showcase Skills-->
-  <!--  Highlight your expertise with real-world code.-->
-
-  <!--  🔍-->
-  <!--  Discover Solutions-->
-  <!--  Find vetted snippets to speed up development.-->
-
-  <!--  🤝-->
-  <!--  Collaborate-->
-  <!--  Engage, upvote & refine code with peers.-->
-
   <main>
     <header class="pattern-bg relative py-36">
-      <div
-        class="container mx-auto flex flex-col-reverse items-center gap-12 px-6 lg:flex-row"
-      >
+      <div class="container mx-auto flex flex-col-reverse items-center gap-12 px-6 lg:flex-row">
         <!-- Text Content -->
-        <div class="text-center lg:w-8/12 lg:text-left">
-          <h1 class="mb-4 text-4xl font-extrabold leading-tight lg:text-7xl">
-            Discover & Share & Integrate <br /><span class="text-primary"
-              >Professional</span
-            >
+        <div class="text-center lg:w-7/12 lg:text-left">
+          <h1 class="mb-4 text-4xl font-extrabold leading-tight lg:text-6xl">
+            Discover & Share & Integrate <br /><span class="text-primary">Professional</span>
             <span class="primary-gradient"> Flutter Snippets</span>
           </h1>
           <p class="mb-8 text-xl text-gray-600">
-            Access our curated library and integrate code snippets seamlessly
-            into your <br />
-            Flutter projects. Share your own snippets and contribute to the
-            community.
+            Access our curated library and integrate code snippets seamlessly into your <br />
+            Flutter projects. Share your own snippets and contribute to the community.
           </p>
-          <div
-            class="flex flex-col justify-center gap-4 sm:flex-row lg:justify-start"
-          >
+          <div class="flex flex-col justify-center gap-4 sm:flex-row lg:justify-start">
             <UButton
               class="flex gap-2 rounded-xl px-9 py-5 font-bold"
               color="primary"
@@ -95,7 +64,7 @@ onMounted(() => {
           </div>
         </div>
         <!-- Code Snippet Preview -->
-        <div class="w-full lg:w-4/12">
+        <div class="w-full lg:w-5/12">
           <div class="custom-code__container">
             <div class="window">
               <span class="block h-3 w-3 rounded-full bg-red-500"></span>
@@ -127,9 +96,7 @@ onMounted(() => {
         >
           <div class="w-full md:w-1/3">
             <div class="flex flex-col">
-              <p
-                class="mb-6 text-sm font-bold uppercase tracking-px text-indigo-600"
-              >
+              <p class="mb-6 text-sm font-bold uppercase tracking-px text-indigo-600">
                 For Developers
               </p>
 
@@ -140,9 +107,8 @@ onMounted(() => {
               </h2>
 
               <p class="font-medium leading-relaxed text-gray-600">
-                Discover a curated library of Flutter snippets, designed to
-                enhance your development process. Share your own snippets and
-                contribute to the community.
+                Discover a curated library of Flutter snippets, designed to enhance your development
+                process. Share your own snippets and contribute to the community.
               </p>
             </div>
           </div>
@@ -153,7 +119,7 @@ onMounted(() => {
               description=" Showcase your skills: Share your code snippets and demonstrate your expertise to potential employers.
                      Collaborate with peers: Engage with the community, upvote, and refine code snippets together."
               title="Showcase"
-              @cta-clicked=""
+              @cta-clicked="handleFluppetsCreate"
             />
           </div>
           <div class="w-full md:w-1/3">
@@ -164,7 +130,7 @@ onMounted(() => {
               Discover solutions: Find vetted snippets to speed up your development process.
               Integrate seamlessly: Easily incorporate snippets into your Flutter/Dart projects"
               title="Discover"
-              @cta-clicked=""
+              @cta-clicked="browseFluppets"
             >
             </Perk>
           </div>

@@ -42,3 +42,19 @@ export enum PaymentContext {
 export declare type CallbackFunction<Result, Err extends any = {}> =
   | ((val?: Result) => void)
   | ((err?: Err) => void);
+
+export type UiLink = {
+  path: string;
+  name: string;
+  onClick?: () => void;
+  isEnabled?: boolean;
+  children?: UiLink[];
+};
+
+export interface UiTagLink extends UiLink {
+  tag: string;
+}
+
+export interface UiLabelLink extends UiLink {
+  label: string;
+}

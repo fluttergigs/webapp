@@ -1,12 +1,8 @@
 <script lang="ts" setup>
-//@ts-ignore
-import { ArrowRightIcon, PaperAirplaneIcon } from '@heroicons/vue/24/solid';
+  //@ts-ignore
+  import { ArrowRightIcon, PaperAirplaneIcon } from '@heroicons/vue/24/solid';
 
-
-
-
-
-//@ts-ignore
+  //@ts-ignore
   defineProps({
     icon: {
       type: Function,
@@ -50,7 +46,7 @@ import { ArrowRightIcon, PaperAirplaneIcon } from '@heroicons/vue/24/solid';
         </p>
       </slot>
 
-      <slot name="cta" v-if="hasCta">
+      <slot v-if="hasCta" name="cta">
         <div class="flex gap-3 cursor-pointer" @click="emits('ctaClicked')">
           <p class="font-bold">{{ ctaText }}</p>
           <ArrowRightIcon class="w-4" />

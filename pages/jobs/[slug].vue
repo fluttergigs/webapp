@@ -17,6 +17,7 @@
 
   definePageMeta({
     layout: 'main-layout',
+    title: `FlutterGis job opportunities`,
   });
 
   const { $analytics } = useNuxtApp();
@@ -46,11 +47,6 @@
   }
 
   const pending = computed(() => status.value === 'pending');
-
-  definePageMeta({
-    layout: 'main-layout',
-    title: `FlutterGis job opportunities`,
-  });
 
   useSeoMeta({
     title: () => `Flutter Gigs - ${jobOffer.value?.title}`,

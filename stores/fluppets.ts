@@ -1,27 +1,25 @@
-import { defineStore } from "pinia";
-import { Wrapper } from "~/core/wrapper";
-import { MultiApiResponse } from "~/core/shared/types";
-import type { Snippet } from "~/features/fluppets/fluppets.types";
-import { HttpClient } from "~/core/network/http_client";
-import { Endpoint } from "~/core/network/endpoints";
-import { AppStrings } from "~/core/strings";
+import { defineStore } from 'pinia';
+import { Wrapper } from '~/core/wrapper';
+import type { MultiApiResponse } from '~/core/shared/types';
+import type { Snippet } from '~/features/fluppets/fluppets.types';
+import { HttpClient } from '~/core/network/http_client';
+import { Endpoint } from '~/core/network/endpoints';
+import { AppStrings } from '~/core/strings';
 
-export const useFluppetsStore = defineStore("fluppets", {
+export const useFluppetsStore = defineStore('fluppets', {
   state: () => ({
     fluppetsListResponse: new Wrapper<MultiApiResponse<Snippet>>().toInitial(),
-    filteredFluppetsListResponse: new Wrapper<
-      MultiApiResponse<Snippet>
-    >().toInitial(),
+    filteredFluppetsListResponse: new Wrapper<MultiApiResponse<Snippet>>().toInitial(),
   }),
   actions: {
     async load() {
-      const fluppetsListResponse = (this.filteredFluppetsListResponse =
+      this.fluppetsListResponse = (this.filteredFluppetsListResponse =
         new Wrapper<MultiApiResponse<Snippet>>().toLoading());
 
       try {
         //@ts-ignore
         const { $http } = useNuxtApp();
-        const response = await (<HttpClient>$http).get(
+        const response: MultiApiResponse<Snippet> = await (<HttpClient>$http).get(
           `${Endpoint.snippets}?populate=*`,
         );
         this.fluppetsListResponse = this.filteredFluppetsListResponse =
@@ -31,7 +29,8 @@ export const useFluppetsStore = defineStore("fluppets", {
           this.fluppetsListResponse.toFailed(AppStrings.unableToFetchFluppets);
       }
     },
-    async search() {},
+    async search() {
+    },
   },
   getters: {
     fluppetsList: (state) => {
@@ -44,7 +43,7 @@ export const useFluppetsStore = defineStore("fluppets", {
       return state.filteredFluppetsListResponse.isLoading;
     },
     isFluppetsListError: (state) => {
-      return state.filteredFluppetsListResponse.isFailed;
+      return state.filteredFluppetsListResponse.isFailure;
     },
     isFluppetsListSuccess: (state) => {
       return state.filteredFluppetsListResponse.isSuccess;

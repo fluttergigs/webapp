@@ -187,11 +187,12 @@
   import CloseIcon from '~/components/icons/CloseIcon.vue';
   import { logDev } from '~/core/helpers/log';
   import { AppRoutes } from '~/core/routes';
+  import type { UiLink } from '~/core/shared/types';
   import { ApplicationEventEnum } from '~/plugins/eventBus.client';
   import { AvailableFlags } from '~/services/feature-flag/availableFlags';
   import { useAuthStore } from '~/stores/auth';
 
-  const links = ref([
+  const links: Ref<UiLink[]> = ref([
     {
       path: AppRoutes.welcome,
       name: 'Home',
@@ -283,6 +284,11 @@
           name: 'Jobs',
         },
         {
+          path: AppRoutes.fluppets,
+          name: 'Fluppets',
+          tag: useFeatureFlags().isEnabled(AvailableFlags.fluppets) ? 'New' : 'Soon',
+        },
+        {
           path: AppRoutes.companies,
           name: 'Companies',
           isEnabled: useFeatureFlags().isEnabled(AvailableFlags.companiesList),
@@ -293,11 +299,6 @@
           path: AppRoutes.hireConsultants,
           name: 'Consultants',
           tag: useFeatureFlags().isEnabled(AvailableFlags.hireConsultants) ? 'New' : 'Soon',
-        },
-        {
-          path: AppRoutes.fluppets,
-          name: 'Fluppets',
-          tag: useFeatureFlags().isEnabled(AvailableFlags.fluppets) ? 'New' : 'Soon',
         },
         {
           path: AppRoutes.learn,

@@ -2,12 +2,15 @@
   <NuxtLoadingIndicator :height="5" color="#283593" />
   <UApp>
     <NuxtLayout>
-      <NuxtPage />
+      <div class="pattern-bg">
+        <NuxtPage />
+      </div>
     </NuxtLayout>
   </UApp>
 </template>
 
 <script lang="ts" setup>
+  import { useFluppets } from '~/composables/useFluppets';
   import { useAuthStore } from '~/stores/auth';
   import { useCompanyStore } from '~/stores/company';
   import { useJobStore } from '~/stores/job';
@@ -94,6 +97,7 @@
     useAuthStore().getUser(),
     useLearnStore().fetchLearnCategories(),
     useLearnStore().fetchLearnResources(),
+    useFluppets().fetchFluppets(),
   ]);
 
   onMounted(() => {

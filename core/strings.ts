@@ -108,4 +108,5 @@ export class AppStrings {
 
   static educationUpdatedSuccessfully = 'Your education has been updated successfully';
   static experienceUpdatedSuccessfully = 'Your experience has been updated successfully';
+  static unableToFetchFluppets = 'Unable to fetch fluppets. Please try again later';
 }

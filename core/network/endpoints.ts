@@ -1,4 +1,8 @@
 export class Endpoint {
+  static get snippets() {
+    return '/api/snippets';
+  }
+
   static get setting() {
     return `/setting`;
   }

@@ -19,7 +19,7 @@
               class="cursor-pointer inline-flex space-x-2 items-center text-center font-semibold text-indigo-600"
               @click="handleError"
             >
-              <ArrowLeftIcon class="text-indigo-700 w-4" />
+              <ArrowLeftIcon class="text-indigo-700 text-xl w-4" />
               <span>Go Back to Homepage</span>
             </div>
           </div>

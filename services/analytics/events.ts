@@ -55,4 +55,8 @@ export const enum AnalyticsEvent {
   passwordResetButtonClicked = 'password_reset_button_clicked',
   passwordResetSuccessful = 'password_reset_successful',
   passwordResetFailed = 'password_reset_failed',
+  fluppetsPageEntered = 'fluppets_page_entered',
+  browseFluppetsPageButtonClicked = 'browse_fluppets_page_button_clicked',
+  contributeFluppetsPageButtonClicked = 'contribute_fluppets_page_button_clicked',
+  browseFluppetsPageEntered = 'browse_fluppets_page_entered',
 }

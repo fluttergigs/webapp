@@ -178,26 +178,26 @@
   import CompanyCreationSection from '~/components/landing/CompanyCreationSection.vue';
 
   definePageMeta({
-  layout: "main-layout",
-  title: "The #1 Flutter job platform in the world",
-});
+    layout: 'main-layout',
+    title: 'The #1 Flutter job platform in the world',
+  });
 
-useSeoMeta({
-  title: "FlutterGigs - The #1 Flutter jobs platform",
-  ogTitle: "FlutterGigs - The #1 Flutter jobs platform",
-  ogUrl: "https://fluttergigs.com",
-  ogLogo: "https://fluttergigs.com/ico.png",
-  description:
-    "FlutterGigs is a platform to find Flutter framework related job opportunities and more",
-  ogDescription:
-    "FlutterGigs is a platform to find Flutter framework related job opportunities and more",
-  ogSiteName: "FlutterGigs - The #1 Flutter jobs platform",
-  twitterCard: "summary_large_image",
-  twitterUrl: "https://fluttergigs.com",
-  twitterDomain: "https://fluttergigs.com",
-  twitterSite: "@fluttergigs",
-  twitterTitle: `FlutterGigs - Find the best Flutter opportunities at top remote companies around the world`,
-  twitterDescription:
-    "FlutterGigs is a platform to find Flutter framework related job opportunities and more",
-});
+  useSeoMeta({
+    title: 'FlutterGigs - The #1 Flutter jobs platform',
+    ogTitle: 'FlutterGigs - The #1 Flutter jobs platform',
+    ogUrl: 'https://fluttergigs.com',
+    ogLogo: 'https://fluttergigs.com/ico.png',
+    description:
+      'FlutterGigs is a platform to find Flutter framework related job opportunities and more',
+    ogDescription:
+      'FlutterGigs is a platform to find Flutter framework related job opportunities and more',
+    ogSiteName: 'FlutterGigs - The #1 Flutter jobs platform',
+    twitterCard: 'summary_large_image',
+    twitterUrl: 'https://fluttergigs.com',
+    twitterDomain: 'https://fluttergigs.com',
+    twitterSite: '@fluttergigs',
+    twitterTitle: `FlutterGigs - Find the best Flutter opportunities at top remote companies around the world`,
+    twitterDescription:
+      'FlutterGigs is a platform to find Flutter framework related job opportunities and more',
+  });
 </script>

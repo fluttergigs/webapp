@@ -9,6 +9,8 @@ export class AppRoutes {
   static companies = '/companies/';
   static hireConsultants = '/consultants';
   static fluppets = '/fluppets';
+  static browseFluppets = '/fluppets/explore';
+  static createFluppets = '/fluppets/create';
   static learn = '/learn';
   static myJobs = '/account/jobs';
   static myAccount = '/account/user';
