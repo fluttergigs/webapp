@@ -1,18 +1,37 @@
 import { useClipboard } from '@vueuse/core';
+import { watchDebounced } from '@vueuse/core';
+import type { is } from 'date-fns/locale';
 import { storeToRefs } from 'pinia';
 import { AppRoutes } from '~/.nuxt/imports';
 import { useAnalytics } from '~/composables/useAnalytics';
 import { BaseToast } from '~/core/ui/base_toast';
-import type { Snippet, Tags } from '~/features/fluppets/fluppets.types';
+import type { Snippet, Tag, Tags } from '~/features/fluppets/fluppets.types';
 import { AnalyticsEvent } from '~/services/analytics/events';
 
 export function useFluppets() {
   const { $toast } = useNuxtApp();
   const fluppetsStore = useFluppetsStore();
 
+  const {
+    isFluppetsListLoading,
+    isFluppetsListError,
+    isFluppetsListSuccess,
+    isFluppetTagsLoading,
+    isFluppetTagsError,
+    isFluppetTagsSuccess,
+    filteredFluppetsList,
+    tags,
+  } = storeToRefs(fluppetsStore);
+
+  const filters = ref({
+    tags: [],
+    searchQuery: '',
+    sortKey: 'snippetCounts',
+  });
+
   const selectedTags = ref<Tags>([]);
 
-  const { filteredFluppetsList, tags } = storeToRefs(fluppetsStore);
+  const searchQuery = ref(null);
 
   const popularTags = computed(() => {
     return tags.value.filter((tag) => tag.snippets.length > 0).slice(0, 8);
@@ -81,16 +100,18 @@ export function useFluppets() {
   };
 
   return {
+    filters,
+    searchQuery,
     selectedTags,
     tags,
     popularTags,
-    fluppetsList: filteredFluppetsList.value,
-    isFluppetsListLoading: fluppetsStore.isFluppetsListLoading,
-    isFluppetsListError: fluppetsStore.isFluppetsListError,
-    isFluppetsListSuccess: fluppetsStore.isFluppetsListSuccess,
-    isTagsLoading: fluppetsStore.isFluppetTagsLoading,
-    isTagsError: fluppetsStore.isFluppetTagsError,
-    isTagsSuccess: fluppetsStore.isFluppetTagsSuccess,
+    fluppetsList: filteredFluppetsList,
+    isTagsLoading: isFluppetTagsLoading,
+    isTagsError: isFluppetTagsError,
+    isTagsSuccess: isFluppetTagsSuccess,
+    isFluppetsListLoading,
+    isFluppetsListError,
+    isFluppetsListSuccess,
     fetchFluppets,
     fetchFluppetTags,
     browseFluppets,

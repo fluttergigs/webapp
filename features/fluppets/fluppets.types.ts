@@ -24,5 +24,11 @@ export interface Tag {
   snippets: Snippets;
 }
 
+export interface SnippetFilterOptions {
+  tags: string[];
+  searchQuery: string;
+  sortKey: string;
+}
+
 export type Snippets = Snippet[];
 export type Tags = Tag[];

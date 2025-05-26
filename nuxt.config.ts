@@ -8,7 +8,7 @@ import path from 'path';
 //@ts-ignore
 export default defineNuxtConfig({
   devtools: {
-    enabled: true,
+    enabled: false,
 
     timeline: {
       enabled: true,
