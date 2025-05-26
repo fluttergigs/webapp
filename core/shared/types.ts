@@ -48,13 +48,7 @@ export type UiLink = {
   name: string;
   onClick?: () => void;
   isEnabled?: boolean;
+  tag?: string;
   children?: UiLink[];
+  label?: string;
 };
-
-export interface UiTagLink extends UiLink {
-  tag: string;
-}
-
-export interface UiLabelLink extends UiLink {
-  label: string;
-}

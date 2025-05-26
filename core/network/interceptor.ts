@@ -1,6 +1,7 @@
 //@ts-ignore
 import type { FetchContext, FetchResponse } from 'ofetch';
 import { useAuthStore } from '~/stores/auth';
+import { logDev } from '../helpers/log';
 
 export type PromiseVoid = Promise<void> | void;
 export const $fetchInterceptor = {
@@ -29,9 +30,9 @@ export const $fetchInterceptor = {
     }
   },
   onRequestError(context: FetchContext & { error: Error }): PromiseVoid {
-    console.log('REQUEST ERROR', context.error);
+    logDev('REQUEST ERROR', context.error);
   },
   async onResponse(
     context: FetchContext & { response: FetchResponse<ResponseType> },
-  ): Promise<void> {},
+  ): Promise<void> { },
 };

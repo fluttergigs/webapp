@@ -12,6 +12,7 @@ export interface Snippet {
   user: User;
   language: string;
   tags: Tags;
+  views: number;
 
   [key: string]: any;
 }
@@ -27,7 +28,7 @@ export interface Tag {
 export interface SnippetFilterOptions {
   tags: string[];
   searchQuery: string;
-  sortKey: string;
+  sortKey: 'views' | 'createdAt';
 }
 
 export type Snippets = Snippet[];

@@ -1,20 +1,21 @@
 <script lang="ts" setup>
-  import Tag from '~/components/fluppets/Tag.vue';
-  import type { Tags } from '~/features/fluppets/fluppets.types';
+//@ts-ignore
+import Tag from "~/components/fluppets/Tag.vue";
+import type { Tags } from "~/features/fluppets/fluppets.types";
 
-  const props = defineProps({
-    tags: {
-      type: Object as PropType<Tags>,
-      default: [],
-    },
-  });
+const props = defineProps({
+  tags: {
+    type: Object as PropType<Tags>,
+    default: [],
+  },
+});
 </script>
 
 <template>
   <section class="dark:bg-gray-900">
     <div class="container">
       <h1
-        class="heading-gradient-underline text-3xl font-semibold text-gray-800 capitalize lg:text-4xl dark:text-white"
+        class="text-3xl font-semibold text-gray-800 capitalize lg:text-4xl dark:text-white"
       >
         Popular Tags
       </h1>

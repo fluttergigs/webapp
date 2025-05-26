@@ -5,7 +5,6 @@ import type { Snippet, SnippetFilterOptions, Snippets, Tag, Tags } from '~/featu
 import { HttpClient } from '~/core/network/http_client';
 import { Endpoint } from '~/core/network/endpoints';
 import { AppStrings } from '~/core/strings';
-import type { JobOffer } from '~/features/jobs/job.types';
 import { stringify } from 'qs';
 import { logDev } from '~/core/helpers/log';
 
@@ -42,7 +41,7 @@ export const useFluppetsStore = defineStore('fluppets', {
         //@ts-ignore
         const { $http } = useNuxtApp();
         const response: MultiApiResponse<Tag> = await (<HttpClient>$http).get(
-          `${Endpoint.tags}?populate=*`,
+          `${Endpoint.tags}?populate=*&sort=createdAt:desc`,
         );
         this.fluppetTags = this.fluppetTags.toSuccess(response);
       } catch (e) {
@@ -51,32 +50,35 @@ export const useFluppetsStore = defineStore('fluppets', {
     },
 
     async filter(filters: SnippetFilterOptions): Promise<void> {
-      
-      logDev('Filtering fluppets with:', filters);
-
-      logDev('Previous filtered fluppets:', this.filteredFluppetsListResponse.value);
 
       this.filteredFluppetsListResponse = new Wrapper<MultiApiResponse<Snippet>>().toLoading(this.filteredFluppetsListResponse.value);
       try {
+
+        let sort: string = 'views:desc';
+        if (filters.sortKey === 'createdAt') {
+          sort = 'createdAt:desc';
+        }
+
+
         const query = stringify({
           populate: '*',
           filters: {
-            ...(!!filters.tags && {
+            ...(filters.tags && filters.tags.length > 0 && {
               tags: {
-                $contains: filters.tags,
+                ...(filters.tags.every(tag => typeof tag === 'number')
+                  ? { id: { $in: filters.tags } }
+                  : { slug: { $in: filters.tags } }
+                ),
               },
             }),
-            ...(!!filters.searchQuery && {
-              description: {
-                $containsi: filters.searchQuery,
-              },
-              title: {
-                $containsi: filters.searchQuery,
-              },
+            ...(filters.searchQuery && filters.searchQuery.length > 0 && {
+              $or: [
+                { description: { $containsi: filters.searchQuery } },
+                { title: { $containsi: filters.searchQuery } },
+              ],
             }),
-
           },
-          sort: 'createdAt:desc',
+          ...(sort && { sort }),
         }, {
           encodeValuesOnly: true,
         });

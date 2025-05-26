@@ -1,10 +1,6 @@
 //@ts-ignore
 import path from 'path';
 
-
-
-
-
 //@ts-ignore
 export default defineNuxtConfig({
   devtools: {
@@ -13,6 +9,9 @@ export default defineNuxtConfig({
     timeline: {
       enabled: true,
     },
+  },
+  components: {
+    dirs: ['~/components'], // This is where your feature components are located
   },
   experimental: {
     renderJsonPayloads: false,
@@ -61,9 +60,20 @@ export default defineNuxtConfig({
 
   script: ['~/assets/js/main.js'],
 
-  modules: [// '@nuxtjs/tailwindcss',
-  '@pinia/nuxt', // 'nuxt-appwrite',
-  '@pinia-plugin-persistedstate/nuxt', '@nuxtjs/i18n', 'nuxt-lodash', '@nuxtjs/strapi', '@nuxt/ui', '@sentry/nuxt/module', '@nuxt/image', 'nuxt-og-image', '@hypernym/nuxt-gsap', '@nuxt/scripts'],
+  modules: [
+    // '@nuxtjs/tailwindcss',
+    '@pinia/nuxt', // 'nuxt-appwrite',
+    '@pinia-plugin-persistedstate/nuxt',
+    '@nuxtjs/i18n',
+    'nuxt-lodash',
+    '@nuxtjs/strapi',
+    '@nuxt/ui',
+    '@sentry/nuxt/module',
+    '@nuxt/image',
+    'nuxt-og-image',
+    '@hypernym/nuxt-gsap',
+    '@nuxt/scripts',
+  ],
   gsap: {
     composables: true,
   },

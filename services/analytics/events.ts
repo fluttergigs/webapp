@@ -62,4 +62,11 @@ export const enum AnalyticsEvent {
   fluppetsClipboardButtonClicked = 'fluppets_clipboard_button_clicked',
   fluppetsTagClicked = 'fluppets_tag_clicked',
   fluppetsShareButtonClicked = 'fluppets_share_button_clicked',
+  fluppetsFiltersTriggered = 'fluppets_filters_triggered',
+  fluppetsFilterReset = 'fluppets_filter_reset',
+  fluppetsCreatePageEntered = 'fluppets_create_page_entered',
+  fluppetsCreateButtonClicked = 'fluppets_create_button_clicked',
+  fluppetsCreateSuccessful = 'fluppets_create_successful',
+  fluppetsCreateFailed = 'fluppets_create_failed',
+  fluppetsDetailPageEntered = 'fluppets_detail_page_entered',
 }

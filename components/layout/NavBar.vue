@@ -14,8 +14,7 @@
           <div class="hidden w-auto lg:block">
             <ul class="mr-16 flex items-center">
               <li
-                v-for="link in links"
-                v-if="link?.isEnabled ?? true"
+                v-for="link in enabledLinks"
                 :key="link?.name"
                 class="mr-9 font-medium hover:text-indigo-900"
               >
@@ -127,7 +126,7 @@
           </div>
           <div class="flex w-full flex-col justify-center py-16">
             <ul>
-              <li v-for="link in links" v-if="link?.isEnabled ?? true" class="mb-12">
+              <li v-for="link in enabledLinks" :key="link?.name" class="mb-12">
                 <a
                   :href="link.path"
                   class="font-bold text-lg hover:text-indigo-900"
@@ -142,7 +141,11 @@
               <div class="mb-3 w-full">
                 <!--                <ClientOnly>-->
                 <div class="block">
-                  <NuxtLink v-if="!isAuthenticated" :to="AppRoutes.login" class="font-medium">
+                  <NuxtLink
+                    v-if="!isAuthenticated"
+                    :to="AppRoutes.login"
+                    class="font-medium"
+                  >
                     Login
                   </NuxtLink>
 
@@ -183,139 +186,149 @@
 </template>
 
 <script lang="ts" setup>
-  import { storeToRefs } from 'pinia';
-  import CloseIcon from '~/components/icons/CloseIcon.vue';
-  import { logDev } from '~/core/helpers/log';
-  import { AppRoutes } from '~/core/routes';
-  import type { UiLink } from '~/core/shared/types';
-  import { ApplicationEventEnum } from '~/plugins/eventBus.client';
-  import { AvailableFlags } from '~/services/feature-flag/availableFlags';
-  import { useAuthStore } from '~/stores/auth';
+import { storeToRefs } from "pinia";
+import CloseIcon from "~/components/icons/CloseIcon.vue";
+import { logDev } from "~/core/helpers/log";
+import { AppRoutes } from "~/core/routes";
+import type { UiLink } from "~/core/shared/types";
+import auth from "~/middleware/auth";
+import { ApplicationEventEnum } from "~/plugins/eventBus.client";
+import { AvailableFlags } from "~/services/feature-flag/availableFlags";
+import { useAuthStore } from "~/stores/auth";
 
-  const links: Ref<UiLink[]> = ref([
+const authStore = useAuthStore();
+
+const links: Ref<UiLink[]> = ref([
+  {
+    path: AppRoutes.welcome,
+    name: "Home",
+  },
+
+  {
+    path: AppRoutes.jobs,
+    name: "Jobs",
+  },
+  {
+    path: AppRoutes.learn,
+    name: "Learn",
+    isEnabled: true,
+  },
+]);
+
+const accountLinks = ref([
+  [
     {
-      path: AppRoutes.welcome,
-      name: 'Home',
-    },
-
-    {
-      path: AppRoutes.jobs,
-      name: 'Jobs',
+      label: "Profile",
+      onClick: () => {
+        navigateTo(AppRoutes.consultantProfile);
+      },
     },
     {
-      path: AppRoutes.learn,
-      name: 'Learn',
-      isEnabled: true,
+      label: "Account",
+      onClick: () => {
+        navigateTo(AppRoutes.myAccount);
+      },
     },
-  ]);
+  ],
+  [
+    {
+      label: "Saved Jobs",
+      onClick: () => {
+        navigateTo(AppRoutes.mySavedJobs);
+      },
+    },
+  ],
+  [
+    {
+      label: "My Job postings",
+      onClick: () => {
+        navigateTo(AppRoutes.myJobs);
+      },
+    },
+  ],
+  [
+    {
+      label: "My company",
+      onClick: () => {
+        navigateTo(AppRoutes.myCompany);
+      },
+    },
+  ],
+  [
+    {
+      label: "Logout",
+      onClick: () => {
+        useUser().logout();
+      },
+    },
+  ],
+]);
 
-  const accountLinks = ref([
-    [
-      {
-        label: 'Profile',
-        onClick: () => {
-          navigateTo(AppRoutes.consultantProfile);
-        },
-      },
-      {
-        label: 'Account',
-        onClick: () => {
-          navigateTo(AppRoutes.myAccount);
-        },
-      },
-    ],
-    [
-      {
-        label: 'Saved Jobs',
-        onClick: () => {
-          navigateTo(AppRoutes.mySavedJobs);
-        },
-      },
-    ],
-    [
-      {
-        label: 'My Job postings',
-        onClick: () => {
-          navigateTo(AppRoutes.myJobs);
-        },
-      },
-    ],
-    [
-      {
-        label: 'My company',
-        onClick: () => {
-          navigateTo(AppRoutes.myCompany);
-        },
-      },
-    ],
-    [
-      {
-        label: 'Logout',
-        onClick: () => {
-          useUser().logout();
-        },
-      },
-    ],
-  ]);
+const isHomePage = computed(() => useRoute().path === "/");
 
-  const isHomePage = useRoute().path === '/';
+const enabledLinks = computed(() => {
+  return links.value.filter((link) => link.isEnabled ?? true);
+});
 
-  const { isAuthenticated } = storeToRefs(useAuthStore());
+//@ts-ignore
+const { isAuthenticated } = storeToRefs(authStore);
 
-  const onMenuLinkClick = (link: any) => {
-    //@ts-ignore
-    document.querySelector('.navbar-close')?.click();
-    navigateTo(link.path);
+const onMenuLinkClick = (link: any) => {
+  //@ts-ignore
+  document.querySelector(".navbar-close")?.click();
+  navigateTo(link.path);
+};
+
+onMounted(() => {
+  const { $listen } = (useNuxtApp() as unknown) as {
+    $listen: (event: string, callback: (data: any) => void) => void;
   };
 
-  onMounted(() => {
-    const { $listen } = useNuxtApp();
+  $listen(ApplicationEventEnum.featureFlagsLoaded, (data: any) => {
+    logDev("Feature Flags listener", data);
 
-    $listen(ApplicationEventEnum.featureFlagsLoaded, (data: any) => {
-      logDev('Feature Flags listener', data);
+    links.value = [
+      {
+        path: AppRoutes.welcome,
+        name: "Home",
+      },
+      {
+        path: AppRoutes.jobs,
+        name: "Jobs",
+      },
+      {
+        path: AppRoutes.fluppets,
+        name: "Fluppets",
+        tag: useFeatureFlags().isEnabled(AvailableFlags.fluppets) ? "New" : "Soon",
+      },
+      {
+        path: AppRoutes.companies,
+        name: "Companies",
+        isEnabled: useFeatureFlags().isEnabled(AvailableFlags.companiesList),
+        tag: useFeatureFlags().isEnabled(AvailableFlags.companiesList) ? "New" : "Soon",
+      },
 
-      links.value = [
-        {
-          path: AppRoutes.welcome,
-          name: 'Home',
-        },
-        {
-          path: AppRoutes.jobs,
-          name: 'Jobs',
-        },
-        {
-          path: AppRoutes.fluppets,
-          name: 'Fluppets',
-          tag: useFeatureFlags().isEnabled(AvailableFlags.fluppets) ? 'New' : 'Soon',
-        },
-        {
-          path: AppRoutes.companies,
-          name: 'Companies',
-          isEnabled: useFeatureFlags().isEnabled(AvailableFlags.companiesList),
-          tag: useFeatureFlags().isEnabled(AvailableFlags.companiesList) ? 'New' : 'Soon',
-        },
+      {
+        path: AppRoutes.hireConsultants,
+        name: "Consultants",
+        tag: useFeatureFlags().isEnabled(AvailableFlags.hireConsultants) ? "New" : "Soon",
+      },
+      {
+        path: AppRoutes.learn,
+        name: "Learn",
+      },
+    ];
 
+    if (useFeatureFlags().isEnabled(AvailableFlags.hireConsultants)) {
+      accountLinks.value.unshift([
         {
-          path: AppRoutes.hireConsultants,
-          name: 'Consultants',
-          tag: useFeatureFlags().isEnabled(AvailableFlags.hireConsultants) ? 'New' : 'Soon',
-        },
-        {
-          path: AppRoutes.learn,
-          name: 'Learn',
-        },
-      ];
-
-      if (useFeatureFlags().isEnabled(AvailableFlags.hireConsultants)) {
-        accountLinks.value.unshift([
-          {
-            label: 'Profile',
-            onClick: () => {
-              navigateTo(AppRoutes.consultantProfile);
-            },
+          label: "Profile",
+          onClick: () => {
+            navigateTo(AppRoutes.consultantProfile);
           },
-        ]);
-      }
-    });
+        },
+      ]);
+    }
   });
+});
 </script>
