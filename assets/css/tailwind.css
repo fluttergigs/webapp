@@ -125,7 +125,7 @@
     }
 
     .custom-code__container {
-        @apply rounded-lg overflow-hidden shadow-lg border border-gray-200 max-w-full mx-auto cursor-pointer
+        @apply rounded-lg overflow-hidden shadow-sm border border-gray-200 max-w-full mx-auto cursor-pointer
     }
 
     .custom-code__container .window {

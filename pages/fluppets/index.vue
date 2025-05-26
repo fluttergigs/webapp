@@ -36,7 +36,7 @@
     <header class="pattern-bg relative py-36">
       <div class="container mx-auto flex flex-col-reverse items-center gap-12 px-6 lg:flex-row">
         <!-- Text Content -->
-        <div class="text-center lg:w-7/12 lg:text-left">
+        <div class="text-center md:w-7/12 lg:text-left">
           <h1 class="mb-4 text-4xl font-extrabold leading-tight lg:text-6xl">
             Discover & Share & Integrate <br /><span class="text-primary">Professional</span>
             <span class="primary-gradient"> Flutter Snippets</span>
@@ -64,9 +64,9 @@
           </div>
         </div>
         <!-- Code Snippet Preview -->
-        <div class="w-full lg:w-5/12">
+        <div class="w-full md:w-5/12">
           <div
-            class="custom-code__container transition-all duration-200 hover:shadow-xl hover:-translate-y-4"
+            class="custom-code__container transition-all duration-200 hover:shadow-md hover:-translate-y-4"
           >
             <div class="window">
               <span class="block h-3 w-3 rounded-full bg-red-500"></span>
