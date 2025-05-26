@@ -10,6 +10,10 @@ import { AnalyticsEvent } from '~/services/analytics/events';
 import type { LoginData, User } from '~/services/auth/auth.types';
 import { useAuthStore } from '~/stores/auth';
 
+
+
+
+
 export const useLogin = () => {
   const { $toast, $analytics, $errorTracker } = useNuxtApp();
   const authStore = useAuthStore();
@@ -48,11 +52,13 @@ export const useLogin = () => {
         email: formInput.value.email,
         password: formInput.value.password,
       };
-      ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.loginButtonClicked, loginData);
+      ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.loginButtonClicked, {
+        loginData,
+      });
       await authStore.login(loginData);
 
       if (isSuccessfulLogin.value) {
-        ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.successfulLogin, loginData);
+        ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.successfulLogin, { loginData });
         onDone?.(authUser.value);
       }
       if (isFailedLogin.value) {

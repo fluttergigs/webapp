@@ -34,4 +34,6 @@ export class AppRoutes {
   static consultantDetail = (slug: string): string => `/consultants/${slug}`;
 
   static editJob = (slug: string): string => `/jobs/edit/${slug}`;
+
+  static fluppetDetail = (slug: string): string => `/fluppets/${slug}`;
 }

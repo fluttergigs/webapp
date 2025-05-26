@@ -63,10 +63,13 @@
     logDev('ERROR STACK', props.error?.stack);
     logDev('ERROR STATUS CODE', props.error?.statusCode);
     // if (import.meta.env.MODE !== 'development') {
-    (useNuxtApp().$analytics as AppAnalyticsProvider).capture(AnalyticsEvent.error, props.error);
+    (useNuxtApp().$analytics as AppAnalyticsProvider).capture(AnalyticsEvent.error, {
+      data: props.error,
+    });
 
     ($errorTracker as ErrorTrackerProvider).captureException(
       props.error,
+      //@ts-ignore
       authStore.isAuthenticated ? { user: authStore.authUser } : null,
     );
     // }

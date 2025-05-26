@@ -24,7 +24,7 @@
     twitterDescription: 'FlutterGigs - Discover & Share Flutter Snippets',
   });
 
-  const { browseFluppets, handleFluppetsCreate } = useFluppets();
+  const { browseFluppets, handleFluppetsCreate, fluppetsList } = useFluppets();
 
   onMounted(() => {
     useAnalytics().capture(AnalyticsEvent.fluppetsPageEntered);
@@ -65,7 +65,9 @@
         </div>
         <!-- Code Snippet Preview -->
         <div class="w-full lg:w-5/12">
-          <div class="custom-code__container">
+          <div
+            class="custom-code__container transition-all duration-200 hover:shadow-xl hover:-translate-y-4"
+          >
             <div class="window">
               <span class="block h-3 w-3 rounded-full bg-red-500"></span>
               <span class="block h-3 w-3 rounded-full bg-yellow-500"></span>
@@ -89,7 +91,11 @@
 
     <section class="pattern-bg py-36">
       <div class="flex flex-col gap-12">
-        <h4 class="text-center text-4xl">Elevate your Flutter workflow</h4>
+        <div class="flex justify-center items-center">
+          <h4 class="flex text-4xl heading-gradient-underline mb-20">
+            Elevate your Flutter workflow
+          </h4>
+        </div>
 
         <div
           class="container relative z-10 mx-auto flex flex-col space-y-4 px-10 md:flex-row md:space-x-8 md:px-8"

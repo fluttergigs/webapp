@@ -1,6 +1,6 @@
 <template>
   <NuxtLoadingIndicator :height="5" color="#283593" />
-  <UApp>
+  <UApp :toaster="{ position: 'top-right' }">
     <NuxtLayout>
       <div class="pattern-bg">
         <NuxtPage />

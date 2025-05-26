@@ -232,6 +232,7 @@ export const useJobStore = defineStore('job', {
     currentViewedJob: (state) => state.selectedJob.value,
     filteredJobs: (state) => (state.jobFiltersResponse?.value?.data ?? []).reverse(),
     landingPageJobs: (state) => {
+      //@ts-ignore
       const jobs = (useJobStore().jobs.reverse()) as JobOffer[];
       return jobs?.length > MAX_LANDING_PAGE_JOBS ? jobs?.slice(0, MAX_LANDING_PAGE_JOBS - 1) : jobs;
     },

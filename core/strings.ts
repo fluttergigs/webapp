@@ -109,4 +109,8 @@ export class AppStrings {
   static educationUpdatedSuccessfully = 'Your education has been updated successfully';
   static experienceUpdatedSuccessfully = 'Your experience has been updated successfully';
   static unableToFetchFluppets = 'Unable to fetch fluppets. Please try again later';
+  static unableToFetchTags = 'Unable to fetch snippets tags. Please try again later';
+
+  static fluppetsCopiedToClipboard = 'Snippet copied to clipboard';
+  static fluppetsLinkCopiedToClipboard = 'Snippet link copied to clipboard';
 }

@@ -1,6 +1,10 @@
 export class Endpoint {
   static get snippets() {
-    return '/api/snippets';
+    return '/snippets';
+  }
+
+  static get tags() {
+    return '/tags';
   }
 
   static get setting() {

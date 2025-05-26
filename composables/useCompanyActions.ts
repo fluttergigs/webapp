@@ -62,12 +62,12 @@ export default function useCompanyActions() {
     try {
       (<AppAnalyticsProvider>$analytics).capture(
         AnalyticsEvent.companyCreationButtonClicked,
-        data,
+        { data },
       );
       await companyStore.createCompany({ data });
       (<AppAnalyticsProvider>$analytics).capture(
         AnalyticsEvent.successfulCompanyCreation,
-        data,
+        { data },
       );
 
       if (!!onSuccess) {
@@ -132,6 +132,7 @@ export default function useCompanyActions() {
       );
 
       const paymentPortal = getPaymentPortalUrlForJobPosting(
+        //@ts-ignore
         authStore.authUser.email,
       );
 
@@ -141,6 +142,7 @@ export default function useCompanyActions() {
   };
 
   const handleJobEdit = async (job: JobOffer) => {
+    //@ts-ignore
     jobStore.setJobEditData(job);
 
     return navigateTo(AppRoutes.editJob(job.slug));
@@ -149,6 +151,7 @@ export default function useCompanyActions() {
   const handleJobDuplicate = async (job: JobOffer) => {
     let jobCreationData = job;
     jobCreationData.applyBefore = new Date(job.applyBefore);
+    //@ts-ignore
     jobStore.setJobCreationData(jobCreationData);
     handleJobCreation();
   };
@@ -163,6 +166,7 @@ export default function useCompanyActions() {
         { job: jobStore.jobEditData },
       );
 
+      //@ts-ignore
       await jobStore.editJobOffer(jobStore.jobEditData as JobOffer);
 
       ($toast as BaseToast<Notification>).custom({
@@ -243,6 +247,7 @@ export default function useCompanyActions() {
       await Promise.all(
         [
           useUser().getUser(),
+          // @ts-ignore
           useJobStore().fetchJobs(),
         ],
       );
@@ -254,6 +259,7 @@ export default function useCompanyActions() {
 
     logDev('IS MARKDOWN', description.isMarkdown());
 
+    //@ts-ignore
     useJobStore().jobCreationData.description = description.isMarkdown()
       ? marked(description)
       : description;

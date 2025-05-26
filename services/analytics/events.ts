@@ -59,4 +59,7 @@ export const enum AnalyticsEvent {
   browseFluppetsPageButtonClicked = 'browse_fluppets_page_button_clicked',
   contributeFluppetsPageButtonClicked = 'contribute_fluppets_page_button_clicked',
   browseFluppetsPageEntered = 'browse_fluppets_page_entered',
+  fluppetsClipboardButtonClicked = 'fluppets_clipboard_button_clicked',
+  fluppetsTagClicked = 'fluppets_tag_clicked',
+  fluppetsShareButtonClicked = 'fluppets_share_button_clicked',
 }

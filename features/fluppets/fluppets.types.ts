@@ -1,7 +1,7 @@
-import { User } from '~/services/auth/auth.types';
+import type { User } from '~/services/auth/auth.types';
 
 export interface Snippet {
-  id: string;
+  id: number;
   name: string;
   documentId: string;
   description: string;
@@ -10,8 +10,19 @@ export interface Snippet {
   createdAt: Date;
   updatedAt: Date;
   user: User;
+  language: string;
+  tags: Tags;
 
   [key: string]: any;
 }
 
+export interface Tag {
+  id: number;
+  documentId: string;
+  name: string;
+  slug: string;
+  snippets: Snippets;
+}
+
 export type Snippets = Snippet[];
+export type Tags = Tag[];
