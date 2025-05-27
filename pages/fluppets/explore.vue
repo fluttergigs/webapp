@@ -43,16 +43,26 @@ const {
   handleFluppetsCreate,
   handleFluppetsFilterReset,
 } = useFluppets();
+
+const breadcrumbs = computed(() => [
+  {
+    label: "Home",
+    icon: "i-lucide-home",
+    to: AppRoutes.fluppets,
+  },
+  {
+    label: "Fluppets",
+    icon: "i-lucide-search",
+    to: AppRoutes.exploreFluppets,
+  },
+]);
 </script>
 
 <template>
   <main class="pattern-bg to-slate-50 relative">
     <USlideover title="Filters">
-      <UButton
-        class="lg:hidden fixed bottom-12 left-12 z-50 rounded-full w-12 h-12"
-        icon="i-lucide-list-filter"
-        size="xl"
-      />
+      <UButton class="lg:hidden fixed bottom-12 left-12 z-50 rounded-full w-12 h-12" icon="i-lucide-list-filter"
+        size="xl" />
       <template #body>
         <FiltersWidget />
       </template>
@@ -60,35 +70,24 @@ const {
 
     <div class="flex flex-col gap-4 px-4 sm:px-8 md:px-12 py-10">
       <div class="my-4"></div>
+
+      <UBreadcrumb :items="breadcrumbs"></UBreadcrumb>
+
       <div class="flex justify-between">
         <PopularTags :tags="popularTags" />
 
-        <UButton
-          class="h-fit"
-          icon="i-lucide-git-branch-plus"
-          label="Contribute"
-          size="xl"
-          variant="solid"
-          @click="handleFluppetsCreate"
-        />
+        <UButton class="h-fit" icon="i-lucide-git-branch-plus" label="Contribute" size="xl" variant="solid"
+          @click="handleFluppetsCreate" />
       </div>
 
       <div class="flex gap-2">
         <div class="w-full lg:w-6/8">
           <div class="flex flex-col gap-4">
-            <SnippetList
-              @reset-filters="handleFluppetsFilterReset"
-              :list="paginatedFluppetsList"
-              :isLoading="isFluppetsListLoading"
-            />
+            <SnippetList @reset-filters="handleFluppetsFilterReset" :list="paginatedFluppetsList"
+              :isLoading="isFluppetsListLoading" />
 
-            <UPagination
-              v-if="fluppetsList.length > 0"
-              v-model:page="currentPage"
-              :items-per-page="MAX_FLUPPETS_PER_PAGE"
-              :total="fluppetsList.length"
-              class="self-center"
-            />
+            <UPagination v-if="fluppetsList.length > 0" v-model:page="currentPage"
+              :items-per-page="MAX_FLUPPETS_PER_PAGE" :total="fluppetsList.length" class="self-center" />
           </div>
         </div>
 

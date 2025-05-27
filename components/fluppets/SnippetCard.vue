@@ -1,14 +1,22 @@
 <template>
-  <div @click.self="useFluppets().handleSnippetClick(snippet)"
-    class="text-gray-700 flex flex-col gap-2 bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-6 w-full mx-auto transition-all duration-300 hover:scale-[1.01] hover:shadow-md hover:-translate-y-2">
+  <div
+    @click="useFluppets().handleSnippetClick(snippet)"
+    class="text-gray-700 flex flex-col gap-2 bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-6 w-full mx-auto transition-all duration-300 hover:scale-[1.01] hover:shadow-md hover:-translate-y-2"
+  >
     <div class="flex items-center gap-3 mb-2">
-      <span :class="badgeColor" class="px-3 py-1 rounded-lg text-xs font-semibold capitalize">
+      <span
+        :class="badgeColor"
+        class="px-3 py-1 rounded-lg text-xs font-semibold capitalize"
+      >
         {{ snippet.language }}
       </span>
 
       <div class="flex justify-center gap-1">
         <UIcon name="i-lucide-calendar" class="w-4 h-4 text-gray-500" />
-        <span v-date-format="{ date: snippet.updatedAt, format: 'YYYY-MMM D' }" class="text-xs"></span>
+        <span
+          v-date-format="{ date: snippet.updatedAt, format: 'YYYY-MMM D' }"
+          class="text-xs"
+        ></span>
       </div>
     </div>
     <USeparator />
@@ -19,18 +27,25 @@
       {{ userFacingDescription }}
     </p>
     <div class="flex justify-between">
-      <div class="flex justify-center items-center space-x-2 text-xs">
+      <div class="flex justify-center items-center space-x-2 text-sm">
         <UIcon name="i-lucide-circle-user" class="w-5 h-5" />
-        <span>{{ snippet.user?.username || "Admin" }}</span>
+        <span>{{ snippet.user?.username || "@Community" }}</span>
       </div>
     </div>
 
-    <UiCodeBlock :code="snippet.code" :language="snippet.language" @copy="useFluppets().handleFluppetsCopy(snippet)"
-      @share="useFluppets().handleFluppetsShare(snippet)" />
+    <UiCodeBlock
+      :code="snippet.code"
+      :language="snippet.language"
+      @copy="useFluppets().handleFluppetsCopy(snippet)"
+      @share="useFluppets().handleFluppetsShare(snippet)"
+    />
 
     <div class="flex flex-wrap gap-2">
-      <span v-for="tag in snippet.tags" :key="tag.documentId"
-        class="bg-gray-200 text-gray-600 rounded-full px-3 py-1 text-xs font-medium">
+      <span
+        v-for="tag in snippet.tags"
+        :key="tag.documentId"
+        class="bg-gray-200 text-gray-600 rounded-full px-3 py-1 text-xs font-medium"
+      >
         #{{ tag.slug }}
       </span>
     </div>

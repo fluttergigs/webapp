@@ -1,6 +1,13 @@
 <template>
   <main class="pattern-bg to-slate-50 relative px-4 sm:px-8 md:px-20 py-10">
-    <div class="flex flex-col gap-4">
+    <div class="flex h-full w-full justify-center items-center" v-if="pending">
+      <UIcon
+        name="i-lucide-loader-circle"
+        class="w-12 h-12 animate-spin text-indigo-600"
+      />
+    </div>
+
+    <div class="flex flex-col gap-4" v-else>
       <UBreadcrumb :items="breadcrumbs">
         <template #separator>
           <span class="mx-2 text-muted">/</span>
@@ -50,7 +57,6 @@ import type { Snippet, Tag } from "~/features/fluppets/fluppets.types";
 import { AnalyticsEvent } from "~/services/analytics/events";
 import { useAnalytics } from "~/composables/useAnalytics";
 import { AppRoutes } from "~/core/routes";
-import App from "~/app.vue";
 // @ts-ignore
 
 definePageMeta({
@@ -86,8 +92,13 @@ const pending = computed(() => status.value === "pending");
 
 const breadcrumbs = computed(() => [
   {
-    label: "Fluppets",
+    label: "Home",
     icon: "i-lucide-home",
+    to: AppRoutes.fluppets,
+  },
+  {
+    label: "Fluppets",
+    icon: "i-lucide-search",
     to: AppRoutes.exploreFluppets,
   },
   {
