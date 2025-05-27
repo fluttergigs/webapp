@@ -36,7 +36,6 @@ export const useFluppetsStore = defineStore('fluppets', {
     async loadTags() {
       this.fluppetTags = new Wrapper<MultiApiResponse<Tag>>().toLoading();
 
-      console.log('Fetching tags');
       try {
         //@ts-ignore
         const { $http } = useNuxtApp();

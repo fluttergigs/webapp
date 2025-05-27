@@ -24,6 +24,7 @@
               v-if="(snippet?.tags?.length ?? 0) > 0"
             >
               <FluppetsTag
+                :show-count="false"
                 :show-hashtag="true"
                 :tag="tag"
                 v-for="tag in snippet?.tags ?? []"
