@@ -54,6 +54,11 @@ function createFluppetsState() {
     () => filters.value,
     async () => {
 
+      // selectedTags.value = filters.value.tags.filter((tag) => filters.value.tags);
+      selectedTags.value = tags.value.filter((tag) =>
+        filters.value.tags.includes(tag.slug),
+      );
+
       useAnalytics().capture(AnalyticsEvent.fluppetsFiltersTriggered, { filters: filters.value });
       await fluppetsStore.filter(filters.value);
     },
@@ -122,11 +127,11 @@ function createFluppetsState() {
 
   const handleFluppetsCopy = async (snippet: Snippet) => {
     const { copy } = useClipboard({
-      source: snippet.code,
+      source: snippet.code.trim(),
       legacy: true,
     });
 
-    await copy(snippet.code);
+    await copy(snippet.code.trim());
     useAnalytics().capture(AnalyticsEvent.fluppetsClipboardButtonClicked, { snippet });
 
     ($toast as BaseToast<Notification>).info(AppStrings.fluppetsCopiedToClipboard);

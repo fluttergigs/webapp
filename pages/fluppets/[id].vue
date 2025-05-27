@@ -7,7 +7,7 @@
       />
     </div>
 
-    <div class="flex flex-col gap-4" v-else>
+    <div class="flex flex-col gap-6" v-else>
       <UBreadcrumb :items="breadcrumbs">
         <template #separator>
           <span class="mx-2 text-muted">/</span>
@@ -108,12 +108,6 @@ const breadcrumbs = computed(() => [
   },
 ]);
 
-onMounted(() => {
-  useAnalytics().capture(AnalyticsEvent.fluppetsDetailPageEntered, {
-    snippetId: snippet.value ?? {},
-  });
-});
-
 useSeoMeta({
   title: () => `${snippet.value?.title} - FluttterGigs`,
   description: "FlutterGigs - Discover & Share Flutter Snippets",
@@ -124,8 +118,26 @@ useSeoMeta({
   twitterCard: "summary_large_image",
   ogSiteName: "Flutter Gigs - The #1 Flutter job platform",
   twitterSite: "@fluttergigs",
-  twitterTitle: "FlutterGigs - Discover & Share Flutter Snippets",
-  twitterDescription: "FlutterGigs - Discover & Share Flutter Snippets",
+  twitterTitle: `${snippet.value?.title} - Discover & Share Flutter Snippets`,
+  twitterDescription: `FlutterGigs - Discover & Share Flutter Snippets`,
+});
+
+defineOgImageComponent(
+  "Snippet",
+  {
+    code:
+      snippet.value && snippet.value.code && snippet.value?.code.length > 2000
+        ? snippet.value?.code.substring(0, 2000)
+        : snippet.value?.code,
+  },
+  {
+    fonts: ["Outfit:700"],
+  }
+);
+onMounted(() => {
+  useAnalytics().capture(AnalyticsEvent.fluppetsDetailPageEntered, {
+    snippetId: snippet.value ?? {},
+  });
 });
 </script>
 

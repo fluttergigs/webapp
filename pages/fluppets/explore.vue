@@ -16,13 +16,20 @@ definePageMeta({
   layout: "main-layout",
 });
 
+defineOgImageScreenshot({
+  //@ts-ignore
+  delay: 2000,
+  selector: "#explore-fluppets",
+  mask: "#navbar",
+});
+
 useSeoMeta({
   title: "FlutterGigs - Discover & Share Flutter Snippets",
   description: "FlutterGigs - Discover the best resources to hone your skills",
   ogTitle: "FlutterGigs  - Discover & Share Flutter Snippets",
   ogDescription: "Discover the best resources to hone your skills",
-  ogImageUrl: "https://fluttergigs.com/fluttergigs-og.png",
-  twitterImage: "https://fluttergigs.com/fluttergigs-og.png",
+  ogImageUrl: "https://fluttergigs.com/fluppets-og.png",
+  twitterImage: "https://fluttergigs.com/fluppets-og.png",
   twitterCard: "summary_large_image",
   ogSiteName: "Flutter Gigs - The #1 Flutter job platform",
   twitterSite: "@fluttergigs",
@@ -68,7 +75,7 @@ const breadcrumbs = computed(() => [
       </template>
     </USlideover>
 
-    <div class="flex flex-col gap-4 px-4 sm:px-8 md:px-12 py-10">
+    <div class="flex flex-col gap-4 px-4 sm:px-8 md:px-12 py-10" id="explore-fluppets">
       <div class="my-4"></div>
 
       <UBreadcrumb :items="breadcrumbs"></UBreadcrumb>

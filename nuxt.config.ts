@@ -4,7 +4,9 @@ import path from 'path';
 //@ts-ignore
 export default defineNuxtConfig({
   devtools: {
-    enabled: false,
+    enabled: true,
+
+
 
     timeline: {
       enabled: true,

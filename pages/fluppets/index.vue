@@ -25,6 +25,13 @@ useSeoMeta({
   twitterDescription: "FlutterGigs - Discover & Share Flutter Snippets",
 });
 
+defineOgImageScreenshot({
+  //@ts-ignore
+  delay: 5000,
+  selector: "#home-header",
+  mask: "#navbar",
+});
+
 const { discoverFluppets, handleFluppetsCreate } = useFluppets();
 
 onMounted(() => {
@@ -34,13 +41,13 @@ onMounted(() => {
 
 <template>
   <main>
-    <header class="pattern-bg relative py-36">
+    <header class="pattern-bg relative py-36" id="home-header">
       <div
         class="container mx-auto flex flex-col-reverse items-center gap-12 px-6 lg:flex-row"
       >
         <!-- Text Content -->
         <div class="text-center md:w-7/12 lg:text-left">
-          <h1 class="mb-4 text-4xl font-extrabold leading-tight lg:text-6xl">
+          <h1 class="mb-4 text-4xl font-extrabold leading-tight xl:text-5xl">
             Discover & Share & Integrate <br /><span class="text-primary"
               >Professional</span
             >
