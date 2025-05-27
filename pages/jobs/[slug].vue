@@ -36,6 +36,7 @@ const {
   {
     key: jobSlug.value,
     transform: (result) => result.data,
+    watch: [jobSlug],
   },
 );
 
@@ -86,9 +87,20 @@ onMounted(() => {
   });
 });
 
-onBeforeMount(() => {
-  // useJobStore().setSelectedJob(jobOffer.value ?? {});
-});
+const breadCrumbs = computed(() => [
+  {
+    label: "Jobs",
+    icon: "i-lucide-home",
+    to: "/jobs",
+  },
+  {
+    label: jobOffer.value?.title,
+    icon: "i-lucide-briefcase",
+    to: `/jobs/${jobOffer.value?.slug}`,
+  },
+]);
+
+
 </script>
 
 <template>

@@ -68,5 +68,7 @@ export const enum AnalyticsEvent {
   fluppetsCreateButtonClicked = 'fluppets_create_button_clicked',
   fluppetsCreateSuccessful = 'fluppets_create_successful',
   fluppetsCreateFailed = 'fluppets_create_failed',
+  fluppetsClicked = 'fluppets_clicked',
   fluppetsDetailPageEntered = 'fluppets_detail_page_entered',
+  fluppetsDescriptionPanelClicked = 'fluppetsDescriptionPanelClicked'
 }

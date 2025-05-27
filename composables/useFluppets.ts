@@ -1,5 +1,4 @@
 import { useClipboard, watchDebounced } from '@vueuse/core';
-import { fi } from 'date-fns/locale';
 import { storeToRefs } from 'pinia';
 import { useAnalytics } from '~/composables/useAnalytics';
 import { MAX_FLUPPETS_PER_PAGE } from '~/core/constants';
@@ -87,18 +86,19 @@ function createFluppetsState() {
     await fluppetsStore.loadTags();
   };
 
-  const browseFluppets = () => {
+  const discoverFluppets = () => {
     useAnalytics().capture(AnalyticsEvent.browseFluppetsPageButtonClicked);
-    navigateTo(AppRoutes.browseFluppets);
+    navigateTo(AppRoutes.exploreFluppets);
   };
 
   const handleTagClick = (tag: Tag) => {
+    useAnalytics().capture(AnalyticsEvent.fluppetsTagClicked, { tag });
+
     if (selectedTags.value.includes(tag)) {
       selectedTags.value = selectedTags.value.filter((t) => t.documentId !== tag.documentId);
     } else {
       selectedTags.value.push(tag);
     }
-    useAnalytics().capture(AnalyticsEvent.fluppetsTagClicked, { tag });
 
     filters.value.tags = selectedTags.value.map((t) => t.slug);
   };
@@ -115,6 +115,11 @@ function createFluppetsState() {
     }
   };
 
+  const handleSnippetClick = (snippet: Snippet) => {
+    useAnalytics().capture(AnalyticsEvent.fluppetsClicked, { snippet });
+    navigateTo(AppRoutes.fluppetDetail(snippet.documentId));
+  }
+
   const handleFluppetsCopy = async (snippet: Snippet) => {
     const { copy } = useClipboard({
       source: snippet.code,
@@ -129,7 +134,7 @@ function createFluppetsState() {
 
   const handleFluppetsShare = async (snippet: Snippet) => {
     useAnalytics().capture(AnalyticsEvent.fluppetsShareButtonClicked, { snippet });
-    const url = `${AppRoutes.fluppetDetail(snippet.documentId)}`;
+    const url = new URL(AppRoutes.fluppetDetail(snippet.documentId), window.location.origin).toString();
 
     const { copy } = useClipboard({
       source: url,
@@ -152,6 +157,10 @@ function createFluppetsState() {
     useAnalytics().capture(AnalyticsEvent.fluppetsFilterReset);
   };
 
+  const toggleDescriptionPanel = (snippet: Snippet) => {
+    useAnalytics().capture(AnalyticsEvent.fluppetsDescriptionPanelClicked, { snippet });
+  };
+
   return {
     paginatedFluppetsList,
     currentPage,
@@ -170,8 +179,9 @@ function createFluppetsState() {
     isFluppetsListSuccess,
     fetchFluppets,
     fetchFluppetTags,
-    browseFluppets,
+    discoverFluppets,
     searchFluppets,
+    handleSnippetClick,
     handleFluppetsCreate,
     handleFluppetsCopy,
     handleFluppetsShare,
@@ -180,6 +190,7 @@ function createFluppetsState() {
     goToPage,
     nextPage,
     previousPage,
+    toggleDescriptionPanel,
   };
 }
 

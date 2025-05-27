@@ -1,5 +1,3 @@
-import { AnalyticsEvent } from "~/services/analytics/events";
-
 <script lang="ts" setup>
 //@ts-ignore
 import FiltersWidget from "~/components/fluppets/FiltersWidget.vue";
@@ -10,6 +8,8 @@ import SnippetList from "~/components/fluppets/SnippetList.vue";
 import PopularTags from "~/components/fluppets/PopularTags.vue";
 //@ts-ignore
 import { AnalyticsEvent } from "~/services/analytics/events";
+import { useFluppets } from "~/composables/useFluppets";
+import { useAnalytics } from "~/composables/useAnalytics";
 
 definePageMeta({
   title: "Fluppets - Discover & Share & Integrate Flutter Snippets",

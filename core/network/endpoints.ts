@@ -50,6 +50,10 @@ export class Endpoint {
   static jobOffersBySlug(slug: string) {
     return `/job-offers/find-by-slug/${slug}`;
   }
+
+  static fluppetsById(id: string) {
+    return `/snippets/find-by-document-id/${id}`;
+  }
 }
 
 export class ApiEndpoint {

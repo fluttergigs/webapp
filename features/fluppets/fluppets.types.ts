@@ -13,6 +13,7 @@ export interface Snippet {
   language: string;
   tags: Tags;
   views: number;
+  slug: string;
 
   [key: string]: any;
 }

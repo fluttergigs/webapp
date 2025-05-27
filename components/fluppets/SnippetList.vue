@@ -16,14 +16,13 @@
       </div>
     </div>
 
-    <div v-else class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-2">
+    <div v-else class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-2">
       <SnippetCard v-for="fluppet in list" :key="fluppet.documentId" :snippet="fluppet" />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { is } from "date-fns/locale";
 import type { Snippet } from "~/features/fluppets/fluppets.types";
 //@ts-ignore
 import SnippetCard from "~/components/fluppets/SnippetCard.vue";

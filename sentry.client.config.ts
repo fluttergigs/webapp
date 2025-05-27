@@ -23,7 +23,7 @@ Sentry.init({
   // Set tracesSampleRate to 1.0 to capture 100%
   // of transactions for tracing.
   // We recommend adjusting this value in production
-  tracesSampleRate: process.env.NODE_ENV === 'production' ? 0.3 : 1.0,
+  tracesSampleRate: process.env.NODE_ENV === 'production' ? 0.3 : 0.0,
   // Set `tracePropagationTargets` to control for which URLs trace propagation should be enabled
   tracePropagationTargets: ['localhost'],
 
@@ -32,5 +32,5 @@ Sentry.init({
   // the final profiling rate can be computed as tracesSampleRate * profilesSampleRate
   // For example, a tracesSampleRate of 0.5 and profilesSampleRate of 0.5 would
   // results in 25% of transactions being profiled (0.5*0.5=0.25)
-  profilesSampleRate: process.env.NODE_ENV === 'production' ? 0.2 : 1.0,
+  profilesSampleRate: process.env.NODE_ENV === 'production' ? 0.2 : 0.0,
 });
