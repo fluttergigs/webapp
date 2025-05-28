@@ -70,5 +70,9 @@ export const enum AnalyticsEvent {
   fluppetsCreateFailed = 'fluppets_create_failed',
   fluppetsClicked = 'fluppets_clicked',
   fluppetsDetailPageEntered = 'fluppets_detail_page_entered',
-  fluppetsDescriptionPanelClicked = 'fluppetsDescriptionPanelClicked'
+  fluppetsDescriptionPanelClicked = 'fluppetsDescriptionPanelClicked',
+  copyGateLoginButtonClicked = 'copy_gate_login_button_clicked',
+  copyGateRegisterButtonClicked = 'copy_gate_register_button_clicked',
+  copyGateModalOpened = 'copy_gate_modal_opened',
+  copyGateModalClosed = 'copy_gate_modal_closed',
 }

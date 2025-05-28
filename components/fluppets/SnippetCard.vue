@@ -28,15 +28,16 @@
     </p>
     <div class="flex justify-between">
       <div class="flex justify-center items-center space-x-2 text-sm">
-        <UIcon name="i-lucide-circle-user" class="w-5 h-5" />
+        <UIcon name="i-lucide-circle-user" class="w-6 h-6 text-indigo-700" />
         <span>{{ snippet.user?.username || "@Community" }}</span>
       </div>
     </div>
 
     <UiCodeBlock
+      @contextmenu.prevent
       :code="snippet.code"
       :language="snippet.language"
-      @copy="useFluppets().handleFluppetsCopy(snippet)"
+      @copy="useCopyGate().copy(snippet)"
       @share="useFluppets().handleFluppetsShare(snippet)"
     />
 
@@ -53,7 +54,6 @@
 </template>
 
 <script lang="ts" setup>
-//import share, copy icons from heroicons
 import type { Snippet } from "~/features/fluppets/fluppets.types";
 
 const props = defineProps({
@@ -63,16 +63,17 @@ const props = defineProps({
   },
 });
 
-const userFacingTitle = computed(() => {
-  return props.snippet.title.length > 50
+const userFacingTitle = computed(() =>
+  props.snippet.title.length > 50
     ? props.snippet.title.slice(0, 50) + "..."
-    : props.snippet.title;
-});
-const userFacingDescription = computed(() => {
-  return props.snippet.description.length > 100
+    : props.snippet.title
+);
+
+const userFacingDescription = computed(() =>
+  props.snippet.description.length > 100
     ? props.snippet.description.slice(0, 100) + "..."
-    : props.snippet.description;
-});
+    : props.snippet.description
+);
 
 // Dynamic badge color by language
 const badgeColor = computed(() => {

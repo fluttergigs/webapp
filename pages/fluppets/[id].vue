@@ -36,7 +36,7 @@
               :code="snippet?.code"
               height="unset"
               @share="snippet && useFluppets().handleFluppetsShare(snippet)"
-              @copy="snippet && useFluppets().handleFluppetsCopy(snippet)"
+              @copy="snippet && useCopyGate().copy(snippet)"
             />
           </div>
         </div>

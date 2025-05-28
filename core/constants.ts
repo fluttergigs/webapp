@@ -97,3 +97,5 @@ export const getPaymentPortalUrlForJobPosting = (email: string) =>
 export const MAX_JOBS_PER_PAGE = 4;
 
 export const MAX_FLUPPETS_PER_PAGE = 4;
+
+export const DAILY_FLUPPET_COPY_FOR_ANONYMOUS = 2;

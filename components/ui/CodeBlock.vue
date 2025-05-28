@@ -35,7 +35,7 @@
     </div>
     <Prism
       language="dart"
-      class="text-sm py-4 px-0 overflow-scroll"
+      class="text-sm py-4 px-0 overflow-scroll no-copy"
       :style="{ height: getHeight }"
     >
       {{ code?.trim() || "" }}
@@ -70,3 +70,19 @@ const handleShare = () => {
   emit("share");
 };
 </script>
+
+<style scoped>
+.no-copy {
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  pointer-events: none;
+}
+
+.no-copy * {
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  -ms-user-select: none !important;
+  pointer-events: none !important;
+}
+</style>

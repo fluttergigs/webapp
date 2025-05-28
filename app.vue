@@ -10,7 +10,6 @@
 </template>
 
 <script lang="ts" setup>
-
 import { useFluppets } from "~/composables/useFluppets";
 import { useAuthStore } from "~/stores/auth";
 import { useCompanyStore } from "~/stores/company";
