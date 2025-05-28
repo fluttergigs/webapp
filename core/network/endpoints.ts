@@ -54,6 +54,14 @@ export class Endpoint {
   static fluppetsById(id: string) {
     return `/snippets/find-by-document-id/${id}`;
   }
+
+  static updateSnippetViews(id: string) {
+    return `/snippets/update-views/${id}`;
+  }
+
+  static updateSnippet(id: string) {
+    return `/snippets/${id}`;
+  }
 }
 
 export class ApiEndpoint {

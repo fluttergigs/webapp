@@ -34,3 +34,7 @@ export interface SnippetFilterOptions {
 
 export type Snippets = Snippet[];
 export type Tags = Tag[];
+
+export interface UpdateSnippetRequest {
+  data: Partial<Snippet>;
+}

@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { Wrapper } from '~/core/wrapper';
-import type { MultiApiResponse } from '~/core/shared/types';
-import type { Snippet, SnippetFilterOptions, Snippets, Tag, Tags } from '~/features/fluppets/fluppets.types';
+import type { MultiApiResponse, SingleApiResponse } from '~/core/shared/types';
+import type { Snippet, SnippetFilterOptions, Snippets, Tag, Tags, UpdateSnippetRequest } from '~/features/fluppets/fluppets.types';
 import { HttpClient } from '~/core/network/http_client';
 import { Endpoint } from '~/core/network/endpoints';
 import { AppStrings } from '~/core/strings';
@@ -13,8 +13,45 @@ export const useFluppetsStore = defineStore('fluppets', {
     fluppetsListResponse: new Wrapper<MultiApiResponse<Snippet>>().toInitial(),
     filteredFluppetsListResponse: new Wrapper<MultiApiResponse<Snippet>>().toInitial(),
     fluppetTags: new Wrapper<MultiApiResponse<Tag>>().toInitial(),
+    fluppetUpdateResponse: new Wrapper<SingleApiResponse<Snippet>>().toInitial(),
   }),
   actions: {
+
+    async update(payload: UpdateSnippetRequest) {
+      this.fluppetUpdateResponse = new Wrapper<SingleApiResponse<Snippet>>().toLoading();
+      try {
+        //@ts-ignore
+        const { $http } = useNuxtApp();
+        const response: SingleApiResponse<Snippet> = await (<HttpClient>$http).put(
+          Endpoint.updateSnippet(payload.data.documentId!),
+          payload,
+        );
+        this.fluppetUpdateResponse =
+          this.fluppetUpdateResponse.toSuccess(response);
+      } catch (e) {
+        logDev('Error updating snippet:', e);
+        this.fluppetUpdateResponse = this.fluppetUpdateResponse.toFailed(AppStrings.unableToUpdateFluppets);
+      }
+    },
+
+    async updateViews(payload: UpdateSnippetRequest) {
+      this.fluppetUpdateResponse = new Wrapper<SingleApiResponse<Snippet>>().toLoading();
+      try {
+        //@ts-ignore
+        const { $http } = useNuxtApp();
+        const response: SingleApiResponse<Snippet> = await (<HttpClient>$http).put(
+          Endpoint.updateSnippetViews(payload.data.documentId!),
+          payload,
+        );
+        this.fluppetUpdateResponse =
+          this.fluppetUpdateResponse.toSuccess(response);
+      } catch (e) {
+        logDev('Error updating snippet views:', e);
+        this.fluppetUpdateResponse = this.fluppetUpdateResponse.toFailed(AppStrings.unableToUpdateFluppets);
+      }
+    },
+
+
     async load() {
       this.fluppetsListResponse = (this.filteredFluppetsListResponse =
         new Wrapper<MultiApiResponse<Snippet>>().toLoading());
@@ -120,6 +157,15 @@ export const useFluppetsStore = defineStore('fluppets', {
     },
     isFluppetsListSuccess: (state) => {
       return state.filteredFluppetsListResponse.isSuccess;
+    },
+    isFluppetUpdateLoading: (state) => {
+      return state.fluppetUpdateResponse.isLoading;
+    },
+    isFluppetUpdateError: (state) => {
+      return state.fluppetUpdateResponse.isFailure;
+    },
+    isFluppetUpdateSuccess: (state) => {
+      return state.fluppetUpdateResponse.isSuccess;
     },
   },
 });

@@ -1,10 +1,7 @@
 <template>
   <main class="pattern-bg to-slate-50 relative px-4 sm:px-8 md:px-20 py-10">
     <div class="flex h-full w-full justify-center items-center" v-if="pending">
-      <UIcon
-        name="i-lucide-loader-circle"
-        class="w-12 h-12 animate-spin text-indigo-600"
-      />
+      <UIcon name="i-lucide-loader-circle" class="w-12 h-12 animate-spin text-indigo-600" />
     </div>
 
     <div class="flex flex-col gap-6" v-else>
@@ -19,25 +16,13 @@
       <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
         <div class="lg:col-span-3">
           <div class="flex flex-col gap-4">
-            <div
-              class="flex flex-wrap gap-4 mt-8 mb-10"
-              v-if="(snippet?.tags?.length ?? 0) > 0"
-            >
-              <FluppetsTag
-                :show-count="false"
-                :show-hashtag="true"
-                :tag="tag"
-                v-for="tag in snippet?.tags ?? []"
-                :key="tag.documentId"
-                @tag-click="(tag) => useFluppets().handleTagClick(tag)"
-              />
+            <div class="flex flex-wrap gap-4 mt-8 mb-10" v-if="(snippet?.tags?.length ?? 0) > 0">
+              <FluppetsTag :show-count="false" :show-hashtag="true" :tag="tag" v-for="tag in snippet?.tags ?? []"
+                :key="tag.documentId" @tag-click="(tag) => useFluppets().handleTagClick(tag)" />
             </div>
-            <UiCodeBlock
-              :code="snippet?.code"
-              height="unset"
+            <UiCodeBlock :code="snippet?.code" height="unset"
               @share="snippet && useFluppets().handleFluppetsShare(snippet)"
-              @copy="snippet && useCopyGate().copy(snippet)"
-            />
+              @copy="snippet && useCopyGate().copy(snippet)" />
           </div>
         </div>
 
@@ -136,9 +121,17 @@ defineOgImageComponent(
   }
 );
 onMounted(() => {
-  useAnalytics().capture(AnalyticsEvent.fluppetsDetailPageEntered, {
-    snippetId: snippet.value ?? {},
+  const analytics = useAnalytics();
+  const fluppets = useFluppets();
+
+  analytics.capture(AnalyticsEvent.fluppetsDetailPageEntered, {
+    snippetId: snippet.value?.documentId ?? snippetId.value,
+    title: snippet.value?.title ?? "",
   });
+
+  if (snippet.value) {
+    fluppets.handleFluppetsUpdateViews(snippet.value);
+  }
 });
 </script>
 

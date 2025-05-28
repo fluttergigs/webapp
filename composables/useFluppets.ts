@@ -1,7 +1,9 @@
 import { useClipboard, watchDebounced } from '@vueuse/core';
+import { is } from 'date-fns/locale';
 import { storeToRefs } from 'pinia';
 import { useAnalytics } from '~/composables/useAnalytics';
 import { MAX_FLUPPETS_PER_PAGE } from '~/core/constants';
+import { logDev } from '~/core/helpers/log';
 import { BaseToast } from '~/core/ui/base_toast';
 import type { Snippet, SnippetFilterOptions, Tag, Tags } from '~/features/fluppets/fluppets.types';
 import { AnalyticsEvent } from '~/services/analytics/events';
@@ -19,7 +21,12 @@ function createFluppetsState() {
     isFluppetTagsLoading,
     isFluppetTagsError,
     isFluppetTagsSuccess,
+    isFluppetUpdateLoading,
+    isFluppetUpdateError,
+    isFluppetUpdateSuccess,
     filteredFluppetsList,
+    fluppetUpdateResponse,
+
     tags,
   } = storeToRefs(fluppetsStore);
 
@@ -166,6 +173,37 @@ function createFluppetsState() {
     useAnalytics().capture(AnalyticsEvent.fluppetsDescriptionPanelClicked, { snippet });
   };
 
+
+  const handleFluppetsUpdateBase = async (
+    updateFn: (args: { data: Snippet }) => Promise<void>,
+    snippet: Snippet,
+    errorMsgPrefix: string
+  ) => {
+    try {
+      await updateFn({ data: snippet });
+
+      if (isFluppetUpdateSuccess.value) {
+        await fetchFluppets();
+      }
+
+      if (isFluppetUpdateError.value) {
+        ($toast as BaseToast<Notification>).error(
+          fluppetUpdateResponse.value.message as string
+        );
+      }
+    } catch (error) {
+      logDev(`${errorMsgPrefix}:`, error);
+    }
+  };
+
+  const handleFluppetsUpdate = async (snippet: Snippet) => {
+    await handleFluppetsUpdateBase(useFluppetsStore().update, snippet, 'Error updating fluppet');
+  };
+
+  const handleFluppetsUpdateViews = async (snippet: Snippet) => {
+    await handleFluppetsUpdateBase(useFluppetsStore().updateViews, snippet, 'Error updating fluppet views');
+  };
+
   return {
     paginatedFluppetsList,
     currentPage,
@@ -182,6 +220,9 @@ function createFluppetsState() {
     isFluppetsListLoading,
     isFluppetsListError,
     isFluppetsListSuccess,
+    isFluppetUpdateLoading,
+    isFluppetUpdateError,
+    isFluppetUpdateSuccess,
     fetchFluppets,
     fetchFluppetTags,
     discoverFluppets,
@@ -196,6 +237,8 @@ function createFluppetsState() {
     nextPage,
     previousPage,
     toggleDescriptionPanel,
+    handleFluppetsUpdate,
+    handleFluppetsUpdateViews
   };
 }
 
