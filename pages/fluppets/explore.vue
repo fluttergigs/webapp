@@ -18,7 +18,7 @@ definePageMeta({
 
 defineOgImageScreenshot({
   //@ts-ignore
-  delay: 2000,
+  delay: 1200,
   selector: "#explore-fluppets",
   mask: "#navbar",
 });

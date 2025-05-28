@@ -11,6 +11,13 @@ definePageMeta({
   layout: "main-layout",
 });
 
+defineOgImageScreenshot({
+  //@ts-ignore
+  delay: 1200,
+  selector: "#home-header",
+  mask: "#navbar",
+});
+
 useSeoMeta({
   title: "FlutterGigs - Discover & Share Flutter Snippets",
   description: "FlutterGigs - Discover the best resources to hone your skills",
@@ -25,13 +32,6 @@ useSeoMeta({
   twitterDescription: "FlutterGigs - Discover & Share Flutter Snippets",
 });
 
-defineOgImageScreenshot({
-  //@ts-ignore
-  delay: 5000,
-  selector: "#home-header",
-  mask: "#navbar",
-});
-
 const { discoverFluppets, handleFluppetsCreate } = useFluppets();
 
 onMounted(() => {
@@ -42,15 +42,11 @@ onMounted(() => {
 <template>
   <main>
     <header class="pattern-bg relative py-36" id="home-header">
-      <div
-        class="container mx-auto flex flex-col-reverse items-center gap-12 px-6 lg:flex-row"
-      >
+      <div class="container mx-auto flex flex-col-reverse items-center gap-12 px-6 lg:flex-row">
         <!-- Text Content -->
         <div class="text-center md:w-7/12 lg:text-left">
           <h1 class="mb-4 text-4xl font-extrabold leading-tight xl:text-5xl">
-            Discover & Share & Integrate <br /><span class="text-primary"
-              >Professional</span
-            >
+            Discover & Share & Integrate <br /><span class="text-primary">Professional</span>
             <span class="primary-gradient"> Flutter Snippets</span>
           </h1>
           <p class="mb-8 text-xl text-gray-600">
@@ -59,37 +55,22 @@ onMounted(() => {
             Flutter projects. Share your own snippets and contribute to the community.
           </p>
           <div class="flex flex-col justify-center gap-4 sm:flex-row lg:justify-start">
-            <UButton
-              class="flex gap-2 rounded-xl px-9 py-5 font-bold"
-              color="primary"
-              icon="i-lucide-search"
-              label="Discover Snippets"
-              @click="discoverFluppets"
-            />
+            <UButton class="flex gap-2 rounded-xl px-9 py-5 font-bold" color="primary" icon="i-lucide-search"
+              label="Discover Snippets" @click="discoverFluppets" />
 
-            <UButton
-              class="flex gap-2 rounded-xl border-2 px-9 py-5 font-bold"
-              color="primary"
-              label="Contribute"
-              icon="i-lucide-git-branch-plus"
-              variant="soft"
-              @click="handleFluppetsCreate"
-            />
+            <UButton class="flex gap-2 rounded-xl border-2 px-9 py-5 font-bold" color="primary" label="Contribute"
+              icon="i-lucide-git-branch-plus" variant="soft" @click="handleFluppetsCreate" />
           </div>
         </div>
         <!-- Code Snippet Preview -->
         <div class="w-full md:w-5/12">
-          <div
-            class="custom-code__container transition-all duration-200 hover:shadow-md hover:-translate-y-4"
-          >
+          <div class="custom-code__container transition-all duration-200 hover:shadow-md hover:-translate-y-4">
             <div class="window">
               <span class="block h-3 w-3 rounded-full bg-red-500"></span>
               <span class="block h-3 w-3 rounded-full bg-yellow-500"></span>
               <span class="block h-3 w-3 rounded-full bg-green-500"></span>
             </div>
-            <pre
-              class="language-dart overflow-x-auto bg-white p-6 font-mono text-sm"
-            ><code>Container(
+            <pre class="language-dart overflow-x-auto bg-white p-6 font-mono text-sm"><code>Container(
   padding: EdgeInsets.all(16),
   decoration: BoxDecoration(
     color: Colors.white,
@@ -111,18 +92,14 @@ onMounted(() => {
           </h4>
         </div>
 
-        <div
-          class="container relative z-10 mx-auto flex flex-col space-y-4 px-10 md:flex-row md:space-x-8 md:px-8"
-        >
+        <div class="container relative z-10 mx-auto flex flex-col space-y-4 px-10 md:flex-row md:space-x-8 md:px-8">
           <div class="w-full md:w-1/3">
             <div class="flex flex-col">
               <p class="mb-6 text-sm font-bold uppercase tracking-px text-indigo-600">
                 For Developers
               </p>
 
-              <h2
-                class="tracking-px-n mb-16 font-heading text-4xl font-bold leading-none md:text-5xl xl:text-6xl"
-              >
+              <h2 class="tracking-px-n mb-16 font-heading text-4xl font-bold leading-none md:text-5xl xl:text-6xl">
                 Experience the power of code snippets
               </h2>
 
@@ -134,25 +111,15 @@ onMounted(() => {
             </div>
           </div>
           <div class="w-full md:w-1/3">
-            <Perk
-              :icon="CodeBracketIcon"
-              cta-text="Contribute"
-              description=" Showcase your skills: Share your code snippets and demonstrate your expertise to potential employers.
+            <Perk :icon="CodeBracketIcon" cta-text="Contribute" description=" Showcase your skills: Share your code snippets and demonstrate your expertise to potential employers.
                      Collaborate with peers: Engage with the community, upvote, and refine code snippets together."
-              title="Showcase"
-              @cta-clicked="handleFluppetsCreate"
-            />
+              title="Showcase" @cta-clicked="handleFluppetsCreate" />
           </div>
           <div class="w-full md:w-1/3">
-            <Perk
-              :icon="LightBulbIcon"
-              cta-text="Discover Snippets"
-              description="
+            <Perk :icon="LightBulbIcon" cta-text="Discover Snippets" description="
               Discover solutions: Find vetted snippets to speed up your development process.
-              Integrate seamlessly: Easily incorporate snippets into your Flutter/Dart projects"
-              title="Discover"
-              @cta-clicked="discoverFluppets"
-            >
+              Integrate seamlessly: Easily incorporate snippets into your Flutter/Dart projects" title="Discover"
+              @cta-clicked="discoverFluppets">
             </Perk>
           </div>
         </div>

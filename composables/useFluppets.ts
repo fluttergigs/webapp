@@ -97,7 +97,7 @@ function createFluppetsState() {
   };
 
   const handleTagClick = (tag: Tag) => {
-    useAnalytics().capture(AnalyticsEvent.fluppetsTagClicked, { tag });
+    useAnalytics().capture(AnalyticsEvent.fluppetsTagClicked, { tag: tag.slug });
 
     if (selectedTags.value.includes(tag)) {
       selectedTags.value = selectedTags.value.filter((t) => t.documentId !== tag.documentId);
