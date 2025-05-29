@@ -23,6 +23,10 @@ useHead({
 
   meta: [
     {
+      name: "google",
+      content: "notranslate",
+    },
+    {
       name: "description",
       content:
         "Flutter Gigs is a platform to find Flutter framework related job opportunities and more",
