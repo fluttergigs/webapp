@@ -122,4 +122,8 @@ export class AppStrings {
   static unableToUpdateFluppets = 'Unable to update snippet. Please try again later';
   static unableToDeleteFluppets = 'Unable to delete snippet. Please try again later';
 
+
+  static unableToUpdateYourData = 'Unable to update your data. Please try again later';
+  static dataUpdatedSuccessfully = 'Your data has been updated successfully';
+
 }

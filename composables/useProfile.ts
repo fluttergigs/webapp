@@ -1,10 +1,9 @@
 import { storeToRefs } from 'pinia';
 import { createDeleteMode, createModalToggle, createUpdateModal } from '~/core/helpers';
 import { BaseToast } from '~/core/ui/base_toast';
-import { addEducationFormSchema, addExperienceFormSchema, updateEducationFormSchema, updateExperienceFormSchema } from '~/core/validations';
-import type { AddEducationRequest, AddExperienceRequest, Education, Experience, UpdateEducationRequest, UpdateExperienceRequest } from '~/features/users/user.types';
+import { addEducationFormSchema, addExperienceFormSchema, updateEducationFormSchema, updateExperienceFormSchema, overviewFormSchema } from '~/core/validations';
+import type { AddEducationRequest, AddExperienceRequest, Education, Experience, UpdateEducationRequest, UpdateExperienceRequest, UpdateOverviewDataRequest } from '~/features/users/user.types';
 import { ExperienceType } from '~/features/users/user.types';
-
 
 
 
@@ -27,6 +26,8 @@ function createProfileState() {
     $deleteExperience,
     $updateEducation,
     $updateExperience,
+    $updateOverviewData,
+
   } = storeToRefs(userStore);
 
   const addEducationModal = createModalToggle();
@@ -43,6 +44,7 @@ function createProfileState() {
   const isEducationFormValid = ref(false);
   const isUpdateExperienceFormValid = ref(false);
   const isUpdateEducationFormValid = ref(false);
+  const isOverviewDataFormValid = ref(false);
 
   // Loading states
   const isAddingExperience = computed(() => $addExperience.value.isLoading);
@@ -54,8 +56,38 @@ function createProfileState() {
   const isDeletingExperience = computed(() => $deleteExperience.value.isLoading);
   const isDeletingEducation = computed(() => $deleteEducation.value.isLoading);
 
+  const isUpdatingOverviewData = computed(() => $updateOverviewData.value.isLoading);
+
   const selectedEducation = computed(() => updateEducationModal.selectedItem.value);
   const selectedExperience = computed(() => updateExperienceModal.selectedItem.value);
+
+
+  // Store original data for cancel functionality
+  const originalOverviewData = computed(() => ({
+    bio: useAuthStore().authUser?.bio ?? '',
+    username: useAuthStore().authUser?.username ?? '',
+    website: useAuthStore().authUser?.website ?? '',
+    portfolio: useAuthStore().authUser?.portfolio ?? '',
+    twitter: useAuthStore().authUser?.twitter ?? '',
+    linkedin: useAuthStore().authUser?.linkedin ?? '',
+    github: useAuthStore().authUser?.github ?? '',
+  }));
+
+  // Editable overview data
+  const overviewData = ref({
+    bio: useAuthStore().authUser?.bio ?? '',
+    username: useAuthStore().authUser?.username ?? '',
+    website: useAuthStore().authUser?.website ?? '',
+    portfolio: useAuthStore().authUser?.portfolio ?? '',
+    twitter: useAuthStore().authUser?.twitter ?? '',
+    linkedin: useAuthStore().authUser?.linkedin ?? '',
+    github: useAuthStore().authUser?.github ?? '',
+  });
+
+  // Track if data has changed
+  const hasOverviewDataChanged = computed(() => {
+    return JSON.stringify(overviewData.value) !== JSON.stringify(originalOverviewData.value);
+  });
 
   // Form data
   const newExperienceFormData = ref<AddExperienceRequest>({
@@ -88,52 +120,59 @@ function createProfileState() {
 
   const updatedExperienceFormData = ref<UpdateExperienceRequest>();
 
+
+  //
+
   watch(
     () => newExperienceFormData.value.data.isActive,
-    () => {
-      newExperienceFormData.value.data.endDate = null;
+    (isActive) => {
+      if (isActive) {
+        newExperienceFormData.value.data.endDate = null;
+      }
     },
   );
 
   watch(
     () => newEducationFormData.value.data.isActive,
-    () => {
-      newEducationFormData.value.data.endYear = null;
+    (isActive) => {
+      if (isActive) {
+        newEducationFormData.value.data.endYear = null;
+      }
     },
   );
 
   watch(
     () => selectedExperience,
     (data) => {
-      const { documentId, createdAt, updatedAt, publishedAt, id, ...filteredExperience } =
-        data.value || {};
+      if (!data.value) return;
+
+      const { documentId, createdAt, updatedAt, publishedAt, ...filteredExperience } = data.value;
 
       updatedExperienceFormData.value = {
-        //@ts-ignore
         data: {
           ...filteredExperience,
           user: useAuthStore().authUser.id,
-        } as unknown as UpdateExperienceRequest,
+        },
       };
     },
-    { deep: true },
+    { deep: true, immediate: true },
   );
 
   watch(
     () => selectedEducation,
     (data) => {
-      const { documentId, createdAt, id, updatedAt, publishedAt, ...filteredEducation } =
-        data.value || {};
+      if (!data.value) return;
+
+      const { documentId, createdAt, updatedAt, publishedAt, ...filteredEducation } = data.value;
 
       updatedEducationFormData.value = {
-        //@ts-ignore
         data: {
           ...filteredEducation,
           user: useAuthStore().authUser.id,
-        } as unknown as UpdateEducationRequest,
+        },
       };
     },
-    { deep: true },
+    { deep: true, immediate: true },
   );
 
   /* watch(
@@ -162,12 +201,13 @@ function createProfileState() {
    );*/
 
   // Track form validation state changes
+
   watch(
     () => newExperienceFormData.value.data,
     async (newData) => {
       isExperienceFormValid.value = await addExperienceFormSchema.isValid(newData);
 
-      const errors = await addExperienceFormSchema.validate(newData).catch((err) => {
+      await addExperienceFormSchema.validate(newData).catch((err) => {
         console.error('Validation errors:', err.errors);
         return err;
       });
@@ -188,8 +228,8 @@ function createProfileState() {
     async (newData) => {
       isUpdateExperienceFormValid.value = await updateExperienceFormSchema.isValid(newData);
 
-      //log validation errors
-      const errors = await updateExperienceFormSchema.validate(newData).catch((err) => {
+      // Log validation errors
+      await updateExperienceFormSchema.validate(newData).catch((err) => {
         console.error('Validation errors:', err.errors);
         return err;
       });
@@ -206,6 +246,16 @@ function createProfileState() {
     },
     { deep: true },
   );
+
+
+  watch(() => overviewData.value, async (newData) => {
+    isOverviewDataFormValid.value = await overviewFormSchema.isValid(newData);
+
+    await overviewFormSchema.validate(newData).catch((err) => {
+      console.error('Validation errors:', err.errors);
+      return err;
+    });
+  });
 
   // Form submission
   const addExperience = async () => {
@@ -332,6 +382,53 @@ function createProfileState() {
     }
   };
 
+  const updateOverviewData = async () => {
+    try {
+      const request: UpdateOverviewDataRequest = {
+        data: {
+          user: useAuthStore().authUser.id,
+          ...overviewData.value,
+        },
+      };
+      await userStore.updateOverviewData(request);
+
+      if ($updateOverviewData.value.isSuccess) {
+        ($toast as BaseToast<Notification>).info(AppStrings.dataUpdatedSuccessfully);
+        await useUser().getUser();
+        // Reset the overview data to match the updated auth store data
+        resetOverviewDataToOriginal();
+      }
+
+      if ($updateOverviewData.value.isFailure) {
+        ($toast as BaseToast<Notification>).error($updateOverviewData.value.message as string);
+      }
+    } catch (error) {
+      console.error('Error updating overview data:', error);
+    }
+  };
+
+  // Cancel changes and revert to original data
+  const cancelOverviewDataChanges = () => {
+    resetOverviewDataToOriginal();
+    ($toast as BaseToast<Notification>).info('Changes discarded');
+  };
+
+  // Helper function to reset overview data to original values
+  const resetOverviewDataToOriginal = () => {
+    overviewData.value = { ...originalOverviewData.value };
+  };
+
+  // Watch for auth store changes to sync original data
+  watch(
+    () => useAuthStore().authUser,
+    (newAuthUser) => {
+      if (newAuthUser && !hasOverviewDataChanged.value) {
+        resetOverviewDataToOriginal();
+      }
+    },
+    { deep: true }
+  );
+
   // Helper functions
   const resetExperienceForm = () => {
     newExperienceFormData.value = {
@@ -343,6 +440,7 @@ function createProfileState() {
         endDate: new Date(),
         description: '',
         isActive: false,
+        user: useAuthStore().authUser.id,
       },
     };
   };
@@ -357,6 +455,7 @@ function createProfileState() {
         endYear: new Date().getFullYear(),
         description: '',
         isActive: false,
+        user: useAuthStore().authUser.id,
       },
     };
   };
@@ -371,6 +470,7 @@ function createProfileState() {
     updateExperienceModal,
     canAddExperience: isExperienceFormValid,
     canAddEducation: isEducationFormValid,
+    canUpdateOverviewData: isOverviewDataFormValid,
     canUpdateExperience: isUpdateExperienceFormValid,
     canUpdateEducation: isUpdateEducationFormValid,
     isExperienceFormValid,
@@ -381,6 +481,7 @@ function createProfileState() {
     isUpdatingEducation,
     isDeletingEducation,
     isDeletingExperience,
+    isUpdatingOverviewData,
     newExperienceFormData,
     newEducationFormData,
     updatedExperienceFormData,
@@ -389,8 +490,11 @@ function createProfileState() {
     hasEducations,
     educations,
     experiences,
-    //methods
+    overviewData,
+    hasOverviewDataChanged,
 
+
+    //methods
     addExperience,
     addEducation,
     deleteExperience,
@@ -399,6 +503,9 @@ function createProfileState() {
     resetEducationForm,
     updateExperience,
     updateEducation,
+    updateOverviewData,
+    cancelOverviewDataChanges,
+    resetOverviewDataToOriginal,
   };
 }
 

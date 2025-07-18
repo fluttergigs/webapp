@@ -9,7 +9,9 @@
                     Manage your education history and work experience</p>-->
 
         <UTabs :items="tabs" class="w-full my-12" @change="onChange">
-          <template #overview="{ item }"></template>
+          <template #overview="{ item }">
+            <OverviewView />
+          </template>
           <template #education="{ item }">
             <EducatiionView />
           </template>
@@ -23,49 +25,50 @@
 </template>
 
 <script setup>
-  import EducatiionView from '~/components/profile/EducationView.vue';
-  import ExperienceView from '~/components/profile/ExperienceView.vue';
-  import { AnalyticsEvent } from '~/services/analytics/events';
-  import { useAuthStore } from '~/stores/auth';
+import EducatiionView from "~/components/profile/EducationView.vue";
+import ExperienceView from "~/components/profile/ExperienceView.vue";
+import OverviewView from "~/components/profile/OverviewView.vue";
+import { AnalyticsEvent } from "~/services/analytics/events";
+import { useAuthStore } from "~/stores/auth";
 
-  definePageMeta({ layout: 'app-layout', middleware: ['auth'] });
-  useHead({ title: 'FlutterGigs - My consultant profile' });
+definePageMeta({ layout: "app-layout", middleware: ["auth"] });
+useHead({ title: "FlutterGigs - My consultant profile" });
 
-  const authStore = useAuthStore();
+const authStore = useAuthStore();
 
-  const tabs = [
-    {
-      label: 'Overview',
-      description: "Make changes to your account here. Click save when you're done.",
-      slot: 'overview',
-    },
-    {
-      label: 'Education',
-      description: 'Add your education details',
-      slot: 'education',
-    },
-    {
-      label: 'Experience',
-      description: 'Add your work experience',
-      slot: 'experience',
-    },
-  ];
+const tabs = [
+  {
+    label: "Overview",
+    description: "Make changes to your account here. Click save when you're done.",
+    slot: "overview",
+  },
+  {
+    label: "Education",
+    description: "Add your education details",
+    slot: "education",
+  },
+  {
+    label: "Experience",
+    description: "Add your work experience",
+    slot: "experience",
+  },
+];
 
-  onMounted(() => {
-    useAnalytics().capture(AnalyticsEvent.consultantProfilePageEntered);
-  });
+onMounted(() => {
+  useAnalytics().capture(AnalyticsEvent.consultantProfilePageEntered);
+});
 
-  let tabLabel = ref('Overview');
+let tabLabel = ref("Overview");
 
-  const onChange = (index) => {
-    const tab = tabs[index];
+const onChange = (index) => {
+  const tab = tabs[index];
 
-    tabLabel.value = tab['label'];
+  tabLabel.value = tab["label"];
 
-    if (tab['slot'] === 'account') {
-    } else if (tab['slot'] === 'password') {
-    }
-  };
+  if (tab["slot"] === "account") {
+  } else if (tab["slot"] === "password") {
+  }
+};
 </script>
 
 <style scoped></style>

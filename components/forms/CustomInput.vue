@@ -48,181 +48,213 @@
 </template>
 
 <script setup>
-  import { useField } from 'vee-validate';
-  import * as yup from 'yup';
+import { useField } from "vee-validate";
+import * as yup from "yup";
 
-  const props = defineProps({
-    name: {
-      type: String,
-      required: true,
-    },
-    insideText: {
-      type: String,
-      default: '',
-    },
-    modelValue: {
-      type: [String, Number],
-    },
-    placeholder: {
-      type: String,
-      default: '',
-    },
-    type: {
-      type: String,
-      default: 'text',
-    },
-    label: {
-      type: String,
-      default: '',
-    },
-    showLabel: {
-      type: Boolean,
-      default: true,
-    },
-    isTextArea: {
-      type: Boolean,
-      default: false,
-    },
-    isDisabled: {
-      type: Boolean,
-      default: false,
-    },
-  });
+const props = defineProps({
+  name: {
+    type: String,
+    required: true,
+  },
+  insideText: {
+    type: String,
+    default: "",
+  },
+  modelValue: {
+    type: [String, Number],
+  },
+  placeholder: {
+    type: String,
+    default: "",
+  },
+  type: {
+    type: String,
+    default: "text",
+  },
+  label: {
+    type: String,
+    default: "",
+  },
+  showLabel: {
+    type: Boolean,
+    default: true,
+  },
+  isTextArea: {
+    type: Boolean,
+    default: false,
+  },
+  isDisabled: {
+    type: Boolean,
+    default: false,
+  },
+});
 
-  const emits = defineEmits(['update:modelValue', 'insideTextClicked']);
+const emits = defineEmits(["update:modelValue", "insideTextClicked"]);
 
-  const hasLabel = computed(() => !!props.label);
-  const hasIcon = computed(() => !!props.icon);
+const hasLabel = computed(() => !!props.label);
+const hasIcon = computed(() => !!props.icon);
 
-  const fieldValue = computed({
-    get: () => props.modelValue,
-    set: (val) => emits('update:modelValue', val),
-  });
+const fieldValue = computed({
+  get: () => props.modelValue,
+  set: (val) => emits("update:modelValue", val),
+});
 
-  const validators = computed(() => ({
-    email: yup
-      .string()
-      .email()
-      .required()
-      .label(hasLabel ? props.label : 'Email'),
-    name: yup
-      .string()
-      .required()
-      .min(2)
-      .label(hasLabel ? props.label : 'Name'),
-    lastName: yup
-      .string()
-      .required()
-      .min(2)
-      .label(hasLabel ? props.label : 'Last name'),
-    firstName: yup
-      .string()
-      .required()
-      .min(2)
-      .label(hasLabel ? props.label : 'First name'),
-    username: yup
-      .string()
-      .required()
-      .min(2)
-      .label(hasLabel ? props.label : 'Username'),
-    password: yup
-      .string()
-      .required()
-      .min(8)
-      .label(hasLabel ? props.label : 'Password'),
+const validators = computed(() => ({
+  email: yup
+    .string()
+    .email()
+    .required()
+    .label(hasLabel ? props.label : "Email"),
+  name: yup
+    .string()
+    .required()
+    .min(2)
+    .label(hasLabel ? props.label : "Name"),
+  lastName: yup
+    .string()
+    .required()
+    .min(2)
+    .label(hasLabel ? props.label : "Last name"),
+  firstName: yup
+    .string()
+    .required()
+    .min(2)
+    .label(hasLabel ? props.label : "First name"),
+  username: yup
+    .string()
+    .required()
+    .min(2)
+    .label(hasLabel ? props.label : "Username"),
+  password: yup
+    .string()
+    .required()
+    .min(8)
+    .label(hasLabel ? props.label : "Password"),
 
-    //TODO - check confirm password match
-    confirmPassword: yup
-      .string()
-      .label(hasLabel ? props.label : 'Confirm password')
-      .oneOf([yup.ref('password')], 'Passwords must match'),
+  //TODO - check confirm password match
+  confirmPassword: yup
+    .string()
+    .label(hasLabel ? props.label : "Confirm password")
+    .oneOf([yup.ref("password")], "Passwords must match"),
 
-    description: yup
-      .string()
-      .required()
-      .min(30)
-      .max(5000)
-      .label(hasLabel ? props.label : 'Description'),
+  description: yup
+    .string()
+    .required()
+    .min(30)
+    .max(5000)
+    .label(hasLabel ? props.label : "Description"),
 
-    bio: yup
-      .string()
-      .min(15)
-      .max(500)
-      .label(hasLabel ? props.label : 'Bio'),
+  bio: yup
+    .string()
+    .min(15)
+    .max(500)
+    .label(hasLabel ? props.label : "Bio"),
 
-    url: yup
-      .string()
-      .url()
-      .label(hasLabel ? props.label : 'Url'),
+  url: yup
+    .string()
+    .url()
+    .label(hasLabel ? props.label : "Url"),
 
-    title: yup
-      .string()
-      .required()
-      .min(8)
-      .max(30)
-      .label(hasLabel ? props.label : 'Job title'),
+  title: yup
+    .string()
+    .required()
+    .min(8)
+    .max(30)
+    .label(hasLabel ? props.label : "Job title"),
 
-    company: yup
-      .string()
-      .required()
-      .min(3)
-      .max(30)
-      .label(hasLabel ? props.label : 'Company'),
+  company: yup
+    .string()
+    .required()
+    .min(3)
+    .max(30)
+    .label(hasLabel ? props.label : "Company"),
 
-    amount: yup
-      .number()
-      .required()
-      .min(1)
-      .label(hasLabel ? props.label : 'Amount'),
+  amount: yup
+    .number()
+    .required()
+    .min(1)
+    .label(hasLabel ? props.label : "Amount"),
 
-    startDate: yup
-      .date()
-      .required()
-      .label(hasLabel ? props.label : 'Start date'),
-    endDate: yup
-      .date()
-      .when('isActive', (isActive, schema) => {
-        if (!isActive) {
-          return schema
-            .required('End date is required')
-            .min(yup.ref('startDate'), 'End date must be after start date');
-        }
+  startDate: yup
+    .date()
+    .required()
+    .label(hasLabel ? props.label : "Start date"),
+  endDate: yup
+    .date()
+    .when("isActive", (isActive, schema) => {
+      if (!isActive) {
         return schema
-          .min(yup.ref('startDate'), 'End date must be after start date')
-          .nullable()
-          .optional();
-      })
-      .label('End date'),
+          .required("End date is required")
+          .min(yup.ref("startDate"), "End date must be after start date");
+      }
+      return schema
+        .min(yup.ref("startDate"), "End date must be after start date")
+        .nullable()
+        .optional();
+    })
+    .label("End date"),
 
-    isActive: yup
-      .boolean()
-      .required()
-      .label(hasLabel ? props.label : 'Still working there'),
+  isActive: yup
+    .boolean()
+    .required()
+    .label(hasLabel ? props.label : "Still working there"),
 
-    startYear: yup
-      .number()
-      .required()
-      .label(hasLabel ? props.label : 'Start year'),
+  startYear: yup
+    .number()
+    .required()
+    .label(hasLabel ? props.label : "Start year"),
 
-    endYear: yup
-      .number()
-      .when('isActive', (isActive, schema) => {
-        if (!isActive) {
-          return schema
-            .required('End year is required')
-            .min(yup.ref('startYear'), 'End year must be after start year');
-        }
+  portfolio: yup
+    .string()
+    .url()
+    .notRequired()
+    .label(hasLabel ? props.label : "Portfolio"),
+
+  twitter: yup
+    .string()
+    .url()
+    .notRequired()
+    .label(hasLabel ? props.label : "Twitter"),
+
+  linkedin: yup
+    .string()
+    .url()
+    .notRequired()
+    .notRequired()
+    .label(hasLabel ? props.label : "LinkedIn"),
+
+  github: yup
+    .string()
+    .url()
+    .notRequired()
+    .notRequired()
+    .label(hasLabel ? props.label : "Github"),
+
+  website: yup
+    .string()
+    .url()
+    .notRequired()
+    .label(hasLabel ? props.label : "Website"),
+
+  endYear: yup
+    .number()
+    .when("isActive", (isActive, schema) => {
+      if (!isActive) {
         return schema
-          .optional()
-          .min(yup.ref('startYear'), 'End year must be after start year')
-          .nullable();
-      })
-      .label(hasLabel ? props.label : 'End year'),
-  }));
+          .required("End year is required")
+          .min(yup.ref("startYear"), "End year must be after start year");
+      }
+      return schema
+        .optional()
+        .min(yup.ref("startYear"), "End year must be after start year")
+        .nullable();
+    })
+    .label(hasLabel ? props.label : "End year"),
+}));
 
-  const { errorMessage, meta } = useField(() => props.name, validators.value[props.name], {
-    syncVModel: true,
-  });
+const { errorMessage, meta } = useField(() => props.name, validators.value[props.name], {
+  syncVModel: true,
+});
 </script>
 
 <style scoped></style>
