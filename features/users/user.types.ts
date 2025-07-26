@@ -27,7 +27,7 @@ export type Experience = {
   publishedAt?: Date;
 };
 
-export type Education = {
+export interface Education {
   documentId: string;
   id: number;
   degree: string;
@@ -43,7 +43,7 @@ export type Education = {
   publishedAt?: Date;
 };
 
-export type UpdateUserRequestProps = {
+export interface UpdateUserRequestProps {
   username: string;
   email: string;
   firstName?: string;
@@ -74,4 +74,8 @@ export type AddEducationRequest = {
 
 export type UpdateEducationRequest = {
   data: Omit<Education, 'documentId' | 'createdAt' | 'updatedAt' | 'publishedAt'>;
+};
+
+export type UpdateOverviewDataRequest = {
+  data: Omit<User, 'id' | 'documentId' | 'createdAt' | 'updatedAt' | 'publishedAt'>;
 };

@@ -28,7 +28,7 @@ export const useRegister = () => {
   const authStore = useAuthStore();
 
   const {
-    user: $user,
+    $user,
     authUser,
     hasReturnUrl,
     returnUrl,
@@ -54,17 +54,15 @@ export const useRegister = () => {
 
   const submit = async (onDone?: CallbackFunction<User>) => {
     try {
-      ($analytics as AppAnalyticsProvider).capture(
-        AnalyticsEvent.registrationButtonClicked,
-        formInput.value,
-      );
+      ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.registrationButtonClicked, {
+        data: formInput.value,
+      });
       await authStore.register(formInput.value);
 
       if (isSuccessfulRegistration.value) {
-        ($analytics as AppAnalyticsProvider).capture(
-          AnalyticsEvent.successfulRegistration,
-          formInput.value,
-        );
+        ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.successfulRegistration, {
+          data: formInput.value,
+        });
 
         onDone?.(authUser.value);
       }

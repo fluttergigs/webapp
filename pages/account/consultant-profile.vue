@@ -8,7 +8,12 @@
         <!--          <p class="text-md md:text-xl">👋, <b class="text-indigo-500">{{ useAuthStore().user.value.username }}</b>!
                     Manage your education history and work experience</p>-->
 
-        <UTabs v-model="activeTab" :items="tabs" :unmount-on-hide="false" class="w-full my-12">
+        <UTabs
+          v-model="activeTab"
+          :items="tabs"
+          :unmount-on-hide="false"
+          class="w-full my-12"
+        >
           <template #overview="{ item }">
             <OverviewView />
           </template>
@@ -25,13 +30,13 @@
 </template>
 
 <script setup>
-import EducatiionView from '~/components/profile/EducationView.vue';
-import ExperienceView from '~/components/profile/ExperienceView.vue';
-import { AnalyticsEvent } from '~/services/analytics/events';
-import { useAuthStore } from '~/stores/auth';
+import EducatiionView from "~/components/profile/EducationView.vue";
+import ExperienceView from "~/components/profile/ExperienceView.vue";
+import { AnalyticsEvent } from "~/services/analytics/events";
+import { useAuthStore } from "~/stores/auth";
 
-definePageMeta({ layout: 'app-layout', middleware: ['auth'] });
-useHead({ title: 'FlutterGigs - My consultant profile' });
+definePageMeta({ layout: "app-layout", middleware: ["auth"] });
+useHead({ title: "FlutterGigs - My consultant profile" });
 
 const authStore = useAuthStore();
 

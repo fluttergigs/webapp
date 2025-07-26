@@ -17,6 +17,10 @@
     ctaText: {
       type: String,
     },
+    hasCta: {
+      type: Boolean,
+      default: true,
+    },
   });
 
   //@ts-ignore
@@ -42,7 +46,7 @@
         </p>
       </slot>
 
-      <slot name="cta">
+      <slot v-if="hasCta" name="cta">
         <div class="flex gap-3 cursor-pointer" @click="emits('ctaClicked')">
           <p class="font-bold">{{ ctaText }}</p>
           <ArrowRightIcon class="w-4" />

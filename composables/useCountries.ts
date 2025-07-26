@@ -15,7 +15,7 @@ export default async function useCountries() {
     key: 'countries',
     mode: 'cors',
 
-    default: () => ({ countries: [] }),
+    default: () => [],
     transform: (countries: any) => {
       const result: Country[] = countries.map((country: any) => ({
         name: country.name.common,

@@ -47,6 +47,7 @@ export type JobOffer = {
   workPermits: string[] | null;
   bookmarkedJob?: number;
   documentId?: string;
+  companyName?: string;
 };
 
 export type JobPostPaymentData = {

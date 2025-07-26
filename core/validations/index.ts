@@ -5,6 +5,7 @@ import {
   addExperienceFormSchema,
   updateEducationFormSchema,
   updateExperienceFormSchema,
+  overviewFormSchema,
 } from '~/core/validations/profile.validations';
 
 export {
@@ -15,4 +16,5 @@ export {
   addExperienceFormSchema,
   updateExperienceFormSchema,
   updateEducationFormSchema,
+  overviewFormSchema,
 };

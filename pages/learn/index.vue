@@ -27,10 +27,7 @@
 
 <script lang="ts" setup>
   import LearnResources from '~/components/learn/resources.vue';
-  import { AppAnalyticsProvider } from '~/services/analytics/AppAnalyticsProvider';
   import { AnalyticsEvent } from '~/services/analytics/events';
-
-  import '@/components/landing/Header.vue';
 
   definePageMeta({
     layout: 'main-layout',
@@ -51,9 +48,7 @@
     twitterDescription: 'Discover the best resources to hone your skills',
   });
 
-  const { $analytics } = useNuxtApp();
-
   onMounted(() => {
-    ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.learnCategoryPageEntered);
+    useAnalytics().capture(AnalyticsEvent.learnCategoryPageEntered);
   });
 </script>

@@ -1,21 +1,23 @@
 //@ts-ignore
 import path from 'path';
 
-
-
-
-
 //@ts-ignore
 export default defineNuxtConfig({
   devtools: {
     enabled: true,
 
+
+
     timeline: {
       enabled: true,
     },
   },
+  components: {
+    dirs: ['~/components'], // This is where your feature components are located
+  },
   experimental: {
     renderJsonPayloads: false,
+    extraPageMetaExtractionKeys: [],
   },
   nitro: {
     experimental: {
@@ -44,8 +46,6 @@ export default defineNuxtConfig({
     dirs: ['core', 'stores', 'composables', 'components', 'services', 'features'],
   },
   build: {
-    optimizeCSS: true,
-    extractCSS: true,
     transpile: [
       'date-fns',
       // "quill-delta",
@@ -58,21 +58,27 @@ export default defineNuxtConfig({
   },
   ignore: ['pages/ignore/*'],
 
-  css: ['@/assets/css/main.css', 'vue-toast-notification/dist/theme-default.css'],
+  css: ['~/assets/css/main.css', 'vue-toast-notification/dist/theme-default.css'],
 
   script: ['~/assets/js/main.js'],
 
   modules: [
-    '@pinia/nuxt',
-    '@pinia-plugin-persistedstate/nuxt', // '@nuxtjs/tailwindcss',
-    '@nuxtjs/i18n', // 'nuxt-appwrite',
+    // '@nuxtjs/tailwindcss',
+    '@pinia/nuxt', // 'nuxt-appwrite',
+    '@pinia-plugin-persistedstate/nuxt',
+    '@nuxtjs/i18n',
     'nuxt-lodash',
     '@nuxtjs/strapi',
     '@nuxt/ui',
     '@sentry/nuxt/module',
     '@nuxt/image',
     'nuxt-og-image',
+    '@hypernym/nuxt-gsap',
+    '@nuxt/scripts',
   ],
+  gsap: {
+    composables: true,
+  },
   sentry: {
     sourceMapsUploadOptions: {
       org: 'evacorp',
@@ -94,7 +100,6 @@ export default defineNuxtConfig({
       googleGenerativeApiKey: '',
       sentry: {
         dsn: '',
-        environment: '',
       },
     },
   },
@@ -122,13 +127,12 @@ export default defineNuxtConfig({
                               },*/
   i18n: {
     locales: [
-      { code: 'en', file: 'en.json' },
-      { code: 'fr', file: 'fr.json' },
+      { code: 'en', name: 'English', file: 'en.json' },
+      { code: 'fr', name: 'French', file: 'fr.json' },
     ],
     lazy: true,
     defaultLocale: 'en',
     strategy: 'no_prefix',
-    langDir: 'locales/',
   },
 
   plugins: [
