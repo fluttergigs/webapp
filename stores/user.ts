@@ -236,7 +236,7 @@ export const useUserStore = defineStore('user', {
 
       try {
         const response = await (<HttpClient>$http).put<SingleApiResponse<Object>>(
-          Endpoint.users,
+          `${Endpoint.users}/${request.data.user}`,
           { ...request },
         );
         this.$updateOverviewData = this.$updateOverviewData.toSuccess(

@@ -123,7 +123,8 @@ const validators = computed(() => ({
   username: yup
     .string()
     .required()
-    .min(2)
+    .min(5)
+    .max(30)
     .label(hasLabel ? props.label : "Username"),
   password: yup
     .string()

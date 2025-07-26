@@ -4,6 +4,7 @@ import { BaseToast } from '~/core/ui/base_toast';
 import { addEducationFormSchema, addExperienceFormSchema, updateEducationFormSchema, updateExperienceFormSchema, overviewFormSchema } from '~/core/validations';
 import type { AddEducationRequest, AddExperienceRequest, Education, Experience, UpdateEducationRequest, UpdateExperienceRequest, UpdateOverviewDataRequest } from '~/features/users/user.types';
 import { ExperienceType } from '~/features/users/user.types';
+import { logDev } from "~/core/helpers/log";
 
 
 
@@ -77,11 +78,11 @@ function createProfileState() {
   const overviewData = ref({
     bio: useAuthStore().authUser?.bio ?? '',
     username: useAuthStore().authUser?.username ?? '',
-    website: useAuthStore().authUser?.website ?? '',
-    portfolio: useAuthStore().authUser?.portfolio ?? '',
-    twitter: useAuthStore().authUser?.twitter ?? '',
-    linkedin: useAuthStore().authUser?.linkedin ?? '',
-    github: useAuthStore().authUser?.github ?? '',
+    website: useAuthStore().authUser?.website ?? null,
+    portfolio: useAuthStore().authUser?.portfolio ?? null,
+    twitter: useAuthStore().authUser?.twitter ?? null,
+    linkedin: useAuthStore().authUser?.linkedin ?? null,
+    github: useAuthStore().authUser?.github ?? null,
   });
 
   // Track if data has changed
@@ -251,11 +252,14 @@ function createProfileState() {
   watch(() => overviewData.value, async (newData) => {
     isOverviewDataFormValid.value = await overviewFormSchema.isValid(newData);
 
+
+    logDev("overviewData", isOverviewDataFormValid.value);
+
     await overviewFormSchema.validate(newData).catch((err) => {
       console.error('Validation errors:', err.errors);
       return err;
     });
-  });
+  }, { deep: true, });
 
   // Form submission
   const addExperience = async () => {

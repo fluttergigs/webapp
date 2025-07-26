@@ -12,8 +12,7 @@
           <div class="flex items-center gap-3"></div>
           <div v-if="hasOverviewDataChanged" class="flex gap-3">
             <UButton
-              :disabled="!canUpdateOverviewData"
-              :loading="isUpdatingOverviewData"
+              :disabled="!canUpdateOverviewData || isUpdatingOverviewData"
               class="font-bold h-fit"
               color="neutral"
               variant="outline"
@@ -105,6 +104,14 @@
         <div class="flex-col space-y-5">
           <div class="flex w-96 flex-col space-y-1.5">
             <CustomInput
+              v-model="overviewData.github"
+              label="Github (mandatory)"
+              name="github"
+              placeholder="e.g. github.com/username"
+            />
+          </div>
+          <div class="flex w-96 flex-col space-y-1.5">
+            <CustomInput
               v-model="overviewData.twitter"
               label="X"
               name="twitter"
@@ -184,7 +191,6 @@
         <div></div>
         <div class="flex gap-3">
           <UButton
-            :disabled="!canUpdateOverviewData"
             :loading="isUpdatingOverviewData"
             class="font-bold h-fit"
             color="neutral"
@@ -211,6 +217,7 @@
 </template>
 
 <script lang="ts" setup>
+//@ts-ignore
 import CustomInput from "~/components/forms/CustomInput.vue";
 
 const {
