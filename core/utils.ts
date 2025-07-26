@@ -4,9 +4,6 @@ import slugify from '@sindresorhus/slugify';
 import { customAlphabet } from 'nanoid';
 
 
-
-
-
 export const generateUserName = (email: string) => {
   const nanoid = customAlphabet(`1234567890fluttergigs${email}`, 20);
   return `${nanoid()}`;
@@ -41,3 +38,7 @@ const isMarkdown = (text: string | String): boolean => {
 String.prototype.isMarkdown = function () {
   return isMarkdown(this);
 };
+
+String.prototype.capitalize = function () {
+  return this.charAt(0).toUpperCase() + this.slice(1);
+}

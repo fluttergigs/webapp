@@ -4,7 +4,7 @@ import { BaseToast } from '~/core/ui/base_toast';
 import { addEducationFormSchema, addExperienceFormSchema, updateEducationFormSchema, updateExperienceFormSchema } from '~/core/validations';
 import type { AddEducationRequest, AddExperienceRequest, Education, Experience, UpdateEducationRequest, UpdateExperienceRequest } from '~/features/users/user.types';
 import { ExperienceType } from '~/features/users/user.types';
-
+import { logDev } from "~/core/helpers/log";
 
 
 
@@ -56,6 +56,34 @@ function createProfileState() {
 
   const selectedEducation = computed(() => updateEducationModal.selectedItem.value);
   const selectedExperience = computed(() => updateExperienceModal.selectedItem.value);
+
+
+  // Store original data for cancel functionality
+  const originalOverviewData = computed(() => ({
+    bio: useAuthStore().authUser?.bio ?? '',
+    username: useAuthStore().authUser?.username ?? '',
+    website: useAuthStore().authUser?.website ?? '',
+    portfolio: useAuthStore().authUser?.portfolio ?? '',
+    twitter: useAuthStore().authUser?.twitter ?? '',
+    linkedin: useAuthStore().authUser?.linkedin ?? '',
+    github: useAuthStore().authUser?.github ?? '',
+  }));
+
+  // Editable overview data
+  const overviewData = ref({
+    bio: useAuthStore().authUser?.bio ?? '',
+    username: useAuthStore().authUser?.username ?? '',
+    website: useAuthStore().authUser?.website ?? null,
+    portfolio: useAuthStore().authUser?.portfolio ?? null,
+    twitter: useAuthStore().authUser?.twitter ?? null,
+    linkedin: useAuthStore().authUser?.linkedin ?? null,
+    github: useAuthStore().authUser?.github ?? null,
+  });
+
+  // Track if data has changed
+  const hasOverviewDataChanged = computed(() => {
+    return JSON.stringify(overviewData.value) !== JSON.stringify(originalOverviewData.value);
+  });
 
   // Form data
   const newExperienceFormData = ref<AddExperienceRequest>({
@@ -206,6 +234,19 @@ function createProfileState() {
     },
     { deep: true },
   );
+
+
+  watch(() => overviewData.value, async (newData) => {
+    isOverviewDataFormValid.value = await overviewFormSchema.isValid(newData);
+
+
+    logDev("overviewData", isOverviewDataFormValid.value);
+
+    await overviewFormSchema.validate(newData).catch((err) => {
+      console.error('Validation errors:', err.errors);
+      return err;
+    });
+  }, { deep: true, });
 
   // Form submission
   const addExperience = async () => {

@@ -7,27 +7,15 @@
             Your job postings
           </h3>
 
-          <UButton
-            :class="['bg-indigo-700 px-2 py-1 sm:px-4 md:py-3']"
-            :padded="false"
-            color="primary"
-            icon="i-heroicons-megaphone"
-            label="Post a job"
-            square
-            variant="solid"
-            @click="postJob"
-          />
+          <UButton :class="['bg-indigo-700 px-2 py-1 sm:px-4 md:py-3']" :padded="false" color="primary"
+            icon="i-heroicons-megaphone" label="Post a job" square variant="solid" @click="postJob" />
         </div>
 
         <keep-alive>
-          <UTabs :items="tabs" class="w-full my-12">
+          <UTabs :items="tabs" v-model="activeTab" class="w-full my-12">
             <template #all="{ item }">
-              <JobOffersList
-                v-if="!!companyJobsResponse"
-                :jobs="myJobPostings"
-                :jobs-response="companyJobsResponse"
-                class="my-10"
-              >
+              <JobOffersList v-if="!!companyJobsResponse" :jobs="myJobPostings" :jobs-response="companyJobsResponse"
+                class="my-10">
                 <template #default="{ job }">
                   <JobCard v-if="isMediumScreen" :job="job" />
 
@@ -38,12 +26,8 @@
 
             <!--            active-->
             <template #active="{ item }">
-              <JobOffersList
-                v-if="!!companyJobsResponse"
-                :jobs="activeJobPostings"
-                :jobs-response="companyJobsResponse"
-                class="my-10"
-              >
+              <JobOffersList v-if="!!companyJobsResponse" :jobs="activeJobPostings" :jobs-response="companyJobsResponse"
+                class="my-10">
                 <template #default="{ job }">
                   <JobCard v-if="isMediumScreen" :job="job" />
 
@@ -54,12 +38,8 @@
 
             <!--            expired-->
             <template #expired="{ item }">
-              <JobOffersList
-                v-if="!!companyJobsResponse"
-                :jobs="expiredJobPostings"
-                :jobs-response="companyJobsResponse"
-                class="my-10"
-              >
+              <JobOffersList v-if="!!companyJobsResponse" :jobs="expiredJobPostings"
+                :jobs-response="companyJobsResponse" class="my-10">
                 <template #default="{ job }">
                   <JobCard v-if="isMediumScreen" :job="job" />
 
@@ -75,59 +55,68 @@
 </template>
 
 <script lang="ts" setup>
-  //@ts-ignore
-  import { useMediaQuery } from '@vueuse/core';
-  import { storeToRefs } from 'pinia';
-  import { AppRoutes } from '~/core/routes';
-  import { AppAnalyticsProvider } from '~/services/analytics/AppAnalyticsProvider';
-  import { AnalyticsEvent } from '~/services/analytics/events';
-  import { useCompanyStore } from '~/stores/company';
+//@ts-ignore
+import { useMediaQuery } from "@vueuse/core";
+import { storeToRefs } from "pinia";
+import { AppRoutes } from "~/core/routes";
+import { AppAnalyticsProvider } from "~/services/analytics/AppAnalyticsProvider";
+import { AnalyticsEvent } from "~/services/analytics/events";
+import { useCompanyStore } from "~/stores/company";
 
-  definePageMeta({
-    layout: 'app-layout',
-    middleware: ['auth', 'no-company'],
-    keepalive: true,
-  });
+definePageMeta({
+  layout: "app-layout",
+  middleware: ["auth", "no-company"],
+  keepalive: true,
+});
 
-  useHead({ title: 'FlutterGigs - My job postings' });
+useHead({ title: "FlutterGigs - My job postings" });
 
-  const companyStore = useCompanyStore();
-  const { $analytics } = useNuxtApp();
-  const isMediumScreen = useMediaQuery('(min-width: 768px)');
+const companyStore = useCompanyStore();
+const { $analytics } = useNuxtApp();
+const isMediumScreen = useMediaQuery("(min-width: 768px)");
 
-  const tabs = [
-    {
-      slot: 'all',
-      label: 'All',
-      description: 'All your job postings',
-    },
-    {
-      slot: 'active',
-      label: 'Active',
-      description: 'Active job postings',
-    },
-    {
-      slot: 'expired',
-      label: 'Expired',
-      description: 'Expired job postings',
-    },
-  ];
+const tabs = [
+  {
+    slot: "all",
+    label: "All",
+    value: "all",
+    description: "All your job postings",
+  },
+  {
+    slot: "active",
+    label: "Active",
+    value: "active",
+    description: "Active job postings",
+  },
+  {
+    slot: "expired",
+    label: "Expired",
+    value: "expired",
+    description: "Expired job postings",
+  },
+];
 
-  onMounted(() => {
-    ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.myJobsPageEntered);
-  });
+const activeTab = ref("all");
 
-  // onM(() => {
-  companyStore.fetchMyJobs();
-  // })
+onMounted(() => {
+  ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.myJobsPageEntered);
+});
 
-  const postJob = () => {
-    ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.postJobOfferButtonClicked);
+// onM(() => {
+companyStore.fetchMyJobs();
+// })
 
-    navigateTo(AppRoutes.postJob);
-  };
-  const { myJobPostings, expiredJobPostings, activeJobPostings, companyJobsResponse } =
-    storeToRefs(companyStore);
+const postJob = () => {
+  ($analytics as AppAnalyticsProvider).capture(AnalyticsEvent.postJobOfferButtonClicked);
+
+  navigateTo(AppRoutes.postJob);
+};
+const {
+  myJobPostings,
+  expiredJobPostings,
+  activeJobPostings,
+  companyJobsResponse,
+} = storeToRefs(companyStore);
 </script>
 
 <style scoped></style>

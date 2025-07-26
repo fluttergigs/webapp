@@ -25,7 +25,7 @@ export const passwordResetSchema = yup.object({
 
 export const updateUserFormSchema = yup.object({
   email: yup.string().required().email().label('email'),
-  username: yup.string().required().label('username'),
+  username: yup.string().required().min(5).max(30).label('username'),
   firstName: yup.string().required().min(2).label('First name'),
   lastName: yup.string().required().min(2).label('Last name'),
   bio: yup.string().min(15).max(200).notRequired().label('Bio'),

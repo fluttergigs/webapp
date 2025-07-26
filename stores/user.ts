@@ -227,6 +227,27 @@ export const useUserStore = defineStore('user', {
         );
       }
     },
+
+    async updateOverviewData(request: UpdateOverviewDataRequest): Promise<void> {
+      this.$updateOverviewData = new Wrapper<SingleApiResponse<Object>>().toLoading();
+      const { $http } = useNuxtApp();
+
+      try {
+        const response = await (<HttpClient>$http).put<SingleApiResponse<Object>>(
+          `${Endpoint.users}/${request.data.user}`,
+          { ...request },
+        );
+        this.$updateOverviewData = this.$updateOverviewData.toSuccess(
+          response,
+          AppStrings.dataUpdatedSuccessfully,
+        );
+      } catch (error) {
+        logDev('Error updating overview data', error);
+        this.$updateOverviewData = this.$updateOverviewData.toFailed(
+          AppStrings.unableToUpdateYourData,
+        );
+      }
+    },
   },
   getters: {
     bookmarkedJobs: (state) =>
@@ -246,10 +267,10 @@ export const useUserStore = defineStore('user', {
 
 
     isHandlingBookmark: (state) =>
-      (
-        state.bookmarkedJobCreation.isLoading ||
-        state.bookmarkedJobDelete.isLoading
-      ),
+    (
+      state.bookmarkedJobCreation.isLoading ||
+      state.bookmarkedJobDelete.isLoading
+    ),
 
     hasCompanies: (state) => useUserStore().companies.length > 0,
 

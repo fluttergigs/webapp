@@ -7,7 +7,7 @@
         </h3>
         <p class="text-md md:text-xl">Make changes to your account here</p>
 
-        <UTabs :items="tabs" class="w-full my-12">
+        <UTabs :items="tabs" class="w-full my-12" v-model="activeTab">
           <template #account="{ item }">
             <UpdateUser />
           </template>
@@ -24,36 +24,41 @@
 </template>
 
 <script setup>
-  import UpdatePassword from '~/components/account/UpdatePassword.vue';
-  import UpdateUser from '~/components/account/UpdateUser.vue';
-  import { AnalyticsEvent } from '~/services/analytics/events';
+import UpdatePassword from "~/components/account/UpdatePassword.vue";
+import UpdateUser from "~/components/account/UpdateUser.vue";
+import { AnalyticsEvent } from "~/services/analytics/events";
 
-  definePageMeta({ layout: 'app-layout', middleware: ['auth'] });
-  useHead({ title: 'FlutterGigs - My account' });
+definePageMeta({ layout: "app-layout", middleware: ["auth"] });
+useHead({ title: "FlutterGigs - My account" });
 
-  //TODO - implement user preferences
-  const tabs = [
-    {
-      label: 'Account',
-      description: "Make changes to your account here. Click save when you're done.",
-      slot: 'account',
-    },
-    {
-      label: 'Password',
-      description: "Change your password here. After saving, you'll be logged out.",
-      slot: 'password',
-    },
-    {
-      label: 'Preferences',
-      disabled: true,
-      description: 'Set your preferences',
-      slot: 'preferences',
-    },
-  ];
+//TODO - implement user preferences
 
-  onMounted(() => {
-    useAnalytics().capture(AnalyticsEvent.userAccountPageEntered);
-  });
+const activeTab = ref("account");
+const tabs = [
+  {
+    label: "Account",
+    value: "account",
+    description: "Make changes to your account here. Click save when you're done.",
+    slot: "account",
+  },
+  {
+    label: "Password",
+    value: "password",
+    description: "Change your password here. After saving, you'll be logged out.",
+    slot: "password",
+  },
+  {
+    label: "Preferences",
+    value: "preferences",
+    disabled: true,
+    description: "Set your preferences",
+    slot: "preferences",
+  },
+];
+
+onMounted(() => {
+  useAnalytics().capture(AnalyticsEvent.userAccountPageEntered);
+});
 </script>
 
 <style scoped></style>
