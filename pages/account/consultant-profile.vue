@@ -32,6 +32,7 @@
 <script setup>
 import EducatiionView from "~/components/profile/EducationView.vue";
 import ExperienceView from "~/components/profile/ExperienceView.vue";
+import OverviewView from "~/components/profile/OverviewView.vue";
 import { AnalyticsEvent } from "~/services/analytics/events";
 import { useAuthStore } from "~/stores/auth";
 

@@ -87,7 +87,7 @@
           <CustomInput
             :is-text-area="true"
             v-model="overviewData.bio"
-            label="Bio"
+            label="Bio (mandatory) *"
             name="bio"
             placeholder="Tell us about your career and interests. The more detailed you provide about yourself and your achievements, the better we can match you with companies that are hiring."
           />
@@ -122,7 +122,7 @@
           <div class="flex w-96 flex-col space-y-1.5">
             <CustomInput
               v-model="overviewData.github"
-              label="Github"
+              label="Github (mandatory) *"
               name="github"
               placeholder="e.g. github.com/username"
             />
