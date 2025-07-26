@@ -12,7 +12,7 @@
     <div class="relative z-10 container px-4 mx-auto">
       <div class="flex flex-wrap lg:items-center -m-8">
         <div class="w-full md:w-1/2 p-8">
-          <div class="md:max-w-2xl">
+          <div class="md:max-w-lg">
             <p class="mb-6 text-sm text-indigo-600 font-bold uppercase tracking-px">
               For companies
             </p>

@@ -17,7 +17,6 @@ import type {
   Experience,
   UpdateEducationRequest,
   UpdateExperienceRequest,
-  UpdateOverviewDataRequest,
 } from '~/features/users/user.types'; //@ts-ignore
 
 //@ts-ignore
@@ -37,7 +36,6 @@ export const useUserStore = defineStore('user', {
     $deleteEducation: new Wrapper<SingleApiResponse<Object>>().toInitial(),
     $updateExperience: new Wrapper<SingleApiResponse<Experience>>().toInitial(),
     $updateEducation: new Wrapper<SingleApiResponse<Education>>().toInitial(),
-    $updateOverviewData: new Wrapper<SingleApiResponse<Object>>().toInitial(),
   }),
   actions: {
     // Save a job to bookmarks
@@ -236,7 +234,7 @@ export const useUserStore = defineStore('user', {
 
       try {
         const response = await (<HttpClient>$http).put<SingleApiResponse<Object>>(
-          Endpoint.users,
+          `${Endpoint.users}/${request.data.user}`,
           { ...request },
         );
         this.$updateOverviewData = this.$updateOverviewData.toSuccess(

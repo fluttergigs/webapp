@@ -1,43 +1,22 @@
-// {
-//   // https://nuxt.com/docs/guide/concepts/typescript
-//   "extends": "./.nuxt/tsconfig.json",
-//   "compilerOptions": {
-//     "module": "ESNext",
-//     "target": "ESNext",
-//     "moduleResolution": "Node",
-//     "paths": {
-//       "~/*": [
-//         "./*"
-//       ],
-//       "@/*": [
-//         "./*"
-//       ]
-//     },
-//     "types": [
-//       "./types",
-//       "@nuxt/types",
-//       "@nuxtjs/i18n"
-//       "node "
-//     ]
-//   }
-// }
-
 {
   // https://nuxt.com/docs/guide/concepts/typescript
   "extends": "./.nuxt/tsconfig.json",
   "compilerOptions": {
-    "target": "ESNext",
     "module": "ESNext",
+    "target": "ESNext",
     "moduleResolution": "Node",
-    "esModuleInterop": true,
-    "allowJs": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "baseUrl": ".",
     "paths": {
-      "~/*": ["./*"],
-      "@/*": ["./*"]
+      "~/*": [
+        "./*"
+      ],
+      "@/*": [
+        "./*"
+      ]
     },
-    "types": ["./types", "@nuxt/types", "@nuxtjs/i18n", "node"]
+    "types": [
+      "./types",
+      "@nuxt/types",
+      "@nuxtjs/i18n"
+    ]
   }
 }

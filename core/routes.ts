@@ -9,8 +9,6 @@ export class AppRoutes {
   static companies = '/companies/';
   static hireConsultants = '/consultants';
   static fluppets = '/fluppets';
-  static exploreFluppets = '/fluppets/explore';
-  static createFluppets = '/fluppets/create';
   static learn = '/learn';
   static myJobs = '/account/jobs';
   static myAccount = '/account/user';
@@ -34,6 +32,4 @@ export class AppRoutes {
   static consultantDetail = (slug: string): string => `/consultants/${slug}`;
 
   static editJob = (slug: string): string => `/jobs/edit/${slug}`;
-
-  static fluppetDetail = (documentId: string): string => `/fluppets/${documentId}`;
 }

@@ -4,61 +4,58 @@
 
     <UserSection />
 
-    <section class="bg-blueGray-100 py-20">
-      <div class="container mx-auto px-4">
-        <div class="-m-8 flex flex-wrap items-center">
-          <div class="w-full p-8 md:w-1/3">
+    <section class="py-20 bg-blueGray-100">
+      <div class="container px-4 mx-auto">
+        <div class="flex flex-wrap items-center -m-8">
+          <div class="w-full md:w-1/3 p-8">
             <div class="md:max-w-sm">
-              <div class="m-3 flex flex-wrap items-center">
+              <div class="flex flex-wrap items-center m-3">
                 <div class="w-auto p-3">
                   <div
-                    class="flex h-20 w-20 items-center justify-center rounded-full bg-indigo-100"
+                    class="flex items-center justify-center w-20 h-20 bg-indigo-100 rounded-full"
                   >
                     <img alt="" src="@/assets/images/chat.svg" />
                   </div>
                 </div>
                 <div class="flex-1 p-3">
                   <h3 class="text-xl font-semibold">
-                    A platform to find Flutter framework related job
-                    opportunities and more
+                    A platform to find Flutter framework related job opportunities and more
                   </h3>
                 </div>
               </div>
             </div>
           </div>
-          <div class="w-full p-8 md:w-1/3">
+          <div class="w-full md:w-1/3 p-8">
             <div class="md:max-w-sm">
-              <div class="m-3 flex flex-wrap items-center">
+              <div class="flex flex-wrap items-center m-3">
                 <div class="w-auto p-3">
                   <div
-                    class="flex h-20 w-20 items-center justify-center rounded-full bg-indigo-100"
+                    class="flex items-center justify-center w-20 h-20 bg-indigo-100 rounded-full"
                   >
                     <img alt="" src="@/assets/images/layers.svg" />
                   </div>
                 </div>
                 <div class="flex-1 p-3">
                   <h3 class="text-xl font-semibold">
-                    Effortlessly find and apply to Flutter framework related job
-                    offers
+                    Effortlessly find and apply to Flutter framework related job offers
                   </h3>
                 </div>
               </div>
             </div>
           </div>
-          <div class="w-full p-8 md:w-1/3">
+          <div class="w-full md:w-1/3 p-8">
             <div class="md:max-w-sm">
-              <div class="m-3 flex flex-wrap items-center">
+              <div class="flex flex-wrap items-center m-3">
                 <div class="w-auto p-3">
                   <div
-                    class="flex h-20 w-20 items-center justify-center rounded-full bg-indigo-100"
+                    class="flex items-center justify-center w-20 h-20 bg-indigo-100 rounded-full"
                   >
                     <img alt="" src="@/assets/images/replace.svg" />
                   </div>
                 </div>
                 <div class="flex-1 p-3">
                   <h3 class="text-xl font-semibold">
-                    Get expert guidance and support to land your dream Flutter
-                    job
+                    Get expert guidance and support to land your dream Flutter job
                   </h3>
                 </div>
               </div>
@@ -144,7 +141,7 @@
                 </svg>
                 <span class="font-medium leading-relaxed">Unlimited free resources</span>
               </li>
-              <li class="inline-flex flex-wrap items-center p-4">
+              <li class="inline-flex flex-wrap items-center p-4">s
                 <svg
                     class="mr-2.5"
                     width="18"
@@ -171,11 +168,12 @@
 </template>
 
 <script lang="ts" setup>
-  import '@/components/landing/Header.vue';
-  import UserSection from '~/components/landing/UserSection.vue';
-  import SecondaryUserSection from '~/components/landing/SecondaryUserSection.vue';
-  import CompanySection from '~/components/landing/CompanySection.vue';
   import CompanyCreationSection from '~/components/landing/CompanyCreationSection.vue';
+  import CompanySection from '~/components/landing/CompanySection.vue';
+  import SecondaryUserSection from '~/components/landing/SecondaryUserSection.vue';
+  import UserSection from '~/components/landing/UserSection.vue';
+
+  import '@/components/landing/Header.vue';
 
   definePageMeta({
     layout: 'main-layout',
@@ -186,14 +184,13 @@
     title: 'FlutterGigs - The #1 Flutter jobs platform',
     ogTitle: 'FlutterGigs - The #1 Flutter jobs platform',
     ogUrl: 'https://fluttergigs.com',
-    ogLogo: 'https://fluttergigs.com/ico.png',
+    // ogLogo: 'https://fluttergigs.com/ico.png',
     description:
       'FlutterGigs is a platform to find Flutter framework related job opportunities and more',
     ogDescription:
       'FlutterGigs is a platform to find Flutter framework related job opportunities and more',
     ogSiteName: 'FlutterGigs - The #1 Flutter jobs platform',
     twitterCard: 'summary_large_image',
-    twitterUrl: 'https://fluttergigs.com',
     twitterDomain: 'https://fluttergigs.com',
     twitterSite: '@fluttergigs',
     twitterTitle: `FlutterGigs - Find the best Flutter opportunities at top remote companies around the world`,

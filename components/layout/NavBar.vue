@@ -1,5 +1,5 @@
 <template>
-  <section class="z-[2500] overflow-hidden" id="navbar">
+  <section class="z-[2500] overflow-hidden">
     <div
       :class="[isHomePage ? 'bg-white' : 'bg-blueGray-50']"
       class="sticky flex items-center justify-between bg-blueGray-50 px-6 py-5 transition-all duration-200 ease-in md:px-18"
@@ -14,7 +14,8 @@
           <div class="hidden w-auto lg:block">
             <ul class="mr-16 flex items-center">
               <li
-                v-for="link in enabledLinks"
+                v-for="link in links"
+                v-if="link?.isEnabled ?? true"
                 :key="link?.name"
                 class="mr-9 font-medium hover:text-indigo-900"
               >
@@ -28,7 +29,7 @@
                   <NuxtLink
                     :class="[
                       'font-bold hover:text-indigo-900',
-                      { 'text-indigo-800 text-lg': useRoute().fullPath === link.path },
+                      { 'text-indigo-800': useRoute().fullPath === link.path },
                     ]"
                     :to="link.path"
                     >{{ link.name }}
@@ -47,17 +48,9 @@
               <NuxtLink v-if="!isAuthenticated" :to="AppRoutes.login" class="font-medium">
                 Login
               </NuxtLink>
-              <UDropdownMenu
-                v-else
-                :items="accountLinks"
-                :popper="{ placement: 'bottom-start' }"
-                :ui="{
-                  content: 'w-48',
-                }"
-                size="xl"
-              >
+              <UDropdownMenu v-else :items="accountLinks" :popper="{ placement: 'bottom-start' }">
                 <div class="flex items-center justify-center">
-                  <span class="text-lg primary-gradient font-bold">
+                  <span class="text-sm primary-gradient font-bold">
                     {{ useAuthStore().authUser.username }}
                   </span>
                   <UIcon name="i-heroicons-chevron-down-20-solid" />
@@ -126,10 +119,10 @@
           </div>
           <div class="flex w-full flex-col justify-center py-16">
             <ul>
-              <li v-for="link in enabledLinks" :key="link?.name" class="mb-12">
+              <li v-for="link in links" v-if="link?.isEnabled ?? true" class="mb-12">
                 <a
                   :href="link.path"
-                  class="font-bold text-lg hover:text-indigo-900"
+                  class="font-bold hover:text-indigo-900"
                   @click.prevent="onMenuLinkClick(link)"
                   >{{ link.name }}</a
                 >
@@ -141,11 +134,7 @@
               <div class="mb-3 w-full">
                 <!--                <ClientOnly>-->
                 <div class="block">
-                  <NuxtLink
-                    v-if="!isAuthenticated"
-                    :to="AppRoutes.login"
-                    class="font-medium"
-                  >
+                  <NuxtLink v-if="!isAuthenticated" :to="AppRoutes.login" class="font-medium">
                     Login
                   </NuxtLink>
 
@@ -153,13 +142,9 @@
                     v-else
                     :items="accountLinks"
                     :popper="{ placement: 'bottom-start' }"
-                    :ui="{
-                      content: 'w-48',
-                    }"
-                    size="xl"
                   >
                     <div class="flex items-center justify-center">
-                      <span class="text-lg primary-gradient font-bold">
+                      <span class="text-sm primary-gradient font-bold">
                         {{ useAuthStore().authUser.username }}
                       </span>
                       <UIcon name="i-heroicons-chevron-down-20-solid" />
@@ -186,153 +171,137 @@
 </template>
 
 <script lang="ts" setup>
-import { storeToRefs } from "pinia";
-import CloseIcon from "~/components/icons/CloseIcon.vue";
-import { logDev } from "~/core/helpers/log";
-import { AppRoutes } from "~/core/routes";
-import type { UiLink } from "~/core/shared/types";
-import auth from "~/middleware/auth";
-import { ApplicationEventEnum } from "~/plugins/eventBus.client";
-import { AvailableFlags } from "~/services/feature-flag/availableFlags";
-import { useAuthStore } from "~/stores/auth";
+  import { storeToRefs } from 'pinia';
+  import CloseIcon from '~/components/icons/CloseIcon.vue';
+  import { logDev } from '~/core/helpers/log';
+  import { AppRoutes } from '~/core/routes';
+  import { ApplicationEventEnum } from '~/plugins/eventBus.client';
+  import { AvailableFlags } from '~/services/feature-flag/availableFlags';
+  import { useAuthStore } from '~/stores/auth';
 
-const authStore = useAuthStore();
-
-const links: Ref<UiLink[]> = ref([
-  {
-    path: AppRoutes.welcome,
-    name: "Home",
-  },
-
-  {
-    path: AppRoutes.jobs,
-    name: "Jobs",
-  },
-  {
-    path: AppRoutes.fluppets,
-    name: "Fluppets",
-  },
-  {
-    path: AppRoutes.learn,
-    name: "Learn",
-    isEnabled: true,
-  },
-]);
-
-const accountLinks = ref([
-  [
+  const links = ref([
     {
-      label: "Profile",
-      onClick: () => {
-        navigateTo(AppRoutes.consultantProfile);
-      },
+      path: AppRoutes.welcome,
+      name: 'Home',
+    },
+
+    {
+      path: AppRoutes.jobs,
+      name: 'Jobs',
     },
     {
-      label: "Account",
-      onClick: () => {
-        navigateTo(AppRoutes.myAccount);
-      },
+      path: AppRoutes.learn,
+      name: 'Learn',
+      isEnabled: true,
     },
-  ],
-  [
-    {
-      label: "Saved Jobs",
-      onClick: () => {
-        navigateTo(AppRoutes.mySavedJobs);
+  ]);
+
+  const accountLinks = ref([
+    [
+      {
+        label: 'Profile',
+        onClick: () => {
+          navigateTo(AppRoutes.consultantProfile);
+        },
       },
-    },
-  ],
-  [
-    {
-      label: "My Job postings",
-      onClick: () => {
-        navigateTo(AppRoutes.myJobs);
+      {
+        label: 'Account',
+        onClick: () => {
+          navigateTo(AppRoutes.myAccount);
+        },
       },
-    },
-  ],
-  [
-    {
-      label: "My company",
-      onClick: () => {
-        navigateTo(AppRoutes.myCompany);
+    ],
+    [
+      {
+        label: 'Saved Jobs',
+        onClick: () => {
+          navigateTo(AppRoutes.mySavedJobs);
+        },
       },
-    },
-  ],
-  [
-    {
-      label: "Logout",
-      onClick: () => {
-        useUser().logout();
+    ],
+    [
+      {
+        label: 'My Job postings',
+        onClick: () => {
+          navigateTo(AppRoutes.myJobs);
+        },
       },
-    },
-  ],
-]);
+    ],
+    [
+      {
+        label: 'My company',
+        onClick: () => {
+          navigateTo(AppRoutes.myCompany);
+        },
+      },
+    ],
+    [
+      {
+        label: 'Logout',
+        onClick: () => {
+          useUser().logout();
+        },
+      },
+    ],
+  ]);
 
-const isHomePage = computed(() => useRoute().path === "/");
+  const isHomePage = useRoute().path === '/';
 
-const enabledLinks = computed(() => {
-  return links.value.filter((link) => link.isEnabled ?? true);
-});
+  const { isAuthenticated } = storeToRefs(useAuthStore());
 
-//@ts-ignore
-const { isAuthenticated } = storeToRefs(authStore);
-
-const onMenuLinkClick = (link: any) => {
-  //@ts-ignore
-  document.querySelector(".navbar-close")?.click();
-  navigateTo(link.path);
-};
-
-onMounted(() => {
-  const { $listen } = (useNuxtApp() as unknown) as {
-    $listen: (event: string, callback: (data: any) => void) => void;
+  const onMenuLinkClick = (link: any) => {
+    //@ts-ignore
+    document.querySelector('.navbar-close')?.click();
+    navigateTo(link.path);
   };
 
-  $listen(ApplicationEventEnum.featureFlagsLoaded, (data: any) => {
-    logDev("Feature Flags listener", data);
+  onMounted(() => {
+    const { $listen } = useNuxtApp();
 
-    links.value = [
-      {
-        path: AppRoutes.welcome,
-        name: "Home",
-      },
-      {
-        path: AppRoutes.jobs,
-        name: "Jobs",
-      },
-      {
-        path: AppRoutes.fluppets,
-        name: "Fluppets",
-        tag: "New",
-      },
-      {
-        path: AppRoutes.companies,
-        name: "Companies",
-        isEnabled: useFeatureFlags().isEnabled(AvailableFlags.companiesList),
-        tag: useFeatureFlags().isEnabled(AvailableFlags.companiesList) ? "New" : "Soon",
-      },
+    $listen(ApplicationEventEnum.featureFlagsLoaded, (data: any) => {
+      logDev('Feature Flags listener', data);
 
-      {
-        path: AppRoutes.hireConsultants,
-        name: "Consultants",
-        tag: useFeatureFlags().isEnabled(AvailableFlags.hireConsultants) ? "New" : "Soon",
-      },
-      {
-        path: AppRoutes.learn,
-        name: "Learn",
-      },
-    ];
-
-    if (useFeatureFlags().isEnabled(AvailableFlags.hireConsultants)) {
-      accountLinks.value.unshift([
+      links.value = [
         {
-          label: "Profile",
-          onClick: () => {
-            navigateTo(AppRoutes.consultantProfile);
-          },
+          path: AppRoutes.welcome,
+          name: 'Home',
         },
-      ]);
-    }
+        {
+          path: AppRoutes.companies,
+          name: 'Companies',
+          isEnabled: useFeatureFlags().isEnabled(AvailableFlags.companiesList),
+        },
+        {
+          path: AppRoutes.jobs,
+          name: 'Jobs',
+        },
+        {
+          path: AppRoutes.hireConsultants,
+          name: 'Consultants',
+          tag: useFeatureFlags().isEnabled(AvailableFlags.hireConsultants) ? 'New' : 'Soon',
+        },
+        {
+          path: AppRoutes.fluppets,
+          name: 'Fluppets',
+          tag: useFeatureFlags().isEnabled(AvailableFlags.fluppets) ? 'New' : 'Soon',
+        },
+        {
+          path: AppRoutes.learn,
+          name: 'Learn',
+          isEnabled: true,
+        },
+      ];
+
+      if (useFeatureFlags().isEnabled(AvailableFlags.hireConsultants)) {
+        accountLinks.value.unshift([
+          {
+            label: 'Profile',
+            onClick: () => {
+              navigateTo(AppRoutes.consultantProfile);
+            },
+          },
+        ]);
+      }
+    });
   });
-});
 </script>

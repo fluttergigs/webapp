@@ -93,9 +93,3 @@ export const APP_NAME = 'Flutter Gigs';
 
 export const getPaymentPortalUrlForJobPosting = (email: string) =>
   `https://fluttergigs.fillout.com/pay-job-posting?email=${email}`;
-
-export const MAX_JOBS_PER_PAGE = 4;
-
-export const MAX_FLUPPETS_PER_PAGE = 4;
-
-export const DAILY_FLUPPET_COPY_FOR_ANONYMOUS = 2;

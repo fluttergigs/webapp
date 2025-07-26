@@ -1,18 +1,17 @@
 <template>
-  <section class="bg-white h-screen items-center justify-center">
+  <section class="bg-white">
     <div class="overflow-hidden">
       <div class="container mx-auto py-6 md:py-8">
         <div class="flex flex-wrap items-center justify-center">
-          <div class="flex w-full flex-col gap-8 p-6 md:w-3/5 md:p-8">
+          <div class="flex w-full flex-col gap-8 p-6 md:w-1/2 md:p-8">
             <div
-              class="md:mt-[80px] mb-6 inline-block rounded-full bg-green-100 px-2 py-1 font-semibold"
+              class="mb-6 inline-block rounded-full bg-green-100 px-2 py-1 font-semibold"
               style="width: fit-content"
             >
-              <div class="flex items-center p-2">
+              <div class="-m-1 flex items-center p-2">
                 <div>
-                  <!--                  add world emoji-->
-                  <NuxtLink :to="AppRoutes.jobs" class="text-sm font-bold"
-                    >The #1 Flutter jobs platform in the world 🌍!
+                  <NuxtLink :to="AppRoutes.jobs" class="text-sm"
+                    >Get the best Flutter opportunities from all around the world!
                   </NuxtLink>
                 </div>
                 <div class="w-auto p-1">
@@ -25,14 +24,7 @@
               <h1
                 class="primary-gradient mb-6 text-4xl font-bold leading-tight md:text-5xl lg:text-6xl"
               >
-                <!--                TODO
-                  add a changing effect to the text, it should fade from opportunities to talents
-                -->
-                Bringing the Best Flutter <br />
-                <TextSwap
-                  :texts="['Opportunities', 'Talents']"
-                  classes="!bg-indigo-700 !text-white text-4xl font-bold leading-tight md:text-6xl lg:text-7xl"
-                ></TextSwap>
+                The #1 Flutter Job Board in its Ecosystem<br />
               </h1>
 
               <p class="mb-11 text-lg font-medium text-gray-900 md:max-w-md">
@@ -59,10 +51,10 @@
               </div>
             </div>
           </div>
-          <div class="w-full p-2 sm:p-0 md:w-2/5">
+          <div class="w-full p-2 sm:p-0 md:w-1/2">
             <img
               alt=""
-              class="transform transition duration-1000 ease-in-out hover:-translate-y-16 scale-125"
+              class="transform transition duration-1000 ease-in-out hover:-translate-y-16"
               src="/landing-header.webp"
             />
           </div>
@@ -74,7 +66,6 @@
 
 <script lang="ts" setup>
   import ArrowBackIcon from '~/components/icons/ArrowBackIcon.vue';
-  import TextSwap from '~/components/ui/TextSwap.vue';
   import { AppRoutes } from '~/core/routes';
   import { AppAnalyticsProvider } from '~/services/analytics/AppAnalyticsProvider';
   import { AnalyticsEvent } from '~/services/analytics/events';

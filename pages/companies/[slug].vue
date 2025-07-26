@@ -48,13 +48,6 @@
     },
   );
 
-  if (!company.value) {
-    throw createError({
-      statusCode: 404,
-      statusMessage: 'This company does not exist or has been removed',
-    });
-  }
-
   const pending = computed(() => status.value === 'pending');
   const companyJobsCount = computed(() => viewedCompanyJobs.value?.length ?? 0);
 

@@ -1,19 +1,19 @@
 <script setup>
-import { defaultShimmerListItemsCount } from '~/core/constants';
-import { useJobStore } from '~/stores/job';
+  import { defaultShimmerListItemsCount } from '~/core/constants';
+  import { useJobStore } from '~/stores/job';
 
-const jobStore = useJobStore();
+  const jobStore = useJobStore();
 
-const props = defineProps({
-  jobs: {
-    type: Array,
-    default: () => [],
-  },
-  jobsResponse: {
-    type: Object,
-    required: true,
-  },
-});
+  const props = defineProps({
+    jobs: {
+      type: Array,
+      default: () => [],
+    },
+    jobsResponse: {
+      type: Object,
+      required: true,
+    },
+  });
 </script>
 
 <template>
@@ -24,7 +24,11 @@ const props = defineProps({
           <slot name="error">
             <div class="flex flex-col items-center space-y-2">
               <p>Unable to fetch jobs in the list</p>
-              <img alt="Empty job results" class="w-96 h-96" src="@/assets/images/emptyJobFiltersResult.svg" />
+              <img
+                alt="Empty job results"
+                class="w-96 h-96"
+                src="@/assets/images/emptyJobFiltersResult.svg"
+              />
             </div>
           </slot>
           <slot name="ctaError"></slot>
@@ -33,7 +37,7 @@ const props = defineProps({
 
       <div v-else-if="props.jobsResponse.isLoading">
         <slot name="loader">
-          <div v-for="_ in defaultShimmerListItemsCount" :key="_">
+          <div v-for="_ in defaultShimmerListItemsCount">
             <USkeleton class="flex h-[95px] w-full mb-3" />
           </div>
         </slot>
@@ -44,14 +48,18 @@ const props = defineProps({
           <slot name="noData">
             <div class="flex flex-col items-center space-y-2">
               <p>No jobs found in the list</p>
-              <img alt="Empty job results" class="w-96 h-96" src="@/assets/images/emptyJobFiltersResult.svg" />
+              <img
+                alt="Empty job results"
+                class="w-96 h-96"
+                src="@/assets/images/emptyJobFiltersResult.svg"
+              />
             </div>
           </slot>
           <slot name="cta"></slot>
         </div>
 
         <template v-else>
-          <slot v-for="(job, index) in props.jobs" :key="`${job.slug}-${index}`" :job="job" v-memo="[job]">
+          <slot v-for="(job, index) in props.jobs" :key="`${job.slug}-${index}`" :job="job">
             <JobCard :key="job.slug" :job="job" />
           </slot>
         </template>

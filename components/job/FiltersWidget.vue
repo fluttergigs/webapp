@@ -29,7 +29,7 @@
 </script>
 
 <template>
-  <section class="sm:px-6 md:px-10 py-4 bg-white rounded-lg border border-blueGray-200">
+  <section>
     <p class="mb-4 text-lg text-gray-900 font-semibold">Job Filters</p>
     <div class="flex flex-col space-y-6">
       <JobKeywordFilter

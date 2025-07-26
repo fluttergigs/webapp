@@ -1,6 +1,6 @@
 <script lang="ts" setup>
   import { BuildingOfficeIcon, MegaphoneIcon } from '@heroicons/vue/24/solid';
-  import CompanyPerk from '~/components/ui/Perk.vue';
+  import CompanyPerk from '~/components/landing/CompanyPerk.vue';
   import { AppRoutes } from '~/core/routes';
   import { AnalyticsEvent } from '~/services/analytics/events';
 

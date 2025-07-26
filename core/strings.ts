@@ -108,22 +108,4 @@ export class AppStrings {
 
   static educationUpdatedSuccessfully = 'Your education has been updated successfully';
   static experienceUpdatedSuccessfully = 'Your experience has been updated successfully';
-  static unableToFetchFluppets = 'Unable to fetch fluppets. Please try again later';
-  static unableToFetchTags = 'Unable to fetch snippets tags. Please try again later';
-
-  static fluppetsCopiedToClipboard = 'Snippet copied to clipboard';
-  static fluppetsLinkCopiedToClipboard = 'Snippet link copied to clipboard';
-
-  static fluppetsCreatedSuccessfully = 'Snippet created successfully';
-  static fluppetsUpdatedSuccessfully = 'Snippet updated successfully';
-  static fluppetsDeletedSuccessfully = 'Snippet deleted successfully';
-
-  static unableToCreateFluppets = 'Unable to create snippet. Please try again later';
-  static unableToUpdateFluppets = 'Unable to update snippet. Please try again later';
-  static unableToDeleteFluppets = 'Unable to delete snippet. Please try again later';
-
-
-  static unableToUpdateYourData = 'Unable to update your data. Please try again later';
-  static dataUpdatedSuccessfully = 'Your data has been updated successfully';
-
 }
