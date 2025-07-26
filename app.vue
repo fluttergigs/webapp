@@ -1,13 +1,16 @@
 <template>
   <NuxtLoadingIndicator :height="5" color="#283593" />
-  <UApp>
+  <UApp :toaster="{ position: 'top-right' }">
     <NuxtLayout>
-      <NuxtPage />
+      <div class="pattern-bg">
+        <NuxtPage />
+      </div>
     </NuxtLayout>
   </UApp>
 </template>
 
 <script lang="ts" setup>
+  import { useFluppets } from '~/composables/useFluppets';
   import { useAuthStore } from '~/stores/auth';
   import { useCompanyStore } from '~/stores/company';
   import { useJobStore } from '~/stores/job';
@@ -19,6 +22,10 @@
     },
 
     meta: [
+      {
+        name: 'google',
+        content: 'notranslate',
+      },
       {
         name: 'description',
         content:
@@ -89,11 +96,13 @@
 
   await Promise.all([
     useCompanyStore().fetchCompanies(),
+    //@ts-ignore
     useJobStore().fetchJobs(),
     useSettingStore().fetchSetting(),
     useAuthStore().getUser(),
     useLearnStore().fetchLearnCategories(),
     useLearnStore().fetchLearnResources(),
+    useFluppets().fetchFluppets(),
   ]);
 
   onMounted(() => {
@@ -120,29 +129,34 @@
   }
 
   /*.slide-left-enter-active,
-  .slide-left-leave-active,
-  .slide-right-enter-active,
-  .slide-right-leave-active {
-    transition: all 0.2s;
-  }
+    .slide-left-leave-active,
+    .slide-right-enter-active,
+    .slide-right-leave-active {
+      transition: all 0.2s;
+    }
 
-  .slide-left-enter-from {
-    opacity: 0;
-    transform: translate(50px, 0);
-  }
+    .slide-left-enter-from {
+      opacity: 0;
+      transform: translate(50px, 0);
+    }
 
-  .slide-left-leave-to {
-    opacity: 0;
-    transform: translate(-50px, 0);
-  }
+    .slide-left-leave-to {
+      opacity: 0;
+      transform: translate(-50px, 0);
+    }
 
-  .slide-right-enter-from {
-    opacity: 0;
-    transform: translate(-50px, 0);
-  }
+    .slide-right-enter-from {
+      opacity: 0;
+      transform: translate(-50px, 0);
+    }
 
-  .slide-right-leave-to {
-    opacity: 0;
-    transform: translate(50px, 0);
-  }*/
+    .slide-right-leave-to {
+      opacity: 0;
+      transform: translate(50px, 0);
+    }*/
+
+  #sentry-feedback .widget__actor {
+    left: 0 !important;
+    width: fit-content;
+  }
 </style>

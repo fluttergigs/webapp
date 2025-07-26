@@ -38,5 +38,10 @@ export type User = {
   companies?: Company[];
   experiences?: Experience[];
   educations?: Education[];
+  github?: string;
+  twitter?: string;
+  linkedin?: string;
+  portfolio?: string;
+  website?: string;
   [key: string]: unknown;
 };

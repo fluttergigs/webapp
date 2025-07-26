@@ -51,13 +51,13 @@ export const addEducationFormSchema = yup.object({
 
 export const overviewFormSchema =
   yup.object({
-    bio: yup.string().required().label('Bio'),
-    username: yup.string().required().min(5).max(30).label('Username'),
+    bio: yup.string().url().notRequired().label('Bio'),
+    username: yup.string().url().notRequired().label('Username'),
     website: yup.string().url().notRequired().label('Website'),
     portfolio: yup.string().url().notRequired().label('Portfolio'),
     twitter: yup.string().url().notRequired().label('Twitter'),
     linkedin: yup.string().url().notRequired().label('LinkedIn'),
-    github: yup.string().url().required().label('Github'),
+    github: yup.string().url().notRequired().label('Github'),
   });
 
 

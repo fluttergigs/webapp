@@ -1,7 +1,7 @@
 <script lang="ts" setup>
   //@ts-ignore
   import { MagnifyingGlassIcon, UserIcon } from '@heroicons/vue/24/solid';
-  import CompanyPerk from '~/components/landing/CompanyPerk.vue';
+  import CompanyPerk from '~/components/ui/Perk.vue';
   import { AppRoutes } from '~/core/routes';
   import { AnalyticsEvent } from '~/services/analytics/events';
 

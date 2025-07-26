@@ -27,7 +27,7 @@ export const usePasswordReset = () => {
   const canSubmitResetPasswordForm = ref(false);
 
   const {
-    forgetPassword,
+    $forgetPassword,
     isPasswordForgetFailed,
     isPasswordForgetSuccessful,
     isHandlingForgotPassword,
@@ -57,29 +57,32 @@ export const usePasswordReset = () => {
     const { $toast, $analytics } = useNuxtApp();
     ($analytics as AppAnalyticsProvider).capture(
       AnalyticsEvent.passwordForgetFormButtonClicked,
-      passwordForgetDataInput.value,
-    );
+      {
+        data: passwordForgetDataInput.value,
+      });
 
     await authStore.forgotPassword(passwordForgetDataInput.value);
 
     if (isPasswordForgetSuccessful.value) {
       ($analytics as AppAnalyticsProvider).capture(
         AnalyticsEvent.passwordForgetSuccessful,
-        passwordForgetDataInput.value,
-      );
+        {
+          data: passwordForgetDataInput.value,
+        });
 
-      ($toast as BaseToast<Notification>).success(<string>forgetPassword.value.message);
+      ($toast as BaseToast<Notification>).success(<string>$forgetPassword.value.message);
 
       onDone && onDone();
     }
 
     if (isPasswordForgetFailed.value) {
-      ($toast as BaseToast<Notification>).error(<string>forgetPassword.value.message);
+      ($toast as BaseToast<Notification>).error(<string>$forgetPassword.value.message);
 
       ($analytics as AppAnalyticsProvider).capture(
         AnalyticsEvent.passwordForgetFailed,
-        passwordForgetDataInput.value,
-      );
+        {
+          data: passwordForgetDataInput.value,
+        });
     }
   };
 
@@ -88,29 +91,32 @@ export const usePasswordReset = () => {
     const { $toast, $analytics } = useNuxtApp();
     ($analytics as AppAnalyticsProvider).capture(
       AnalyticsEvent.passwordResetButtonClicked,
-      resetPasswordDataInput.value,
-    );
+      {
+        data: resetPasswordDataInput.value,
+      });
 
     await authStore.resetPassword(resetPasswordDataInput.value);
 
     if (isPasswordResetSuccessful.value) {
       ($analytics as AppAnalyticsProvider).capture(
         AnalyticsEvent.passwordResetSuccessful,
-        resetPasswordDataInput.value,
-      );
+        {
+          data: resetPasswordDataInput.value,
+        });
 
-      ($toast as BaseToast<Notification>).success(<string>forgetPassword.value.message);
+      ($toast as BaseToast<Notification>).success(<string>$forgetPassword.value.message);
 
       onDone && onDone();
     }
 
     if (isPasswordResetFailed.value) {
-      ($toast as BaseToast<Notification>).error(<string>forgetPassword.value.message);
+      ($toast as BaseToast<Notification>).error(<string>$forgetPassword.value.message);
 
       ($analytics as AppAnalyticsProvider).capture(
         AnalyticsEvent.passwordResetFailed,
-        resetPasswordDataInput.value,
-      );
+        {
+          data: resetPasswordDataInput.value,
+        });
     }
   };
 

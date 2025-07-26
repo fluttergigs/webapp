@@ -1,4 +1,12 @@
 export class Endpoint {
+  static get snippets() {
+    return '/snippets';
+  }
+
+  static get tags() {
+    return '/tags';
+  }
+
   static get setting() {
     return `/setting`;
   }
@@ -41,6 +49,18 @@ export class Endpoint {
 
   static jobOffersBySlug(slug: string) {
     return `/job-offers/find-by-slug/${slug}`;
+  }
+
+  static fluppetsById(id: string) {
+    return `/snippets/find-by-document-id/${id}`;
+  }
+
+  static updateSnippetViews(id: string) {
+    return `/snippets/update-views/${id}`;
+  }
+
+  static updateSnippet(id: string) {
+    return `/snippets/${id}`;
   }
 }
 
