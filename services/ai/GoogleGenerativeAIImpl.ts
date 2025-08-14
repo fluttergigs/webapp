@@ -1,7 +1,7 @@
 //@ts-ignore
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { logDev } from '~/core/helpers/log';
-import type { BaseGenerativeAI } from '~/services/ai/base_generative_ai';
+import type { BaseGenerativeAI } from '~/services/ai/BaseGenerativeAI';
 
 export class GoogleGenerativeAIImpl implements BaseGenerativeAI {
   private genAI: GoogleGenerativeAI;
@@ -14,11 +14,11 @@ export class GoogleGenerativeAIImpl implements BaseGenerativeAI {
     this.genAI = new GoogleGenerativeAI(googleGenerativeApiKey);
   }
 
-  generateImage(prompt: string): Promise<any> {
-    return Promise.resolve(undefined);
+  generateImage<TResponse>(prompt: string): Promise<TResponse> {
+    return Promise.resolve(undefined as unknown as TResponse);
   }
 
-  async generateText(prompt: string): Promise<any> {
+  async generateText<TResponse>(prompt: string): Promise<TResponse> {
     // For text-only input, use the gemini-pro model
     const model = this.genAI.getGenerativeModel({ model: 'gemini-1.5-pro' });
 
@@ -26,6 +26,6 @@ export class GoogleGenerativeAIImpl implements BaseGenerativeAI {
     const response = await result.response;
 
     logDev('RESPONSE', response);
-    return response.text();
+    return response.text() as TResponse;
   }
 }
