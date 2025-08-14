@@ -1,19 +1,23 @@
-import type { GenerativeAI } from '~/services/ai/GenerativeAI';
+import type { BaseGenerativeAI } from '~/services/ai/BaseGenerativeAI';
 import { GoogleGenerativeAIImpl } from '~/services/ai/GoogleGenerativeAIImpl';
 
 export class GenerativeAIProvider {
-  private client: GenerativeAI;
+  private client: BaseGenerativeAI;
 
   constructor() {
     this.client = new GoogleGenerativeAIImpl();
   }
 
-  setClient(client: GenerativeAI) {
+  setClient(client: BaseGenerativeAI) {
     this.client = client;
     return this.client;
   }
 
-  async generateText<String>(prompt: string): Promise<String> {
-    return this.client.generateText(prompt);
+  async generateText<TResponse>(prompt: string): Promise<TResponse> {
+    return this.client.generateText<TResponse>(prompt);
+  }
+
+  async generateImage<TResponse>(prompt: string): Promise<TResponse> {
+    return this.client.generateImage<TResponse>(prompt);
   }
 }
