@@ -4,6 +4,7 @@ export class AppRoutes {
   static register = '/auth/register';
 
   static postJob = '/jobs/post';
+  static mockInterview = '/jobs/mock-interview';
 
   static jobs = '/jobs/';
   static companies = '/companies/';

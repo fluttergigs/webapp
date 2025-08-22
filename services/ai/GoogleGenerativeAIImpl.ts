@@ -1,9 +1,9 @@
 //@ts-ignore
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { logDev } from '~/core/helpers/log';
-import type { BaseGenerativeAI } from '~/services/ai/base_generative_ai';
+import type { GenerativeAI } from '~/services/ai/GenerativeAI';
 
-export class GoogleGenerativeAIImpl implements BaseGenerativeAI {
+export class GoogleGenerativeAIImpl implements GenerativeAI {
   private genAI: GoogleGenerativeAI;
 
   constructor() {
