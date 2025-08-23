@@ -1,361 +1,315 @@
 <script lang="ts" setup>
-import { ref, computed, onMounted } from 'vue';
-import { useJobStore } from '~/stores/job';
-import type { MockInterviewRequest } from '~/features/jobs/job.types';
+import { onMounted } from 'vue';
+import { useMockInterviews } from '~/composables/useMockInterviews';
+
+// Page metadata
+definePageMeta({
+  layout: 'app-layout',
+  middleware: 'auth',
+  title: 'Mock Interview Practice',
+});
 
 // SEO and meta
 useHead({
-  title: 'Mock Interview - Flutter Gigs',
+  title: 'Mock Interview Practice - Flutter Gigs',
   meta: [
     { name: 'description', content: 'Practice for your Flutter job interview with AI-generated questions based on real job postings.' }
   ]
 });
 
-const jobStore = useJobStore();
-
-// Form state
-const jobPostUrl = ref('');
-const jobDescription = ref('');
-const questionCount = ref(5);
-const difficulty = ref('mixed');
-const activeTab = ref('url'); // 'url' or 'description'
-
-// Loading and error states
-const isGenerating = computed(() => jobStore.isMockInterviewLoading);
-const generationError = computed(() => jobStore.mockInterviewError);
-const questions = computed(() => jobStore.mockInterviewQuestions);
-
-// Interview session state
-const currentSession = computed(() => jobStore.currentInterviewSession);
-const currentQuestion = computed(() => jobStore.currentQuestion);
-const isInterviewComplete = computed(() => jobStore.isInterviewComplete);
-const currentAnswer = ref('');
-
-// Form validation
-const canGenerate = computed(() => {
-  if (activeTab.value === 'url') {
-    return jobPostUrl.value.trim().length > 0;
-  } else {
-    return jobDescription.value.trim().length > 10;
-  }
-});
-
-const canStartInterview = computed(() => {
-  return questions.value.length > 0 && !currentSession.value;
-});
-
-// Methods
-const generateQuestions = async () => {
-  if (!canGenerate.value) return;
+// Use the mock interviews composable
+const {
+  // Form state
+  jobPostUrl,
+  jobDescription,
+  questionCount,
+  difficulty,
+  activeTab,
+  currentAnswer,
   
-  const request: MockInterviewRequest = {
-    questionCount: questionCount.value,
-    difficulty: difficulty.value as any,
-  };
+  // Computed properties
+  isGenerating,
+  generationError,
+  questions,
+  currentSession,
+  currentQuestion,
+  isInterviewComplete,
+  canGenerate,
+  canStartInterview,
   
-  if (activeTab.value === 'url') {
-    request.jobPostUrl = jobPostUrl.value;
-  } else {
-    request.jobDescription = jobDescription.value;
-  }
+  // Options
+  questionCountOptions,
+  difficultyOptions,
   
-  try {
-    await jobStore.generateMockInterview(request);
-  } catch (error) {
-    console.error('Failed to generate mock interview:', error);
-  }
-};
+  // Methods
+  generateQuestions,
+  startInterview,
+  submitAnswer,
+  resetInterview,
+  switchTab,
+  initialize,
+} = useMockInterviews();
 
-const startInterview = () => {
-  if (questions.value.length > 0) {
-    jobStore.startMockInterviewSession(questions.value);
-    currentAnswer.value = '';
+// Tab items for UTabs
+const tabItems = [
+  {
+    key: 'url',
+    label: 'Job Post URL',
+    description: 'Paste a job posting URL'
+  },
+  {
+    key: 'description', 
+    label: 'Job Description',
+    description: 'Enter job description directly'
   }
-};
-
-const submitAnswer = () => {
-  if (currentAnswer.value.trim()) {
-    jobStore.answerMockInterviewQuestion(currentAnswer.value);
-    currentAnswer.value = '';
-    
-    if (isInterviewComplete.value) {
-      jobStore.finishMockInterviewSession();
-    }
-  }
-};
-
-const resetInterview = () => {
-  jobStore.resetMockInterview();
-  currentAnswer.value = '';
-  jobPostUrl.value = '';
-  jobDescription.value = '';
-};
+];
 
 onMounted(() => {
-  // Reset any existing interview session when component mounts
-  jobStore.resetMockInterview();
+  initialize();
 });
 </script>
 
 <template>
   <main class="min-h-screen bg-gray-50">
-    <section class="w-full px-4 py-8 md:py-12">
-      <div class="mx-auto max-w-4xl">
-        <!-- Header -->
-        <div class="text-center mb-8">
-          <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Mock Interview Practice
-          </h1>
-          <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-            Get ready for your Flutter job interview with AI-generated questions based on real job postings. 
-            Practice your responses and build confidence.
-          </p>
-        </div>
+    <div class="mx-auto max-w-4xl px-4 py-8 md:py-12">
+      <!-- Header -->
+      <div class="text-center mb-8">
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          Mock Interview Practice
+        </h1>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+          Get ready for your Flutter job interview with AI-generated questions based on real job postings. 
+          Practice your responses and build confidence.
+        </p>
+      </div>
 
-        <!-- Interview Session View -->
-        <div v-if="currentSession" class="bg-white rounded-lg shadow-lg p-6 mb-6">
-          <div class="flex justify-between items-center mb-6">
+      <!-- Interview Session View -->
+      <UCard v-if="currentSession" class="mb-6">
+        <template #header>
+          <div class="flex justify-between items-center">
             <h2 class="text-xl font-semibold text-gray-900">Interview Session</h2>
             <div class="text-sm text-gray-500">
               Question {{ currentSession.currentQuestionIndex + 1 }} of {{ currentSession.questions.length }}
             </div>
           </div>
+        </template>
 
-          <!-- Progress Bar -->
-          <div class="w-full bg-gray-200 rounded-full h-2 mb-6">
-            <div 
-              class="bg-indigo-600 h-2 rounded-full transition-all duration-300"
-              :style="{ width: `${(currentSession.currentQuestionIndex / currentSession.questions.length) * 100}%` }"
-            ></div>
+        <!-- Progress Bar -->
+        <UProgress 
+          :value="(currentSession.currentQuestionIndex / currentSession.questions.length) * 100"
+          class="mb-6"
+        />
+
+        <!-- Current Question -->
+        <div v-if="!isInterviewComplete" class="space-y-6">
+          <div>
+            <div class="flex gap-2 mb-4">
+              <UBadge 
+                :label="currentQuestion?.category || 'General'" 
+                color="blue" 
+                variant="subtle"
+              />
+              <UBadge 
+                :label="currentQuestion?.difficulty || 'Medium'" 
+                :color="currentQuestion?.difficulty === 'hard' ? 'red' : currentQuestion?.difficulty === 'easy' ? 'green' : 'orange'"
+                variant="subtle"
+              />
+            </div>
+            <h3 class="text-lg font-medium text-gray-900 mb-4">
+              {{ currentQuestion?.question }}
+            </h3>
           </div>
 
-          <!-- Current Question -->
-          <div v-if="!isInterviewComplete" class="mb-6">
-            <div class="mb-4">
-              <span class="inline-block px-3 py-1 text-xs font-medium bg-indigo-100 text-indigo-800 rounded-full mb-2">
-                {{ currentQuestion?.category || 'General' }} • {{ currentQuestion?.difficulty || 'Medium' }}
-              </span>
-              <h3 class="text-lg font-medium text-gray-900 mb-4">
-                {{ currentQuestion?.question }}
-              </h3>
-            </div>
-
-            <!-- Answer Input -->
-            <div class="mb-4">
-              <label for="answer" class="block text-sm font-medium text-gray-700 mb-2">
-                Your Answer
-              </label>
-              <textarea
-                id="answer"
+          <!-- Answer Input -->
+          <div>
+            <UFormGroup label="Your Answer" name="answer">
+              <UTextarea
                 v-model="currentAnswer"
-                rows="6"
-                class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                :rows="6"
                 placeholder="Type your answer here..."
-              ></textarea>
-            </div>
-
-            <!-- Hints -->
-            <div v-if="currentQuestion?.hints?.length" class="mb-4">
-              <button 
-                class="text-sm text-indigo-600 hover:text-indigo-800 font-medium"
-                @click="$event.target.nextElementSibling.classList.toggle('hidden')"
-              >
-                💡 Show Hints
-              </button>
-              <div class="hidden mt-2 p-3 bg-blue-50 rounded-md">
-                <ul class="text-sm text-blue-800 space-y-1">
-                  <li v-for="hint in currentQuestion.hints" :key="hint" class="flex items-start">
-                    <span class="mr-2">•</span>
-                    {{ hint }}
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            <UButton
-              :disabled="!currentAnswer.trim()"
-              @click="submitAnswer"
-              size="lg"
-              class="bg-indigo-600 hover:bg-indigo-700"
-            >
-              {{ currentSession.currentQuestionIndex === currentSession.questions.length - 1 ? 'Finish Interview' : 'Next Question' }}
-            </UButton>
+                size="lg"
+              />
+            </UFormGroup>
           </div>
 
-          <!-- Interview Complete -->
-          <div v-else class="text-center py-8">
-            <div class="text-6xl mb-4">🎉</div>
-            <h3 class="text-2xl font-bold text-gray-900 mb-2">Interview Complete!</h3>
-            <p class="text-gray-600 mb-4">
-              You've completed all {{ currentSession.questions.length }} questions.
-            </p>
-            <div class="mb-6">
-              <div class="text-3xl font-bold text-indigo-600 mb-2">
-                {{ currentSession.score }}%
-              </div>
-              <p class="text-sm text-gray-500">Completion Score</p>
-            </div>
-            <UButton
-              @click="resetInterview"
-              size="lg"
-              variant="outline"
-              class="mr-4"
-            >
-              Start New Interview
-            </UButton>
-          </div>
+          <!-- Hints -->
+          <UAccordion 
+            v-if="currentQuestion?.hints?.length" 
+            :items="[{
+              label: '💡 Show Hints',
+              content: currentQuestion.hints.map(hint => `• ${hint}`).join('\n'),
+              defaultOpen: false
+            }]"
+          />
+
+          <UButton
+            :disabled="!currentAnswer.trim()"
+            @click="submitAnswer"
+            size="lg"
+            class="w-full"
+          >
+            {{ currentSession.currentQuestionIndex === currentSession.questions.length - 1 ? 'Finish Interview' : 'Next Question' }}
+          </UButton>
         </div>
 
-        <!-- Question Generation Form -->
-        <div v-else class="bg-white rounded-lg shadow-lg p-6">
-          <!-- Tab Navigation -->
-          <div class="flex border-b border-gray-200 mb-6">
-            <button
-              @click="activeTab = 'url'"
-              :class="[
-                'py-2 px-4 text-sm font-medium border-b-2 transition-colors',
-                activeTab === 'url' 
-                  ? 'border-indigo-500 text-indigo-600' 
-                  : 'border-transparent text-gray-500 hover:text-gray-700'
-              ]"
-            >
-              Job Post URL
-            </button>
-            <button
-              @click="activeTab = 'description'"
-              :class="[
-                'py-2 px-4 text-sm font-medium border-b-2 transition-colors',
-                activeTab === 'description' 
-                  ? 'border-indigo-500 text-indigo-600' 
-                  : 'border-transparent text-gray-500 hover:text-gray-700'
-              ]"
-            >
-              Job Description
-            </button>
+        <!-- Interview Complete -->
+        <div v-else class="text-center py-8">
+          <div class="text-6xl mb-4">🎉</div>
+          <h3 class="text-2xl font-bold text-gray-900 mb-2">Interview Complete!</h3>
+          <p class="text-gray-600 mb-4">
+            You've completed all {{ currentSession.questions.length }} questions.
+          </p>
+          <div class="mb-6">
+            <div class="text-3xl font-bold text-primary-600 mb-2">
+              {{ currentSession.score }}%
+            </div>
+            <p class="text-sm text-gray-500">Completion Score</p>
           </div>
+          <UButton
+            @click="resetInterview"
+            size="lg"
+            variant="outline"
+          >
+            Start New Interview
+          </UButton>
+        </div>
+      </UCard>
 
+      <!-- Question Generation Form -->
+      <UCard v-else>
+        <template #header>
+          <h2 class="text-xl font-semibold text-gray-900">Generate Interview Questions</h2>
+        </template>
+
+        <!-- Tab Navigation -->
+        <UTabs 
+          :items="tabItems" 
+          v-model="activeTab"
+          class="mb-6"
+        >
           <!-- URL Tab -->
-          <div v-if="activeTab === 'url'" class="mb-6">
-            <label for="jobUrl" class="block text-sm font-medium text-gray-700 mb-2">
-              Job Post URL *
-            </label>
-            <input
-              id="jobUrl"
-              v-model="jobPostUrl"
-              type="url"
-              class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-              placeholder="https://example.com/job-posting"
-            />
-            <p class="text-xs text-gray-500 mt-1">
-              Paste the URL of the job posting you want to practice for
-            </p>
-          </div>
+          <template #url="{ item }">
+            <div class="space-y-4">
+              <UFormGroup 
+                label="Job Post URL" 
+                description="Paste the URL of the job posting you want to practice for"
+                required
+              >
+                <UInput
+                  v-model="jobPostUrl"
+                  type="url"
+                  placeholder="https://example.com/job-posting"
+                  size="lg"
+                />
+              </UFormGroup>
+            </div>
+          </template>
 
           <!-- Description Tab -->
-          <div v-if="activeTab === 'description'" class="mb-6">
-            <label for="jobDesc" class="block text-sm font-medium text-gray-700 mb-2">
-              Job Description *
-            </label>
-            <textarea
-              id="jobDesc"
-              v-model="jobDescription"
-              rows="6"
-              class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-              placeholder="Paste the job description here..."
-            ></textarea>
-            <p class="text-xs text-gray-500 mt-1">
-              Copy and paste the job description you want to practice for
-            </p>
-          </div>
-
-          <!-- Options -->
-          <div class="grid md:grid-cols-2 gap-4 mb-6">
-            <div>
-              <label for="questionCount" class="block text-sm font-medium text-gray-700 mb-2">
-                Number of Questions
-              </label>
-              <select
-                id="questionCount"
-                v-model="questionCount"
-                class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          <template #description="{ item }">
+            <div class="space-y-4">
+              <UFormGroup 
+                label="Job Description" 
+                description="Copy and paste the job description you want to practice for"
+                required
               >
-                <option :value="3">3 Questions</option>
-                <option :value="5">5 Questions</option>
-                <option :value="7">7 Questions</option>
-                <option :value="10">10 Questions</option>
-              </select>
+                <UTextarea
+                  v-model="jobDescription"
+                  :rows="6"
+                  placeholder="Paste the job description here..."
+                  size="lg"
+                />
+              </UFormGroup>
             </div>
-            <div>
-              <label for="difficulty" class="block text-sm font-medium text-gray-700 mb-2">
-                Difficulty Level
-              </label>
-              <select
-                id="difficulty"
-                v-model="difficulty"
-                class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              >
-                <option value="easy">Easy</option>
-                <option value="medium">Medium</option>
-                <option value="hard">Hard</option>
-                <option value="mixed">Mixed</option>
-              </select>
-            </div>
-          </div>
+          </template>
+        </UTabs>
 
-          <!-- Error Message -->
-          <div v-if="generationError" class="mb-4 p-3 bg-red-50 border border-red-200 rounded-md">
-            <p class="text-sm text-red-600">{{ generationError }}</p>
-          </div>
-
-          <!-- Generate Button -->
-          <UButton
-            :disabled="!canGenerate || isGenerating"
-            :loading="isGenerating"
-            @click="generateQuestions"
-            size="lg"
-            class="w-full bg-indigo-600 hover:bg-indigo-700"
-          >
-            {{ isGenerating ? 'Generating Questions...' : 'Generate Interview Questions' }}
-          </UButton>
-        </div>
-
-        <!-- Generated Questions Preview -->
-        <div v-if="questions.length > 0 && !currentSession" class="bg-white rounded-lg shadow-lg p-6 mt-6">
-          <div class="flex justify-between items-center mb-4">
-            <h2 class="text-xl font-semibold text-gray-900">Generated Questions</h2>
-            <span class="text-sm text-gray-500">{{ questions.length }} questions</span>
-          </div>
+        <!-- Options -->
+        <div class="grid md:grid-cols-2 gap-4 mb-6">
+          <UFormGroup label="Number of Questions">
+            <USelectMenu
+              v-model="questionCount"
+              :options="questionCountOptions"
+              value-attribute="value"
+              option-attribute="label"
+              size="lg"
+            />
+          </UFormGroup>
           
-          <div class="space-y-4 mb-6">
-            <div 
-              v-for="(question, index) in questions" 
-              :key="question.id"
-              class="border border-gray-200 rounded-lg p-4"
-            >
-              <div class="flex items-start justify-between mb-2">
-                <span class="text-sm font-medium text-gray-900">Question {{ index + 1 }}</span>
-                <span class="inline-block px-2 py-1 text-xs bg-gray-100 text-gray-600 rounded">
-                  {{ question.category }} • {{ question.difficulty }}
-                </span>
-              </div>
-              <p class="text-gray-700">{{ question.question }}</p>
-            </div>
-          </div>
-
-          <UButton
-            :disabled="!canStartInterview"
-            @click="startInterview"
-            size="lg"
-            class="w-full bg-green-600 hover:bg-green-700"
-          >
-            Start Interview Practice
-          </UButton>
+          <UFormGroup label="Difficulty Level">
+            <USelectMenu
+              v-model="difficulty"
+              :options="difficultyOptions"
+              value-attribute="value"
+              option-attribute="label"
+              size="lg"
+            />
+          </UFormGroup>
         </div>
-      </div>
-    </section>
+
+        <!-- Error Message -->
+        <UAlert
+          v-if="generationError"
+          color="red"
+          variant="subtle"
+          :title="generationError"
+          class="mb-4"
+        />
+
+        <!-- Generate Button -->
+        <UButton
+          :disabled="!canGenerate"
+          :loading="isGenerating"
+          @click="generateQuestions"
+          size="lg"
+          class="w-full"
+        >
+          Generate Interview Questions
+        </UButton>
+      </UCard>
+
+      <!-- Generated Questions Preview -->
+      <UCard v-if="questions.length > 0 && !currentSession" class="mt-6">
+        <template #header>
+          <div class="flex justify-between items-center">
+            <h2 class="text-xl font-semibold text-gray-900">Generated Questions</h2>
+            <UBadge :label="`${questions.length} questions`" />
+          </div>
+        </template>
+        
+        <div class="space-y-4 mb-6">
+          <UCard 
+            v-for="(question, index) in questions" 
+            :key="question.id"
+            :ui="{ body: { padding: 'p-4' } }"
+          >
+            <div class="flex items-start justify-between mb-2">
+              <span class="text-sm font-medium text-gray-900">Question {{ index + 1 }}</span>
+              <div class="flex gap-2">
+                <UBadge :label="question.category" color="blue" variant="subtle" size="xs" />
+                <UBadge 
+                  :label="question.difficulty" 
+                  :color="question.difficulty === 'hard' ? 'red' : question.difficulty === 'easy' ? 'green' : 'orange'"
+                  variant="subtle" 
+                  size="xs"
+                />
+              </div>
+            </div>
+            <p class="text-gray-700">{{ question.question }}</p>
+          </UCard>
+        </div>
+
+        <UButton
+          :disabled="!canStartInterview"
+          @click="startInterview"
+          size="lg"
+          color="green"
+          class="w-full"
+        >
+          Start Interview Practice
+        </UButton>
+      </UCard>
+    </div>
   </main>
 </template>
 
-<style scoped>
-/* Add any custom styles here */
-</style>
