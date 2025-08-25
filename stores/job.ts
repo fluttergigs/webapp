@@ -276,7 +276,20 @@ export const useJobStore = defineStore('job', {
         const response = await (<GenerativeAIProvider>$generativeAI).generateText(prompt);
 
         try {
-          parsedResponse = JSON.parse(response as string);
+          // Clean the response to remove markdown code block markers
+          let cleanedResponse = (response as string).trim();
+          
+          // Remove ```json at the beginning if present
+          if (cleanedResponse.startsWith('```json')) {
+            cleanedResponse = cleanedResponse.substring(7).trim();
+          }
+          
+          // Remove ``` at the end if present
+          if (cleanedResponse.endsWith('```')) {
+            cleanedResponse = cleanedResponse.substring(0, cleanedResponse.length - 3).trim();
+          }
+          
+          parsedResponse = JSON.parse(cleanedResponse);
         } catch (parseError) {
           // If JSON parsing fails, create a fallback response
           parsedResponse = {
