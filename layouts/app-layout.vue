@@ -107,6 +107,7 @@
     ArrowsPointingInIcon,
     BriefcaseIcon,
     BuildingOffice2Icon,
+    ChatBubbleLeftRightIcon,
     Cog8ToothIcon,
     MegaphoneIcon,
     StarIcon,
@@ -134,6 +135,12 @@
       section: 'user',
       name: 'My Profile',
       enabled: useFeatureFlags().isEnabled(AvailableFlags.hireConsultants),
+    },
+    {
+      icon: ChatBubbleLeftRightIcon,
+      path: AppRoutes.mockInterview,
+      section: 'user',
+      name: 'Mock Interviews',
     },
     {
       icon: BuildingOffice2Icon,

@@ -233,15 +233,18 @@ export const useJobStore = defineStore('job', {
 
     // Mock Interview Actions
     async generateMockInterview(request: MockInterviewRequest) {
+
+      // Parse the JSON response
+      let parsedResponse: MockInterviewResponse;
       this.mockInterviewGeneration = new Wrapper<MockInterviewResponse>().toLoading();
       try {
         //@ts-ignore
         const { $generativeAI } = useNuxtApp();
-        
+
         // Create a prompt for generating interview questions
         const questionCount = request.questionCount || 5;
         const difficulty = request.difficulty || 'mixed';
-        
+
         let prompt = '';
         if (request.jobPostUrl) {
           prompt = `Based on the job posting at this URL: ${request.jobPostUrl}, generate ${questionCount} mock interview questions with ${difficulty} difficulty. `;
@@ -250,7 +253,7 @@ export const useJobStore = defineStore('job', {
         } else {
           throw new Error('Either job post URL or job description is required');
         }
-        
+
         prompt += `Format the response as a JSON object with the following structure:
         {
           "jobTitle": "extracted job title",
@@ -271,9 +274,7 @@ export const useJobStore = defineStore('job', {
         Make sure questions are relevant to Flutter development and the specific role requirements. Include a mix of technical, behavioral, and role-specific questions.`;
 
         const response = await (<GenerativeAIProvider>$generativeAI).generateText(prompt);
-        
-        // Parse the JSON response
-        let parsedResponse: MockInterviewResponse;
+
         try {
           parsedResponse = JSON.parse(response as string);
         } catch (parseError) {
@@ -286,20 +287,35 @@ export const useJobStore = defineStore('job', {
                 category: 'technical',
                 difficulty: 'easy',
                 expectedAnswer: 'Discuss your Flutter projects, experience with Dart, and key concepts you\'ve worked with.',
-                hints: ['Mention specific projects', 'Discuss challenges faced', 'Highlight achievements']
-              }
+                hints: ['Mention specific projects', 'Discuss challenges faced', 'Highlight achievements'],
+              },
             ],
             jobTitle: 'Flutter Developer',
             company: 'Unknown',
-            summary: 'Flutter development position'
+            summary: 'Flutter development position',
           };
         }
-        
-        this.mockInterviewGeneration = this.mockInterviewGeneration.toSuccess(parsedResponse, 'Mock interview questions generated successfully!');
-        return parsedResponse;
+
+        this.mockInterviewGeneration = this.mockInterviewGeneration.toSuccess(parsedResponse, AppStrings.mockInterviewGeneratedSuccessfully);
       } catch (e) {
         logDev('mock interview generation error', e);
-        this.mockInterviewGeneration = this.mockInterviewGeneration.toFailed('Unable to generate mock interview questions. Please try again.');
+
+        parsedResponse = {
+          questions: [
+            {
+              id: '1',
+              question: 'Tell me about your experience with Flutter development.',
+              category: 'technical',
+              difficulty: 'easy',
+              expectedAnswer: 'Discuss your Flutter projects, experience with Dart, and key concepts you\'ve worked with.',
+              hints: ['Mention specific projects', 'Discuss challenges faced', 'Highlight achievements'],
+            },
+          ],
+          jobTitle: 'Flutter Developer',
+          company: 'Unknown',
+          summary: 'Flutter development position',
+        };
+        this.mockInterviewGeneration = this.mockInterviewGeneration.toFailed(AppStrings.unableToGenerateMockInterview);
         throw e;
       }
     },
@@ -351,7 +367,7 @@ export const useJobStore = defineStore('job', {
     // Mock Interview getters
     mockInterviewQuestions: (state) => state.mockInterviewGeneration?.value?.questions ?? [],
     isMockInterviewLoading: (state) => state.mockInterviewGeneration?.isLoading ?? false,
-    mockInterviewError: (state) => state.mockInterviewGeneration?.error,
+    mockInterviewError: (state) => state.mockInterviewGeneration?.message,
     currentInterviewSession: (state) => state.currentMockInterview,
     currentQuestion: (state) => {
       if (state.currentMockInterview) {
