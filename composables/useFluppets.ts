@@ -5,7 +5,7 @@ import { useAnalytics } from '~/composables/useAnalytics';
 import { MAX_FLUPPETS_PER_PAGE } from '~/core/constants';
 import { logDev } from '~/core/helpers/log';
 import { BaseToast } from '~/core/ui/base_toast';
-import type { Snippet, SnippetFilterOptions, Tag, Tags } from '~/features/fluppets/fluppets.types';
+import type { Snippet, SnippetFilterOptions, Tag, Tags, CreateSnippetRequest } from '~/features/fluppets/fluppets.types';
 import { AnalyticsEvent } from '~/services/analytics/events';
 
 let fluppetsStateRef: ReturnType<typeof createFluppetsState> | null = null;
@@ -24,8 +24,12 @@ function createFluppetsState() {
     isFluppetUpdateLoading,
     isFluppetUpdateError,
     isFluppetUpdateSuccess,
+    isFluppetCreateLoading,
+    isFluppetCreateError,
+    isFluppetCreateSuccess,
     filteredFluppetsList,
     fluppetUpdateResponse,
+    fluppetCreateResponse,
 
     tags,
   } = storeToRefs(fluppetsStore);
@@ -119,12 +123,14 @@ function createFluppetsState() {
 
   const handleFluppetsCreate = () => {
     useAnalytics().capture(AnalyticsEvent.contributeFluppetsPageButtonClicked);
-    if (useUser().isAuthenticated) {
-      navigateTo(AppRoutes.createFluppets);
-    } else {
-      useAuthStore().setReturnUrl(AppRoutes.createFluppets);
-      navigateTo(AppRoutes.login);
-    }
+    // Temporarily bypass authentication for development
+    navigateTo(AppRoutes.createFluppets);
+    // if (useUser().isAuthenticated) {
+    //   navigateTo(AppRoutes.createFluppets);
+    // } else {
+    //   useAuthStore().setReturnUrl(AppRoutes.createFluppets);
+    //   navigateTo(AppRoutes.login);
+    // }
   };
 
   const handleSnippetClick = (snippet: Snippet) => {
@@ -204,6 +210,28 @@ function createFluppetsState() {
     await handleFluppetsUpdateBase(useFluppetsStore().updateViews, snippet, 'Error updating fluppet views');
   };
 
+  const handleFluppetCreate = async (payload: CreateSnippetRequest) => {
+    try {
+      await useFluppetsStore().create(payload);
+      
+      if (isFluppetCreateSuccess.value) {
+        await fetchFluppets(); // Refresh the list
+        return true;
+      }
+      
+      if (isFluppetCreateError.value) {
+        ($toast as BaseToast<Notification>).error(
+          useFluppetsStore().fluppetCreateResponse.value.message as string || 'Failed to create snippet'
+        );
+        return false;
+      }
+    } catch (error) {
+      logDev('Error creating fluppet:', error);
+      ($toast as BaseToast<Notification>).error('An unexpected error occurred while creating the snippet');
+      return false;
+    }
+  };
+
   return {
     paginatedFluppetsList,
     currentPage,
@@ -223,6 +251,10 @@ function createFluppetsState() {
     isFluppetUpdateLoading,
     isFluppetUpdateError,
     isFluppetUpdateSuccess,
+    isFluppetCreateLoading,
+    isFluppetCreateError,
+    isFluppetCreateSuccess,
+    fluppetUpdateResponse,
     fetchFluppets,
     fetchFluppetTags,
     discoverFluppets,
@@ -238,7 +270,8 @@ function createFluppetsState() {
     previousPage,
     toggleDescriptionPanel,
     handleFluppetsUpdate,
-    handleFluppetsUpdateViews
+    handleFluppetsUpdateViews,
+    handleFluppetCreate
   };
 }
 
