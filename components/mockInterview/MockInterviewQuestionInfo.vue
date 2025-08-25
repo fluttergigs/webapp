@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-  import type { MockInterviewQuestion } from '~/features/jobs/job.types';
+  import type { MockInterviewQuestion } from '~/features/mockInterview/mockInterview.types';
 
   const props = defineProps<{
     question: MockInterviewQuestion;

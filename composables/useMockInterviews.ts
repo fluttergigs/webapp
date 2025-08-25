@@ -1,17 +1,17 @@
 import { storeToRefs } from 'pinia';
 import { BaseToast } from '~/core/ui/base_toast';
-import type { MockInterviewRequest } from '~/features/jobs/job.types';
-import { useJobStore } from '~/stores/job';
+import type { MockInterviewRequest } from '~/features/mockInterview/mockInterview.types';
+import { useMockInterviewStore } from '~/stores/mockInterview';
 
 import { computed, ref } from 'vue';
 
 export function useMockInterviews() {
-  const jobStore = useJobStore();
+  const mockInterviewStore = useMockInterviewStore();
 
   const { $toast } = useNuxtApp();
   // Store refs
   const { mockInterviewGeneration, currentMockInterview, mockInterviewError } =
-    storeToRefs(jobStore);
+    storeToRefs(mockInterviewStore);
 
   // Local form state
   const jobPostUrl = ref('');
@@ -86,7 +86,7 @@ export function useMockInterviews() {
     }
 
     try {
-      await jobStore.generateMockInterview(request);
+      await mockInterviewStore.generateMockInterview(request);
     } catch (error) {
       ($toast as BaseToast<Notification>).error(mockInterviewError.value);
     }
@@ -94,24 +94,24 @@ export function useMockInterviews() {
 
   const startInterview = () => {
     if (questions.value.length > 0) {
-      jobStore.startMockInterviewSession(questions.value);
+      mockInterviewStore.startMockInterviewSession(questions.value);
       currentAnswer.value = '';
     }
   };
 
   const submitAnswer = () => {
     if (currentAnswer.value.trim()) {
-      jobStore.answerMockInterviewQuestion(currentAnswer.value);
+      mockInterviewStore.answerMockInterviewQuestion(currentAnswer.value);
       currentAnswer.value = '';
 
       if (isInterviewComplete.value) {
-        jobStore.finishMockInterviewSession();
+        mockInterviewStore.finishMockInterviewSession();
       }
     }
   };
 
   const resetInterview = () => {
-    jobStore.resetMockInterview();
+    mockInterviewStore.resetMockInterview();
     currentAnswer.value = '';
     jobPostUrl.value = '';
     jobDescription.value = '';
@@ -123,7 +123,7 @@ export function useMockInterviews() {
 
   // Initialize
   const initialize = () => {
-    jobStore.resetMockInterview();
+    mockInterviewStore.resetMockInterview();
   };
 
   return {
