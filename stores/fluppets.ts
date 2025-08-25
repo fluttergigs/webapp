@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { Wrapper } from '~/core/wrapper';
 import type { MultiApiResponse, SingleApiResponse } from '~/core/shared/types';
-import type { Snippet, SnippetFilterOptions, Snippets, Tag, Tags, UpdateSnippetRequest } from '~/features/fluppets/fluppets.types';
+import type { Snippet, SnippetFilterOptions, Snippets, Tag, Tags, UpdateSnippetRequest, CreateSnippetRequest } from '~/features/fluppets/fluppets.types';
 import { HttpClient } from '~/core/network/http_client';
 import { Endpoint } from '~/core/network/endpoints';
 import { AppStrings } from '~/core/strings';
@@ -14,6 +14,7 @@ export const useFluppetsStore = defineStore('fluppets', {
     filteredFluppetsListResponse: new Wrapper<MultiApiResponse<Snippet>>().toInitial(),
     fluppetTags: new Wrapper<MultiApiResponse<Tag>>().toInitial(),
     fluppetUpdateResponse: new Wrapper<SingleApiResponse<Snippet>>().toInitial(),
+    fluppetCreateResponse: new Wrapper<SingleApiResponse<Snippet>>().toInitial(),
   }),
   actions: {
 
@@ -48,6 +49,23 @@ export const useFluppetsStore = defineStore('fluppets', {
       } catch (e) {
         logDev('Error updating snippet views:', e);
         this.fluppetUpdateResponse = this.fluppetUpdateResponse.toFailed(AppStrings.unableToUpdateFluppets);
+      }
+    },
+
+    async create(payload: CreateSnippetRequest) {
+      this.fluppetCreateResponse = new Wrapper<SingleApiResponse<Snippet>>().toLoading();
+      try {
+        //@ts-ignore
+        const { $http } = useNuxtApp();
+        const response: SingleApiResponse<Snippet> = await (<HttpClient>$http).post(
+          Endpoint.createSnippet(),
+          payload,
+        );
+        this.fluppetCreateResponse =
+          this.fluppetCreateResponse.toSuccess(response);
+      } catch (e) {
+        logDev('Error creating snippet:', e);
+        this.fluppetCreateResponse = this.fluppetCreateResponse.toFailed(AppStrings.unableToCreateFluppets);
       }
     },
 
@@ -166,6 +184,18 @@ export const useFluppetsStore = defineStore('fluppets', {
     },
     isFluppetUpdateSuccess: (state) => {
       return state.fluppetUpdateResponse.isSuccess;
+    },
+    isFluppetCreateLoading: (state) => {
+      return state.fluppetCreateResponse.isLoading;
+    },
+    isFluppetCreateError: (state) => {
+      return state.fluppetCreateResponse.isFailure;
+    },
+    isFluppetCreateSuccess: (state) => {
+      return state.fluppetCreateResponse.isSuccess;
+    },
+    fluppetCreateResponse: (state) => {
+      return state.fluppetCreateResponse;
     },
   },
 });

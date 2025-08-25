@@ -3,6 +3,10 @@ export class Endpoint {
     return '/snippets';
   }
 
+  static createSnippet() {
+    return '/snippets';
+  }
+
   static get tags() {
     return '/tags';
   }

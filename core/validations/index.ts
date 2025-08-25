@@ -6,6 +6,7 @@ import {
   updateEducationFormSchema,
   updateExperienceFormSchema,
 } from '~/core/validations/profile.validations';
+import { createSnippetFormSchema, editSnippetFormSchema } from '~/core/validations/snippet.validations';
 
 export {
   loginFormSchema,
@@ -15,4 +16,6 @@ export {
   addExperienceFormSchema,
   updateExperienceFormSchema,
   updateEducationFormSchema,
+  createSnippetFormSchema,
+  editSnippetFormSchema,
 };
