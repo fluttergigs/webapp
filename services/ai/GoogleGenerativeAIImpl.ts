@@ -20,7 +20,7 @@ export class GoogleGenerativeAIImpl implements GenerativeAI {
 
   async generateText(prompt: string): Promise<any> {
     // For text-only input, use the gemini-pro model
-    const model = this.genAI.getGenerativeModel({ model: 'gemini-2.5-pro' });
+    const model = this.genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
     const result = await model.generateContent(prompt);
     const response = result.response;

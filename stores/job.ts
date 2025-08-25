@@ -275,6 +275,8 @@ export const useJobStore = defineStore('job', {
 
         const response = await (<GenerativeAIProvider>$generativeAI).generateText(prompt);
 
+        console.log('AI Response:', response);
+
         try {
           // Clean the response to remove markdown code block markers
           let cleanedResponse = (response as string).trim();
@@ -291,6 +293,8 @@ export const useJobStore = defineStore('job', {
           
           parsedResponse = JSON.parse(cleanedResponse);
         } catch (parseError) {
+
+          logDev('JSON parsing error', parseError);
           // If JSON parsing fails, create a fallback response
           parsedResponse = {
             questions: [

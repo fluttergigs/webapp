@@ -111,7 +111,7 @@
 
     <!-- Generate Button -->
     <UButton
-      :disabled="!canGenerate && questions.length >= 1"
+      :disabled="!canGenerate && questions.length > 0"
       :loading="isGenerating"
       class="w-full"
       size="lg"
