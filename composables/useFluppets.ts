@@ -216,9 +216,19 @@ function createFluppetsState() {
       
       if (isFluppetCreateSuccess.value) {
         await fetchFluppets(); // Refresh the list
+        return true;
+      }
+      
+      if (isFluppetCreateError.value) {
+        ($toast as BaseToast<Notification>).error(
+          useFluppetsStore().fluppetCreateResponse.value.message as string || 'Failed to create snippet'
+        );
+        return false;
       }
     } catch (error) {
       logDev('Error creating fluppet:', error);
+      ($toast as BaseToast<Notification>).error('An unexpected error occurred while creating the snippet');
+      return false;
     }
   };
 
@@ -244,6 +254,7 @@ function createFluppetsState() {
     isFluppetCreateLoading,
     isFluppetCreateError,
     isFluppetCreateSuccess,
+    fluppetUpdateResponse,
     fetchFluppets,
     fetchFluppetTags,
     discoverFluppets,

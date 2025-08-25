@@ -194,8 +194,5 @@ export const useFluppetsStore = defineStore('fluppets', {
     isFluppetCreateSuccess: (state) => {
       return state.fluppetCreateResponse.isSuccess;
     },
-    fluppetCreateResponse: (state) => {
-      return state.fluppetCreateResponse;
-    },
   },
 });
