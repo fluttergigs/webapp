@@ -58,22 +58,22 @@ export const useMockInterviewStore = defineStore('mockInterview', {
 
         const response = await (<GenerativeAIProvider>$generativeAI).generateText(prompt);
 
-        console.log('AI Response:', response);
+        logDev('AI Response:', response);
 
         try {
           // Clean the response to remove markdown code block markers
           let cleanedResponse = (response as string).trim();
-          
+
           // Remove ```json at the beginning if present
           if (cleanedResponse.startsWith('```json')) {
             cleanedResponse = cleanedResponse.substring(7).trim();
           }
-          
+
           // Remove ``` at the end if present
           if (cleanedResponse.endsWith('```')) {
             cleanedResponse = cleanedResponse.substring(0, cleanedResponse.length - 3).trim();
           }
-          
+
           parsedResponse = JSON.parse(cleanedResponse);
         } catch (parseError) {
 
@@ -100,21 +100,6 @@ export const useMockInterviewStore = defineStore('mockInterview', {
       } catch (e) {
         logDev('mock interview generation error', e);
 
-        parsedResponse = {
-          questions: [
-            {
-              id: '1',
-              question: 'Tell me about your experience with Flutter development.',
-              category: 'technical',
-              difficulty: 'easy',
-              expectedAnswer: 'Discuss your Flutter projects, experience with Dart, and key concepts you\'ve worked with.',
-              hints: ['Mention specific projects', 'Discuss challenges faced', 'Highlight achievements'],
-            },
-          ],
-          jobTitle: 'Flutter Developer',
-          company: 'Unknown',
-          summary: 'Flutter development position',
-        };
         this.mockInterviewGeneration = this.mockInterviewGeneration.toFailed(AppStrings.unableToGenerateMockInterview);
         throw e;
       }
@@ -135,6 +120,14 @@ export const useMockInterviewStore = defineStore('mockInterview', {
     answerMockInterviewQuestion(answer: string) {
       if (this.currentMockInterview) {
         this.currentMockInterview.answers.push(answer);
+
+        // Automatically move to next question after answering
+        this.moveToNextQuestion();
+      }
+    },
+
+    moveToNextQuestion() {
+      if (!this.isInterviewComplete) {
         this.currentMockInterview.currentQuestionIndex++;
       }
     },
