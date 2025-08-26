@@ -32,7 +32,9 @@ useSeoMeta({
   twitterDescription: "FlutterGigs - Discover & Share Flutter Snippets",
 });
 
-const { discoverFluppets, handleFluppetsCreate } = useFluppets();
+const {
+  discoverFluppets, handleFluppetsCreate
+} = useFluppets();
 
 onMounted(() => {
   useAnalytics().capture(AnalyticsEvent.fluppetsPageEntered);
@@ -46,20 +48,20 @@ onMounted(() => {
         <!-- Text Content -->
         <div class="text-center md:w-7/12 lg:text-left">
           <h1 class="mb-4 text-4xl font-extrabold leading-tight xl:text-5xl">
-            Discover & Share & Integrate <br /><span class="text-primary">Professional</span>
-            <span class="primary-gradient"> Flutter Snippets</span>
+            Discover & Share & Integrate <br/><span class="text-primary">Professional</span>
+            <span class="primary-gradient">Flutter Snippets</span>
           </h1>
           <p class="mb-8 text-xl text-gray-600">
             Access our curated library and integrate code snippets seamlessly into your
-            <br />
+            <br/>
             Flutter projects. Share your own snippets and contribute to the community.
           </p>
           <div class="flex flex-col justify-center gap-4 sm:flex-row lg:justify-start">
             <UButton class="flex gap-2 rounded-xl px-9 py-5 font-bold" color="primary" icon="i-lucide-search"
-              label="Discover Snippets" @click="discoverFluppets" />
+                     label="Discover Snippets" @click="discoverFluppets"/>
 
             <UButton class="flex gap-2 rounded-xl border-2 px-9 py-5 font-bold" color="primary" label="Contribute"
-              icon="i-lucide-git-branch-plus" variant="soft" @click="handleFluppetsCreate" />
+                     icon="i-lucide-git-branch-plus" variant="soft" @click="handleFluppetsCreate"/>
           </div>
         </div>
         <!-- Code Snippet Preview -->
@@ -71,14 +73,14 @@ onMounted(() => {
               <span class="block h-3 w-3 rounded-full bg-green-500"></span>
             </div>
             <pre class="language-dart overflow-x-auto bg-white p-6 font-mono text-sm"><code>Container(
-  padding: EdgeInsets.all(16),
-  decoration: BoxDecoration(
-    color: Colors.white,
-    borderRadius: BorderRadius.circular(8),
-    boxShadow: [BoxShadow(blurRadius: 10, color: Colors.black12)],
-  ),
-  child: Text('Hello, FlutterGigs!'),
-);</code></pre>
+              padding: EdgeInsets.all(16),
+              decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8),
+              boxShadow: [BoxShadow(blurRadius: 10, color: Colors.black12)],
+              ),
+              child: Text('Hello, FlutterGigs!'),
+              );</code></pre>
           </div>
         </div>
       </div>
@@ -112,14 +114,14 @@ onMounted(() => {
           </div>
           <div class="w-full md:w-1/3">
             <Perk :icon="CodeBracketIcon" cta-text="Contribute" description=" Showcase your skills: Share your code snippets and demonstrate your expertise to potential employers.
-                     Collaborate with peers: Engage with the community, upvote, and refine code snippets together."
-              title="Showcase" @cta-clicked="handleFluppetsCreate" />
+                  Collaborate with peers: Engage with the community, upvote, and refine code snippets together."
+                  title="Showcase" @cta-clicked="handleFluppetsCreate"/>
           </div>
           <div class="w-full md:w-1/3">
             <Perk :icon="LightBulbIcon" cta-text="Discover Snippets" description="
-              Discover solutions: Find vetted snippets to speed up your development process.
-              Integrate seamlessly: Easily incorporate snippets into your Flutter/Dart projects" title="Discover"
-              @cta-clicked="discoverFluppets">
+Discover solutions: Find vetted snippets to speed up your development process.
+                  Integrate seamlessly: Easily incorporate snippets into your Flutter/Dart projects" title="Discover"
+                  @cta-clicked="discoverFluppets">
             </Perk>
           </div>
         </div>

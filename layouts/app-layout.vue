@@ -55,7 +55,9 @@
                   :key="index"
                   :class="[
                     'flex w-auto p-2',
-                    useRoute().path === link.path ? 'rounded-md bg-indigo-200 text-indigo-800' : '',
+                    useRoute().path === link.path
+                      ? 'rounded-md bg-indigo-600 text-white'
+                      : 'text-gray-600',
                   ]"
                 >
                   <div class="flex">
@@ -71,7 +73,7 @@
                         :class="['flex flex-wrap items-center space-x-3']"
                         :to="link.path"
                       >
-                        <component :is="link.icon" :class="['h-6 w-6 text-gray-600']" />
+                        <component :is="link.icon" :class="['h-6 w-6 ']" />
                         <p v-if="!isAppBarShrunk" class="hover:text-neutral-700 font-medium">
                           {{ link.name }}
                         </p>
@@ -81,7 +83,7 @@
                         :class="['flex cursor-pointer flex-wrap items-center space-x-3']"
                         @click="link.onClick"
                       >
-                        <component :is="link.icon" :class="['h-5 w-5 text-gray-600']" />
+                        <component :is="link.icon" :class="['h-5 w-5 ']" />
                         <p v-if="!isAppBarShrunk" class="hover:text-neutral-700 font-medium">
                           {{ link.name }}
                         </p>
@@ -107,6 +109,7 @@
     ArrowsPointingInIcon,
     BriefcaseIcon,
     BuildingOffice2Icon,
+    ChatBubbleLeftRightIcon,
     Cog8ToothIcon,
     MegaphoneIcon,
     StarIcon,
@@ -134,6 +137,12 @@
       section: 'user',
       name: 'My Profile',
       enabled: useFeatureFlags().isEnabled(AvailableFlags.hireConsultants),
+    },
+    {
+      icon: ChatBubbleLeftRightIcon,
+      path: AppRoutes.mockInterview,
+      section: 'user',
+      name: 'Mock Interviews',
     },
     {
       icon: BuildingOffice2Icon,

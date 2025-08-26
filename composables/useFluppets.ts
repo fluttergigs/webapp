@@ -46,7 +46,6 @@ function createFluppetsState() {
     return tags.value.filter((tag) => tag.snippets.length > 0).slice(0, 8);
   });
 
-
   const paginatedFluppetsList = computed(() => {
     const startIndex = (currentPage.value - 1) * MAX_FLUPPETS_PER_PAGE;
     return (filteredFluppetsList.value ?? []).slice(startIndex, startIndex + MAX_FLUPPETS_PER_PAGE);
@@ -56,15 +55,11 @@ function createFluppetsState() {
     Math.ceil((filteredFluppetsList.value ?? []).length / MAX_FLUPPETS_PER_PAGE),
   );
 
-
   watchDebounced(
     () => filters.value,
     async () => {
-
       // selectedTags.value = filters.value.tags.filter((tag) => filters.value.tags);
-      selectedTags.value = tags.value.filter((tag) =>
-        filters.value.tags.includes(tag.slug),
-      );
+      selectedTags.value = tags.value.filter((tag) => filters.value.tags.includes(tag.slug));
 
       useAnalytics().capture(AnalyticsEvent.fluppetsFiltersTriggered, { filters: filters.value });
       await fluppetsStore.filter(filters.value);
@@ -75,7 +70,6 @@ function createFluppetsState() {
   const fetchFluppets = async () => {
     await Promise.all([fluppetsStore.load(), fluppetsStore.loadTags()]);
   };
-
 
   const goToPage = (page: number) => {
     if (page >= 1 && page <= totalPages.value) {
@@ -115,7 +109,7 @@ function createFluppetsState() {
     filters.value.tags = selectedTags.value.map((t) => t.slug);
   };
 
-  const searchFluppets = () => { };
+  const searchFluppets = () => {};
 
   const handleFluppetsCreate = () => {
     useAnalytics().capture(AnalyticsEvent.contributeFluppetsPageButtonClicked);
@@ -130,7 +124,7 @@ function createFluppetsState() {
   const handleSnippetClick = (snippet: Snippet) => {
     useAnalytics().capture(AnalyticsEvent.fluppetsClicked, { snippet });
     navigateTo(AppRoutes.fluppetDetail(snippet.documentId));
-  }
+  };
 
   const handleFluppetsCopy = async (snippet: Snippet) => {
     const { copy } = useClipboard({
@@ -146,7 +140,10 @@ function createFluppetsState() {
 
   const handleFluppetsShare = async (snippet: Snippet) => {
     useAnalytics().capture(AnalyticsEvent.fluppetsShareButtonClicked, { snippet });
-    const url = new URL(AppRoutes.fluppetDetail(snippet.documentId), window.location.origin).toString();
+    const url = new URL(
+      AppRoutes.fluppetDetail(snippet.documentId),
+      window.location.origin,
+    ).toString();
 
     const { copy } = useClipboard({
       source: url,
@@ -173,11 +170,10 @@ function createFluppetsState() {
     useAnalytics().capture(AnalyticsEvent.fluppetsDescriptionPanelClicked, { snippet });
   };
 
-
   const handleFluppetsUpdateBase = async (
     updateFn: (args: { data: Snippet }) => Promise<void>,
     snippet: Snippet,
-    errorMsgPrefix: string
+    errorMsgPrefix: string,
   ) => {
     try {
       await updateFn({ data: snippet });
@@ -187,9 +183,7 @@ function createFluppetsState() {
       }
 
       if (isFluppetUpdateError.value) {
-        ($toast as BaseToast<Notification>).error(
-          fluppetUpdateResponse.value.message as string
-        );
+        ($toast as BaseToast<Notification>).error(fluppetUpdateResponse.value.message as string);
       }
     } catch (error) {
       logDev(`${errorMsgPrefix}:`, error);
@@ -201,7 +195,11 @@ function createFluppetsState() {
   };
 
   const handleFluppetsUpdateViews = async (snippet: Snippet) => {
-    await handleFluppetsUpdateBase(useFluppetsStore().updateViews, snippet, 'Error updating fluppet views');
+    await handleFluppetsUpdateBase(
+      useFluppetsStore().updateViews,
+      snippet,
+      'Error updating fluppet views',
+    );
   };
 
   return {
@@ -238,7 +236,7 @@ function createFluppetsState() {
     previousPage,
     toggleDescriptionPanel,
     handleFluppetsUpdate,
-    handleFluppetsUpdateViews
+    handleFluppetsUpdateViews,
   };
 }
 

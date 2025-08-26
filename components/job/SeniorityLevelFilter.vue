@@ -13,7 +13,7 @@
 <template>
   <USelectMenu
     v-model="selected"
-    :options="seniorityLevelOptions"
+    :items="seniorityLevelOptions"
     clear-search-on-close
     label-key="label"
     placeholder="Select an experience level"

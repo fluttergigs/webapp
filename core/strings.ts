@@ -122,4 +122,8 @@ export class AppStrings {
   static unableToUpdateFluppets = 'Unable to update snippet. Please try again later';
   static unableToDeleteFluppets = 'Unable to delete snippet. Please try again later';
 
+  static unableToGenerateMockInterview =
+    'Unable to generate mock interview questions. Please try again';
+
+  static mockInterviewGeneratedSuccessfully = 'Mock interview questions generated successfully';
 }
