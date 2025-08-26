@@ -13,6 +13,10 @@
     submitAnswer,
     resetInterview,
   } = useMockInterviews();
+
+  const currentProgress = computed(
+    () => (currentSession.value.currentQuestionIndex / currentSession.value.questions.length) * 100,
+  );
 </script>
 
 <template>
@@ -21,19 +25,20 @@
       <div class="flex justify-between items-center">
         <h2 class="text-xl font-semibold text-gray-900">Interview Session</h2>
         <div class="text-sm text-gray-500">
-          Question {{ currentSession.currentQuestionIndex + 1 }} of
+          Question
+          {{
+            isInterviewComplete
+              ? currentSession.questions.length
+              : currentSession.currentQuestionIndex + 1
+          }}
+          of
           {{ currentSession.questions.length }}
         </div>
       </div>
     </template>
 
     <!-- Progress Bar -->
-    <UProgress
-      status
-      :value="(currentSession.currentQuestionIndex / currentSession.questions.length) * 100"
-      :max="100"
-      class="mb-6"
-    />
+    <UProgress status v-model="currentProgress" class="mb-6" />
 
     <!-- Current Question -->
     <div v-if="!isInterviewComplete" class="space-y-6">
@@ -70,11 +75,7 @@
       />
 
       <UButton :disabled="!currentAnswer.trim()" class="w-full" size="lg" @click="submitAnswer">
-        {{
-          currentSession.currentQuestionIndex === currentSession.questions.length - 1
-            ? 'Finish Interview'
-            : 'Next Question'
-        }}
+        {{ isInterviewComplete ? 'Finish Interview' : 'Next Question' }}
       </UButton>
     </div>
 
@@ -89,7 +90,7 @@
         <div class="text-3xl font-bold text-primary-600 mb-2">{{ currentSession.score }}%</div>
         <p class="text-sm text-gray-500">Completion Score</p>
       </div>
-      <UButton size="lg" variant="outline" @click="resetInterview"> Start New Interview</UButton>
+      <UButton size="lg" variant="outline" @click="resetInterview">Start New Interview</UButton>
     </div>
   </UCard>
 </template>

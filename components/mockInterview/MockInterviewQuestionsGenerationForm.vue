@@ -1,40 +1,40 @@
 <script lang="ts" setup>
-  // Tab items for UTabs
-  import { useMockInterviews } from '~/composables/useMockInterviews';
+// Tab items for UTabs
+import { useMockInterviews } from '~/composables/useMockInterviews';
 
-  const tabItems = [
-    {
-      slot: 'url',
-      label: 'Job Post URL',
-      description: 'Paste a job posting URL',
-    },
-    {
-      slot: 'description',
-      label: 'Job Description',
-      description: 'Enter job description directly',
-    },
-  ];
+const tabItems = [
+  {
+    slot: 'url',
+    label: 'Job Post URL',
+    description: 'Paste a job posting URL',
+  },
+  {
+    slot: 'description',
+    label: 'Job Description',
+    description: 'Enter job description directly',
+  },
+];
 
-  const {
-    // Form state
-    jobPostUrl,
-    jobDescription,
-    questionCount,
-    difficulty,
-    activeTab,
+const {
+  // Form state
+  jobPostUrl,
+  jobDescription,
+  questionCount,
+  difficulty,
+  activeTab,
 
-    // Computed properties
-    isGenerating,
-    canGenerate,
-    questions,
+  // Computed properties
+  isGenerating,
+  canGenerate,
+  questions,
 
-    // Options
-    questionCountOptions,
-    difficultyOptions,
+  // Options
+  questionCountOptions,
+  difficultyOptions,
 
-    // Methods
-    generateQuestions,
-  } = useMockInterviews();
+  // Methods
+  generateQuestions,
+} = useMockInterviews();
 </script>
 
 <template>
@@ -46,7 +46,7 @@
     <!-- Tab Navigation -->
     <UTabs v-model="activeTab" :items="tabItems" class="mb-6">
       <!-- URL Tab -->
-      <template #url="{ item }">
+      <template #url=" { item }">
         <div class="space-y-4">
           <UFormGroup
             description="Paste the URL of the job posting you want to practice for"
@@ -65,7 +65,7 @@
       </template>
 
       <!-- Description Tab -->
-      <template #description="{ item }">
+      <template #description=" { item }">
         <div class="space-y-4">
           <UFormGroup
             description="Copy and paste the job description you want to practice for"
@@ -111,7 +111,7 @@
 
     <!-- Generate Button -->
     <UButton
-      :disabled="!canGenerate && questions.length > 0"
+      :disabled="!canGenerate || questions.length > 0"
       :loading="isGenerating"
       class="w-full"
       size="lg"
