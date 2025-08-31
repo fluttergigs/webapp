@@ -6,6 +6,15 @@
         <NuxtPage />
       </div>
     </NuxtLayout>
+
+    <!-- Feature Announcement Modal -->
+    <FeatureAnnouncementModal
+      v-if="showFeatureModal && featureConfig"
+      :is-open="showFeatureModal"
+      :config="featureConfig"
+      @close="handleModalClose"
+      @action="handleFeatureActionClick"
+    />
   </UApp>
 </template>
 
@@ -15,6 +24,40 @@ import { useAuthStore } from "~/stores/auth";
 import { useCompanyStore } from "~/stores/company";
 import { useJobStore } from "~/stores/job";
 import { useSettingStore } from "~/stores/setting";
+import { useFeatureAnnouncements } from "~/composables/useFeatureAnnouncements";
+import FeatureAnnouncementModal from "~/components/ui/FeatureAnnouncementModal.vue";
+
+// Feature announcements
+const { shouldShow, markAsAnnounced, getFeatureConfig, handleFeatureAction } = useFeatureAnnouncements();
+const showFeatureModal = ref(false);
+const featureConfig = ref(null);
+
+// Check for new features to announce
+const checkForFeatureAnnouncements = () => {
+  // Check for mock interview feature announcement
+  if (shouldShow('mock-interview')) {
+    const config = getFeatureConfig('mock-interview');
+    if (config) {
+      featureConfig.value = config;
+      // Show modal after a short delay to ensure app is fully loaded
+      setTimeout(() => {
+        showFeatureModal.value = true;
+      }, 1500);
+    }
+  }
+};
+
+const handleModalClose = () => {
+  showFeatureModal.value = false;
+  markAsAnnounced('mock-interview');
+};
+
+const handleFeatureActionClick = async () => {
+  if (featureConfig.value) {
+    await handleFeatureAction(featureConfig.value, 'mock-interview');
+    showFeatureModal.value = false;
+  }
+};
 
 useHead({
   htmlAttrs: {
@@ -110,6 +153,8 @@ await Promise.all([
 
 onMounted(() => {
   useFeatureFlags().loadFlags();
+  // Check for feature announcements after app is mounted
+  checkForFeatureAnnouncements();
 });
 </script>
 
