@@ -26,35 +26,37 @@ import { useJobStore } from "~/stores/job";
 import { useSettingStore } from "~/stores/setting";
 import { useFeatureAnnouncements } from "~/composables/useFeatureAnnouncements";
 import FeatureAnnouncementModal from "~/components/ui/FeatureAnnouncementModal.vue";
+import { FeatureId } from "~/features/announcements/announcements.types";
 
 // Feature announcements
-const { shouldShow, markAsAnnounced, getFeatureConfig, handleFeatureAction } = useFeatureAnnouncements();
+const { markAsAnnounced, handleFeatureAction, checkForFeatureAnnouncements } = useFeatureAnnouncements();
 const showFeatureModal = ref(false);
 const featureConfig = ref(null);
+const currentFeatureId = ref<FeatureId | null>(null);
 
-// Check for new features to announce
-const checkForFeatureAnnouncements = () => {
+// Check for new features to announce using the reusable function
+const initFeatureAnnouncements = () => {
   // Check for mock interview feature announcement
-  if (shouldShow('mock-interview')) {
-    const config = getFeatureConfig('mock-interview');
-    if (config) {
-      featureConfig.value = config;
-      // Show modal after a short delay to ensure app is fully loaded
-      setTimeout(() => {
-        showFeatureModal.value = true;
-      }, 1500);
-    }
-  }
+  checkForFeatureAnnouncements(FeatureId.MOCK_INTERVIEW, (config) => {
+    featureConfig.value = config;
+    currentFeatureId.value = FeatureId.MOCK_INTERVIEW;
+    // Show modal after a short delay to ensure app is fully loaded
+    setTimeout(() => {
+      showFeatureModal.value = true;
+    }, 1500);
+  });
 };
 
 const handleModalClose = () => {
   showFeatureModal.value = false;
-  markAsAnnounced('mock-interview');
+  if (currentFeatureId.value) {
+    markAsAnnounced(currentFeatureId.value);
+  }
 };
 
 const handleFeatureActionClick = async () => {
-  if (featureConfig.value) {
-    await handleFeatureAction(featureConfig.value, 'mock-interview');
+  if (featureConfig.value && currentFeatureId.value) {
+    await handleFeatureAction(featureConfig.value, currentFeatureId.value);
     showFeatureModal.value = false;
   }
 };
@@ -154,7 +156,7 @@ await Promise.all([
 onMounted(() => {
   useFeatureFlags().loadFlags();
   // Check for feature announcements after app is mounted
-  checkForFeatureAnnouncements();
+  initFeatureAnnouncements();
 });
 </script>
 

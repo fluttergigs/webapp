@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia';
+import type { FeatureId } from '~/features/announcements/announcements.types';
 
 interface FeatureAnnouncement {
-  id: string;
+  id: FeatureId;
   version: string;
   announced: boolean;
   announcedAt?: string;
@@ -10,11 +11,11 @@ interface FeatureAnnouncement {
 export let useAppStore = defineStore('app', {
   state: () => ({
     isAppBarShrunk: false,
-    featureAnnouncements: {} as Record<string, FeatureAnnouncement>,
+    featureAnnouncements: {} as Record<FeatureId, FeatureAnnouncement>,
   }),
 
   getters: {
-    shouldShowFeatureAnnouncement: (state) => (featureId: string, version: string = '1.0') => {
+    shouldShowFeatureAnnouncement: (state) => (featureId: FeatureId, version: string = '1.0') => {
       const announcement = state.featureAnnouncements[featureId];
       return !announcement || !announcement.announced || announcement.version !== version;
     },
@@ -38,7 +39,7 @@ export let useAppStore = defineStore('app', {
       // this.isAppBarShrunk = !this.isAppBarShrunk
     },
 
-    markFeatureAnnounced(featureId: string, version: string = '1.0') {
+    markFeatureAnnounced(featureId: FeatureId, version: string = '1.0') {
       this.featureAnnouncements[featureId] = {
         id: featureId,
         version,
@@ -47,7 +48,7 @@ export let useAppStore = defineStore('app', {
       };
     },
 
-    resetFeatureAnnouncement(featureId: string) {
+    resetFeatureAnnouncement(featureId: FeatureId) {
       if (this.featureAnnouncements[featureId]) {
         delete this.featureAnnouncements[featureId];
       }
