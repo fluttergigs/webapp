@@ -1,13 +1,5 @@
 <script lang="ts" setup>
-interface FeatureAnnouncementConfig {
-  title: string;
-  description: string;
-  featureName: string;
-  actionText: string;
-  actionRoute: string;
-  icon?: string;
-  gradient?: string;
-}
+import type { FeatureAnnouncementConfig } from '~/features/announcements/announcements.types';
 
 const props = defineProps<{
   isOpen: boolean;

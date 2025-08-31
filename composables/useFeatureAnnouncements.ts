@@ -1,14 +1,5 @@
 import { useAppStore } from '~/stores/app';
-
-interface FeatureAnnouncementConfig {
-  title: string;
-  description: string;
-  featureName: string;
-  actionText: string;
-  actionRoute: string;
-  icon?: string;
-  gradient?: string;
-}
+import type { FeatureAnnouncementConfig } from '~/features/announcements/announcements.types';
 
 export function useFeatureAnnouncements() {
   const appStore = useAppStore();
