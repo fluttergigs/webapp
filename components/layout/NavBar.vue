@@ -209,6 +209,10 @@ const links: Ref<UiLink[]> = ref([
     name: "Jobs",
   },
   {
+    path: AppRoutes.mockInterview,
+    name: "Interview Practice",
+  },
+  {
     path: AppRoutes.fluppets,
     name: "Fluppets",
   },
@@ -239,6 +243,12 @@ const accountLinks = ref([
       label: "Saved Jobs",
       onClick: () => {
         navigateTo(AppRoutes.mySavedJobs);
+      },
+    },
+    {
+      label: "Mock Interview",
+      onClick: () => {
+        navigateTo(AppRoutes.mockInterview);
       },
     },
   ],
@@ -299,6 +309,11 @@ onMounted(() => {
       {
         path: AppRoutes.jobs,
         name: "Jobs",
+      },
+      {
+        path: AppRoutes.mockInterview,
+        name: "Interview Practice",
+        tag: "New",
       },
       {
         path: AppRoutes.fluppets,

@@ -8,7 +8,7 @@ import { AvailableFlags } from '~/services/feature-flag/availableFlags';
 definePageMeta({
   title: 'Flutter Consultants',
   middleware: [
-    function (from: any, to: any) {
+    function(from: any, to: any) {
       if (!useFeatureFlags().isEnabled(AvailableFlags.hireConsultants)) {
         const { $toast } = useNuxtApp();
         if ($toast) {

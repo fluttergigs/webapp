@@ -1,9 +1,9 @@
 //@ts-ignore
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { logDev } from '~/core/helpers/log';
-import type { BaseGenerativeAI } from '~/services/ai/base_generative_ai';
+import type { GenerativeAI } from '~/services/ai/GenerativeAI';
 
-export class GoogleGenerativeAIImpl implements BaseGenerativeAI {
+export class GoogleGenerativeAIImpl implements GenerativeAI {
   private genAI: GoogleGenerativeAI;
 
   constructor() {
@@ -20,10 +20,10 @@ export class GoogleGenerativeAIImpl implements BaseGenerativeAI {
 
   async generateText(prompt: string): Promise<any> {
     // For text-only input, use the gemini-pro model
-    const model = this.genAI.getGenerativeModel({ model: 'gemini-1.5-pro' });
+    const model = this.genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
     const result = await model.generateContent(prompt);
-    const response = await result.response;
+    const response = result.response;
 
     logDev('RESPONSE', response);
     return response.text();

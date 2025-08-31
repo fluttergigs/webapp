@@ -6,6 +6,15 @@
         <NuxtPage />
       </div>
     </NuxtLayout>
+
+    <!-- Feature Announcement Modal -->
+    <FeatureAnnouncementModal
+      v-if="showFeatureModal && featureConfig"
+      :is-open="showFeatureModal"
+      :config="featureConfig"
+      @close="handleModalClose"
+      @action="handleFeatureActionClick"
+    />
   </UApp>
 </template>
 
@@ -15,6 +24,42 @@ import { useAuthStore } from "~/stores/auth";
 import { useCompanyStore } from "~/stores/company";
 import { useJobStore } from "~/stores/job";
 import { useSettingStore } from "~/stores/setting";
+import { useFeatureAnnouncements } from "~/composables/useFeatureAnnouncements";
+import FeatureAnnouncementModal from "~/components/ui/FeatureAnnouncementModal.vue";
+import { FeatureId } from "~/features/announcements/announcements.types";
+
+// Feature announcements
+const { markAsAnnounced, handleFeatureAction, checkForFeatureAnnouncements } = useFeatureAnnouncements();
+const showFeatureModal = ref(false);
+const featureConfig = ref(null);
+const currentFeatureId = ref<FeatureId | null>(null);
+
+// Check for new features to announce using the reusable function
+const initFeatureAnnouncements = () => {
+  // Check for mock interview feature announcement
+  checkForFeatureAnnouncements(FeatureId.MOCK_INTERVIEW, (config) => {
+    featureConfig.value = config;
+    currentFeatureId.value = FeatureId.MOCK_INTERVIEW;
+    // Show modal after a short delay to ensure app is fully loaded
+    setTimeout(() => {
+      showFeatureModal.value = true;
+    }, 1500);
+  });
+};
+
+const handleModalClose = () => {
+  showFeatureModal.value = false;
+  if (currentFeatureId.value) {
+    markAsAnnounced(currentFeatureId.value);
+  }
+};
+
+const handleFeatureActionClick = async () => {
+  if (featureConfig.value && currentFeatureId.value) {
+    await handleFeatureAction(featureConfig.value, currentFeatureId.value);
+    showFeatureModal.value = false;
+  }
+};
 
 useHead({
   htmlAttrs: {
@@ -110,6 +155,8 @@ await Promise.all([
 
 onMounted(() => {
   useFeatureFlags().loadFlags();
+  // Check for feature announcements after app is mounted
+  initFeatureAnnouncements();
 });
 </script>
 
