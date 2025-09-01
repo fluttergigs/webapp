@@ -75,4 +75,19 @@ export const enum AnalyticsEvent {
   copyGateRegisterButtonClicked = 'copy_gate_register_button_clicked',
   copyGateModalOpened = 'copy_gate_modal_opened',
   copyGateModalClosed = 'copy_gate_modal_closed',
+  mockInterviewPageEntered = 'mock_interview_page_entered',
+  mockInterviewStarted = 'mock_interview_started',
+  mockInterviewQuestionAnswered = 'mock_interview_question_answered',
+  mockInterviewCompleted = 'mock_interview_completed',
+  mockInterviewFeedbackSubmitted = 'mock_interview_feedback_submitted',
+  mockInterviewRetakeClicked = 'mock_interview_retake_clicked',
+  mockInterviewExitClicked = 'mock_interview_exit_clicked',
+
+
+  //feature announcements
+  featureAnnouncementModalOpened = 'feature_announcement_modal_opened',
+  featureAnnouncementModalClosed = 'feature_announcement_modal_closed',
+  featureAnnouncementActionClicked = 'feature_announcement_action_clicked',
+
+
 }

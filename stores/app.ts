@@ -8,10 +8,10 @@ interface FeatureAnnouncement {
   announcedAt?: string;
 }
 
-export let useAppStore = defineStore('app', {
+export const useAppStore = defineStore('app', {
   state: () => ({
     isAppBarShrunk: false,
-    featureAnnouncements: {} as Record<FeatureId, FeatureAnnouncement>,
+    featureAnnouncements: {} as Record<FeatureId, FeatureAnnouncement | undefined>,
   }),
 
   getters: {
@@ -56,7 +56,9 @@ export let useAppStore = defineStore('app', {
   },
 
   persist: {
-    key: 'app-store',
+    paths: ['featureAnnouncements'],
     storage: persistedState.localStorage,
+    debug: import.meta.env.MODE === 'development',
+    key: 'app',
   },
 });

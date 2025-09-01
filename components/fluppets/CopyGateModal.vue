@@ -31,26 +31,13 @@
         </ul>
 
         <div class="w-full flex flex-col gap-3 mt-6">
-          <UButton
-            label="Continue"
-            icon="i-lucide-google"
-            color="primary"
-            variant="solid"
-            size="lg"
-            class="w-full"
-            @click="redirectToRegister"
-          />
+          <UButton label="Continue" icon="i-lucide-google" color="primary" variant="solid" size="lg" class="w-full"
+            @click="redirectToRegister" />
         </div>
 
         <div class="text-sm pt-2 text-muted">
           <span>Already have an account?</span>
-          <UButton
-            label="Log in"
-            variant="link"
-            color="primary"
-            class="ml-1"
-            @click="redirectToLogin"
-          />
+          <UButton label="Log in" variant="link" color="primary" class="ml-1" @click="redirectToLogin" />
         </div>
       </div>
     </template>
@@ -58,6 +45,7 @@
 </template>
 
 <script setup lang="ts">
+import { useAnalytics } from "~/composables/useAnalytics";
 import { AppRoutes } from "~/core/routes";
 import { AnalyticsEvent } from "~/services/analytics/events";
 
@@ -73,7 +61,7 @@ const visible = computed({
       useAnalytics().capture(AnalyticsEvent.copyGateModalClosed);
     }
 
-    return emit("update:visible", val);
+    emit("update:visible", val);
   },
 });
 

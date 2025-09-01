@@ -10,7 +10,11 @@
       </div>
       <LayoutFooter />
 
-      <FluppetsCopyGateModal v-model:visible="showModal" />
+      <FluppetsCopyGateModal v-model:visible="showCopyGateModal" />
+
+      <!-- Feature Announcement Modal -->
+      <FeatureAnnouncementModal v-if="showFeatureModal && !!featureConfig" v-model:isOpen="showFeatureModal"
+        :config="featureConfig" @close="handleModalClose" @action="handleFeatureActionClick" />
     </div>
   </NuxtErrorBoundary>
   <!--  </client-only>-->
@@ -22,13 +26,17 @@ import { useWebSocket } from "@vueuse/core";
 //@ts-ignore
 import LayoutNavBar from "~/components/layout/NavBar.vue";
 import { logDev } from "~/core/helpers/log";
+import type { FeatureAnnouncementConfig } from "~/features/announcements/announcements.types";
+import { FeatureId } from "~/features/announcements/announcements.types";
 import type { Snippet } from "~/features/fluppets/fluppets.types";
 import { ApplicationEventEnum } from "~/plugins/eventBus.client";
 import type { ErrorTrackerProvider } from "~/services/error-tracker/ErrorTrackerProvider";
 
-const { $errorTracker } = useNuxtApp();
+//@ts-ignore
+import FeatureAnnouncementModal from "~/components/ui/FeatureAnnouncementModal.vue";
+const { $errorTracker, $listen } = useNuxtApp();
 const authStore = useAuthStore();
-const { showModal } = useCopyGate();
+const { showModal: showCopyGateModal } = useCopyGate();
 
 /* await Promise.all([
    useAuthStore().getUser(),
@@ -39,6 +47,50 @@ const { showModal } = useCopyGate();
    useCompanyStore().fetchCompanies(),
  ]);
 */
+
+let cleanCopyAllowedFn: Function | undefined;
+
+// Feature announcements
+const {
+  markAsAnnounced,
+  handleFeatureAction,
+  checkForFeatureAnnouncements,
+} = useFeatureAnnouncements();
+const showFeatureModal = ref(false);
+const featureConfig = ref<FeatureAnnouncementConfig | null>(null);
+const currentFeatureId = ref<FeatureId | null>(null);
+
+// Check for new features to announce using the reusable function
+const initFeatureAnnouncements = () => {
+  // Check for mock interview feature announcement
+  const hasAnnouncement = checkForFeatureAnnouncements(
+    FeatureId.MOCK_INTERVIEW,
+    (config) => {
+      featureConfig.value = config;
+      currentFeatureId.value = FeatureId.MOCK_INTERVIEW;
+      // Show modal after a short delay to ensure app is fully loaded
+      setTimeout(() => {
+        showFeatureModal.value = true;
+      }, 1500);
+    }
+  );
+  console.log("checkForFeatureAnnouncements returned:", hasAnnouncement);
+};
+
+const handleModalClose = () => {
+  showFeatureModal.value = false;
+  if (currentFeatureId.value) {
+    markAsAnnounced(currentFeatureId.value);
+  }
+};
+
+const handleFeatureActionClick = async () => {
+  if (featureConfig.value && currentFeatureId.value) {
+    await handleFeatureAction(featureConfig.value, currentFeatureId.value);
+    showFeatureModal.value = false;
+  }
+};
+
 const onError = (error: any) => {
   logDev("error", error);
 
@@ -48,7 +100,16 @@ const onError = (error: any) => {
     authStore.isAuthenticated ? { user: authStore.authUser } : undefined
   );
 };
+
 onMounted(async () => {
+  //@ts-ignore
+  cleanCopyAllowedFn = $listen(
+    ApplicationEventEnum.onCopyAllowed,
+    ({ data }: { data: Snippet }) => {
+      useFluppets().handleFluppetsCopy(data);
+    }
+  );
+
   try {
     const wsProtocol = window.location.protocol === "https:" ? "wss:" : "ws:";
     const wsUrl = `${wsProtocol}//${window.location.host}/_ws`;
@@ -69,21 +130,10 @@ onMounted(async () => {
     );
   }
 
-  let cleanCopyAllowedFn: Function | undefined;
-  const { $listen } = useNuxtApp();
+  initFeatureAnnouncements();
+});
 
-  onMounted(() => {
-    //@ts-ignore
-    cleanCopyAllowedFn = $listen(
-      ApplicationEventEnum.onCopyAllowed,
-      ({ data }: { data: Snippet }) => {
-        useFluppets().handleFluppetsCopy(data);
-      }
-    );
-  });
-
-  onUnmounted(() => {
-    if (cleanCopyAllowedFn) cleanCopyAllowedFn();
-  });
+onUnmounted(() => {
+  if (cleanCopyAllowedFn) cleanCopyAllowedFn();
 });
 </script>

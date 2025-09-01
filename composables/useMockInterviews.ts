@@ -4,6 +4,7 @@ import type { MockInterviewRequest } from '~/features/mockInterview/mockIntervie
 import { useMockInterviewStore } from '~/stores/mockInterview';
 
 import { computed, ref } from 'vue';
+import { AnalyticsEvent } from '~/services/analytics/events';
 
 export function useMockInterviews() {
   const mockInterviewStore = useMockInterviewStore();
@@ -95,6 +96,7 @@ export function useMockInterviews() {
   const startInterview = () => {
     if (questions.value.length > 0) {
       mockInterviewStore.startMockInterviewSession(questions.value);
+      useAnalytics().capture(AnalyticsEvent.mockInterviewStarted);
       currentAnswer.value = '';
     }
   };
@@ -102,10 +104,12 @@ export function useMockInterviews() {
   const submitAnswer = () => {
     if (currentAnswer.value.trim()) {
       mockInterviewStore.answerMockInterviewQuestion(currentAnswer.value);
+      useAnalytics().capture(AnalyticsEvent.mockInterviewQuestionAnswered);
       currentAnswer.value = '';
 
       if (isInterviewComplete.value) {
         mockInterviewStore.finishMockInterviewSession();
+        useAnalytics().capture(AnalyticsEvent.mockInterviewCompleted);
       }
     }
   };
@@ -124,6 +128,9 @@ export function useMockInterviews() {
   // Initialize
   const initialize = () => {
     mockInterviewStore.resetMockInterview();
+
+
+    useAnalytics().capture(AnalyticsEvent.mockInterviewPageEntered);
   };
 
   return {

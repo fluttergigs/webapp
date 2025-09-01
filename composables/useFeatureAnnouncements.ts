@@ -1,12 +1,18 @@
 import { useAppStore } from '~/stores/app';
-import type { FeatureAnnouncementConfig, FeatureId } from '~/features/announcements/announcements.types';
+import type { FeatureAnnouncementConfig } from '~/features/announcements/announcements.types';
+import { FeatureId } from '~/features/announcements/announcements.types';
+import { logDev } from '~/core/helpers/log';
 
 export function useFeatureAnnouncements() {
   const appStore = useAppStore();
   const router = useRouter();
 
   const shouldShow = (featureId: FeatureId, version: string = '1.0'): boolean => {
-    return appStore.shouldShowFeatureAnnouncement(featureId, version);
+    const result = appStore.shouldShowFeatureAnnouncement(featureId, version);
+    logDev(`shouldShow for ${featureId}:`, result);
+    logDev('Current announcements state:', appStore.featureAnnouncements);
+
+    return result;
   };
 
   const markAsAnnounced = (featureId: FeatureId, version: string = '1.0'): void => {
