@@ -3,15 +3,23 @@ import { BaseToast } from '~/core/ui/base_toast';
 import type { MockInterviewRequest } from '~/features/mockInterview/mockInterview.types';
 import { useMockInterviewStore } from '~/stores/mockInterview';
 
-import { computed, ref } from 'vue';
+import { computed, ref, onMounted } from 'vue';
 
 export function useMockInterviews() {
   const mockInterviewStore = useMockInterviewStore();
 
   const { $toast } = useNuxtApp();
   // Store refs
-  const { mockInterviewGeneration, currentMockInterview, mockInterviewError } =
-    storeToRefs(mockInterviewStore);
+  const { 
+    mockInterviewGeneration, 
+    currentMockInterview, 
+    mockInterviewError,
+    usageCheck,
+    isUsageLoading,
+    usageError,
+    canUseInterview,
+    currentUsage
+  } = storeToRefs(mockInterviewStore);
 
   // Local form state
   const jobPostUrl = ref('');
@@ -43,15 +51,33 @@ export function useMockInterviews() {
 
   // Form validation
   const canGenerate = computed(() => {
-    if (activeTab.value === 'url') {
-      return jobPostUrl.value.trim().length > 0;
-    } else {
-      return jobDescription.value.trim().length > 10;
-    }
+    const hasValidInput = activeTab.value === 'url' 
+      ? jobPostUrl.value.trim().length > 0
+      : jobDescription.value.trim().length > 10;
+    
+    // Also check usage limits
+    return hasValidInput && canUseInterview.value;
   });
 
   const canStartInterview = computed(() => {
     return questions.value.length > 0 && !currentSession.value;
+  });
+
+  // Usage information computed properties
+  const usageInfo = computed(() => {
+    if (!currentUsage.value) return null;
+    
+    return {
+      current: currentUsage.value.currentCount,
+      limit: currentUsage.value.limit,
+      remaining: currentUsage.value.limit - currentUsage.value.currentCount,
+      tier: currentUsage.value.tier,
+      message: currentUsage.value.message,
+    };
+  });
+
+  const isAtLimit = computed(() => {
+    return currentUsage.value ? !currentUsage.value.canUse : false;
   });
 
   // Question count options
@@ -71,8 +97,23 @@ export function useMockInterviews() {
   ];
 
   // Methods
+  const checkUsage = async () => {
+    try {
+      await mockInterviewStore.checkUsageLimit();
+    } catch (error) {
+      console.warn('Failed to check usage limits:', error);
+    }
+  };
+
   const generateQuestions = async () => {
-    if (!canGenerate.value) return;
+    if (!canGenerate.value) {
+      if (!canUseInterview.value) {
+        ($toast as BaseToast<Notification>).error(
+          usageInfo.value?.message || 'You have reached your interview limit'
+        );
+      }
+      return;
+    }
 
     const request: MockInterviewRequest = {
       questionCount: questionCount.value,
@@ -124,7 +165,13 @@ export function useMockInterviews() {
   // Initialize
   const initialize = () => {
     mockInterviewStore.resetMockInterview();
+    checkUsage(); // Check usage limits on initialization
   };
+
+  // Check usage on component mount
+  onMounted(() => {
+    checkUsage();
+  });
 
   return {
     // Form state
@@ -145,6 +192,14 @@ export function useMockInterviews() {
     canGenerate,
     canStartInterview,
 
+    // Usage tracking
+    usageInfo,
+    isAtLimit,
+    isUsageLoading,
+    usageError,
+    canUseInterview,
+    currentUsage,
+
     // Options
     questionCountOptions,
     difficultyOptions,
@@ -156,5 +211,6 @@ export function useMockInterviews() {
     resetInterview,
     switchTab,
     initialize,
+    checkUsage,
   };
 }

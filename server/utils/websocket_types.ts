@@ -11,6 +11,8 @@ export enum WebSocketChannel {
   CHAT = 'chat',
   UPDATES = 'updates',
   PAYMENT = 'payment',
+  SUBSCRIPTION = 'subscription',
+  INTERVIEW_USAGE = 'interview_usage',
   // Add more channels as needed
 }
 

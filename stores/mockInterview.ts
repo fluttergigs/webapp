@@ -6,20 +6,83 @@ import type {
   MockInterviewRequest,
   MockInterviewResponse,
   MockInterviewSession,
+  UsageCheckResult,
 } from '~/features/mockInterview/mockInterview.types';
 import { GenerativeAIProvider } from '~/services/ai/GenerativeAIProvider';
+import type { HttpClient } from '~/core/network/http_client';
 
 export const useMockInterviewStore = defineStore('mockInterview', {
   state: () => ({
     mockInterviewGeneration: new Wrapper<MockInterviewResponse>().toInitial(),
     currentMockInterview: null as MockInterviewSession | null,
+    usageCheck: new Wrapper<UsageCheckResult>().toInitial(),
   }),
 
   actions: {
+    async checkUsageLimit(): Promise<UsageCheckResult> {
+      this.usageCheck = new Wrapper<UsageCheckResult>().toLoading();
+      
+      try {
+        const authStore = useAuthStore();
+        const userId = authStore.authUser?.id;
+        
+        if (!userId) {
+          throw new Error('User not authenticated');
+        }
+
+        const { $http } = useNuxtApp();
+        const response = await (<HttpClient>$http).get<{ success: boolean; data: UsageCheckResult }>(`/api/interview-usage?userId=${userId}`);
+        
+        this.usageCheck = this.usageCheck.toSuccess(response.data);
+        return response.data;
+      } catch (error) {
+        logDev('Error checking usage limit:', error);
+        const errorResult: UsageCheckResult = {
+          canUse: false,
+          currentCount: 0,
+          limit: 3,
+          tier: 'free' as any,
+          message: 'Unable to check usage limits',
+        };
+        this.usageCheck = this.usageCheck.toFailed('Unable to check usage limits');
+        return errorResult;
+      }
+    },
+
+    async recordUsage(sessionId: string): Promise<void> {
+      try {
+        const authStore = useAuthStore();
+        const userId = authStore.authUser?.id;
+        
+        if (!userId) {
+          throw new Error('User not authenticated');
+        }
+
+        const { $http } = useNuxtApp();
+        await (<HttpClient>$http).post('/api/interview-usage', {
+          userId,
+          sessionId,
+        });
+      } catch (error) {
+        logDev('Error recording usage:', error);
+        // Don't throw here to avoid disrupting the interview flow
+      }
+    },
+
     async generateMockInterview(request: MockInterviewRequest) {
+      // Check usage limit before generating
+      const usageResult = await this.checkUsageLimit();
+      if (!usageResult.canUse) {
+        this.mockInterviewGeneration = new Wrapper<MockInterviewResponse>().toFailed(
+          usageResult.message || 'Usage limit exceeded'
+        );
+        throw new Error(usageResult.message || 'Usage limit exceeded');
+      }
+
       // Parse the JSON response
       let parsedResponse: MockInterviewResponse;
       this.mockInterviewGeneration = new Wrapper<MockInterviewResponse>().toLoading();
+      
       try {
         //@ts-ignore
         const { $generativeAI } = useNuxtApp();
@@ -114,6 +177,10 @@ export const useMockInterviewStore = defineStore('mockInterview', {
         startTime: new Date(),
       };
       this.currentMockInterview = session;
+      
+      // Record usage when starting the session
+      this.recordUsage(session.id);
+      
       return session;
     },
 
@@ -144,6 +211,7 @@ export const useMockInterviewStore = defineStore('mockInterview', {
     resetMockInterview() {
       this.currentMockInterview = null;
       this.mockInterviewGeneration = new Wrapper<MockInterviewResponse>().toInitial();
+      this.usageCheck = new Wrapper<UsageCheckResult>().toInitial();
     },
   },
 
@@ -164,6 +232,10 @@ export const useMockInterviewStore = defineStore('mockInterview', {
       }
       return false;
     },
+    currentUsage: (state) => state.usageCheck?.value,
+    isUsageLoading: (state) => state.usageCheck?.isLoading ?? false,
+    usageError: (state) => state.usageCheck?.message,
+    canUseInterview: (state) => state.usageCheck?.value?.canUse ?? false,
   },
 
   persist: {
