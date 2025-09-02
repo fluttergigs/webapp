@@ -8,13 +8,13 @@ import type {
 
 // Subscription limits configuration
 export const SUBSCRIPTION_LIMITS: Record<SubscriptionTier, SubscriptionLimits> = {
-  [SubscriptionTier.FREE]: {
+  'free': {
     monthlyInterviews: 3,
-    tier: SubscriptionTier.FREE,
+    tier: 'free',
   },
-  [SubscriptionTier.PAID]: {
+  'paid': {
     monthlyInterviews: 20,
-    tier: SubscriptionTier.PAID,
+    tier: 'paid',
   },
 };
 
@@ -108,7 +108,7 @@ export async function checkInterviewUsage(userId: number): Promise<UsageCheckRes
     const usage = await getOrCreateInterviewUsage(userId);
 
     // Default to free tier if no subscription
-    const tier = subscription?.tier || SubscriptionTier.FREE;
+    const tier = subscription?.tier || 'free';
     const limits = SUBSCRIPTION_LIMITS[tier];
 
     const canUse = usage.count < limits.monthlyInterviews;
@@ -128,8 +128,8 @@ export async function checkInterviewUsage(userId: number): Promise<UsageCheckRes
     return {
       canUse: true,
       currentCount: 0,
-      limit: SUBSCRIPTION_LIMITS[SubscriptionTier.FREE].monthlyInterviews,
-      tier: SubscriptionTier.FREE,
+      limit: SUBSCRIPTION_LIMITS['free'].monthlyInterviews,
+      tier: 'free',
       message: 'Usage check failed, defaulting to free tier limits.',
     };
   }

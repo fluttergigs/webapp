@@ -169,9 +169,9 @@ export default defineEventHandler(async (event: EventHandlerRequest) => {
           // Reset to free tier
           await updateUserSubscription({
             userId,
-            tier: 'free' as SubscriptionTier,
+            tier: 'free',
             status: 'canceled',
-            limits: SUBSCRIPTION_LIMITS['free' as SubscriptionTier],
+            limits: SUBSCRIPTION_LIMITS['free'],
             updatedAt: new Date(),
           });
 
