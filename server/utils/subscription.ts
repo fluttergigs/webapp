@@ -167,9 +167,18 @@ export async function updateUserSubscription(subscription: Partial<UserSubscript
     const config = useRuntimeConfig();
     const strapiUrl = config.strapi?.url || 'http://localhost:1337';
 
-    if (subscription.id) {
+    // Always try to find existing subscription first
+    const existingResponse = await $fetch<{ data: UserSubscription[] }>(`${strapiUrl}/api/user-subscriptions`, {
+      params: {
+        'filters[userId][$eq]': subscription.userId,
+        'pagination[limit]': 1,
+      },
+    });
+
+    if (existingResponse.data?.length > 0) {
       // Update existing subscription
-      await $fetch(`${strapiUrl}/api/user-subscriptions/${subscription.id}`, {
+      const existingId = existingResponse.data[0].id;
+      await $fetch(`${strapiUrl}/api/user-subscriptions/${existingId}`, {
         method: 'PUT',
         body: { data: subscription },
       });
@@ -182,6 +191,6 @@ export async function updateUserSubscription(subscription: Partial<UserSubscript
     }
   } catch (error) {
     console.error('Error updating user subscription:', error);
-    throw error;
+    // Don't throw error to avoid disrupting the webhook flow
   }
 }

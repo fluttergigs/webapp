@@ -210,6 +210,16 @@
           useCompanyActions().handleJobPostedPayment(data);
           useJobStore().fetchJobs();
         }
+
+        // Handle subscription webhook messages
+        if (data.channel === 'subscription') {
+          useSubscriptionActions().handleSubscriptionUpdate(data);
+        }
+
+        // Handle interview usage updates
+        if (data.channel === 'interview_usage') {
+          useSubscriptionActions().handleInterviewUsageUpdate(data);
+        }
       },
     });
   });
