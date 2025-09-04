@@ -15,10 +15,12 @@ export let useAppStore = defineStore('app', {
   }),
 
   getters: {
-    shouldShowFeatureAnnouncement: (state) => (featureId: FeatureId, version: string = '1.0') => {
-      const announcement = state.featureAnnouncements[featureId];
-      return !announcement || !announcement.announced || announcement.version !== version;
-    },
+    shouldShowFeatureAnnouncement:
+      (state) =>
+      (featureId: FeatureId, version: string = '1.0') => {
+        const announcement = state.featureAnnouncements[featureId];
+        return !announcement || !announcement.announced || announcement.version !== version;
+      },
   },
 
   actions: {

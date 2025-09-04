@@ -1,5 +1,8 @@
+import type {
+  FeatureAnnouncementConfig,
+  FeatureId,
+} from '~/features/announcements/announcements.types';
 import { useAppStore } from '~/stores/app';
-import type { FeatureAnnouncementConfig, FeatureId } from '~/features/announcements/announcements.types';
 
 export function useFeatureAnnouncements() {
   const appStore = useAppStore();
@@ -17,7 +20,10 @@ export function useFeatureAnnouncements() {
     appStore.resetFeatureAnnouncement(featureId);
   };
 
-  const handleFeatureAction = async (config: FeatureAnnouncementConfig, featureId: FeatureId): Promise<void> => {
+  const handleFeatureAction = async (
+    config: FeatureAnnouncementConfig,
+    featureId: FeatureId,
+  ): Promise<void> => {
     markAsAnnounced(featureId);
     await navigateTo(config.actionRoute);
   };
@@ -27,7 +33,8 @@ export function useFeatureAnnouncements() {
     const configs: Record<FeatureId, FeatureAnnouncementConfig> = {
       [FeatureId.MOCK_INTERVIEW]: {
         title: 'AI-Powered Mock Interviews',
-        description: 'Practice for your Flutter job interviews with personalized AI-generated questions based on real job postings. Build confidence and improve your interview skills.',
+        description:
+          'Practice for your Flutter job interviews with personalized AI-generated questions based on real job postings. Build confidence and improve your interview skills.',
         featureName: 'Mock Interview Practice',
         actionText: 'Try Mock Interview',
         actionRoute: '/jobs/mock-interview',
@@ -42,7 +49,7 @@ export function useFeatureAnnouncements() {
   // Generic function to check for feature announcements
   const checkForFeatureAnnouncements = <T extends FeatureId>(
     featureId: T,
-    callback: (config: FeatureAnnouncementConfig) => void
+    callback: (config: FeatureAnnouncementConfig) => void,
   ): boolean => {
     if (shouldShow(featureId)) {
       const config = getFeatureConfig(featureId);

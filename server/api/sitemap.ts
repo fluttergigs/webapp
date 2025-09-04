@@ -1,10 +1,6 @@
 //@ts-ignore
 import { EventHandlerRequest } from 'h3';
 
-
-
-
-
 /*
 
 export default defineSitemapEventHandler(async (e: EventHandlerRequest) => {

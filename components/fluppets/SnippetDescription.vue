@@ -22,25 +22,25 @@
 </template>
 
 <script lang="ts" setup>
-import type { Snippet } from "~/features/fluppets/fluppets.types";
-import { AnalyticsEvent } from "~/services/analytics/events";
+  import type { Snippet } from '~/features/fluppets/fluppets.types';
+  import { AnalyticsEvent } from '~/services/analytics/events';
 
-const props = defineProps({
-  snippet: {
-    type: Object as PropType<Snippet>,
-    required: true,
-  },
-});
+  const props = defineProps({
+    snippet: {
+      type: Object as PropType<Snippet>,
+      required: true,
+    },
+  });
 
-const isDescriptionPanelOpen = ref(false);
-//watch description panel state to track analytics
-watch(isDescriptionPanelOpen, () => {
-  if (isDescriptionPanelOpen.value) {
-    useAnalytics().capture(AnalyticsEvent.fluppetsDescriptionPanelClicked, {
-      snippet: props.snippet,
-    });
-  }
-});
+  const isDescriptionPanelOpen = ref(false);
+  //watch description panel state to track analytics
+  watch(isDescriptionPanelOpen, () => {
+    if (isDescriptionPanelOpen.value) {
+      useAnalytics().capture(AnalyticsEvent.fluppetsDescriptionPanelClicked, {
+        snippet: props.snippet,
+      });
+    }
+  });
 </script>
 
 <style></style>

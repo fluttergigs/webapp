@@ -8,31 +8,20 @@
   "bracketSpacing": true,
   "arrowParens": "always",
   "vueIndentScriptAndStyle": true,
-  "plugins": [
-    "prettier-plugin-tailwindcss",
-    "@trivago/prettier-plugin-sort-imports"
-  ],
-  "importOrder": [
-    "^vue(.*)$",
-    "^@/(.*)$",
-    "^[./]"
-  ],
+  "plugins": ["prettier-plugin-tailwindcss", "@trivago/prettier-plugin-sort-imports"],
+  "importOrder": ["^vue(.*)$", "^@/(.*)$", "^[./]"],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true,
   "tailwindConfig": "./tailwind.config.js",
   "overrides": [
     {
-      "files": [
-        "*.vue"
-      ],
+      "files": ["*.vue"],
       "options": {
         "parser": "vue"
       }
     },
     {
-      "files": [
-        "*.ts"
-      ],
+      "files": ["*.ts"],
       "options": {
         "parser": "typescript"
       }

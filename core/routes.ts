@@ -15,6 +15,7 @@ export class AppRoutes {
   static learn = '/learn';
   static myJobs = '/account/jobs';
   static myAccount = '/account/user';
+  static mySubscription = '/account/subscription';
   static mySavedJobs = '/account/saved-jobs';
   static myCompany = '/account/company';
   static welcome = '/';

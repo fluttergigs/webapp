@@ -14,6 +14,9 @@
           <template #password="{ item }">
             <UpdatePassword />
           </template>
+          <template #subscription="{ item }">
+            <SubscriptionSettings />
+          </template>
           <template #preference="{ item }">
             <section></section>
           </template>
@@ -24,6 +27,7 @@
 </template>
 
 <script setup>
+  import SubscriptionSettings from '~/components/account/SubscriptionSettings.vue';
   import UpdatePassword from '~/components/account/UpdatePassword.vue';
   import UpdateUser from '~/components/account/UpdateUser.vue';
   import { AnalyticsEvent } from '~/services/analytics/events';
@@ -42,6 +46,11 @@
       label: 'Password',
       description: "Change your password here. After saving, you'll be logged out.",
       slot: 'password',
+    },
+    {
+      label: 'Subscription',
+      description: 'Manage your subscription and view usage statistics.',
+      slot: 'subscription',
     },
     {
       label: 'Preferences',

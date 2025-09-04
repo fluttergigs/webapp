@@ -141,11 +141,7 @@
               <div class="mb-3 w-full">
                 <!--                <ClientOnly>-->
                 <div class="block">
-                  <NuxtLink
-                    v-if="!isAuthenticated"
-                    :to="AppRoutes.login"
-                    class="font-medium"
-                  >
+                  <NuxtLink v-if="!isAuthenticated" :to="AppRoutes.login" class="font-medium">
                     Login
                   </NuxtLink>
 
@@ -186,168 +182,168 @@
 </template>
 
 <script lang="ts" setup>
-import { storeToRefs } from "pinia";
-import CloseIcon from "~/components/icons/CloseIcon.vue";
-import { logDev } from "~/core/helpers/log";
-import { AppRoutes } from "~/core/routes";
-import type { UiLink } from "~/core/shared/types";
-import auth from "~/middleware/auth";
-import { ApplicationEventEnum } from "~/plugins/eventBus.client";
-import { AvailableFlags } from "~/services/feature-flag/availableFlags";
-import { useAuthStore } from "~/stores/auth";
+  import { storeToRefs } from 'pinia';
+  import CloseIcon from '~/components/icons/CloseIcon.vue';
+  import { logDev } from '~/core/helpers/log';
+  import { AppRoutes } from '~/core/routes';
+  import type { UiLink } from '~/core/shared/types';
+  import auth from '~/middleware/auth';
+  import { ApplicationEventEnum } from '~/plugins/eventBus.client';
+  import { AvailableFlags } from '~/services/feature-flag/availableFlags';
+  import { useAuthStore } from '~/stores/auth';
 
-const authStore = useAuthStore();
+  const authStore = useAuthStore();
 
-const links: Ref<UiLink[]> = ref([
-  {
-    path: AppRoutes.welcome,
-    name: "Home",
-  },
-
-  {
-    path: AppRoutes.jobs,
-    name: "Jobs",
-  },
-  {
-    path: AppRoutes.mockInterview,
-    name: "Interview Practice",
-  },
-  {
-    path: AppRoutes.fluppets,
-    name: "Fluppets",
-  },
-  {
-    path: AppRoutes.learn,
-    name: "Learn",
-    isEnabled: true,
-  },
-]);
-
-const accountLinks = ref([
-  [
+  const links: Ref<UiLink[]> = ref([
     {
-      label: "Profile",
-      onClick: () => {
-        navigateTo(AppRoutes.consultantProfile);
-      },
+      path: AppRoutes.welcome,
+      name: 'Home',
+    },
+
+    {
+      path: AppRoutes.jobs,
+      name: 'Jobs',
     },
     {
-      label: "Account",
-      onClick: () => {
-        navigateTo(AppRoutes.myAccount);
-      },
-    },
-  ],
-  [
-    {
-      label: "Saved Jobs",
-      onClick: () => {
-        navigateTo(AppRoutes.mySavedJobs);
-      },
+      path: AppRoutes.mockInterview,
+      name: 'Interview Practice',
     },
     {
-      label: "Mock Interview",
-      onClick: () => {
-        navigateTo(AppRoutes.mockInterview);
-      },
+      path: AppRoutes.fluppets,
+      name: 'Fluppets',
     },
-  ],
-  [
     {
-      label: "My Job postings",
-      onClick: () => {
-        navigateTo(AppRoutes.myJobs);
-      },
+      path: AppRoutes.learn,
+      name: 'Learn',
+      isEnabled: true,
     },
-  ],
-  [
-    {
-      label: "My company",
-      onClick: () => {
-        navigateTo(AppRoutes.myCompany);
-      },
-    },
-  ],
-  [
-    {
-      label: "Logout",
-      onClick: () => {
-        useUser().logout();
-      },
-    },
-  ],
-]);
+  ]);
 
-const isHomePage = computed(() => useRoute().path === "/");
+  const accountLinks = ref([
+    [
+      {
+        label: 'Profile',
+        onClick: () => {
+          navigateTo(AppRoutes.consultantProfile);
+        },
+      },
+      {
+        label: 'Account',
+        onClick: () => {
+          navigateTo(AppRoutes.myAccount);
+        },
+      },
+    ],
+    [
+      {
+        label: 'Saved Jobs',
+        onClick: () => {
+          navigateTo(AppRoutes.mySavedJobs);
+        },
+      },
+      {
+        label: 'Mock Interview',
+        onClick: () => {
+          navigateTo(AppRoutes.mockInterview);
+        },
+      },
+    ],
+    [
+      {
+        label: 'My Job postings',
+        onClick: () => {
+          navigateTo(AppRoutes.myJobs);
+        },
+      },
+    ],
+    [
+      {
+        label: 'My company',
+        onClick: () => {
+          navigateTo(AppRoutes.myCompany);
+        },
+      },
+    ],
+    [
+      {
+        label: 'Logout',
+        onClick: () => {
+          useUser().logout();
+        },
+      },
+    ],
+  ]);
 
-const enabledLinks = computed(() => {
-  return links.value.filter((link) => link.isEnabled ?? true);
-});
+  const isHomePage = computed(() => useRoute().path === '/');
 
-//@ts-ignore
-const { isAuthenticated } = storeToRefs(authStore);
+  const enabledLinks = computed(() => {
+    return links.value.filter((link) => link.isEnabled ?? true);
+  });
 
-const onMenuLinkClick = (link: any) => {
   //@ts-ignore
-  document.querySelector(".navbar-close")?.click();
-  navigateTo(link.path);
-};
+  const { isAuthenticated } = storeToRefs(authStore);
 
-onMounted(() => {
-  const { $listen } = (useNuxtApp() as unknown) as {
-    $listen: (event: string, callback: (data: any) => void) => void;
+  const onMenuLinkClick = (link: any) => {
+    //@ts-ignore
+    document.querySelector('.navbar-close')?.click();
+    navigateTo(link.path);
   };
 
-  $listen(ApplicationEventEnum.featureFlagsLoaded, (data: any) => {
-    logDev("Feature Flags listener", data);
+  onMounted(() => {
+    const { $listen } = useNuxtApp() as unknown as {
+      $listen: (event: string, callback: (data: any) => void) => void;
+    };
 
-    links.value = [
-      {
-        path: AppRoutes.welcome,
-        name: "Home",
-      },
-      {
-        path: AppRoutes.jobs,
-        name: "Jobs",
-      },
-      {
-        path: AppRoutes.mockInterview,
-        name: "Interview Practice",
-        tag: "New",
-      },
-      {
-        path: AppRoutes.fluppets,
-        name: "Fluppets",
-        tag: "New",
-      },
-      {
-        path: AppRoutes.companies,
-        name: "Companies",
-        isEnabled: useFeatureFlags().isEnabled(AvailableFlags.companiesList),
-        tag: useFeatureFlags().isEnabled(AvailableFlags.companiesList) ? "New" : "Soon",
-      },
+    $listen(ApplicationEventEnum.featureFlagsLoaded, (data: any) => {
+      logDev('Feature Flags listener', data);
 
-      {
-        path: AppRoutes.hireConsultants,
-        name: "Consultants",
-        tag: useFeatureFlags().isEnabled(AvailableFlags.hireConsultants) ? "New" : "Soon",
-      },
-      {
-        path: AppRoutes.learn,
-        name: "Learn",
-      },
-    ];
-
-    if (useFeatureFlags().isEnabled(AvailableFlags.hireConsultants)) {
-      accountLinks.value.unshift([
+      links.value = [
         {
-          label: "Profile",
-          onClick: () => {
-            navigateTo(AppRoutes.consultantProfile);
-          },
+          path: AppRoutes.welcome,
+          name: 'Home',
         },
-      ]);
-    }
+        {
+          path: AppRoutes.jobs,
+          name: 'Jobs',
+        },
+        {
+          path: AppRoutes.mockInterview,
+          name: 'Interview Practice',
+          tag: 'New',
+        },
+        {
+          path: AppRoutes.fluppets,
+          name: 'Fluppets',
+          tag: 'New',
+        },
+        {
+          path: AppRoutes.companies,
+          name: 'Companies',
+          isEnabled: useFeatureFlags().isEnabled(AvailableFlags.companiesList),
+          tag: useFeatureFlags().isEnabled(AvailableFlags.companiesList) ? 'New' : 'Soon',
+        },
+
+        {
+          path: AppRoutes.hireConsultants,
+          name: 'Consultants',
+          tag: useFeatureFlags().isEnabled(AvailableFlags.hireConsultants) ? 'New' : 'Soon',
+        },
+        {
+          path: AppRoutes.learn,
+          name: 'Learn',
+        },
+      ];
+
+      if (useFeatureFlags().isEnabled(AvailableFlags.hireConsultants)) {
+        accountLinks.value.unshift([
+          {
+            label: 'Profile',
+            onClick: () => {
+              navigateTo(AppRoutes.consultantProfile);
+            },
+          },
+        ]);
+      }
+    });
   });
-});
 </script>
