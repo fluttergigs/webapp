@@ -1,14 +1,14 @@
 <script lang="ts" setup>
-//@ts-ignore
-import Tag from "~/components/fluppets/Tag.vue";
-import type { Tags } from "~/features/fluppets/fluppets.types";
+  //@ts-ignore
+  import Tag from '~/components/fluppets/Tag.vue';
+  import type { Tags } from '~/features/fluppets/fluppets.types';
 
-const props = defineProps({
-  tags: {
-    type: Object as PropType<Tags>,
-    default: [],
-  },
-});
+  const props = defineProps({
+    tags: {
+      type: Object as PropType<Tags>,
+      default: [],
+    },
+  });
 </script>
 
 <template>
@@ -19,8 +19,12 @@ const props = defineProps({
       </h1>
 
       <div class="flex flex-wrap gap-4 mt-8 mb-10">
-        <Tag :tag="tag" v-for="tag in tags" :key="tag.documentId"
-          @tag-click="(tag) => useFluppets().handleTagClick(tag)" />
+        <Tag
+          :tag="tag"
+          v-for="tag in tags"
+          :key="tag.documentId"
+          @tag-click="(tag) => useFluppets().handleTagClick(tag)"
+        />
       </div>
     </div>
   </section>

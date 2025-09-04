@@ -1,17 +1,17 @@
-import { defineStore } from 'pinia';
-import { Wrapper } from '~/core/wrapper';
-import { logDev } from '~/core/helpers/log';
-import { AppStrings } from '~/core/strings';
+import { defineStore } from "pinia";
+import { Wrapper } from "~/core/wrapper";
+import { logDev } from "~/core/helpers/log";
+import { AppStrings } from "~/core/strings";
 import type {
   MockInterviewRequest,
   MockInterviewResponse,
   MockInterviewSession,
   UsageCheckResult,
-} from '~/features/mockInterview/mockInterview.types';
-import { GenerativeAIProvider } from '~/services/ai/GenerativeAIProvider';
-import type { HttpClient } from '~/core/network/http_client';
+} from "~/features/mockInterview/mockInterview.types";
+import { GenerativeAIProvider } from "~/services/ai/GenerativeAIProvider";
+import type { HttpClient } from "~/core/network/http_client";
 
-export const useMockInterviewStore = defineStore('mockInterview', {
+export const useMockInterviewStore = defineStore("mockInterview", {
   state: () => ({
     mockInterviewGeneration: new Wrapper<MockInterviewResponse>().toInitial(),
     currentMockInterview: null as MockInterviewSession | null,
@@ -21,30 +21,52 @@ export const useMockInterviewStore = defineStore('mockInterview', {
   actions: {
     async checkUsageLimit(): Promise<UsageCheckResult> {
       this.usageCheck = new Wrapper<UsageCheckResult>().toLoading();
-      
+
       try {
         const authStore = useAuthStore();
         const userId = authStore.authUser?.id;
-        
+
         if (!userId) {
-          throw new Error('User not authenticated');
+          throw new Error("User not authenticated");
         }
 
         const { $http } = useNuxtApp();
-        const response = await (<HttpClient>$http).get<{ success: boolean; data: UsageCheckResult }>(`/api/interview-usage?userId=${userId}`);
-        
-        this.usageCheck = this.usageCheck.toSuccess(response.data);
-        return response.data;
+        const response = await ($http as HttpClient).get<{
+          data: {
+            currentUsage: number;
+            monthlyLimit: number;
+            subscriptionTier: "free" | "paid";
+            canUseInterview: boolean;
+            resetDate: string;
+          };
+        }>("/api/interview-usage/current");
+
+        const usageResult: UsageCheckResult = {
+          canUse: response.data.canUseInterview,
+          currentCount: response.data.currentUsage,
+          limit: response.data.monthlyLimit,
+          tier: response.data.subscriptionTier as any,
+          message: response.data.canUseInterview
+            ? `You have ${
+                response.data.monthlyLimit - response.data.currentUsage
+              } interviews remaining this month.`
+            : `You've reached your monthly limit of ${response.data.monthlyLimit} interviews. Upgrade to increase your limit.`,
+        };
+
+        this.usageCheck = this.usageCheck.toSuccess(usageResult);
+        return usageResult;
       } catch (error) {
-        logDev('Error checking usage limit:', error);
+        logDev("Error checking usage limit:", error);
         const errorResult: UsageCheckResult = {
           canUse: false,
           currentCount: 0,
           limit: 3,
-          tier: 'free' as any,
-          message: 'Unable to check usage limits',
+          tier: "free" as any,
+          message: "Unable to check usage limits",
         };
-        this.usageCheck = this.usageCheck.toFailed('Unable to check usage limits');
+        this.usageCheck = this.usageCheck.toFailed(
+          "Unable to check usage limits",
+        );
         return errorResult;
       }
     },
@@ -53,18 +75,20 @@ export const useMockInterviewStore = defineStore('mockInterview', {
       try {
         const authStore = useAuthStore();
         const userId = authStore.authUser?.id;
-        
+
         if (!userId) {
-          throw new Error('User not authenticated');
+          throw new Error("User not authenticated");
         }
 
         const { $http } = useNuxtApp();
-        await (<HttpClient>$http).post('/api/interview-usage', {
-          userId,
+        await ($http as HttpClient).post("/api/interview-usage/increment", {
           sessionId,
         });
+
+        // Update local usage state
+        await this.checkUsageLimit();
       } catch (error) {
-        logDev('Error recording usage:', error);
+        logDev("Error recording usage:", error);
         // Don't throw here to avoid disrupting the interview flow
       }
     },
@@ -73,31 +97,33 @@ export const useMockInterviewStore = defineStore('mockInterview', {
       // Check usage limit before generating
       const usageResult = await this.checkUsageLimit();
       if (!usageResult.canUse) {
-        this.mockInterviewGeneration = new Wrapper<MockInterviewResponse>().toFailed(
-          usageResult.message || 'Usage limit exceeded'
-        );
-        throw new Error(usageResult.message || 'Usage limit exceeded');
+        this.mockInterviewGeneration =
+          new Wrapper<MockInterviewResponse>().toFailed(
+            usageResult.message || "Usage limit exceeded",
+          );
+        throw new Error(usageResult.message || "Usage limit exceeded");
       }
 
       // Parse the JSON response
       let parsedResponse: MockInterviewResponse;
-      this.mockInterviewGeneration = new Wrapper<MockInterviewResponse>().toLoading();
-      
+      this.mockInterviewGeneration =
+        new Wrapper<MockInterviewResponse>().toLoading();
+
       try {
         //@ts-ignore
         const { $generativeAI } = useNuxtApp();
 
         // Create a prompt for generating interview questions
         const questionCount = request.questionCount || 5;
-        const difficulty = request.difficulty || 'mixed';
+        const difficulty = request.difficulty || "mixed";
 
-        let prompt = '';
+        let prompt = "";
         if (request.jobPostUrl) {
           prompt = `Based on the job posting at this URL: ${request.jobPostUrl}, generate ${questionCount} mock interview questions with ${difficulty} difficulty. `;
         } else if (request.jobDescription) {
           prompt = `Based on this job description: "${request.jobDescription}", generate ${questionCount} mock interview questions with ${difficulty} difficulty. `;
         } else {
-          throw new Error('Either job post URL or job description is required');
+          throw new Error("Either job post URL or job description is required");
         }
 
         prompt += `Format the response as a JSON object with the following structure:
@@ -119,51 +145,65 @@ export const useMockInterviewStore = defineStore('mockInterview', {
         
         Make sure questions are relevant to Flutter development and the specific role requirements. Include a mix of technical, behavioral, and role-specific questions.`;
 
-        const response = await (<GenerativeAIProvider>$generativeAI).generateText(prompt);
+        const response = await (<GenerativeAIProvider>(
+          $generativeAI
+        )).generateText(prompt);
 
-        logDev('AI Response:', response);
+        logDev("AI Response:", response);
 
         try {
           // Clean the response to remove markdown code block markers
           let cleanedResponse = (response as string).trim();
 
           // Remove ```json at the beginning if present
-          if (cleanedResponse.startsWith('```json')) {
+          if (cleanedResponse.startsWith("```json")) {
             cleanedResponse = cleanedResponse.substring(7).trim();
           }
 
           // Remove ``` at the end if present
-          if (cleanedResponse.endsWith('```')) {
-            cleanedResponse = cleanedResponse.substring(0, cleanedResponse.length - 3).trim();
+          if (cleanedResponse.endsWith("```")) {
+            cleanedResponse = cleanedResponse
+              .substring(0, cleanedResponse.length - 3)
+              .trim();
           }
 
           parsedResponse = JSON.parse(cleanedResponse);
         } catch (parseError) {
-
-          logDev('JSON parsing error', parseError);
+          logDev("JSON parsing error", parseError);
           // If JSON parsing fails, create a fallback response
           parsedResponse = {
             questions: [
               {
-                id: '1',
-                question: 'Tell me about your experience with Flutter development.',
-                category: 'technical',
-                difficulty: 'easy',
-                expectedAnswer: 'Discuss your Flutter projects, experience with Dart, and key concepts you\'ve worked with.',
-                hints: ['Mention specific projects', 'Discuss challenges faced', 'Highlight achievements'],
+                id: "1",
+                question:
+                  "Tell me about your experience with Flutter development.",
+                category: "technical",
+                difficulty: "easy",
+                expectedAnswer:
+                  "Discuss your Flutter projects, experience with Dart, and key concepts you've worked with.",
+                hints: [
+                  "Mention specific projects",
+                  "Discuss challenges faced",
+                  "Highlight achievements",
+                ],
               },
             ],
-            jobTitle: 'Flutter Developer',
-            company: 'Unknown',
-            summary: 'Flutter development position',
+            jobTitle: "Flutter Developer",
+            company: "Unknown",
+            summary: "Flutter development position",
           };
         }
 
-        this.mockInterviewGeneration = this.mockInterviewGeneration.toSuccess(parsedResponse, AppStrings.mockInterviewGeneratedSuccessfully);
+        this.mockInterviewGeneration = this.mockInterviewGeneration.toSuccess(
+          parsedResponse,
+          AppStrings.mockInterviewGeneratedSuccessfully,
+        );
       } catch (e) {
-        logDev('mock interview generation error', e);
+        logDev("mock interview generation error", e);
 
-        this.mockInterviewGeneration = this.mockInterviewGeneration.toFailed(AppStrings.unableToGenerateMockInterview);
+        this.mockInterviewGeneration = this.mockInterviewGeneration.toFailed(
+          AppStrings.unableToGenerateMockInterview,
+        );
         throw e;
       }
     },
@@ -177,10 +217,10 @@ export const useMockInterviewStore = defineStore('mockInterview', {
         startTime: new Date(),
       };
       this.currentMockInterview = session;
-      
+
       // Record usage when starting the session
       this.recordUsage(session.id);
-      
+
       return session;
     },
 
@@ -203,32 +243,42 @@ export const useMockInterviewStore = defineStore('mockInterview', {
       if (this.currentMockInterview) {
         this.currentMockInterview.endTime = new Date();
         // Calculate a simple score based on completion
-        const completionRate = this.currentMockInterview.answers.length / this.currentMockInterview.questions.length;
+        const completionRate =
+          this.currentMockInterview.answers.length /
+          this.currentMockInterview.questions.length;
         this.currentMockInterview.score = Math.round(completionRate * 100);
       }
     },
 
     resetMockInterview() {
       this.currentMockInterview = null;
-      this.mockInterviewGeneration = new Wrapper<MockInterviewResponse>().toInitial();
+      this.mockInterviewGeneration =
+        new Wrapper<MockInterviewResponse>().toInitial();
       this.usageCheck = new Wrapper<UsageCheckResult>().toInitial();
     },
   },
 
   getters: {
-    mockInterviewQuestions: (state) => state.mockInterviewGeneration?.value?.questions ?? [],
-    isMockInterviewLoading: (state) => state.mockInterviewGeneration?.isLoading ?? false,
+    mockInterviewQuestions: (state) =>
+      state.mockInterviewGeneration?.value?.questions ?? [],
+    isMockInterviewLoading: (state) =>
+      state.mockInterviewGeneration?.isLoading ?? false,
     mockInterviewError: (state) => state.mockInterviewGeneration?.message,
     currentInterviewSession: (state) => state.currentMockInterview,
     currentQuestion: (state) => {
       if (state.currentMockInterview) {
-        return state.currentMockInterview.questions[state.currentMockInterview.currentQuestionIndex];
+        return state.currentMockInterview.questions[
+          state.currentMockInterview.currentQuestionIndex
+        ];
       }
       return null;
     },
     isInterviewComplete: (state) => {
       if (state.currentMockInterview) {
-        return state.currentMockInterview.currentQuestionIndex >= state.currentMockInterview.questions.length;
+        return (
+          state.currentMockInterview.currentQuestionIndex >=
+          state.currentMockInterview.questions.length
+        );
       }
       return false;
     },
@@ -239,8 +289,8 @@ export const useMockInterviewStore = defineStore('mockInterview', {
   },
 
   persist: {
-    paths: ['currentMockInterview'],
+    paths: ["currentMockInterview"],
     storage: persistedState.localStorage,
-    debug: import.meta.env.MODE === 'development',
+    debug: import.meta.env.MODE === "development",
   },
 });

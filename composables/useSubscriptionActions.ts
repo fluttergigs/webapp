@@ -1,8 +1,11 @@
-import { logDev } from '~/core/helpers/log';
-import type { UserSubscription, SubscriptionTier } from '~/features/mockInterview/mockInterview.types';
-import { BaseToast } from '~/core/ui/base_toast';
 //@ts-ignore
 import type { Notification } from '#ui/types';
+import { logDev } from '~/core/helpers/log';
+import { BaseToast } from '~/core/ui/base_toast';
+import type {
+  SubscriptionTier,
+  UserSubscription,
+} from '~/features/mockInterview/mockInterview.types';
 
 export default function useSubscriptionActions() {
   const { $toast } = useNuxtApp();
@@ -12,7 +15,7 @@ export default function useSubscriptionActions() {
 
   const handleSubscriptionUpdate = async (data: any) => {
     logDev('Subscription webhook data received:', data);
-    
+
     const userId = authStore.authUser?.id;
     if (!userId || data.userId !== userId) {
       return; // Not for current user
@@ -21,12 +24,10 @@ export default function useSubscriptionActions() {
     // Show notification to user
     if (data.tier === 'paid') {
       ($toast as BaseToast<Notification>).success(
-        'Your subscription has been upgraded! You now have access to more mock interviews.'
+        'Your subscription has been upgraded! You now have access to more mock interviews.',
       );
     } else if (data.tier === 'free') {
-      ($toast as BaseToast<Notification>).info(
-        'Your subscription status has been updated.'
-      );
+      ($toast as BaseToast<Notification>).info('Your subscription status has been updated.');
     }
 
     // Refresh usage limits
@@ -46,7 +47,7 @@ export default function useSubscriptionActions() {
 
   const handleInterviewUsageUpdate = async (data: any) => {
     logDev('Interview usage update received:', data);
-    
+
     const userId = authStore.authUser?.id;
     if (!userId || data.userId !== userId) {
       return; // Not for current user

@@ -19,8 +19,7 @@
                 </div>
                 <div class="flex-1 p-3">
                   <h3 class="text-xl font-semibold">
-                    A platform to find Flutter framework related job
-                    opportunities and more
+                    A platform to find Flutter framework related job opportunities and more
                   </h3>
                 </div>
               </div>
@@ -38,8 +37,7 @@
                 </div>
                 <div class="flex-1 p-3">
                   <h3 class="text-xl font-semibold">
-                    Effortlessly find and apply to Flutter framework related job
-                    offers
+                    Effortlessly find and apply to Flutter framework related job offers
                   </h3>
                 </div>
               </div>
@@ -57,8 +55,7 @@
                 </div>
                 <div class="flex-1 p-3">
                   <h3 class="text-xl font-semibold">
-                    Get expert guidance and support to land your dream Flutter
-                    job
+                    Get expert guidance and support to land your dream Flutter job
                   </h3>
                 </div>
               </div>
@@ -171,11 +168,12 @@
 </template>
 
 <script lang="ts" setup>
-  import '@/components/landing/Header.vue';
-  import UserSection from '~/components/landing/UserSection.vue';
-  import SecondaryUserSection from '~/components/landing/SecondaryUserSection.vue';
-  import CompanySection from '~/components/landing/CompanySection.vue';
   import CompanyCreationSection from '~/components/landing/CompanyCreationSection.vue';
+  import CompanySection from '~/components/landing/CompanySection.vue';
+  import SecondaryUserSection from '~/components/landing/SecondaryUserSection.vue';
+  import UserSection from '~/components/landing/UserSection.vue';
+
+  import '@/components/landing/Header.vue';
 
   definePageMeta({
     layout: 'main-layout',

@@ -6,9 +6,7 @@
           <UIcon name="i-lucide-lock-keyhole" class="w-10 h-10 text-indigo-600" />
         </div>
 
-        <h2 class="text-2xl font-bold leading-tight">
-          Unlock unlimited snippet access 🚀
-        </h2>
+        <h2 class="text-2xl font-bold leading-tight">Unlock unlimited snippet access 🚀</h2>
 
         <p class="text-muted text-sm max-w-sm">
           You've reached the copy limit for anonymous users. Create a free account to keep
@@ -58,40 +56,40 @@
 </template>
 
 <script setup lang="ts">
-import { AppRoutes } from "~/core/routes";
-import { AnalyticsEvent } from "~/services/analytics/events";
+  import { AppRoutes } from '~/core/routes';
+  import { AnalyticsEvent } from '~/services/analytics/events';
 
-const props = defineProps<{ visible: boolean }>();
-const emit = defineEmits(["update:visible"]);
+  const props = defineProps<{ visible: boolean }>();
+  const emit = defineEmits(['update:visible']);
 
-const visible = computed({
-  get: () => props.visible,
-  set: (val) => {
-    if (val) {
-      useAnalytics().capture(AnalyticsEvent.copyGateModalOpened);
-    } else {
-      useAnalytics().capture(AnalyticsEvent.copyGateModalClosed);
-    }
+  const visible = computed({
+    get: () => props.visible,
+    set: (val) => {
+      if (val) {
+        useAnalytics().capture(AnalyticsEvent.copyGateModalOpened);
+      } else {
+        useAnalytics().capture(AnalyticsEvent.copyGateModalClosed);
+      }
 
-    return emit("update:visible", val);
-  },
-});
+      return emit('update:visible', val);
+    },
+  });
 
-function redirectToLogin() {
-  visible.value = false;
+  function redirectToLogin() {
+    visible.value = false;
 
-  useAnalytics().capture(AnalyticsEvent.copyGateLoginButtonClicked);
+    useAnalytics().capture(AnalyticsEvent.copyGateLoginButtonClicked);
 
-  useAuthStore().setReturnUrl(AppRoutes.exploreFluppets);
-  navigateTo(AppRoutes.login);
-}
+    useAuthStore().setReturnUrl(AppRoutes.exploreFluppets);
+    navigateTo(AppRoutes.login);
+  }
 
-function redirectToRegister() {
-  visible.value = false;
+  function redirectToRegister() {
+    visible.value = false;
 
-  useAnalytics().capture(AnalyticsEvent.copyGateRegisterButtonClicked);
+    useAnalytics().capture(AnalyticsEvent.copyGateRegisterButtonClicked);
 
-  useAuthStore().setReturnUrl(AppRoutes.exploreFluppets);
-  navigateTo(AppRoutes.register);
-}
+    useAuthStore().setReturnUrl(AppRoutes.exploreFluppets);
+    navigateTo(AppRoutes.register);
+  }
 </script>

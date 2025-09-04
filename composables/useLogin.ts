@@ -10,10 +10,6 @@ import { AnalyticsEvent } from '~/services/analytics/events';
 import type { LoginData, User } from '~/services/auth/auth.types';
 import { useAuthStore } from '~/stores/auth';
 
-
-
-
-
 export const useLogin = () => {
   const { $toast, $analytics, $errorTracker } = useNuxtApp();
   const authStore = useAuthStore();

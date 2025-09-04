@@ -1,4 +1,4 @@
 {
-    "editor.formatOnSave": true,
-    "prettier.mode": "Auto"
+  "editor.formatOnSave": true,
+  "prettier.mode": "Auto"
 }

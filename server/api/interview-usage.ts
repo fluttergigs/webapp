@@ -1,20 +1,17 @@
 import type { EventHandlerRequest } from 'h3';
-import { 
-  checkInterviewUsage, 
-  incrementInterviewUsage 
-} from '~/server/utils/subscription';
+import { checkInterviewUsage, incrementInterviewUsage } from '~/server/utils/subscription';
 import { WebsocketClientManager } from '~/server/utils/websocket_manager';
 import { WebSocketChannel } from '~/server/utils/websocket_types';
 
 export default defineEventHandler(async (event: EventHandlerRequest) => {
   try {
     const method = getMethod(event);
-    
+
     if (method === 'GET') {
       // Check usage status
       const query = getQuery(event);
       const userId = Number(query.userId);
-      
+
       if (!userId) {
         throw createError({
           statusCode: 400,
@@ -23,18 +20,18 @@ export default defineEventHandler(async (event: EventHandlerRequest) => {
       }
 
       const usageResult = await checkInterviewUsage(userId);
-      
+
       return {
         success: true,
         data: usageResult,
       };
     }
-    
+
     if (method === 'POST') {
       // Increment usage count
       const body = await readBody(event);
       const { userId, sessionId } = body;
-      
+
       if (!userId || !sessionId) {
         throw createError({
           statusCode: 400,
@@ -53,10 +50,10 @@ export default defineEventHandler(async (event: EventHandlerRequest) => {
 
       // Increment usage
       await incrementInterviewUsage(userId, sessionId);
-      
+
       // Get updated usage status
       const updatedUsage = await checkInterviewUsage(userId);
-      
+
       // Emit WebSocket event for real-time UI updates
       const websocketManager = WebsocketClientManager.getInstance();
       for (const [key, peer] of websocketManager.peersList.entries()) {
@@ -67,25 +64,25 @@ export default defineEventHandler(async (event: EventHandlerRequest) => {
           message: `Interview usage: ${updatedUsage.currentCount}/${updatedUsage.limit}`,
         });
       }
-      
+
       return {
         success: true,
         data: updatedUsage,
         message: 'Usage recorded successfully',
       };
     }
-    
+
     throw createError({
       statusCode: 405,
       statusMessage: 'Method not allowed',
     });
   } catch (error) {
     console.error('Error in interview usage endpoint:', error);
-    
+
     if (error instanceof Error && 'statusCode' in error) {
       throw error;
     }
-    
+
     throw createError({
       statusCode: 500,
       statusMessage: 'Internal server error',

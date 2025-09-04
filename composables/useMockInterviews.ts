@@ -3,22 +3,22 @@ import { BaseToast } from '~/core/ui/base_toast';
 import type { MockInterviewRequest } from '~/features/mockInterview/mockInterview.types';
 import { useMockInterviewStore } from '~/stores/mockInterview';
 
-import { computed, ref, onMounted } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 
 export function useMockInterviews() {
   const mockInterviewStore = useMockInterviewStore();
 
   const { $toast } = useNuxtApp();
   // Store refs
-  const { 
-    mockInterviewGeneration, 
-    currentMockInterview, 
+  const {
+    mockInterviewGeneration,
+    currentMockInterview,
     mockInterviewError,
     usageCheck,
     isUsageLoading,
     usageError,
     canUseInterview,
-    currentUsage
+    currentUsage,
   } = storeToRefs(mockInterviewStore);
 
   // Local form state
@@ -51,10 +51,11 @@ export function useMockInterviews() {
 
   // Form validation
   const canGenerate = computed(() => {
-    const hasValidInput = activeTab.value === 'url' 
-      ? jobPostUrl.value.trim().length > 0
-      : jobDescription.value.trim().length > 10;
-    
+    const hasValidInput =
+      activeTab.value === 'url'
+        ? jobPostUrl.value.trim().length > 0
+        : jobDescription.value.trim().length > 10;
+
     // Also check usage limits
     return hasValidInput && canUseInterview.value;
   });
@@ -66,7 +67,7 @@ export function useMockInterviews() {
   // Usage information computed properties
   const usageInfo = computed(() => {
     if (!currentUsage.value) return null;
-    
+
     return {
       current: currentUsage.value.currentCount,
       limit: currentUsage.value.limit,
@@ -109,7 +110,7 @@ export function useMockInterviews() {
     if (!canGenerate.value) {
       if (!canUseInterview.value) {
         ($toast as BaseToast<Notification>).error(
-          usageInfo.value?.message || 'You have reached your interview limit'
+          usageInfo.value?.message || 'You have reached your interview limit',
         );
       }
       return;

@@ -13,28 +13,30 @@
       <div v-else-if="subscription" class="space-y-3">
         <div class="flex items-center justify-between">
           <span class="text-sm font-medium text-gray-600">Plan</span>
-          <UBadge 
-            :color="subscription.tier === 'paid' ? 'green' : 'gray'"
-            :label="subscription.tier === 'paid' ? 'Pro Plan' : 'Free Plan'"
+          <UBadge
+            :color="subscription.isPaid ? 'green' : 'gray'"
+            :label="subscription.isPaid ? 'Pro Plan' : 'Free Plan'"
           />
         </div>
 
         <div class="flex items-center justify-between">
           <span class="text-sm font-medium text-gray-600">Status</span>
-          <UBadge 
-            :color="subscription.status === 'active' ? 'green' : 'red'"
-            :label="subscription.status"
+          <UBadge
+            :color="subscription.isActive ? 'green' : 'red'"
+            :label="subscription.isActive ? 'Active' : 'Inactive'"
           />
         </div>
 
         <div class="flex items-center justify-between">
           <span class="text-sm font-medium text-gray-600">Monthly Interviews</span>
-          <span class="text-sm">{{ subscription.limits?.monthlyInterviews || 3 }}</span>
+          <span class="text-sm">{{ subscription.isPaid ? '20' : '3' }}</span>
         </div>
 
-        <div v-if="subscription.currentPeriodEnd" class="flex items-center justify-between">
-          <span class="text-sm font-medium text-gray-600">Next billing</span>
-          <span class="text-sm">{{ formatDate(subscription.currentPeriodEnd) }}</span>
+        <div v-if="subscription.subscriptionId" class="flex items-center justify-between">
+          <span class="text-sm font-medium text-gray-600">Subscription ID</span>
+          <span class="text-xs font-mono"
+            >{{ subscription.subscriptionId.substring(0, 8) }}...</span
+          >
         </div>
       </div>
 
@@ -46,58 +48,57 @@
 
     <template #footer v-if="!isLoading">
       <div class="flex justify-between">
-        <UButton 
-          v-if="!subscription || subscription.tier === 'free'"
+        <UButton
+          v-if="!subscription || !subscription.isPaid"
           color="primary"
           @click="$emit('upgrade')"
         >
           Upgrade to Pro
         </UButton>
-        
-        <UButton 
-          v-if="subscription && subscription.tier === 'paid'"
+
+        <UButton
+          v-if="subscription && subscription.isPaid"
           color="gray"
           variant="ghost"
           @click="$emit('manage')"
         >
           Manage Subscription
         </UButton>
-        
-        <UButton 
-          color="gray"
-          variant="ghost"
-          @click="$emit('refresh')"
-        >
-          Refresh
-        </UButton>
+
+        <UButton color="gray" variant="ghost" @click="$emit('refresh')"> Refresh </UButton>
       </div>
     </template>
   </UCard>
 </template>
 
 <script setup lang="ts">
-import type { UserSubscription } from '~/features/mockInterview/mockInterview.types';
+  interface SubscriptionInfo {
+    status?: 'free' | 'paid';
+    subscriptionId?: string | null;
+    isPaid?: boolean;
+    isActive?: boolean;
+  }
 
-interface Props {
-  subscription?: UserSubscription | null;
-  isLoading?: boolean;
-}
+  interface Props {
+    subscription?: SubscriptionInfo | null;
+    isLoading?: boolean;
+  }
 
-const props = withDefaults(defineProps<Props>(), {
-  isLoading: false,
-});
-
-const emit = defineEmits<{
-  upgrade: [];
-  manage: [];
-  refresh: [];
-}>();
-
-const formatDate = (date: Date | string) => {
-  return new Date(date).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
+  const props = withDefaults(defineProps<Props>(), {
+    isLoading: false,
   });
-};
+
+  const emit = defineEmits<{
+    upgrade: [];
+    manage: [];
+    refresh: [];
+  }>();
+
+  const formatDate = (date: Date | string) => {
+    return new Date(date).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    });
+  };
 </script>

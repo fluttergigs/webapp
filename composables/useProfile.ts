@@ -1,13 +1,21 @@
 import { storeToRefs } from 'pinia';
 import { createDeleteMode, createModalToggle, createUpdateModal } from '~/core/helpers';
 import { BaseToast } from '~/core/ui/base_toast';
-import { addEducationFormSchema, addExperienceFormSchema, updateEducationFormSchema, updateExperienceFormSchema } from '~/core/validations';
-import type { AddEducationRequest, AddExperienceRequest, Education, Experience, UpdateEducationRequest, UpdateExperienceRequest } from '~/features/users/user.types';
+import {
+  addEducationFormSchema,
+  addExperienceFormSchema,
+  updateEducationFormSchema,
+  updateExperienceFormSchema,
+} from '~/core/validations';
+import type {
+  AddEducationRequest,
+  AddExperienceRequest,
+  Education,
+  Experience,
+  UpdateEducationRequest,
+  UpdateExperienceRequest,
+} from '~/features/users/user.types';
 import { ExperienceType } from '~/features/users/user.types';
-
-
-
-
 
 // Create a ref to store our state
 let profileStateRef: ReturnType<typeof createProfileState> | null = null;

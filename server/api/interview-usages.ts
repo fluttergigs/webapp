@@ -1,15 +1,17 @@
 import type { EventHandlerRequest } from 'h3';
-import { getCurrentMonth } from '~/server/utils/subscription';
 
 export default defineEventHandler(async (event: EventHandlerRequest) => {
   try {
+    const authStore = useAuthStore();
+
+    // Get user ID from auth token or query
     const query = getQuery(event);
-    const userId = Number(query.userId);
+    const userId = authStore?.authUser?.id || Number(query.userId);
 
     if (!userId) {
       throw createError({
-        statusCode: 400,
-        statusMessage: 'User ID is required',
+        statusCode: 401,
+        statusMessage: 'User not authenticated',
       });
     }
 
@@ -29,12 +31,11 @@ export default defineEventHandler(async (event: EventHandlerRequest) => {
       response.data?.map((usage) => ({
         month: usage.month,
         count: usage.count,
-        limit: 20, // You might want to get this from subscription data
+        limit: usage.tier === 'paid' ? 20 : 3, // Get limit based on tier
         sessions: usage.sessions?.length || 0,
       })) || [];
 
     return {
-      success: true,
       data: usageHistory,
     };
   } catch (error) {

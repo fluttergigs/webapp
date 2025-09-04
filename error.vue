@@ -16,13 +16,23 @@
               </p>
             </div>
 
-            <UButton style="width: fit-content !important;" class="flex gap-2 rounded-xl px-9 py-5 font-bold"
-              icon="i-lucide-house" size="lg" variant="subtle" label="Go Back to Homepage" @click="handleError" />
+            <UButton
+              style="width: fit-content !important"
+              class="flex gap-2 rounded-xl px-9 py-5 font-bold"
+              icon="i-lucide-house"
+              size="lg"
+              variant="subtle"
+              label="Go Back to Homepage"
+              @click="handleError"
+            />
           </div>
         </div>
         <div class="w-full md:w-1/2 p-4 self-end">
-          <img alt="Error image" class="mx-auto transform hover:-translate-x-4 transition ease-in-out duration-500"
-            src="@/assets/images/error.png" />
+          <img
+            alt="Error image"
+            class="mx-auto transform hover:-translate-x-4 transition ease-in-out duration-500"
+            src="@/assets/images/error.png"
+          />
         </div>
       </div>
     </div>
@@ -30,46 +40,46 @@
 </template>
 
 <script lang="ts" setup>
-//@ts-ignore
-//@ts-ignore
-import type { NuxtError } from "#app";
-import { ArrowLeftIcon } from "@heroicons/vue/24/solid";
-import { logDev } from "~/core/helpers/log";
-import { AppRoutes } from "~/core/routes";
-import { AppStrings } from "~/core/strings";
-import type { AppAnalyticsProvider } from "~/services/analytics/AppAnalyticsProvider";
-import { AnalyticsEvent } from "~/services/analytics/events";
-import type { ErrorTrackerProvider } from "~/services/error-tracker/ErrorTrackerProvider";
+  //@ts-ignore
+  //@ts-ignore
+  import type { NuxtError } from '#app';
+  import { ArrowLeftIcon } from '@heroicons/vue/24/solid';
+  import { logDev } from '~/core/helpers/log';
+  import { AppRoutes } from '~/core/routes';
+  import { AppStrings } from '~/core/strings';
+  import type { AppAnalyticsProvider } from '~/services/analytics/AppAnalyticsProvider';
+  import { AnalyticsEvent } from '~/services/analytics/events';
+  import type { ErrorTrackerProvider } from '~/services/error-tracker/ErrorTrackerProvider';
 
-useHead({ title: "FlutterGigs - Error " });
+  useHead({ title: 'FlutterGigs - Error ' });
 
-//@ts-ignore
-const props = defineProps({
-  error: Object as () => NuxtError,
-});
-
-const { $analytics, $errorTracker } = useNuxtApp();
-const authStore = useAuthStore();
-
-onMounted(() => {
-  logDev("ERROR MESSAGE", props.error?.message);
-  logDev("ERROR STACK", props.error?.stack);
-  logDev("ERROR STATUS CODE", props.error?.statusCode);
-  // if (import.meta.env.MODE !== 'development') {
-  (useNuxtApp().$analytics as AppAnalyticsProvider).capture(AnalyticsEvent.error, {
-    data: props.error,
+  //@ts-ignore
+  const props = defineProps({
+    error: Object as () => NuxtError,
   });
 
-  ($errorTracker as ErrorTrackerProvider).captureException(
-    props.error,
-    //@ts-ignore
-    authStore.isAuthenticated ? { user: authStore.authUser } : null
-  );
-  // }
-});
+  const { $analytics, $errorTracker } = useNuxtApp();
+  const authStore = useAuthStore();
 
-const handleError = () => clearError({ redirect: AppRoutes.welcome });
-const errorMessage = computed(() =>
-  props.error?.statusCode === 404 ? props.error?.message : AppStrings.errorMessage
-);
+  onMounted(() => {
+    logDev('ERROR MESSAGE', props.error?.message);
+    logDev('ERROR STACK', props.error?.stack);
+    logDev('ERROR STATUS CODE', props.error?.statusCode);
+    // if (import.meta.env.MODE !== 'development') {
+    (useNuxtApp().$analytics as AppAnalyticsProvider).capture(AnalyticsEvent.error, {
+      data: props.error,
+    });
+
+    ($errorTracker as ErrorTrackerProvider).captureException(
+      props.error,
+      //@ts-ignore
+      authStore.isAuthenticated ? { user: authStore.authUser } : null,
+    );
+    // }
+  });
+
+  const handleError = () => clearError({ redirect: AppRoutes.welcome });
+  const errorMessage = computed(() =>
+    props.error?.statusCode === 404 ? props.error?.message : AppStrings.errorMessage,
+  );
 </script>

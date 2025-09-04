@@ -1,4 +1,4 @@
-@import "./tailwind.css";
-@import "tailwindcss";
+@import './tailwind.css';
+@import 'tailwindcss';
 
-@import "@nuxt/ui";
+@import '@nuxt/ui';

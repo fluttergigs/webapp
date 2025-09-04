@@ -2,9 +2,9 @@
 import { EventHandlerRequest } from 'h3';
 //@ts-ignore
 import WebSocket from 'ws';
+import { updateUserSubscription } from '~/server/utils/subscription';
 import { WebsocketClientManager } from '~/server/utils/websocket_manager';
 import { WebSocketChannel } from '~/server/utils/websocket_types';
-import { updateUserSubscription } from '~/server/utils/subscription';
 
 export default defineEventHandler(async (event: EventHandlerRequest) => {
   const subscriptionData = await readBody(event);

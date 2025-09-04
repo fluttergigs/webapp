@@ -1,18 +1,18 @@
-import type { 
-  UserSubscription, 
-  InterviewUsage, 
-  SubscriptionTier, 
+import type {
+  InterviewUsage,
+  SubscriptionLimits,
+  SubscriptionTier,
   UsageCheckResult,
-  SubscriptionLimits 
+  UserSubscription,
 } from '~/features/mockInterview/mockInterview.types';
 
 // Subscription limits configuration
 export const SUBSCRIPTION_LIMITS: Record<SubscriptionTier, SubscriptionLimits> = {
-  'free': {
+  free: {
     monthlyInterviews: 3,
     tier: 'free',
   },
-  'paid': {
+  paid: {
     monthlyInterviews: 20,
     tier: 'paid',
   },
@@ -33,14 +33,17 @@ export async function getUserSubscription(userId: number): Promise<UserSubscript
   try {
     const config = useRuntimeConfig();
     const strapiUrl = config.strapi?.url || 'http://localhost:1337';
-    
-    const response = await $fetch<{ data: UserSubscription[] }>(`${strapiUrl}/api/user-subscriptions`, {
-      params: {
-        'filters[userId][$eq]': userId,
-        'sort[0]': 'createdAt:desc',
-        'pagination[limit]': 1,
+
+    const response = await $fetch<{ data: UserSubscription[] }>(
+      `${strapiUrl}/api/user-subscriptions`,
+      {
+        params: {
+          'filters[userId][$eq]': userId,
+          'sort[0]': 'createdAt:desc',
+          'pagination[limit]': 1,
+        },
       },
-    });
+    );
 
     return response.data?.[0] || null;
   } catch (error) {
@@ -59,12 +62,15 @@ export async function getOrCreateInterviewUsage(userId: number): Promise<Intervi
     const currentMonth = getCurrentMonth();
 
     // Try to get existing usage for current month
-    const existingResponse = await $fetch<{ data: InterviewUsage[] }>(`${strapiUrl}/api/interview-usages`, {
-      params: {
-        'filters[userId][$eq]': userId,
-        'filters[month][$eq]': currentMonth,
+    const existingResponse = await $fetch<{ data: InterviewUsage[] }>(
+      `${strapiUrl}/api/interview-usages`,
+      {
+        params: {
+          'filters[userId][$eq]': userId,
+          'filters[month][$eq]': currentMonth,
+        },
       },
-    });
+    );
 
     if (existingResponse.data?.length > 0) {
       return existingResponse.data[0];
@@ -79,10 +85,13 @@ export async function getOrCreateInterviewUsage(userId: number): Promise<Intervi
       sessions: [],
     };
 
-    const createResponse = await $fetch<{ data: InterviewUsage }>(`${strapiUrl}/api/interview-usages`, {
-      method: 'POST',
-      body: { data: newUsage },
-    });
+    const createResponse = await $fetch<{ data: InterviewUsage }>(
+      `${strapiUrl}/api/interview-usages`,
+      {
+        method: 'POST',
+        body: { data: newUsage },
+      },
+    );
 
     return createResponse.data;
   } catch (error) {
@@ -112,13 +121,13 @@ export async function checkInterviewUsage(userId: number): Promise<UsageCheckRes
     const limits = SUBSCRIPTION_LIMITS[tier];
 
     const canUse = usage.count < limits.monthlyInterviews;
-    
+
     return {
       canUse,
       currentCount: usage.count,
       limit: limits.monthlyInterviews,
       tier,
-      message: canUse 
+      message: canUse
         ? `You have ${limits.monthlyInterviews - usage.count} interviews remaining this month.`
         : `You've reached your monthly limit of ${limits.monthlyInterviews} interviews. Upgrade to increase your limit.`,
     };
@@ -162,18 +171,23 @@ export async function incrementInterviewUsage(userId: number, sessionId: string)
 /**
  * Update user subscription in Strapi
  */
-export async function updateUserSubscription(subscription: Partial<UserSubscription>): Promise<void> {
+export async function updateUserSubscription(
+  subscription: Partial<UserSubscription>,
+): Promise<void> {
   try {
     const config = useRuntimeConfig();
     const strapiUrl = config.strapi?.url || 'http://localhost:1337';
 
     // Always try to find existing subscription first
-    const existingResponse = await $fetch<{ data: UserSubscription[] }>(`${strapiUrl}/api/user-subscriptions`, {
-      params: {
-        'filters[userId][$eq]': subscription.userId,
-        'pagination[limit]': 1,
+    const existingResponse = await $fetch<{ data: UserSubscription[] }>(
+      `${strapiUrl}/api/user-subscriptions`,
+      {
+        params: {
+          'filters[userId][$eq]': subscription.userId,
+          'pagination[limit]': 1,
+        },
       },
-    });
+    );
 
     if (existingResponse.data?.length > 0) {
       // Update existing subscription

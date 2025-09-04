@@ -9,7 +9,7 @@
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <!-- Subscription Card -->
         <SubscriptionCard
-          :subscription="currentSubscription"
+          :subscription="subscriptionInfo"
           :is-loading="isSubscriptionLoading"
           @upgrade="handleUpgrade"
           @manage="handleManageSubscription"
@@ -18,7 +18,7 @@
 
         <!-- Usage Card -->
         <UsageCard
-          :usage="currentUsage"
+          :usage="usageInfo || currentUsage"
           :is-loading="isUsageLoading"
           @upgrade="handleUpgrade"
           @refresh="refreshUsage"
@@ -32,13 +32,13 @@
             <h3 class="text-lg font-semibold">Usage History</h3>
           </template>
 
-          <div v-if="isUsageLoading" class="space-y-2">
+          <div v-if="isHistoryLoading" class="space-y-2">
             <USkeleton class="h-4 w-full" v-for="i in 3" :key="i" />
           </div>
 
-          <div v-else-if="usageHistory?.length" class="space-y-3">
-            <div 
-              v-for="month in usageHistory" 
+          <div v-else-if="history?.length" class="space-y-3">
+            <div
+              v-for="month in history"
               :key="month.month"
               class="flex justify-between items-center p-3 border rounded-lg"
             >
@@ -46,7 +46,7 @@
                 <span class="font-medium">{{ formatMonth(month.month) }}</span>
                 <p class="text-sm text-gray-600">{{ month.count }} interviews used</p>
               </div>
-              <UBadge 
+              <UBadge
                 :color="month.count >= month.limit ? 'red' : 'green'"
                 :label="`${month.count}/${month.limit}`"
               />
@@ -78,7 +78,7 @@
                 <p class="text-2xl font-bold text-gray-600 mb-2">3</p>
                 <p class="text-sm text-gray-500">interviews/month</p>
               </div>
-              
+
               <div class="text-center p-4 border-2 border-blue-500 rounded-lg bg-blue-50">
                 <h5 class="font-semibold text-blue-900 mb-2">Pro Plan</h5>
                 <p class="text-2xl font-bold text-blue-600 mb-2">20</p>
@@ -90,14 +90,12 @@
               <p class="text-sm text-gray-600 mb-4">
                 Ready to upgrade? Contact us to set up your Pro subscription.
               </p>
-              
+
               <div class="flex justify-center space-x-3">
                 <UButton color="gray" variant="ghost" @click="showUpgradeModal = false">
                   Cancel
                 </UButton>
-                <UButton color="primary" @click="contactForUpgrade">
-                  Contact Us
-                </UButton>
+                <UButton color="primary" @click="contactForUpgrade"> Contact Us </UButton>
               </div>
             </div>
           </div>
@@ -108,107 +106,68 @@
 </template>
 
 <script setup lang="ts">
-import type { UserSubscription, UsageCheckResult } from '~/features/mockInterview/mockInterview.types';
+  definePageMeta({
+    middleware: 'auth',
+    layout: false,
+  });
 
-definePageMeta({
-  middleware: 'auth',
-  layout: false,
-});
+  // Reactive state
+  const showUpgradeModal = ref(false);
 
-// Reactive state
-const currentSubscription = ref<UserSubscription | null>(null);
-const currentUsage = ref<UsageCheckResult | null>(null);
-const usageHistory = ref<any[]>([]);
-const isSubscriptionLoading = ref(false);
-const isUsageLoading = ref(false);
-const showUpgradeModal = ref(false);
+  // Use subscription and mock interview composables
+  const {
+    subscriptionInfo,
+    usageInfo,
+    history,
+    isSubscriptionLoading,
+    isUsageLoading,
+    isHistoryLoading,
+    fetchSubscriptionStatus,
+    fetchCurrentUsage,
+    fetchUsageHistory,
+    refreshAll,
+  } = useSubscription();
 
-// Get stores
-const mockInterviewStore = useMockInterviewStore();
-const authStore = useAuthStore();
+  // Use existing mock interview composable for compatibility
+  const { currentUsage } = useMockInterviews();
 
-// Fetch subscription data
-const fetchSubscription = async () => {
-  if (!authStore.authUser?.id) return;
-  
-  isSubscriptionLoading.value = true;
-  try {
-    const { $http } = useNuxtApp();
-    const response = await ($http as any).get(`/api/user-subscriptions?userId=${authStore.authUser.id}`);
-    currentSubscription.value = response.data?.[0] || null;
-  } catch (error) {
-    console.error('Error fetching subscription:', error);
-  } finally {
-    isSubscriptionLoading.value = false;
-  }
-};
+  // Event handlers
+  const handleUpgrade = () => {
+    showUpgradeModal.value = true;
+  };
 
-// Fetch usage data
-const fetchUsage = async () => {
-  isUsageLoading.value = true;
-  try {
-    const usage = await mockInterviewStore.checkUsageLimit();
-    currentUsage.value = usage;
-  } catch (error) {
-    console.error('Error fetching usage:', error);
-  } finally {
-    isUsageLoading.value = false;
-  }
-};
+  const handleManageSubscription = () => {
+    // This would redirect to your billing portal
+    console.log('Manage subscription clicked');
+  };
 
-// Fetch usage history
-const fetchUsageHistory = async () => {
-  if (!authStore.authUser?.id) return;
-  
-  try {
-    const { $http } = useNuxtApp();
-    const response = await ($http as any).get(`/api/interview-usage/history?userId=${authStore.authUser.id}`);
-    usageHistory.value = response.data || [];
-  } catch (error) {
-    console.error('Error fetching usage history:', error);
-    usageHistory.value = [];
-  }
-};
+  const refreshSubscription = () => {
+    fetchSubscriptionStatus();
+  };
 
-// Event handlers
-const handleUpgrade = () => {
-  showUpgradeModal.value = true;
-};
+  const refreshUsage = () => {
+    fetchCurrentUsage();
+  };
 
-const handleManageSubscription = () => {
-  // This would redirect to your billing portal
-  console.log('Manage subscription clicked');
-};
+  const contactForUpgrade = () => {
+    // This would open contact form or redirect to contact page
+    window.open('mailto:support@fluttergigs.com?subject=Pro Plan Upgrade Request', '_blank');
+    showUpgradeModal.value = false;
+  };
 
-const refreshSubscription = () => {
-  fetchSubscription();
-};
+  const formatMonth = (monthStr: string) => {
+    const [year, month] = monthStr.split('-');
+    const date = new Date(parseInt(year), parseInt(month) - 1);
+    return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long' });
+  };
 
-const refreshUsage = () => {
-  fetchUsage();
-};
+  // Initialize
+  onMounted(() => {
+    refreshAll();
+  });
 
-const contactForUpgrade = () => {
-  // This would open contact form or redirect to contact page
-  window.open('mailto:support@fluttergigs.com?subject=Pro Plan Upgrade Request', '_blank');
-  showUpgradeModal.value = false;
-};
-
-const formatMonth = (monthStr: string) => {
-  const [year, month] = monthStr.split('-');
-  const date = new Date(parseInt(year), parseInt(month) - 1);
-  return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long' });
-};
-
-// Initialize
-onMounted(() => {
-  fetchSubscription();
-  fetchUsage();
-  fetchUsageHistory();
-});
-
-// Set page title
-useHead({
-  title: 'Subscription & Usage - FlutterGigs',
-});
+  // Set page title
+  useHead({
+    title: 'Subscription & Usage - FlutterGigs',
+  });
 </script>

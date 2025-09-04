@@ -3,7 +3,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <!-- Current Subscription -->
       <SubscriptionCard
-        :subscription="currentSubscription"
+        :subscription="subscriptionInfo"
         :is-loading="isSubscriptionLoading"
         @upgrade="handleUpgrade"
         @manage="handleManageSubscription"
@@ -12,7 +12,7 @@
 
       <!-- Interview Usage -->
       <UsageCard
-        :usage="currentUsage"
+        :usage="usageInfo || currentUsage"
         :is-loading="isUsageLoading"
         @upgrade="handleUpgrade"
         @refresh="refreshUsage"
@@ -31,11 +31,7 @@
             <p class="font-medium">View Detailed Usage</p>
             <p class="text-sm text-gray-600">See complete usage history and analytics</p>
           </div>
-          <UButton 
-            color="gray" 
-            variant="outline"
-            @click="navigateTo('/account/subscription')"
-          >
+          <UButton color="gray" variant="outline" @click="navigateTo('/account/subscription')">
             View Details
           </UButton>
         </div>
@@ -45,10 +41,7 @@
             <p class="font-medium">Mock Interviews</p>
             <p class="text-sm text-gray-600">Practice with AI-generated interview questions</p>
           </div>
-          <UButton 
-            color="primary"
-            @click="navigateTo('/mock-interview')"
-          >
+          <UButton color="primary" @click="navigateTo('/mock-interview')">
             Start Interview
           </UButton>
         </div>
@@ -58,67 +51,39 @@
 </template>
 
 <script setup lang="ts">
-import type { UserSubscription, UsageCheckResult } from '~/features/mockInterview/mockInterview.types';
+  // Use the subscription and mock interview composables
+  const {
+    subscriptionInfo,
+    usageInfo,
+    isSubscriptionLoading,
+    isUsageLoading,
+    fetchSubscriptionStatus,
+    fetchCurrentUsage,
+  } = useSubscription();
 
-// Reactive state
-const currentSubscription = ref<UserSubscription | null>(null);
-const currentUsage = ref<UsageCheckResult | null>(null);
-const isSubscriptionLoading = ref(false);
-const isUsageLoading = ref(false);
+  // Use existing mock interview composable for usage data
+  const { currentUsage } = useMockInterviews();
 
-// Get stores
-const mockInterviewStore = useMockInterviewStore();
-const authStore = useAuthStore();
+  // Event handlers
+  const handleUpgrade = () => {
+    navigateTo('/account/subscription');
+  };
 
-// Fetch subscription data
-const fetchSubscription = async () => {
-  if (!authStore.authUser?.id) return;
-  
-  isSubscriptionLoading.value = true;
-  try {
-    const { $http } = useNuxtApp();
-    const response = await ($http as any).get(`/api/user-subscriptions?userId=${authStore.authUser.id}`);
-    currentSubscription.value = response.data?.[0] || null;
-  } catch (error) {
-    console.error('Error fetching subscription:', error);
-  } finally {
-    isSubscriptionLoading.value = false;
-  }
-};
+  const handleManageSubscription = () => {
+    navigateTo('/account/subscription');
+  };
 
-// Fetch usage data
-const fetchUsage = async () => {
-  isUsageLoading.value = true;
-  try {
-    const usage = await mockInterviewStore.checkUsageLimit();
-    currentUsage.value = usage;
-  } catch (error) {
-    console.error('Error fetching usage:', error);
-  } finally {
-    isUsageLoading.value = false;
-  }
-};
+  const refreshSubscription = () => {
+    fetchSubscriptionStatus();
+  };
 
-// Event handlers
-const handleUpgrade = () => {
-  navigateTo('/account/subscription');
-};
+  const refreshUsage = () => {
+    fetchCurrentUsage();
+  };
 
-const handleManageSubscription = () => {
-  navigateTo('/account/subscription');
-};
-
-const refreshSubscription = () => {
-  fetchSubscription();
-};
-
-const refreshUsage = () => {
-  fetchUsage();
-};
-
-// Initialize
-onMounted(() => {
-  fetchSubscription();
-  fetchUsage();
-});
+  // Initialize
+  onMounted(() => {
+    refreshSubscription();
+    refreshUsage();
+  });
 </script>

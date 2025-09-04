@@ -27,9 +27,9 @@
 </template>
 
 <script setup>
+  import SubscriptionSettings from '~/components/account/SubscriptionSettings.vue';
   import UpdatePassword from '~/components/account/UpdatePassword.vue';
   import UpdateUser from '~/components/account/UpdateUser.vue';
-  import SubscriptionSettings from '~/components/account/SubscriptionSettings.vue';
   import { AnalyticsEvent } from '~/services/analytics/events';
 
   definePageMeta({ layout: 'app-layout', middleware: ['auth'] });
