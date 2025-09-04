@@ -1,5 +1,5 @@
 import type { EventHandlerRequest } from 'h3';
-import { checkInterviewUsage } from '~/server/utils/subscription';
+import { getUserSubscription } from '~/server/utils/subscription';
 
 export default defineEventHandler(async (event: EventHandlerRequest) => {
   try {
@@ -26,19 +26,18 @@ export default defineEventHandler(async (event: EventHandlerRequest) => {
       });
     }
 
-    const currentUsage = await checkInterviewUsage(userId);
+    // Get subscription status
+    const subscription = await getUserSubscription(userId);
 
     return {
       data: {
-        currentUsage: currentUsage.currentCount,
-        monthlyLimit: currentUsage.limit,
-        subscriptionTier: currentUsage.tier,
-        canUseInterview: currentUsage.canUse,
-        resetDate: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1).toISOString(),
+        subscriptionStatus: subscription?.tier || 'free',
+        subscriptionId: subscription?.stripeSubscriptionId || null,
+        isPaid: subscription?.tier === 'paid' || false,
       },
     };
   } catch (error) {
-    console.error('Error fetching current usage:', error);
+    console.error('Error in subscription status endpoint:', error);
 
     if (error instanceof Error && 'statusCode' in error) {
       throw error;

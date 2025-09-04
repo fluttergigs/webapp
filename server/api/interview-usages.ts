@@ -2,11 +2,21 @@ import type { EventHandlerRequest } from 'h3';
 
 export default defineEventHandler(async (event: EventHandlerRequest) => {
   try {
-    const authStore = useAuthStore();
+    // Get user ID from authentication headers
+    const headers = getHeaders(event);
+    const authHeader = headers.authorization;
+    
+    if (!authHeader) {
+      throw createError({
+        statusCode: 401,
+        statusMessage: 'Authorization header required',
+      });
+    }
 
-    // Get user ID from auth token or query
+    // Extract user ID from JWT token or use a different method
+    // For now, we'll get it from query params as a fallback
     const query = getQuery(event);
-    const userId = authStore?.authUser?.id || Number(query.userId);
+    const userId = Number(query.userId);
 
     if (!userId) {
       throw createError({

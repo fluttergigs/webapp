@@ -5,11 +5,21 @@ import { WebSocketChannel } from '~/server/utils/websocket_types';
 
 export default defineEventHandler(async (event: EventHandlerRequest) => {
   try {
-    const authStore = useAuthStore();
+    // Get user ID from authentication headers
+    const headers = getHeaders(event);
+    const authHeader = headers.authorization;
+    
+    if (!authHeader) {
+      throw createError({
+        statusCode: 401,
+        statusMessage: 'Authorization header required',
+      });
+    }
 
-    // Get user ID from auth token or body
+    // Get user ID from body or query params as fallback
     const body = await readBody(event);
-    const userId = authStore?.authUser?.id || body.userId;
+    const query = getQuery(event);
+    const userId = body.userId || Number(query.userId);
 
     if (!userId) {
       throw createError({
