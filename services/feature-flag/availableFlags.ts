@@ -4,4 +4,5 @@ export enum AvailableFlags {
   learn = 'learn',
   companiesList = 'companies-list',
   fluppets = 'fluppets',
+  mockInterview = 'mock-interview',
 }
