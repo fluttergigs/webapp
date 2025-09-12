@@ -1,5 +1,6 @@
 import { useAppStore } from '~/stores/app';
-import type { FeatureAnnouncementConfig, FeatureId } from '~/features/announcements/announcements.types';
+import type { FeatureAnnouncementConfig } from '~/features/announcements/announcements.types';
+import { FeatureId } from '~/features/announcements/announcements.types';
 
 export function useFeatureAnnouncements() {
   const appStore = useAppStore();

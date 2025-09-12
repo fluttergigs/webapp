@@ -20,6 +20,8 @@ Sentry.init({
     }),
   ],
 
+  replaysSessionSampleRate: 0.1,
+  replaysOnErrorSampleRate: 1.0,
   // Set tracesSampleRate to 1.0 to capture 100%
   // of transactions for tracing.
   // We recommend adjusting this value in production
