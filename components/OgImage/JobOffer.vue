@@ -1,19 +1,21 @@
 <script lang="ts" setup>
-//@ts-ignore
-import OgPreview from '~/components/job/OgPreview.vue';
-import type { JobOffer } from '~/features/jobs/job.types';
+import { computed } from 'vue'
+import OgPreview from '~/components/job/OgPreview.vue'
+import type { JobOffer } from '~/features/jobs/job.types'
 
-const jobOffer = defineProps<Partial<JobOffer>>();
+interface Props extends /* @vue-ignore */ Partial<JobOffer> {}
+
+const props = defineProps<Props>()
+const title = props.title ?? 'FlutterGigs Job offer'
 
 const jobOfferTitle = computed(() =>
-  jobOffer.title ? (jobOffer.title.length > 85 ? `${jobOffer.title.substring(0, 85)}...` : jobOffer.title) : 'Untitled Job'
-);
-
+  title.length > 85 ? `${title.substring(0, 85)}...` : title
+)
 </script>
 
 <template>
   <div class="relative">
-    <OgPreview/>
+    <OgPreview />
     <div class="max-w-2xl h-[270px] absolute top-[80px] left-[305px]">
       <p class="text-7xl font-bold !leading-[32px] text-white">
         {{ jobOfferTitle }}
